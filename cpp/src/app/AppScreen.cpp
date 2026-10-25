@@ -97,6 +97,47 @@ void App::UpdateLocation()
     Location::Locate(window, LocatedMessage);
 }
 
+std::wstring App::NightStatus() const
+{
+    SYSTEMTIME local;
+    GetLocalTime(&local);
+    return Night::Status(settings, local);
+}
+
+// The line under the schedule's status: still syncing, synced (with Windows location or the time zone's city), failed
+// (neither works: a city has to be chosen), or a city you chose.
+App::Sync App::SyncState(std::wstring& text) const
+{
+    bool windows;
+    std::wstring place = Night::Place(settings, windows);
+    if (settings.CityManual && !place.empty()) {
+        text = Lang::F(L"{0} time, chosen by you", {place});
+        return Sync::CityChosen;
+    }
+    if (syncedAt == Clock::time_point{} && !settings.CityManual) {
+        text = Lang::T(L"Syncing with your location...");
+        return Sync::Syncing;
+    }
+    if (windows) {
+        text = Lang::T(L"Synced with your Windows location");
+        return Sync::Synced;
+    }
+    if (!place.empty()) {
+        text = Lang::F(L"Synced with {0} time", {place});
+        return Sync::Synced;
+    }
+    text = Lang::T(L"Couldn't sync.");
+    return Sync::Failed;
+}
+
+void App::SetCity(const std::wstring& city)
+{
+    settings.CityManual = !city.empty();
+    settings.City = city;
+    syncedAt = locatedAt = {};   // automatic again: looked up on the next tick
+    Changed(true);
+}
+
 void App::Located(double lat, double lon, bool ok)
 {
     syncedAt = Clock::now();   // whichever answered: Windows location, or (without it) the time zone
@@ -114,12 +155,14 @@ void App::ToggleFilter()
     settings.FilterEnabled = !settings.FilterEnabled;
     ManualScreenChange();
     Changed(true);
+    if (settingsWindow) settingsWindow->SyncFromApp();
 }
 
 void App::ChooseMode(int mode)
 {
     Modes::Choose(settings, mode);
     Changed(true);
+    if (settingsWindow) settingsWindow->SyncFromApp();
 }
 
 void App::ManualScreenChange()
@@ -164,6 +207,7 @@ void App::SetKeepAwake(bool on)
     awakeUntil = {};
     Changed();
     KeepAwake::Set(on);
+    if (settingsWindow) settingsWindow->SyncFromApp();
 }
 
 void App::KeepAwakeFor(int minutes)
@@ -172,12 +216,13 @@ void App::KeepAwakeFor(int minutes)
     awakeUntil = Clock::now() + std::chrono::minutes(minutes);
     Changed();
     KeepAwake::Set(true);
+    if (settingsWindow) settingsWindow->SyncFromApp();
 }
 
 // ---- The real backlight ----
 
 // Switching on first asks the displays (on a worker thread) whether they answer over DDC/CI.
-void App::SetHardwareBrightness(bool on)
+void App::SetHardwareBrightness(bool on, std::function<void()> done)
 {
     if (!on) {
         if (settings.HardwareBrightness && settings.HardwareRestore >= 0) Backlight::Set(settings.HardwareRestore);
@@ -185,9 +230,12 @@ void App::SetHardwareBrightness(bool on)
         lastBacklight = -1;
         backlightStatus.clear();
         probing = Probe::None;   // (an answer still on its way is ignored)
+        probeDone = nullptr;
         Changed(true);
+        if (done) done();
         return;
     }
+    probeDone = std::move(done);
     backlightStatus = Lang::T(L"Checking your monitors...");
     probing = Probe::SwitchOn;
     Backlight::Probe(window, ProbedMessage);
@@ -198,10 +246,13 @@ void App::Probed(int supported, int total, int current)
     Probe was = probing;
     probing = Probe::None;
     if (was == Probe::None) return;
+    auto done = std::move(probeDone);
+    probeDone = nullptr;
     if (supported == 0) {
         backlightStatus = was == Probe::SwitchOn
             ? Lang::T(L"No display answered. On external monitors, DDC/CI may be off in the monitor's menu.")
             : Lang::T(L"No display answered just now.");
+        if (done) done();
         return;
     }
     backlightStatus = supported == total
@@ -213,6 +264,7 @@ void App::Probed(int supported, int total, int current)
         settings.HardwareRestore = settings.Backlight = lastBacklight = current;
         Changed(true);
     }
+    if (done) done();
 }
 
 } // namespace bb

@@ -22,6 +22,7 @@ public:
     // A break ended, or was snoozed for that many seconds (0: taken or skipped).
     void BreakFinished(bool standUp, int snoozeSeconds);
     void ResetBlink() { blinkLeft = s.BlinkInterval; }
+    void Reset() { blinkLeft = s.BlinkInterval; breakElapsed = longElapsed = 0; }   // all settings back to the start
     void BlinkIntervalChanged() { if (blinkLeft > s.BlinkInterval) blinkLeft = s.BlinkInterval; }
 
     int SecondsToBreak() const { return s.BreakInterval * 60 - breakElapsed; }

@@ -33,7 +33,7 @@ public:
 
     // One line of text in a box, centred vertically; cut short with "..." when it doesn't fit (or wrapped).
     void Text(std::wstring_view text, IDWriteTextFormat* font, const D2D1_RECT_F& box, int argb,
-              HAlign align = HAlign::Left, bool wrap = false);
+              HAlign align = HAlign::Left, bool wrap = false, bool top = false);   // top: from the top, not centred
     // A single icon character, centred in a box by its own outline (font metrics would leave it a pixel or so off).
     void Glyph(wchar_t glyph, IDWriteTextFormat* font, const D2D1_RECT_F& box, int argb);
 
@@ -46,6 +46,7 @@ private:
 // Text sizes, without drawing.
 float TextWidth(std::wstring_view text, IDWriteTextFormat* font);
 float LineHeight(IDWriteTextFormat* font);
+float TextHeight(std::wstring_view text, IDWriteTextFormat* font, float width);   // wrapped at a width
 
 // Rectangle helpers.
 inline D2D1_RECT_F Rect(float x, float y, float w, float h) { return {x, y, x + w, y + h}; }

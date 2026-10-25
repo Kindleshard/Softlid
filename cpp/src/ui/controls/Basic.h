@@ -18,11 +18,48 @@ public:
     IDWriteTextFormat* font;
     HAlign align = HAlign::Left;
     bool wrap = false;
+    bool top = false;   // text from the top (a note), not centred
     void Paint(Canvas& canvas) override;
 
 private:
     std::wstring text;
     int color;
+};
+
+// One icon character (Segoe Fluent Icons), centred in its box.
+class Icon : public Control {
+public:
+    Icon(wchar_t glyph, float points, int color) : glyph(glyph), points(points), color(color) {}
+    void Set(wchar_t g, int argb);
+    void Paint(Canvas& canvas) override { canvas.Glyph(glyph, Fonts::Glyphs(points), {0, 0, W(), H()}, color); }
+
+private:
+    wchar_t glyph;
+    float points;
+    int color;
+};
+
+// A Windows icon (e.g. a program's), drawn at its size in the middle of the box. It owns the icon.
+class IconImage : public Control {
+public:
+    explicit IconImage(HICON icon) : icon(icon) {}
+    ~IconImage() override;
+    void Paint(Canvas& canvas) override;
+
+private:
+    HICON icon;
+    gfx::ComPtr<ID2D1Bitmap> bitmap;
+    ID2D1RenderTarget* madeFor = nullptr;
+};
+
+// An invisible area you can click (laid over a section's title, so a click anywhere on it folds the section).
+class HotArea : public Control {
+public:
+    HotArea() { cursor = Cursor::Hand; }
+    std::function<void()> onClick;
+    void Click() override { if (onClick) onClick(); }
+    void MouseEnter() override {}
+    void MouseLeave() override {}
 };
 
 // A fully rounded button: a circle when it is square (an icon alone), a pill otherwise. Its text can be words, or a

@@ -10,7 +10,7 @@
 namespace bb::ui {
 namespace {
 
-constexpr wchar_t ChevronDown = L'', ChevronUp = L'', Minus = L'', Plus = L'';
+constexpr wchar_t ChevronDown = L'\uE70D', ChevronUp = L'\uE70E', Minus = L'\uE738', Plus = L'\uE710';
 
 std::vector<std::wstring> Translated(std::vector<std::wstring> english)
 {
@@ -255,6 +255,7 @@ void TextBox::Placed()
         SetWindowLongPtrW(edit, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));   // (the window routes EN_CHANGE here)
         SetWindowSubclass(edit, EditProc, 1, reinterpret_cast<DWORD_PTR>(this));
         if (maxLength > 0) SendMessageW(edit, EM_SETLIMITTEXT, maxLength, 0);
+        if (!cue.empty()) SendMessageW(edit, EM_SETCUEBANNER, TRUE, reinterpret_cast<LPARAM>(cue.c_str()));
     }
     UINT dpi = GetDpiForWindow(w->Handle());
     if (dpi != fontDpi) {
@@ -297,9 +298,18 @@ void TextBox::MouseDown(D2D1_POINT_2F)
     if (edit) ::SetFocus(edit);   // a click on the frame's edge types here too
 }
 
+void TextBox::StartTyping()
+{
+    if (edit) ::SetFocus(edit);
+}
+
 LRESULT CALLBACK TextBox::EditProc(HWND hwnd, UINT message, WPARAM w, LPARAM l, UINT_PTR, DWORD_PTR data)
 {
     auto box = reinterpret_cast<TextBox*>(data);
+    if (message == WM_KEYDOWN && (w == VK_UP || w == VK_DOWN) && box->onKey) {
+        box->onKey(static_cast<UINT>(w));
+        return 0;
+    }
     if (message == WM_KEYDOWN && (w == VK_RETURN || w == VK_ESCAPE || w == VK_TAB)) {
         if (w != VK_TAB && box->onKey) box->onKey(static_cast<UINT>(w));
         else SendMessageW(GetParent(hwnd), WM_KEYDOWN, w, l);   // Tab moves on, as everywhere else in the window

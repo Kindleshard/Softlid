@@ -23,11 +23,11 @@ class Gallery : public DirectWindow {
 public:
     Gallery()
     {
-        auto& tabs = Root().Add<TabStrip>(std::vector<std::wstring>{L"Screen", L"Blink", L"Schedule", L"Extras", L""});
+        auto& tabs = Root().Add<TabStrip>(std::vector<std::wstring>{L"Screen", L"Blink", L"Schedule", L"Extras", L"\uE713"});
         tabs.SetBounds(8, 8, 412, 40);
         tabs.tip = L"Tabs: words, or an icon";
         auto& mini = Root().Add<Button>();
-        mini.SetGlyph(L'');
+        mini.SetGlyph(L'\uE73F');
         mini.SetBounds(W - 50, 12, 32, 32);
         mini.tip = L"A round icon button";
         Root().Add<Divider>().SetBounds(0, 52, W, 1);

@@ -3,6 +3,9 @@
 #include "ui/Theme.h"
 #include <algorithm>
 #include <cmath>
+#include <wincodec.h>
+
+#pragma comment(lib, "windowscodecs.lib")
 
 namespace bb::ui {
 namespace {
@@ -51,7 +54,49 @@ void Label::SetColor(int argb)
     Invalidate();
 }
 
-void Label::Paint(Canvas& c) { c.Text(text, font, {0, 0, W(), H()}, Enabled() ? color : Theme::Dim, align, wrap); }
+void Label::Paint(Canvas& c) { c.Text(text, font, {0, 0, W(), H()}, Enabled() ? color : Theme::Dim, align, wrap, top); }
+
+void Icon::Set(wchar_t g, int argb)
+{
+    if (g == glyph && argb == color) return;
+    glyph = g;
+    color = argb;
+    Invalidate();
+}
+
+// ---- IconImage ----
+
+IconImage::~IconImage()
+{
+    if (icon) DestroyIcon(icon);
+}
+
+void IconImage::Paint(Canvas& c)
+{
+    if (!icon) return;
+    ID2D1RenderTarget* t = c.Target();
+    if (!bitmap || madeFor != t) {
+        // Through WIC: the icon's pixels, with their transparency, as a Direct2D bitmap.
+        gfx::ComPtr<IWICImagingFactory> wic;
+        gfx::ComPtr<IWICBitmap> source;
+        gfx::ComPtr<IWICFormatConverter> converted;
+        bitmap.Reset();
+        if (SUCCEEDED(CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wic))) &&
+            SUCCEEDED(wic->CreateBitmapFromHICON(icon, source.GetAddressOf())) &&
+            SUCCEEDED(wic->CreateFormatConverter(converted.GetAddressOf())) &&
+            SUCCEEDED(converted->Initialize(source.Get(), GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, nullptr, 0,
+                                            WICBitmapPaletteTypeCustom)))
+            t->CreateBitmapFromWicBitmap(converted.Get(), nullptr, bitmap.GetAddressOf());
+        madeFor = t;
+    }
+    if (!bitmap) return;
+    // Its pixels as they are (sharp), in units at this scale.
+    float dpiX, dpiY;
+    t->GetDpi(&dpiX, &dpiY);
+    D2D1_SIZE_U px = bitmap->GetPixelSize();
+    float w = px.width * 96 / dpiX, h = px.height * 96 / dpiY;
+    t->DrawBitmap(bitmap.Get(), Rect((W() - w) / 2, (H() - h) / 2, w, h));
+}
 
 // ---- Button ----
 

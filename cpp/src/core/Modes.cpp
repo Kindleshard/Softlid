@@ -22,7 +22,7 @@ const Preset Presets[Custom] = {
 
 const wchar_t* const Names[Count] = {L"Pause", L"Health", L"Game", L"Movie", L"Office", L"Editing", L"Reading", L"Custom"};
 // pause, heart, game pad, film, briefcase, pen, book, sliders
-const wchar_t* const Glyphs[Count] = {L"", L"", L"", L"", L"", L"", L"", L""};
+const wchar_t* const Glyphs[Count] = {L"\uE769", L"\uEB51", L"\uE7FC", L"\uE8B2", L"\uE821", L"\uE70F", L"\uE736", L"\uE9E9"};
 
 void Apply(Settings& s, int mode)
 {

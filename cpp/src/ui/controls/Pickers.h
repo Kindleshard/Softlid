@@ -86,7 +86,9 @@ public:
     std::wstring Text() const;
     void SetText(const std::wstring& text);   // (no onChange)
     std::function<void(const std::wstring&)> onChange;
-    std::function<void(UINT)> onKey;           // Enter or Esc pressed in it
+    std::function<void(UINT)> onKey;           // Enter, Esc, Up or Down pressed in it
+    std::wstring cue;                          // grey hint shown while it is empty (already translated)
+    void StartTyping();                        // the caret goes in
 
     void Paint(Canvas& canvas) override;
     void Placed() override;

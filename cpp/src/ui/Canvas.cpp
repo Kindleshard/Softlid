@@ -94,14 +94,14 @@ void Canvas::Line(float x1, float y1, float x2, float y2, int argb, float width,
     target->DrawLine({x1, y1}, {x2, y2}, Brush(argb), width, roundEnds ? roundCaps.Get() : nullptr);
 }
 
-void Canvas::Text(std::wstring_view text, IDWriteTextFormat* font, const D2D1_RECT_F& box, int argb, HAlign align, bool wrap)
+void Canvas::Text(std::wstring_view text, IDWriteTextFormat* font, const D2D1_RECT_F& box, int argb, HAlign align, bool wrap, bool top)
 {
     if (text.empty()) return;
     ComPtr<IDWriteTextLayout> layout = Layout(text, font, Width(box), Height(box));
     if (!layout) return;
     layout->SetTextAlignment(align == HAlign::Center ? DWRITE_TEXT_ALIGNMENT_CENTER
                              : align == HAlign::Right ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
-    layout->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+    layout->SetParagraphAlignment(top ? DWRITE_PARAGRAPH_ALIGNMENT_NEAR : DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
     layout->SetWordWrapping(wrap ? DWRITE_WORD_WRAPPING_WRAP : DWRITE_WORD_WRAPPING_NO_WRAP);
     DWRITE_TRIMMING trim{DWRITE_TRIMMING_GRANULARITY_CHARACTER, 0, 0};
     ComPtr<IDWriteInlineObject> ellipsis;
@@ -139,6 +139,14 @@ float TextWidth(std::wstring_view text, IDWriteTextFormat* font)
 float LineHeight(IDWriteTextFormat* font)
 {
     ComPtr<IDWriteTextLayout> layout = Layout(L"Ag", font, 1000, 1000);
+    DWRITE_TEXT_METRICS m{};
+    if (layout) layout->GetMetrics(&m);
+    return m.height;
+}
+
+float TextHeight(std::wstring_view text, IDWriteTextFormat* font, float width)
+{
+    ComPtr<IDWriteTextLayout> layout = Layout(text, font, width, 10000);
     DWRITE_TEXT_METRICS m{};
     if (layout) layout->GetMetrics(&m);
     return m.height;

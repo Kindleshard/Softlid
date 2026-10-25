@@ -44,7 +44,7 @@ Each chunk builds and runs on its own, ends in a commit, and leaves the app usab
 | 2 | **Reminders:** blink eye popup, look-away and stand-up cards, idle and full-screen detection, chime, pause — **done** (the eyelids blink style, eye exercises and stretch coach come with chunk 7) | Reminders work like the C# version (simple cards) |
 | 3 | **Screen:** colour-effect filter (brightness, warmth, effects), night schedule and location, modes and per-app rules, real backlight, visibility guard — **done** (tone curves come with chunk 8; the settings for all this with chunk 5) | The screen filter matches the C# version |
 | 4 | **UI toolkit:** Direct2D window with per-monitor DPI, a layout grid, and the controls (tabs, toggle, slider, choices, drop-down, buttons, pickers, colour wheel) — **done** (`--ui-gallery` shows them all) | A test window shows every control |
-| 5 | **Settings window:** the five pages, folding sections, Simple/Advanced | All settings can be changed |
+| 5 | **Settings window:** the five pages, folding sections, Simple/Advanced — **done** (the Tone section comes with chunk 8; the focus timer, the mini icons, the shortcuts and add-an-app dialogs with chunk 6; updates with chunk 9) | All settings can be changed |
 | 6 | **Extras:** mini mode, focus timer, reading strip, keyboard shortcuts, the app-rules dialog | Feature parity for these |
 | 7 | **Guided breaks:** liquid eye animation, eyelids, stretch coach, voice | Breaks look and sound like the C# version |
 | 8 | **Tone engines:** standard curve, Smart (GPU), Smart layer, DesktopLUT with its guard, tone lab, grain | Tone matches |

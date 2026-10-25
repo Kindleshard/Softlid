@@ -41,8 +41,8 @@ void TrimMemory() { SetProcessWorkingSetSize(GetCurrentProcess(), static_cast<SI
 
 } // namespace
 
-App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings)
-    : instance(instance), showRequest(showRequest), settings(Settings::Load())
+App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscreen)
+    : instance(instance), showRequest(showRequest), settings(Settings::Load()), offscreen(offscreen)
 {
     Lang::Use(settings.Language);
     Theme::UseAccent(settings);
@@ -57,6 +57,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings)
     window = CreateWindowExW(0, WindowClass, L"BlinkBuddy", WS_POPUP, 0, 0, 0, 0, nullptr, nullptr, instance, this);
 
     LoadIconWithScaleDown(instance, MAKEINTRESOURCEW(IDI_APP), GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), &icon);
+    LoadIconWithScaleDown(instance, MAKEINTRESOURCEW(IDI_APP), GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), &bigIcon);
     tray.Add(window, icon, L"BlinkBuddy");
     taskbarCreated = RegisterWindowMessageW(L"TaskbarCreated");
 
@@ -75,6 +76,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings)
 
 App::~App()
 {
+    settingsWindow.reset();
     frontWatch.reset();
     WTSUnRegisterSessionNotification(window);
     filter.Off();
@@ -83,6 +85,7 @@ App::~App()
     tray.Remove();
     if (window) DestroyWindow(window);
     if (icon) DestroyIcon(icon);
+    if (bigIcon) DestroyIcon(bigIcon);
 }
 
 int App::Run()
@@ -109,8 +112,12 @@ void App::Changed(bool screen)
 
 LRESULT CALLBACK App::WindowProc(HWND window, UINT message, WPARAM w, LPARAM l)
 {
-    if (message == WM_NCCREATE)
-        SetWindowLongPtrW(window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(reinterpret_cast<CREATESTRUCTW*>(l)->lpCreateParams));
+    if (message == WM_NCCREATE) {
+        // (The handle is kept now, before CreateWindowEx returns: Handle passes it on to DefWindowProc from here on.)
+        auto app = static_cast<App*>(reinterpret_cast<CREATESTRUCTW*>(l)->lpCreateParams);
+        app->window = window;
+        SetWindowLongPtrW(window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(app));
+    }
     auto app = reinterpret_cast<App*>(GetWindowLongPtrW(window, GWLP_USERDATA));
     return app ? app->Handle(message, w, l) : DefWindowProcW(window, message, w, l);
 }
@@ -143,6 +150,17 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     case ProbedMessage:
         Probed(LOWORD(w), HIWORD(w), static_cast<int>(l));
         return 0;
+    case QuitMessage:
+        Exit();
+        return 0;
+    case RebuildMessage: {
+        if (!settingsWindow) return 0;
+        POINT at = settingsWindow->Position();
+        settingsWindow.reset();
+        ui::Fonts::Release();   // (the language may need another font)
+        ShowSettings(&at, w != 0);
+        return 0;
+    }
     case WM_DISPLAYCHANGE:
         ReapplyScreen();
         return 0;
@@ -237,8 +255,7 @@ void App::ShowMenu()
     auto checked = [](bool on) -> UINT { return on ? MF_CHECKED : MF_UNCHECKED; };
     HMENU menu = CreatePopupMenu();
     HMENU pause = CreatePopupMenu();
-    // (The settings window arrives in chunk 5: until then its item is shown, greyed.)
-    AppendMenuW(menu, MF_STRING | MF_GRAYED, CmdSettings, Lang::T(L"Settings").c_str());
+    AppendMenuW(menu, MF_STRING, CmdSettings, Lang::T(L"Settings").c_str());
     SetMenuDefaultItem(menu, CmdSettings, FALSE);
     AppendMenuW(menu, MF_STRING | (card ? MF_GRAYED : 0), CmdBreakNow, Lang::T(L"Take a break now").c_str());
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
@@ -294,12 +311,6 @@ void App::ShowMenu()
     }
 }
 
-void App::ShowSettings()
-{
-    // Chunk 5. Meanwhile a click on the tray icon shows the blink cue, so you can see BlinkBuddy is running.
-    Blink(true);
-}
-
 void App::Pause(int minutes)
 {
     pausedUntil = minutes < 0 ? Clock::time_point::max() : Clock::now() + std::chrono::minutes(minutes);
@@ -310,6 +321,7 @@ bool App::Paused() const { return Clock::now() < pausedUntil; }
 void App::Exit()
 {
     KillTimer(window, TickTimer);
+    settingsWindow.reset();
     if (dirty) settings.Save();
     card.reset();
     tray.Remove();

@@ -60,7 +60,7 @@ void DirectWindow::Open(float w, float h, const POINT* at, const Options& opts)
         style |= WS_POPUP;
         exStyle |= WS_EX_TOOLWINDOW;
     } else {
-        style |= WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | (options.resizable ? WS_THICKFRAME : 0);
+        style |= WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | (options.dialog ? 0 : WS_MINIMIZEBOX) | (options.resizable ? WS_THICKFRAME : 0);
     }
     RECT frame{0, 0, static_cast<LONG>(std::lround(w * Scale())), static_cast<LONG>(std::lround(h * Scale()))};
     AdjustWindowRectExForDpi(&frame, style, FALSE, exStyle, dpi);
@@ -227,6 +227,14 @@ void DirectWindow::Paint()
         gfx::D2D()->CreateHwndRenderTarget(props, hwndProps, target.GetAddressOf());
     }
     if (target) {
+        // The drawing surface always matches the window (a size change can come while it doesn't exist yet).
+        RECT r;
+        GetClientRect(hwnd, &r);
+        D2D1_SIZE_U drawn = target->GetPixelSize();
+        if (drawn.width != static_cast<UINT32>(r.right) || drawn.height != static_cast<UINT32>(r.bottom)) {
+            target->Resize(D2D1::SizeU(r.right, r.bottom));
+            InvalidateRect(hwnd, nullptr, FALSE);   // all of it, now it is bigger
+        }
         target->BeginDraw();
         target->SetTransform(D2D1::Matrix3x2F::Identity());
         float s = Scale();

@@ -10,11 +10,29 @@ namespace {
 
 struct Request { HWND window; UINT message; };
 
+// Whether Windows' location switches let desktop apps ask at all: for the PC, for this user, and for desktop apps
+// (Settings > Privacy > Location). If one is off, asking would only wait until it times out.
+bool LocationAllowed()
+{
+    auto denied = [](HKEY root, const wchar_t* key) {
+        wchar_t value[16] = {};
+        DWORD size = sizeof value;
+        return RegGetValueW(root, key, L"Value", RRF_RT_REG_SZ, nullptr, value, &size) == ERROR_SUCCESS && _wcsicmp(value, L"Deny") == 0;
+    };
+    constexpr wchar_t store[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location";
+    constexpr wchar_t desktop[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location\\NonPackaged";
+    return !denied(HKEY_LOCAL_MACHINE, store) && !denied(HKEY_CURRENT_USER, store) && !denied(HKEY_CURRENT_USER, desktop);
+}
+
 DWORD WINAPI Work(void* param)
 {
     Request request = *static_cast<Request*>(param);
     delete static_cast<Request*>(param);
     auto* fix = new Fix{false, 0, 0};
+    if (!LocationAllowed()) {
+        if (!PostMessageW(request.window, request.message, 0, reinterpret_cast<LPARAM>(fix))) delete fix;
+        return 0;
+    }
     try {
         winrt::init_apartment(winrt::apartment_type::multi_threaded);   // (a worker thread may block on the answer)
         using namespace winrt::Windows::Devices::Geolocation;

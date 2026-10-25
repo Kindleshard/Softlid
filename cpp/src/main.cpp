@@ -78,9 +78,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     int code;
     {
-        // "--tray": start quietly (as at sign-in); otherwise the settings open.
+        // "--tray": start quietly (as at sign-in); otherwise the settings open. ("--offscreen": diagnostics, see App.)
         bool openSettings = std::wcsstr(commandLine, L"--tray") == nullptr;
-        bb::App app(instance, showRequest, openSettings);
+        bb::App app(instance, showRequest, openSettings, std::wcsstr(commandLine, L"--offscreen") != nullptr);
         code = app.Run();
     }
     CoUninitialize();
