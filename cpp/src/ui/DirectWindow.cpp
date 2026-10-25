@@ -240,10 +240,10 @@ void DirectWindow::Paint()
         float s = Scale();
         D2D1_RECT_F clip{ps.rcPaint.left / s, ps.rcPaint.top / s, ps.rcPaint.right / s, ps.rcPaint.bottom / s};
         target->PushAxisAlignedClip(clip, D2D1_ANTIALIAS_MODE_ALIASED);
-        target->Clear(gfx::Color(options.popup ? Palette::Argb(43, 43, 43) : Theme::Bg));
+        target->Clear(gfx::Color(options.background ? options.background : options.popup ? Palette::Argb(43, 43, 43) : Theme::Bg));
         Canvas canvas(target.Get());
         root.PaintTree(canvas, clip);
-        if (options.popup) {
+        if (options.popup && options.edge) {
             D2D1_SIZE_F size = ClientSize();
             float px = 1 / s;   // one pixel
             target->DrawRectangle({px / 2, px / 2, size.width - px / 2, size.height - px / 2}, canvas.Brush(Palette::Argb(72, 72, 72)), px);

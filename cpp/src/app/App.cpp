@@ -2,6 +2,8 @@
 #include "core/Hotkeys.h"
 #include "core/Lang.h"
 #include "core/Modes.h"
+#include "features/breaks/GuidedBreak.h"
+#include "features/breaks/StretchBreak.h"
 #include "features/screen/Backlight.h"
 #include "platform/Activity.h"
 #include "platform/DarkMode.h"
@@ -215,15 +217,22 @@ void App::OnTick()
 
 void App::Blink(bool instant)
 {
-    // (The eyelids style - closing over the whole screen - arrives with the guided breaks, chunk 7.)
+    if (settings.BlinkStyle == 1) {
+        if (instant) return;   // live tweaks are for the eye icon's size, opacity and place
+        if (!lids) lids = std::make_unique<Eyelids>();
+        lids->Play(settings);
+        return;
+    }
     eye.Play(settings, instant);
 }
 
 void App::StartBreak(bool standUp)
 {
     if (card) return;
-    // (The guided eye exercises and the stretch coach arrive in chunk 7; until then every break is a card.)
-    card = std::make_unique<BreakCard>(window, standUp, settings);
+    // Eye exercises and the stretch coach take the whole screen; otherwise a small card counts down.
+    if (!standUp && settings.Exercises) card = std::make_unique<GuidedBreak>(window, settings, WarmthNow());
+    else if (standUp && settings.StretchGuided) card = std::make_unique<StretchBreak>(window, settings);
+    else card = std::make_unique<BreakCard>(window, standUp, settings);
 }
 
 void App::BreakDone(bool standUp, int snoozeSeconds)

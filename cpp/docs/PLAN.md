@@ -46,7 +46,7 @@ Each chunk builds and runs on its own, ends in a commit, and leaves the app usab
 | 4 | **UI toolkit:** Direct2D window with per-monitor DPI, a layout grid, and the controls (tabs, toggle, slider, choices, drop-down, buttons, pickers, colour wheel) — **done** (`--ui-gallery` shows them all) | A test window shows every control |
 | 5 | **Settings window:** the five pages, folding sections, Simple/Advanced — **done** (the Tone section comes with chunk 8; the focus timer, the mini icons, the shortcuts and add-an-app dialogs with chunk 6; updates with chunk 9) | All settings can be changed |
 | 6 | **Extras:** mini mode, focus timer, reading strip, keyboard shortcuts, the app-rules dialog — **done** (the reading strip follows the mouse with raw input rather than a mouse hook) | Feature parity for these |
-| 7 | **Guided breaks:** liquid eye animation, eyelids, stretch coach, voice | Breaks look and sound like the C# version |
+| 7 | **Guided breaks:** liquid eye animation, eyelids, stretch coach, voice — **done** (`--preview-exercises`, `--preview-stretch` and `--preview-blink` show them; the eyelids are made for each blink and freed after it) | Breaks look and sound like the C# version |
 | 8 | **Tone engines:** standard curve, Smart (GPU), Smart layer, DesktopLUT with its guard, tone lab, grain | Tone matches |
 | 9 | **Release:** updater, installer + portable exe, donate link, README, memory numbers | Ready to share |
 

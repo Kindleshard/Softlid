@@ -2,6 +2,7 @@
 #include "app/Tray.h"
 #include "core/Reminders.h"
 #include "core/Settings.h"
+#include "features/breaks/Eyelids.h"
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/EyePopup.h"
 #include "features/screen/ColorFilter.h"
@@ -138,7 +139,8 @@ private:
 
     Reminders reminders{settings};
     EyePopup eye;
-    std::unique_ptr<BreakCard> card;   // the break showing now, if any
+    std::unique_ptr<Window> card;      // the break showing now, if any (a card, the guided exercises or the stretch coach)
+    std::unique_ptr<Eyelids> lids;     // the eyelids blink style (made when first used)
     Clock::time_point pausedUntil{};
 
     ColorFilter filter;

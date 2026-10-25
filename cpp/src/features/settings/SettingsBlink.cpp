@@ -2,6 +2,7 @@
 #include "features/settings/SettingsWindow.h"
 #include "app/App.h"
 #include "core/Lang.h"
+#include "platform/Voice.h"
 #include "ui/Theme.h"
 
 namespace bb {
@@ -60,14 +61,35 @@ void SettingsWindow::BuildBlinkPage(Stack& st)
     Header(st, L'\uE909', L"Look-away reminder", L"The 20-20-20 rule: every 20 min, look 20 ft (6 m) away for 20 s.", s.BreakEnabled,
            [this](bool v) { s.BreakEnabled = v; app.Changed(); });
     SliderRow(st, L"Every", 5, 60, s.BreakInterval, defaults.BreakInterval, Minutes, [this](int v) { s.BreakInterval = v; app.Changed(); });
-    // (The spoken exercises set a floor on the break's length; that check comes with the voice, in chunk 7.)
-    SliderRow(st, L"Look away for", 10, 120, s.BreakDuration, defaults.BreakDuration, Seconds,
-              [this](int v) { s.BreakDuration = v; app.Changed(); });
+    // The spoken lines set a floor: below their total length the voice is switched off rather than cut short.
+    int voiceNeeds = Voice::MinimumSeconds(Voice::LookAwayKeys());
+    int breakDefault = voiceNeeds > 0 ? voiceNeeds : defaults.BreakDuration;
+    Toggle* voiceToggle = nullptr;
+    Label* voiceHint = nullptr;
+    auto voiceFits = [this, voiceNeeds, &voiceToggle, &voiceHint] {
+        bool fits = voiceNeeds == 0 || s.BreakDuration >= voiceNeeds;
+        voiceToggle->SetEnabled(fits);
+        voiceHint->SetPlainText(fits ? Lang::T(L"reads each exercise aloud")
+                                     : Lang::F(L"needs breaks of {0} s or longer", {std::to_wstring(voiceNeeds)}));
+    };
+    Slider& duration = SliderRow(st, L"Look away for", 10, 120, s.BreakDuration, breakDefault, Seconds, [this](int v) {
+        s.BreakDuration = v;
+        app.Changed();
+    });
     ToggleRow(st, L"Guided eye exercises during the break", s.Exercises, [this](bool v) { s.Exercises = v; app.Changed(); UpdateRows(); });
     Row& voiceRow = st.Add(34, [this] { return s.Exercises; });
     AddLabel(voiceRow, L"Voice", Fonts::Body(), Theme::Fg, 48, 4, 56, 26);
-    AddLabel(voiceRow, L"reads each exercise aloud", Fonts::Small(), Theme::Dim, 108, 8, 260, 20);
-    AddToggle(voiceRow, Edge - 44, 6, s.ExerciseVoice, [this](bool v) { s.ExerciseVoice = v; app.Changed(); });
+    voiceHint = &AddLabel(voiceRow, L"reads each exercise aloud", Fonts::Small(), Theme::Dim, 108, 8, 260, 20);
+    voiceToggle = &AddToggle(voiceRow, Edge - 44, 6, s.ExerciseVoice, [this](bool v) { s.ExerciseVoice = v; app.Changed(); });
+    voiceFits();
+    // (The slider's own handler shows the new value; this one also checks the voice still fits.)
+    auto shown = duration.onChange;
+    duration.onChange = [shown, toggle = voiceToggle, hint = voiceHint, this, voiceNeeds](int v) {
+        shown(v);
+        bool fits = voiceNeeds == 0 || v >= voiceNeeds;
+        toggle->SetEnabled(fits);
+        hint->SetPlainText(fits ? Lang::T(L"reads each exercise aloud") : Lang::F(L"needs breaks of {0} s or longer", {std::to_wstring(voiceNeeds)}));
+    };
     Row& breakRow = st.Add(46);
     breakStatus = &AddLabel(breakRow, L"", Fonts::Body(), Theme::Dim, 24, 10, Edge - 176 - 32, 26);
     AddButton(breakRow, L"Take a break now", Edge - 176, 6, 176, 34).onClick = [this] { app.StartBreak(false); };

@@ -17,6 +17,8 @@ public:
         bool resizable = false;          // taller or shorter (the width stays)
         bool closeOnDeactivate = false;  // closes when you click anywhere else
         bool dialog = false;             // a title bar with only a close button
+        bool edge = true;                // a pop-up's thin edge
+        int background = 0;              // ARGB; 0: the usual dark
         float minHeight = 0;             // 96-dpi units, for a resizable window
         HWND owner = nullptr;
         HICON icon = nullptr;
