@@ -22,6 +22,10 @@ public:
 
     bool CanShowEffects() const { return !magFailed; }   // the overlays can't do the effects
 
+    // Per-channel brightness and warmth gains, for the Smart (GPU) engine to apply in its shader instead (bright: the
+    // on-screen brightness, which the visibility guard may raise above the setting).
+    static void Scale(const Settings& s, float night, float bright, float& r, float& g, float& b);
+
 private:
     void StopMagnifier();
     void ApplyOverlays(bool neutral, float bright, float warmth);

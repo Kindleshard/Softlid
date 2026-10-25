@@ -71,6 +71,22 @@ void ColorFilter::Apply(const Settings& s, float night, float prescale, float br
     ApplyOverlays(bright >= 1 && warm <= 0, bright, static_cast<float>(std::max(0.0, warm) / 100));
 }
 
+void ColorFilter::Scale(const Settings& s, float night, float bright, float& r, float& g, float& b)
+{
+    r = g = b = 1;
+    if (!s.FilterEnabled) return;
+    double blue = Night::Blue(s, night);
+    if (blue != 0) {
+        ColorMath::Rgb k = ColorMath::KelvinToRgb(ColorMath::Kelvin(blue));
+        r = k.r;
+        g = k.g;
+        b = k.b;
+    }
+    r *= bright;
+    g *= bright;
+    b *= bright;
+}
+
 void ColorFilter::Off()
 {
     StopMagnifier();

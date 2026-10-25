@@ -1,5 +1,5 @@
-// The Screen page: the screen filter, its modes and colour effects, and the backlight. (Tone, with its engines, comes
-// with them in chunk 8.)
+// The Screen page: the screen filter, its modes and colour effects, and the backlight; tone, with its engines, is in
+// SettingsTone.cpp.
 #include "features/settings/SettingsWindow.h"
 #include "app/App.h"
 #include "core/ColorMath.h"
@@ -90,6 +90,9 @@ void SettingsWindow::BuildScreenPage(Stack& st)
         s.Invert = v;
         FilterTouched();
     }, advanced);
+
+    Divider(st);
+    BuildTone(st);
     st.Add(16);
 }
 

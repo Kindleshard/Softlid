@@ -111,6 +111,7 @@ void SettingsWindow::RefreshStatus()
         UpdateRows();
     }
     hwStatus->SetPlainText(app.BacklightStatus());
+    RefreshTone();
     focusRing->Invalidate();
     focusButton->SetText(app.FocusState() == App::Focus::Working ? L"Pause" : app.FocusState() == App::Focus::Paused ? L"Resume" : L"Start");
 }
@@ -118,6 +119,8 @@ void SettingsWindow::RefreshStatus()
 void SettingsWindow::SyncFromApp()
 {
     filterToggle->SetOn(s.FilterEnabled);
+    toneToggle->SetOn(s.ToneEnabled);
+    lutBox->SetText(s.LutPath);
     brightSlider->SetValue(s.Brightness);
     coolToggle->SetOn(s.CoolRange);
     blueSlider->SetRange(s.CoolRange ? -75 : 0, 100);
@@ -159,6 +162,11 @@ LRESULT SettingsWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
         auto work = std::move(later);
         later.clear();
         for (auto& f : work) f();
+        return 0;
+    }
+    case LutInstallMessage: {
+        std::unique_ptr<std::wstring> text(reinterpret_cast<std::wstring*>(l));
+        LutInstallProgress(static_cast<int>(w), *text);
         return 0;
     }
     case WM_SYSCOMMAND:

@@ -76,6 +76,21 @@ private:
     void BacklightToggled(bool on);
     std::wstring EffectPausedText() const;
 
+    // ---- Tone, on the Screen page (SettingsTone.cpp) ----
+    void BuildTone(ui::Stack& st);
+    void BuildLutSetup(ui::Stack& st);
+    void CompactSlider(ui::Container& parent, float y, std::wstring_view text, int value,
+                       std::function<std::wstring(int)> format, std::function<void(int)> changed);
+    void SetTone(bool on);           // the tone switch (also when a tone control needs it on)
+    void ToneChanged();
+    std::wstring ToneText() const;
+    std::wstring ToneDetail() const;
+    void RefreshTone();
+    bool LutInstalled() const;
+    void UseLutPath(std::wstring path);
+    void LutReady(const std::wstring& path);
+    void LutInstallProgress(int kind, const std::wstring& message);
+
     // ---- Blink (SettingsBlink.cpp) ----
     void BuildBlinkPage(ui::Stack& st);
 
@@ -131,6 +146,15 @@ private:
     CityList* cityList = nullptr;
     ui::Row* suggestRow = nullptr;
     bool pickerOpen = false;
+
+    // Tone.
+    static constexpr UINT LutInstallMessage = WM_APP + 21;   // from DesktopLUT's download (see LutFiles::Install)
+    ui::Toggle* toneToggle = nullptr;
+    ui::CurveView* curve = nullptr;
+    ui::Label *toneStatus = nullptr, *lutStatus = nullptr, *lutSetupStatus = nullptr;
+    ui::TextBox* lutBox = nullptr;
+    ui::Button *lutInstall = nullptr, *lutPick = nullptr;
+    bool lutSetupOpen = false;
     int shownSync = -1, shownRule = -1;
 };
 

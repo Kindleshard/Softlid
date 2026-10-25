@@ -4,10 +4,12 @@
 #include "core/Lang.h"
 #include "features/breaks/GuidedBreak.h"
 #include "features/breaks/StretchBreak.h"
+#include "features/tone/LutGuard.h"
 #include "tools/ControlGallery.h"
 #include "ui/Theme.h"
 #include <windows.h>
 #include <objbase.h>
+#include <shellapi.h>
 #include <cwchar>
 
 // Diagnostics: "--preview-break" shows a look-away break card with your settings, "--preview-exercises" the guided
@@ -71,8 +73,29 @@ static int UiGallery(bool offscreen)
     return code;
 }
 
+// The DesktopLUT guard: BlinkBuddy starts this copy as administrator (see features/tone/LutGuard), with
+// --lut-guard "<DesktopLUT.exe>" <trial 0/1> <BlinkBuddy pid> "<colour table>".
+static int LutGuard()
+{
+    int count = 0;
+    LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &count);
+    if (!args || count < 6) {
+        if (args) LocalFree(args);
+        return 1;
+    }
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    bb::Settings settings = bb::Settings::Load();
+    bb::Lang::Use(settings.Language);
+    bb::Theme::UseAccent(settings);
+    int code = bb::RunLutGuardHelper(args[2], args[3][0] == L'1', static_cast<DWORD>(_wtoi(args[4])), args[5]);
+    LocalFree(args);
+    CoUninitialize();
+    return code;
+}
+
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
 {
+    if (std::wcsstr(commandLine, L"--lut-guard")) return LutGuard();
     if (std::wcsstr(commandLine, L"--preview-break")) return PreviewBreak(Preview::Card);
     if (std::wcsstr(commandLine, L"--preview-exercises")) return PreviewBreak(Preview::Exercises);
     if (std::wcsstr(commandLine, L"--preview-stretch")) return PreviewBreak(Preview::Stretch);

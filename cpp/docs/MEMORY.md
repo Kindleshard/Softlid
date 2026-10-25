@@ -16,6 +16,9 @@ Measured on Windows 11 at 150% scaling. **Private** memory is what the app itsel
 | C++ chunk 5 | settings window open (480×682 units at 150%) | 9.6 MB | 26.6 MB | 4 | 0% |
 | C++ chunk 5 | settings window closed again | 9.6 MB | 1.0 MB | 4 | 0% |
 | C++ chunk 6 (+ mini mode, focus timer, reading strip, shortcuts) | mini mode, icon resting | 7.3 MB | 22.7 MB | 10 | 0% |
+| C++ chunk 8 (+ tone engines, grain, tone lab) | tray, idle, tone off | 2.9 MB | 15.3 MB | 4 | 0% |
+| C++ chunk 8 | settings window open | 10.2 MB | 28.0 MB | 4 | 0% |
+| C++ chunk 8 | settings window closed again | 10.1 MB | 1.0 MB | 4 | 0% |
 
 Windows are drawn by Direct2D in software (no graphics-card device, which alone would add tens of MB); most of a
 window's cost is its drawing buffer and the fonts. When the settings window closes, its pages go back to Windows
@@ -30,6 +33,11 @@ working (chunk 5, above), idle is 2.3 MB private - within half a MB of those row
 The colour filter is Windows' own full-screen colour effect: one 5×5 matrix handed to Windows, so it costs no
 memory, windows or drawing at all. Location, backlight and display checks run on short-lived threads that end when
 they have answered.
+
+The tone engines cost nothing until one is used. Standard is a gamma ramp handed to Windows (no memory, no
+windows). Smart (GPU), Smart layer and DesktopLUT start their device, layer or guard only when chosen, and stop them
+when switched away; they have not been measured running yet, since that changes the whole screen. The idle rise
+since chunk 6 (about half a MB) is the larger program and two hidden windows for the tone timers.
 
 Pictures for pop-ups are drawn in software (no graphics-card device) and released when the pop-up hides, so memory
 goes back down after each reminder.

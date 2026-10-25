@@ -290,6 +290,7 @@ void TextBox::Placed()
 void TextBox::Notify(WORD code)
 {
     if (code == EN_SETFOCUS || code == EN_KILLFOCUS) Invalidate();   // the frame lights up while typing
+    if (code == EN_KILLFOCUS && onLeave) onLeave();
     if (code == EN_CHANGE && !updating && onChange) onChange(Text());
 }
 

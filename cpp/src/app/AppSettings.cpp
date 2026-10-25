@@ -42,7 +42,7 @@ void App::SettingsClosed()
 {
     probeDone = nullptr;
     settingsWindow.reset();   // (allowed from its own onClosed)
-    ui::Fonts::Release();
+    if (!lab) ui::Fonts::Release();   // (the tone lab may still be using them)
     if (dirty) {
         dirty = false;
         settings.Save();
@@ -95,8 +95,8 @@ void App::UseCompactView()
     s.StripCover = 0;
     if (s.KeepAwake || KeepingAwake()) SetKeepAwake(false);
     // (Modes for apps stay listed, but only apply in the Advanced view: see CheckRules.)
-    s.ToneMode = 0;   // the engines are Advanced too: Standard takes over
-    Changed(true);
+    if (s.ToneMode != 0) SetToneMode(0);   // the engines are Advanced too: Standard takes over
+    else Changed(true);
 }
 
 void App::ResetAll()

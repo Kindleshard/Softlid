@@ -68,6 +68,17 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
     KeepAwake::Set(settings.KeepAwake);
     frontWatch = std::make_unique<FrontWatch>(window, FrontChangedMessage);
     WTSRegisterSessionNotification(window, NOTIFY_FOR_THIS_SESSION);   // to reapply the filter after unlocking
+    comfort.changed = [this] { ApplyScreen(); };
+    comfort.currentGain = [this] { return colourGain; };
+    lut.changed = [this] {
+        ApplyScreen();
+        if (settingsWindow) settingsWindow->RefreshStatus();
+    };
+    lut.confirmed = [this](const std::wstring& build) {
+        settings.LutConfirmedBuild = build;   // no new check needed until Windows changes
+        dirty = true;
+    };
+    tone.ClearLeftover();
     ApplyScreen();
     if (settings.HardwareBrightness) {
         probing = Probe::Refresh;
@@ -88,7 +99,8 @@ App::~App()
     SuspendHotkeys();
     frontWatch.reset();
     WTSUnRegisterSessionNotification(window);
-    filter.Off();
+    lab.reset();
+    StopTone();
     KeepAwake::Set(false);
     card.reset();
     tray.Remove();
@@ -163,6 +175,28 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         mini.reset();
         ShowSettings();
         return 0;
+    case ToneFailedMessage:   // (the engine says why in its status)
+        ApplyScreen();
+        if (settingsWindow) settingsWindow->RefreshStatus();
+        return 0;
+    case LabOpenMessage:
+        if (lab) {
+            SetForegroundWindow(lab->Handle());
+            return 0;
+        }
+        labReopen = settingsWindow != nullptr;
+        if (settingsWindow) settingsWindow->Close();   // (its onClosed tidies up)
+        LabBegin();
+        lab = std::make_unique<ToneLab>(*this);
+        lab->onClosed = [this] { PostMessageW(window, LabClosedMessage, 0, 0); };
+        lab->Start(bigIcon);
+        return 0;
+    case LabClosedMessage:
+        lab.reset();
+        LabEnd();
+        if (labReopen) ShowSettings();
+        else TrimMemory();
+        return 0;
     case WM_INPUT:
         if (strip) strip->MouseMoved();   // the mouse moved: the reading strip follows
         break;                             // (Windows tidies up the input after)
@@ -176,7 +210,7 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         if (!settingsWindow) return 0;
         POINT at = settingsWindow->Position();
         settingsWindow.reset();
-        ui::Fonts::Release();   // (the language may need another font)
+        if (!lab) ui::Fonts::Release();   // (the language may need another font)
         ShowSettings(&at, w != 0);
         return 0;
     }
@@ -371,6 +405,15 @@ void App::Exit()
     mini.reset();
     strip.reset();
     SuspendHotkeys();
+    if (lab) {   // the lab's trial settings aren't kept
+        lab.reset();
+        std::wstring confirmed = settings.LutConfirmedBuild;
+        settings = *labSaved;
+        settings.LutConfirmedBuild = confirmed;
+        labSaved.reset();
+        dirty = true;
+    }
+    StopTone();
     if (dirty) settings.Save();
     card.reset();
     tray.Remove();

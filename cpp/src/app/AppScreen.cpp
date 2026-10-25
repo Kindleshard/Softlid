@@ -4,8 +4,11 @@
 #include "core/Lang.h"
 #include "core/Modes.h"
 #include "core/Night.h"
+#include "core/ColorMath.h"
+#include "core/ToneCurve.h"
 #include "core/VisibilityGuard.h"
 #include "features/screen/Backlight.h"
+#include "features/tone/LutFiles.h"
 #include "platform/KeepAwake.h"
 #include "platform/Location.h"
 #include <algorithm>
@@ -19,10 +22,47 @@ void App::ApplyScreen()
     screenNow = Effective();
     const Settings& s = screenNow;
     bool on = s.FilterEnabled;
+    // Tone has its own switch; the screen filter switch turns everything off, tone included. The test lab's compare
+    // button shows the screen without tone (DesktopLUT gets a do-nothing table instead of stopping).
+    int engine = s.ToneMode;
+    bool toneOn = on && s.ToneEnabled && !(labCompare && engine != 4);
+    // Smart (GPU): the GPU filter does tone, brightness, warmth and invert itself.
+    bool useSmart = toneOn && engine == 2 && !smart.Failed();
+    // A colour effect pauses the blue light filter, where one can show (not in the GPU filter or the overlays).
+    effectShown = on && s.ColorEffect != ColorMath::NoEffect && !useSmart && filter.CanShowEffects();
+    // Smart layer: a dimming layer does the tone; the colour filter still does brightness, warmth and invert.
+    bool useLayer = toneOn && engine == 3 && !smartLayer.Failed();
+    // DesktopLUT: it does the tone inside the compositor; the colour filter still does brightness, warmth, invert.
+    // A strength change writes that strength's table and restarts DesktopLUT with it.
+    if (toneOn && engine == 4) {
+        bool written = WriteLut();
+        if (lut.Running()) {
+            if (written) lut.Reload();
+        } else lut.Ensure(s, false);   // may fail at once (not found, permission declined)
+    }
+    bool useLut = toneOn && engine == 4 && !lut.Failed();
+    if (!useLut) lut.Stop();
+    // Standard: its presets (with the adapt-to-content dimming), or custom sliders. An experimental engine that fails
+    // falls back to the standard preset at the same strength.
+    bool custom = toneOn && s.CustomTone() && (s.ShadowCrush > 0 || s.Squeeze > 0 || s.LimiterStrength > 0);
+    bool preset = toneOn && !s.CustomTone() && !useSmart && !useLayer && !useLut;
+    comfort.Apply(s, preset);
 
-    // (The tone engines come in chunk 8: until then a grey on screen is simply brightness times grey.)
+    // What a grey becomes on screen for a brightness and an easing of the curve, per engine, for the guard. (The
+    // backlight is separate: its own slider, outside this; Brightness always dims pixels.)
+    double gamma = ToneCurve::Gamma(s.Level()), white = comfort.White();
+    int lvl = s.Level();
+    std::function<double(double, double, double)> shown;
+    if (preset) shown = [=](double b, double e, double x) { return b * white * std::pow(x, 1 + (gamma - 1) * e); };
+    else if (custom)
+        shown = [&s](double b, double e, double x) {
+            return b * ToneCurve::Net(x, static_cast<int>(s.ShadowCrush * e), static_cast<int>(s.Squeeze * e), static_cast<int>(s.LimiterStrength * e));
+        };
+    else if (useSmart || useLayer) shown = [lvl](double b, double, double x) { return b * ToneCurve::Flat(lvl, x); };
+    else if (useLut && !labCompare) shown = [lvl](double b, double, double x) { return ToneCurve::Flat(lvl, b * x); };   // the table comes after on-screen dimming
+    else shown = [](double b, double, double x) { return b * x; };
     VisibilityGuard::Result guard;
-    if (on) guard = VisibilityGuard::Solve(s.Brightness / 100.0, [](double b, double, double x) { return b * x; });
+    if (on) guard = VisibilityGuard::Solve(s.Brightness / 100.0, shown);
     if (guard.ease < 1)
         guardNote = Lang::T(L"Visibility guard: brightness at 100% and the curve eased so dark details stay visible.");
     else if (guard.brightness > s.Brightness / 100.0 + 0.005)
@@ -31,8 +71,53 @@ void App::ApplyScreen()
     else
         guardNote.clear();
 
+    float bright = static_cast<float>(guard.brightness);   // on-screen dimming
+
+    // Standard and Custom: brightness belongs after the curve. The colour filter runs before the gamma curve, so it is
+    // fed brightness^(1/gamma) for the presets, and the custom curve carries brightness itself; otherwise the curve
+    // would multiply the dimming (20% brightness at Max would leave white at 3%).
+    double g = 1 + (gamma - 1) * guard.ease;
+    int sh = static_cast<int>(s.ShadowCrush * guard.ease), sq = static_cast<int>(s.Squeeze * guard.ease),
+        li = static_cast<int>(s.LimiterStrength * guard.ease);
+    wchar_t key[64] = L"off";
+    if (preset) swprintf_s(key, L"preset%.3f", g);
+    else if (custom) swprintf_s(key, L"%d,%d,%d@%.2f", sh, sq, li, bright);
+    if (key != toneKey) {
+        toneKey = key;
+        if (preset) tone.SetCurve([g](double x) { return std::pow(x, g); });
+        else if (custom) tone.SetCurve([=](double x) { return bright * ToneCurve::Net(x, sh, sq, li); });
+        else tone.Off();
+    }
+    float prescale = tone.Prescale(), onScreen = bright;
+    if (preset) {
+        prescale *= static_cast<float>(std::pow(bright * white, 1 / g));
+        onScreen = 1;
+    } else if (custom && !tone.Refused()) onScreen = 1;
+
     night = NightShown();
-    filter.Apply(s, night, 1, static_cast<float>(guard.brightness));
+    if (useSmart) {
+        filter.Off();
+        smart.Apply(SmartParams(bright), window, ToneFailedMessage);
+        colourGain = 1;
+    } else {
+        smart.Stop();
+        filter.Apply(s, night, prescale, onScreen);
+        colourGain = on ? prescale * onScreen : 1.0f;
+    }
+    // Static grain rides in the smart layer, so there is one layer over the screen instead of two.
+    float dpi = GetDpiForSystem() / 96.0f;
+    bool bakeGrain = useLayer && s.GrainEnabled && !s.GrainAnimated;
+    if (useLayer) {
+        SmartLayer::Params p;
+        p.level = s.Level();
+        p.gain = colourGain;
+        p.grain = bakeGrain;
+        p.grainAlpha = static_cast<int>(std::lround(s.GrainStrength * 1.28));
+        p.grainTone = s.GrainTone;
+        p.grainBlock = s.GrainCoarse ? std::max(2, static_cast<int>(std::lround(2 * dpi))) : 1;
+        smartLayer.Apply(p, window, ToneFailedMessage);
+    } else smartLayer.Stop();
+    grain.Apply(s, dpi, bakeGrain);
 
     int backlight = s.HardwareBrightness ? s.Backlight : -1;
     if (backlight >= 0 && backlight != lastBacklight) {
@@ -49,8 +134,117 @@ void App::ApplyScreen()
 void App::ReapplyScreen()
 {
     // Built again from scratch: the displays (and their sizes) may have changed.
+    smart.Stop();
+    smartLayer.Stop();
     filter.Off();
+    tone.Reset();
+    toneKey.clear();
+    grain.Invalidate();
     ApplyScreen();
+}
+
+void App::StopTone()
+{
+    smart.Stop();
+    smartLayer.Stop();
+    lut.Stop();
+    grain.Close();
+    tone.Off();
+    filter.Off();
+}
+
+// ---- Tone ----
+
+bool App::EffectsAvailable() const
+{
+    return filter.CanShowEffects() && !(settings.ToneEnabled && settings.ToneMode == 2 && !smart.Failed());
+}
+
+void App::SetToneMode(int mode)
+{
+    settings.ToneMode = mode;
+    if (mode != 0 && settings.ComfortLevel == Settings::CustomLevel) settings.ComfortLevel = 1;   // custom is standard-only
+    smart.ClearFailure();
+    smartLayer.ClearFailure();
+    lut.ClearFailure();
+    Changed(true);
+}
+
+// Writes the table for the current strength (or the do-nothing one the lab compares against) if it isn't the one
+// DesktopLUT was last given.
+bool App::WriteLut()
+{
+    int level = labCompare ? -1 : settings.Level();
+    std::wstring key = level < 0 ? L"plain" : ToneCurve::Levels[level];
+    std::wstring path = LutFiles::CubePath();
+    if (key == lutKey && GetFileAttributesW(path.c_str()) != INVALID_FILE_ATTRIBUTES) return false;
+    if (!LutFiles::WriteLevel(path, level)) return false;
+    lutKey = key;
+    return true;
+}
+
+void App::RetestLut()
+{
+    lut.Stop();
+    lut.ClearFailure();
+    dirty = true;
+    if (settings.ToneMode == 4) {
+        settings.FilterEnabled = settings.ToneEnabled = true;   // the check is meaningless with tone off
+        WriteLut();
+        lut.Ensure(settings, true);
+    }
+    ApplyScreen();
+}
+
+std::wstring App::ComfortStatus() const
+{
+    if (tone.Refused()) return Lang::T(L"Windows won't accept a gamma curve here (HDR may be on), so only the even dimming is active.");
+    std::wstring white = std::to_wstring(std::lround(comfort.White() * 100));
+    return Lang::F(comfort.Adapting()
+                       ? L"Whites at {0:0}% right now, a little lower because the screen is mostly bright.\nDark tones go deeper; bright shades spread apart, so text and colours stay clear."
+                       : L"Whites at {0:0}% right now.\nDark tones go deeper; bright shades spread apart, so text and colours stay clear.",
+                   {white});
+}
+
+SmartGpu::Params App::SmartParams(float bright) const
+{
+    ToneCurve::SmartParams level = ToneCurve::ForLevel(settings.Level());
+    SmartGpu::Params p;
+    p.compress = level.compress;
+    p.expand = level.expand;
+    p.dimStops = level.dimStops;
+    ColorFilter::Scale(screenNow, night, bright, p.r, p.g, p.b);   // (a rule's mode, if one applies)
+    p.invert = settings.Invert;
+    return p;
+}
+
+// The lab takes the settings window's place, which reopens afresh when the lab closes.
+void App::OpenToneLab() { PostMessageW(window, LabOpenMessage, 0, 0); }   // (not from inside the settings' own click)
+
+void App::LabBegin()
+{
+    labSaved = settings;
+    settings.FilterEnabled = settings.ToneEnabled = true;
+    if (settings.CustomTone()) settings.ComfortLevel = 1;
+    Changed(true);
+}
+
+// Hold to see the screen without tone (DesktopLUT keeps running, with a table that changes nothing).
+void App::LabCompare(bool without)
+{
+    labCompare = without;
+    ApplyScreen();
+}
+
+void App::LabEnd()
+{
+    labCompare = false;
+    if (!labSaved) return;
+    std::wstring confirmed = settings.LutConfirmedBuild;   // a DesktopLUT check passed in the lab still counts
+    settings = *labSaved;
+    settings.LutConfirmedBuild = confirmed;
+    labSaved.reset();
+    SetToneMode(settings.ToneMode);   // clears engine failures from the lab and reapplies
 }
 
 // Each second: the night schedule moves on (or a preview of it ends), the app in front may have a rule, and a timed
@@ -59,6 +253,10 @@ void App::ScreenTick()
 {
     UpdateLocation();
     if (std::abs(NightShown() - night) > 0.004f) ApplyScreen();
+    if (tone.Active() && ++verifyTick % 5 == 0) tone.Verify();
+    lut.Poll();
+    smart.KeepOnTop();
+    smartLayer.KeepOnTop();
     CheckRules();
     if (awakeUntil != Clock::time_point{} && Clock::now() >= awakeUntil) {
         awakeUntil = {};
@@ -106,7 +304,6 @@ void App::UpdateLocation()
 float App::WarmthNow() const
 {
     const Settings& v = screenNow;
-    bool effectShown = v.FilterEnabled && v.ColorEffect != 0 && filter.CanShowEffects();
     return v.FilterEnabled && !effectShown ? static_cast<float>(Night::Blue(v, NightShown()) / 100) : 0.0f;
 }
 

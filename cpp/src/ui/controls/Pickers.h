@@ -87,6 +87,7 @@ public:
     void SetText(const std::wstring& text);   // (no onChange)
     std::function<void(const std::wstring&)> onChange;
     std::function<void(UINT)> onKey;           // Enter, Esc, Up or Down pressed in it
+    std::function<void()> onLeave;             // the caret left it (typing is over)
     std::wstring cue;                          // grey hint shown while it is empty (already translated)
     void StartTyping();                        // the caret goes in
 

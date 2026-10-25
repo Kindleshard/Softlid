@@ -9,11 +9,19 @@
 #include "features/mini/MiniWindow.h"
 #include "features/settings/SettingsWindow.h"
 #include "features/strip/ReadingStrip.h"
+#include "features/tone/Comfort.h"
+#include "features/tone/GammaRamp.h"
+#include "features/tone/Grain.h"
+#include "features/tone/LutGuard.h"
+#include "features/tone/SmartFilter.h"
+#include "features/tone/SmartLayer.h"
+#include "features/tone/ToneLab.h"
 #include "platform/ForegroundApp.h"
 #include <windows.h>
 #include <chrono>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 
 namespace bb {
@@ -56,7 +64,7 @@ public:
     void PreviewNight();               // a blue light slider moves: show the daytime strength for a few seconds
     void PreviewNightStrength();       // ... or the night strength for a moment
     int RuleMode() const { return ruleMode; }
-    bool EffectsAvailable() const { return filter.CanShowEffects(); }
+    bool EffectsAvailable() const;     // colour effects can show: not while the Smart (GPU) engine does the work, nor with the overlays
     std::wstring NightStatus() const;
     enum class Sync { Syncing, Synced, Failed, CityChosen };   // how the sun times are tied to a place
     Sync SyncState(std::wstring& text) const;
@@ -66,6 +74,20 @@ public:
     void SetHardwareBrightness(bool on, std::function<void()> done);
     const std::wstring& BacklightStatus() const { return backlightStatus; }
     float WarmthNow() const;           // the blue light filter in effect now (0..1), for things drawn to match it
+
+    // ---- Tone (AppScreen.cpp) ----
+    void SetToneMode(int mode);        // an engine chosen (clears the engines' failures)
+    void RetestLut();                  // DesktopLUT's 15-second check again (e.g. after choosing another copy)
+    void OpenToneLab();                // (soon: it takes the settings window's place)
+    void LabCompare(bool without);     // the lab's hold-to-compare: the screen without tone while held
+    double ComfortNet(double x) const { return comfort.Net(x); }
+    std::wstring ComfortStatus() const;
+    const std::wstring& ToneStatus() const { return tone.Status(); }
+    std::wstring SmartStatus() const { return smart.Status(); }
+    std::wstring LayerStatus() const { return smartLayer.Status(); }
+    const std::wstring& LutStatus() const { return lut.Status(); }
+    bool LutFailed() const { return lut.Failed(); }
+    const std::wstring& GuardNote() const { return guardNote; }   // while the visibility guard holds brightness up
 
     // ---- Keyboard shortcuts (AppShortcuts.cpp) ----
     void RegisterHotkeys();            // (again) from the settings
@@ -98,6 +120,9 @@ private:
     static constexpr UINT RebuildMessage = WM_APP + 6;        // build the settings again (wParam: on the options page)
     static constexpr UINT QuitMessage = WM_APP + 7;           // exit, chosen in the settings
     static constexpr UINT LeaveMiniMessage = WM_APP + 8;      // mini mode closes and the settings open
+    static constexpr UINT ToneFailedMessage = WM_APP + 9;     // a Smart engine gave up: the standard curve takes over
+    static constexpr UINT LabOpenMessage = WM_APP + 10;       // the tone lab opens in the settings' place
+    static constexpr UINT LabClosedMessage = WM_APP + 11;     // ... and closed: settings back as they were
 
     static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM w, LPARAM l);
     LRESULT Handle(UINT message, WPARAM w, LPARAM l);
@@ -156,6 +181,27 @@ private:
     int lastBacklight = -1;
     std::function<void()> probeDone;   // the settings, waiting for the answer
     std::wstring backlightStatus, guardNote;
+
+    // Tone: the engines, and the test lab (which changes engine, strength and brightness freely; they come back
+    // when it closes).
+    void StopTone();           // every engine off, the screen plain
+    bool WriteLut();
+    SmartGpu::Params SmartParams(float bright) const;
+    void LabBegin();
+    void LabEnd();
+    GammaRamp tone;
+    Comfort comfort;
+    SmartFilter smart;
+    SmartLayer smartLayer;
+    LutGuard lut;
+    Grain grain;
+    std::wstring toneKey = L"off", lutKey;
+    float colourGain = 1;              // overall dimming the colour filter applies right now
+    bool effectShown = false;          // a colour effect is taking the blue light filter's place
+    int verifyTick = 0;
+    std::optional<Settings> labSaved;
+    bool labCompare = false, labReopen = false;
+    std::unique_ptr<ToneLab> lab;
 
     std::unique_ptr<SettingsWindow> settingsWindow;   // while open
 
