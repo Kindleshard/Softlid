@@ -2,6 +2,7 @@
 // The entry point: one copy at a time, then the app.
 #include "app/App.h"
 #include "core/Lang.h"
+#include "tools/ControlGallery.h"
 #include "ui/Theme.h"
 #include <windows.h>
 #include <objbase.h>
@@ -43,10 +44,23 @@ static int PreviewBlink()
     return 0;
 }
 
+// Diagnostics: "--ui-gallery" shows every control of the interface toolkit (see tools/ControlGallery).
+static int UiGallery(bool offscreen)
+{
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    bb::Settings settings = bb::Settings::Load();
+    bb::Lang::Use(settings.Language);
+    bb::Theme::UseAccent(settings);
+    int code = bb::RunControlGallery(offscreen);
+    CoUninitialize();
+    return code;
+}
+
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
 {
     if (std::wcsstr(commandLine, L"--preview-break")) return PreviewBreak();
     if (std::wcsstr(commandLine, L"--preview-blink")) return PreviewBlink();
+    if (std::wcsstr(commandLine, L"--ui-gallery")) return UiGallery(std::wcsstr(commandLine, L"--offscreen") != nullptr);
 
     // One copy at a time: a second start asks the running one to show its settings and leaves. (The same names as
     // the C# version, so the two never run side by side.)

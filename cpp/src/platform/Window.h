@@ -16,7 +16,9 @@ public:
     bool Exists() const { return hwnd != nullptr; }
 
 protected:
-    bool Create(const wchar_t* className, DWORD style, DWORD exStyle, const RECT& bounds, HBRUSH background = nullptr);
+    // owner: the window this one stays above (for pop-ups); classStyle: e.g. CS_DROPSHADOW (once per class name).
+    bool Create(const wchar_t* className, DWORD style, DWORD exStyle, const RECT& bounds, HBRUSH background = nullptr,
+                HWND owner = nullptr, UINT classStyle = 0);
     void Destroy();
     virtual LRESULT OnMessage(UINT message, WPARAM w, LPARAM l);
 

@@ -26,7 +26,8 @@ cpp/
     app/             the tray app: message loop, tray icon and menu, the 1-second tick
     core/            plain logic with no windows: settings, translations, reminders, night schedule, colour maths, modes
     platform/        thin wrappers over Windows: windows, dark mode, files, location, the app in front, keep awake
-    ui/              (chunk 4) the Direct2D toolkit: window, layout, controls
+    ui/              drawing (Direct2D) and the toolkit: DirectWindow, Control, Layout (pages of rows), controls/
+    tools/           diagnostics, e.g. the control gallery (--ui-gallery)
     features/        reminders, screen (colour filter, backlight), and later reading strip, mini mode, ...
 ```
 
@@ -42,7 +43,7 @@ Each chunk builds and runs on its own, ends in a commit, and leaves the app usab
 | 1 | **Foundation:** build, entry point, single instance, settings (load/save/migrate), translations, tray icon and menu, the tick — **done** | It starts in the tray, reads your settings, and exits cleanly |
 | 2 | **Reminders:** blink eye popup, look-away and stand-up cards, idle and full-screen detection, chime, pause — **done** (the eyelids blink style, eye exercises and stretch coach come with chunk 7) | Reminders work like the C# version (simple cards) |
 | 3 | **Screen:** colour-effect filter (brightness, warmth, effects), night schedule and location, modes and per-app rules, real backlight, visibility guard — **done** (tone curves come with chunk 8; the settings for all this with chunk 5) | The screen filter matches the C# version |
-| 4 | **UI toolkit:** Direct2D window with per-monitor DPI, a layout grid, and the controls (tabs, toggle, slider, choices, drop-down, buttons, pickers, colour wheel) | A test window shows every control |
+| 4 | **UI toolkit:** Direct2D window with per-monitor DPI, a layout grid, and the controls (tabs, toggle, slider, choices, drop-down, buttons, pickers, colour wheel) — **done** (`--ui-gallery` shows them all) | A test window shows every control |
 | 5 | **Settings window:** the five pages, folding sections, Simple/Advanced | All settings can be changed |
 | 6 | **Extras:** mini mode, focus timer, reading strip, keyboard shortcuts, the app-rules dialog | Feature parity for these |
 | 7 | **Guided breaks:** liquid eye animation, eyelids, stretch coach, voice | Breaks look and sound like the C# version |

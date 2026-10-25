@@ -4,12 +4,14 @@ namespace bb {
 
 Window::~Window() { Destroy(); }
 
-bool Window::Create(const wchar_t* className, DWORD style, DWORD exStyle, const RECT& bounds, HBRUSH background)
+bool Window::Create(const wchar_t* className, DWORD style, DWORD exStyle, const RECT& bounds, HBRUSH background,
+                    HWND owner, UINT classStyle)
 {
     HINSTANCE instance = GetModuleHandleW(nullptr);
     WNDCLASSEXW wc{sizeof wc};
     if (!GetClassInfoExW(instance, className, &wc)) {
         wc = {sizeof wc};
+        wc.style = classStyle;
         wc.lpfnWndProc = Proc;
         wc.hInstance = instance;
         wc.hCursor = LoadCursorW(nullptr, IDC_ARROW);
@@ -18,7 +20,7 @@ bool Window::Create(const wchar_t* className, DWORD style, DWORD exStyle, const 
         RegisterClassExW(&wc);
     }
     hwnd = CreateWindowExW(exStyle, className, L"BlinkBuddy", style, bounds.left, bounds.top,
-                           bounds.right - bounds.left, bounds.bottom - bounds.top, nullptr, nullptr, instance, this);
+                           bounds.right - bounds.left, bounds.bottom - bounds.top, owner, nullptr, instance, this);
     return hwnd != nullptr;
 }
 
