@@ -116,6 +116,7 @@ private:
     void BuildOptionsPage(ui::Stack& st);
     void BuildMiniOptions(ui::Stack& st);
     void BuildUpdates(ui::Stack& st);
+    void RefreshUpdates();
 
     App& app;
     Settings& s;
@@ -155,6 +156,13 @@ private:
     ui::TextBox* lutBox = nullptr;
     ui::Button *lutInstall = nullptr, *lutPick = nullptr;
     bool lutSetupOpen = false;
+
+    // Updates.
+    ui::Button* updateButton = nullptr;
+    ui::Icon* updateMark = nullptr;
+    ui::Label* updateStatus = nullptr;
+    ui::ProgressLine* updateProgress = nullptr;
+    bool shownDownloading = false;
     int shownSync = -1, shownRule = -1;
 };
 

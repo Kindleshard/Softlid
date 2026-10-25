@@ -19,6 +19,9 @@ Measured on Windows 11 at 150% scaling. **Private** memory is what the app itsel
 | C++ chunk 8 (+ tone engines, grain, tone lab) | tray, idle, tone off | 2.9 MB | 15.3 MB | 4 | 0% |
 | C++ chunk 8 | settings window open | 10.2 MB | 28.0 MB | 4 | 0% |
 | C++ chunk 8 | settings window closed again | 10.1 MB | 1.0 MB | 4 | 0% |
+| C++ 1.0.0 (chunk 9: + updater, voice clips beside the exe) | tray, idle | 2.9 MB | 15.3 MB | 4 | 0% |
+| C++ 1.0.0 | settings window open | 10.2 MB | 28.0 MB | 4 | 0% |
+| C++ 1.0.0 | settings window closed again | 10.2 MB | 1.0 MB | 4 | 0% |
 
 Windows are drawn by Direct2D in software (no graphics-card device, which alone would add tens of MB); most of a
 window's cost is its drawing buffer and the fonts. When the settings window closes, its pages go back to Windows
@@ -33,6 +36,11 @@ working (chunk 5, above), idle is 2.3 MB private - within half a MB of those row
 The colour filter is Windows' own full-screen colour effect: one 5×5 matrix handed to Windows, so it costs no
 memory, windows or drawing at all. Location, backlight and display checks run on short-lived threads that end when
 they have answered.
+
+**Voice clips:** with the clips beside the exe (from chunk 9 on), opening the settings first cost 19.4 MB, 9 MB more.
+The Blink page asked Windows' media player for each clip's length, which loads its whole playback stack (and a thread)
+for good. BlinkBuddy now reads the lengths from the files' own headers, so that stack loads only when a clip plays
+during a break.
 
 The tone engines cost nothing until one is used. Standard is a gamma ramp handed to Windows (no memory, no
 windows). Smart (GPU), Smart layer and DesktopLUT start their device, layer or guard only when chosen, and stop them

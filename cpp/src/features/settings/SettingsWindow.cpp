@@ -112,6 +112,7 @@ void SettingsWindow::RefreshStatus()
     }
     hwStatus->SetPlainText(app.BacklightStatus());
     RefreshTone();
+    RefreshUpdates();
     focusRing->Invalidate();
     focusButton->SetText(app.FocusState() == App::Focus::Working ? L"Pause" : app.FocusState() == App::Focus::Paused ? L"Resume" : L"Start");
 }

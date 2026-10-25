@@ -13,6 +13,7 @@ public:
 
     void Add(HWND owner, HICON icon, const std::wstring& tip);
     void SetTip(const std::wstring& tip);
+    void Notify(const std::wstring& title, const std::wstring& text);   // a notification from the icon
     void Remove();
     void AddAgain();   // after Explorer restarts, the icon has to be added again
 

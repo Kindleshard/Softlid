@@ -1,9 +1,36 @@
-// The exe's icon, manifest and translations.
+// The exe's icon, manifest, version and translations.
 #include <windows.h>
 #include "resource.h"
+#include "BuildVersion.h"
 
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "app.manifest"
 IDI_APP ICON "BlinkBuddy.ico"
+
+// What Explorer shows under Properties > Details.
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION BB_VERSION_MAJOR, BB_VERSION_MINOR, BB_VERSION_PATCH, 0
+PRODUCTVERSION BB_VERSION_MAJOR, BB_VERSION_MINOR, BB_VERSION_PATCH, 0
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "BlinkBuddy"
+            VALUE "FileDescription", "BlinkBuddy - eye care in the tray"
+            VALUE "FileVersion", BB_VERSION_TEXT
+            VALUE "InternalName", "BlinkBuddy"
+            VALUE "OriginalFilename", "BlinkBuddy.exe"
+            VALUE "ProductName", "BlinkBuddy"
+            VALUE "ProductVersion", BB_VERSION_TEXT
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 1200
+    END
+END
 
 // One per language, named LANG_<code>; each line matches the same line of en.txt (see src/core/Lang.cpp).
 LANG_CS RCDATA "lang/cs.txt"

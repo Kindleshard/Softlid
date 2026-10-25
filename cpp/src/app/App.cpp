@@ -87,6 +87,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
 
     RegisterHotkeys();
     SetTimer(window, TickTimer, 1000, nullptr);
+    WeeklyUpdateCheck();
     if (openSettings) ShowSettings();
     else if (settings.MiniMode && settings.MiniEnabled) ShowMini();
 }
@@ -191,6 +192,11 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         lab->onClosed = [this] { PostMessageW(window, LabClosedMessage, 0, 0); };
         lab->Start(bigIcon);
         return 0;
+    case UpdateMessage: {
+        std::unique_ptr<Updater::Result> result(reinterpret_cast<Updater::Result*>(l));
+        Updated(*result);
+        return 0;
+    }
     case LabClosedMessage:
         lab.reset();
         LabEnd();
@@ -236,6 +242,10 @@ void App::OnTick()
         settings.Save();
     }
     ScreenTick();
+    if (++hourTick >= 3600) {
+        hourTick = 0;
+        WeeklyUpdateCheck();
+    }
     if (card || Paused()) return;
     FocusTick();
     if (card) return;

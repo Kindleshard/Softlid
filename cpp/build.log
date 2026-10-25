@@ -1,0 +1,5 @@
+test.cpp
+c1xx: fatal error C1083: Cannot open source file: 'test.cpp': No such file or directory
+Files.cpp
+c1xx: fatal error C1083: Cannot open source file: '..\..\src\platform\Files.cpp': No such file or directory
+Generating Code...

@@ -23,6 +23,17 @@ void Tray::SetTip(const std::wstring& tip)
     if (added) Shell_NotifyIconW(NIM_MODIFY, &data);
 }
 
+void Tray::Notify(const std::wstring& title, const std::wstring& text)
+{
+    if (!added) return;
+    NOTIFYICONDATAW n = data;
+    n.uFlags = NIF_INFO;
+    n.dwInfoFlags = NIIF_INFO;
+    wcsncpy_s(n.szInfoTitle, title.c_str(), _TRUNCATE);
+    wcsncpy_s(n.szInfo, text.c_str(), _TRUNCATE);
+    Shell_NotifyIconW(NIM_MODIFY, &n);
+}
+
 void Tray::Remove()
 {
     if (added) Shell_NotifyIconW(NIM_DELETE, &data);

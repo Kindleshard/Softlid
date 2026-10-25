@@ -5,6 +5,7 @@
 #include "features/breaks/GuidedBreak.h"
 #include "features/breaks/StretchBreak.h"
 #include "features/tone/LutGuard.h"
+#include "features/update/Updater.h"
 #include "tools/ControlGallery.h"
 #include "ui/Theme.h"
 #include <windows.h>
@@ -101,6 +102,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
     if (std::wcsstr(commandLine, L"--preview-stretch")) return PreviewBreak(Preview::Stretch);
     if (std::wcsstr(commandLine, L"--preview-blink")) return PreviewBlink();
     if (std::wcsstr(commandLine, L"--ui-gallery")) return UiGallery(std::wcsstr(commandLine, L"--offscreen") != nullptr);
+
+    // Just updated: the old copy is still quitting (it holds the single-copy lock until then).
+    bb::Updater::AfterUpdate(commandLine);
 
     // One copy at a time: a second start asks the running one to show its settings and leaves. (The same names as
     // the C# version, so the two never run side by side.)

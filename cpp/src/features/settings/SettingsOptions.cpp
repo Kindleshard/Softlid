@@ -4,8 +4,10 @@
 #include "core/Lang.h"
 #include "core/Version.h"
 #include "features/settings/ShortcutsDialog.h"
+#include "features/update/Updater.h"
 #include "ui/MiniArt.h"
 #include "ui/Theme.h"
+#include <shellapi.h>
 
 namespace bb {
 namespace {
@@ -160,16 +162,67 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
     color.onChange = [this, &color] { s.MiniOrbitColor = color.UseAccent() ? 0 : color.Value(); app.Changed(); };
 }
 
-// Updates: this version and how things stand. (Checking, downloading and installing come with the release, chunk 9.)
+// Updates: this version and, under it, how things stand: green with a thumbs-up when up to date; orange when a newer
+// version is out, and the button turns into an orange "Update" that downloads it (with a progress bar), puts it in
+// place and restarts - nothing to set up. A quiet check runs when this page is built.
 void SettingsWindow::BuildUpdates(Stack& st)
 {
     Divider(st);
     Row& row = st.Add(46);
     AddLabel(row, L"", Fonts::Body(), Theme::Fg, 24, 10, 220, 26).SetPlainText(Lang::F(L"Version {0}", {Version}));
+    updateButton = &AddButton(row, L"Check for updates", Edge - 176, 6, 176, 34);
+    updateButton->onClick = [this] {
+        if (app.Update().release) app.InstallUpdate();
+        else app.CheckForUpdates();
+        RefreshUpdates();
+        UpdateRows();
+    };
+    updateButton->SetVisible(Updater::Available());
     Row& statusRow = st.Add(28);
-    AddLabel(statusRow, L"Updates aren't available yet: this copy of BlinkBuddy has no release channel.", Fonts::Small(), Theme::Dim,
-             24, 2, Edge - 24, 22);
+    updateMark = &statusRow.Add<Icon>(L'\uE8E1', 11.0f, Theme::Good);   // thumbs up
+    updateMark->SetBounds(22, 2, 22, 22);
+    updateStatus = &AddLabel(statusRow, L"", Fonts::Small(), Theme::Dim, 46, 2, Edge - 46, 22);
+    Row& progressRow = st.Add(18, [this] { return app.Update().downloading; });
+    updateProgress = &progressRow.Add<ProgressLine>();
+    updateProgress->SetBounds(24, 5, Edge - 24, 6);
     ToggleRow(st, L"Check for updates automatically (weekly)", s.UpdateCheck, [this](bool v) { s.UpdateCheck = v; app.Changed(); });
+    if (Updater::Available() && app.Update().text.empty()) app.CheckForUpdates();
+    shownDownloading = app.Update().downloading;   // (the rows are placed once the page is built)
+    RefreshUpdates();
+
+    // Supporting BlinkBuddy (only once there is somewhere to send people).
+    if (DonateUrl[0]) {
+        Divider(st);
+        Row& support = st.Add(46);
+        AddLabel(support, L"Enjoying BlinkBuddy? It's free; a tip keeps it going.", Fonts::Body(), Theme::Fg, 24, 10, Edge - 140 - 32, 26);
+        AddButton(support, L"Support...", Edge - 140, 6, 140, 34).onClick = [] {
+            ShellExecuteW(nullptr, L"open", DonateUrl, nullptr, nullptr, SW_SHOWNORMAL);
+        };
+    }
+}
+
+// The update line following the app's state (each second, and whenever the updater reports).
+void SettingsWindow::RefreshUpdates()
+{
+    using Look = App::UpdateState::Look;
+    const App::UpdateState& u = app.Update();
+    std::wstring text = !Updater::Available() ? Lang::T(L"Updates aren't available yet: this copy of BlinkBuddy has no release channel.")
+                        : u.text.empty()      ? Lang::T(L"Not checked yet.")
+                                              : u.text;
+    updateStatus->SetPlainText(text);
+    updateStatus->SetColor(u.look == Look::UpToDate ? Theme::Good : u.look == Look::Newer ? Theme::Warn : Theme::Dim);
+    bool good = u.look == Look::UpToDate;
+    updateMark->SetVisible(good);
+    float x = good ? 46.0f : 24.0f;
+    updateStatus->SetBounds(x, 2, Edge - x, 22);
+    updateButton->SetText(u.release ? L"Update" : L"Check for updates");
+    updateButton->SetTint(u.release ? Theme::Warn : 0);
+    updateButton->SetEnabled(!u.busy);
+    updateProgress->SetProgress(u.progress);
+    if (u.downloading != shownDownloading) {
+        shownDownloading = u.downloading;
+        UpdateRows();
+    }
 }
 
 } // namespace bb

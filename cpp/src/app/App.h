@@ -16,6 +16,7 @@
 #include "features/tone/SmartFilter.h"
 #include "features/tone/SmartLayer.h"
 #include "features/tone/ToneLab.h"
+#include "features/update/Updater.h"
 #include "platform/ForegroundApp.h"
 #include <windows.h>
 #include <chrono>
@@ -89,6 +90,18 @@ public:
     bool LutFailed() const { return lut.Failed(); }
     const std::wstring& GuardNote() const { return guardNote; }   // while the visibility guard holds brightness up
 
+    // ---- Updates (AppSettings.cpp) ----
+    struct UpdateState {
+        enum class Look { Plain, UpToDate, Newer } look = Look::Plain;   // dim; green with a thumbs-up; orange
+        std::wstring text;                     // already translated (empty: not checked yet)
+        float progress = 0;
+        bool busy = false, downloading = false;
+        std::optional<Updater::Release> release;   // a newer version, once found
+    };
+    const UpdateState& Update() const { return update; }
+    void CheckForUpdates();
+    void InstallUpdate();              // the newer version found: download it, put it in place, restart
+
     // ---- Keyboard shortcuts (AppShortcuts.cpp) ----
     void RegisterHotkeys();            // (again) from the settings
     void SuspendHotkeys();             // all off for a moment (while the shortcuts window records new keys)
@@ -123,6 +136,7 @@ private:
     static constexpr UINT ToneFailedMessage = WM_APP + 9;     // a Smart engine gave up: the standard curve takes over
     static constexpr UINT LabOpenMessage = WM_APP + 10;       // the tone lab opens in the settings' place
     static constexpr UINT LabClosedMessage = WM_APP + 11;     // ... and closed: settings back as they were
+    static constexpr UINT UpdateMessage = WM_APP + 12;        // from the updater (lParam: Updater::Result*)
 
     static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM w, LPARAM l);
     LRESULT Handle(UINT message, WPARAM w, LPARAM l);
@@ -202,6 +216,13 @@ private:
     std::optional<Settings> labSaved;
     bool labCompare = false, labReopen = false;
     std::unique_ptr<ToneLab> lab;
+
+    // Updates.
+    void WeeklyUpdateCheck();          // once a week (if allowed) a quiet look; only a newer version is mentioned
+    void Updated(const Updater::Result& r);
+    UpdateState update;
+    bool quietCheck = false;           // the check running is the weekly one
+    int hourTick = 0;
 
     std::unique_ptr<SettingsWindow> settingsWindow;   // while open
 
