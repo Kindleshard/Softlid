@@ -1,12 +1,53 @@
 // BlinkBuddy: eye care that lives in the tray - blink and break reminders, a screen filter, and more.
 // The entry point: one copy at a time, then the app.
 #include "app/App.h"
+#include "core/Lang.h"
+#include "ui/Theme.h"
 #include <windows.h>
 #include <objbase.h>
 #include <cwchar>
 
+// Diagnostics: "--preview-break" shows a look-away break card with your settings, then exits (no tray, and it runs
+// beside a BlinkBuddy that is already running).
+static int PreviewBreak()
+{
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    bb::Settings settings = bb::Settings::Load();
+    bb::Lang::Use(settings.Language);
+    bb::Theme::UseAccent(settings);
+    bb::BreakCard card(nullptr, false, settings);   // with no owner, "done" arrives on this thread's queue
+    MSG msg;
+    while (GetMessageW(&msg, nullptr, 0, 0) > 0 && msg.message != bb::BreakCard::DoneMessage) {
+        TranslateMessage(&msg);
+        DispatchMessageW(&msg);
+    }
+    CoUninitialize();
+    return 0;
+}
+
+// Diagnostics: "--preview-blink" plays the blink reminder once with your settings, then exits.
+static int PreviewBlink()
+{
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    bb::Settings settings = bb::Settings::Load();
+    bb::Theme::UseAccent(settings);
+    bb::EyePopup eye;
+    eye.Play(settings, false);
+    SetTimer(nullptr, 0, 2200, nullptr);   // a little longer than the blink
+    MSG msg;
+    while (GetMessageW(&msg, nullptr, 0, 0) > 0 && !(msg.message == WM_TIMER && msg.hwnd == nullptr)) {
+        TranslateMessage(&msg);
+        DispatchMessageW(&msg);
+    }
+    CoUninitialize();
+    return 0;
+}
+
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
 {
+    if (std::wcsstr(commandLine, L"--preview-break")) return PreviewBreak();
+    if (std::wcsstr(commandLine, L"--preview-blink")) return PreviewBlink();
+
     // One copy at a time: a second start asks the running one to show its settings and leaves. (The same names as
     // the C# version, so the two never run side by side.)
     HANDLE single = CreateMutexW(nullptr, TRUE, L"Local\\BlinkBuddy.Instance");

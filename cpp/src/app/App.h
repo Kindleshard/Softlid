@@ -1,8 +1,12 @@
 #pragma once
 #include "app/Tray.h"
+#include "core/Reminders.h"
 #include "core/Settings.h"
+#include "features/reminders/BreakCard.h"
+#include "features/reminders/EyePopup.h"
 #include <windows.h>
 #include <chrono>
+#include <memory>
 
 namespace bb {
 
@@ -19,15 +23,25 @@ public:
     void Changed();       // settings changed: saved on the next tick
 
 private:
+    using Clock = std::chrono::system_clock;
+
     static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM w, LPARAM l);
     LRESULT Handle(UINT message, WPARAM w, LPARAM l);
 
     void OnTick();
     void ShowMenu();
     void ShowSettings();
+    void UpdateTrayTip();
+    void Exit();
+
+    // Reminders (see core/Reminders for when they fall due).
+    void Blink(bool instant);
+    void StartBreak(bool standUp);
+    void BreakDone(bool standUp, int snoozeSeconds);
+    std::wstring BreakStatus() const;
+    std::wstring StandUpStatus() const;
     void Pause(int minutes);   // -1: until resumed
     bool Paused() const;
-    void Exit();
 
     HINSTANCE instance;
     HANDLE showRequest;   // set by a second copy of BlinkBuddy
@@ -37,7 +51,10 @@ private:
     Tray tray;
     Settings settings;
     bool dirty = false;
-    std::chrono::system_clock::time_point pausedUntil{};
+    Reminders reminders{settings};
+    EyePopup eye;
+    std::unique_ptr<BreakCard> card;   // the break showing now, if any
+    Clock::time_point pausedUntil{};
 };
 
 } // namespace bb

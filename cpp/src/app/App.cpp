@@ -1,6 +1,8 @@
 #include "app/App.h"
 #include "core/Lang.h"
+#include "platform/Activity.h"
 #include "platform/DarkMode.h"
+#include "ui/Theme.h"
 #include "resource.h"
 #include <commctrl.h>
 
@@ -11,7 +13,19 @@ constexpr UINT_PTR TickTimer = 1;
 constexpr wchar_t WindowClass[] = L"BlinkBuddy.App";
 
 // Menu commands.
-enum : UINT { CmdSettings = 1, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit };
+enum : UINT { CmdSettings = 1, CmdBreakNow, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit };
+
+// "4:05": minutes and seconds.
+std::wstring MinSec(int seconds)
+{
+    seconds = seconds < 0 ? 0 : seconds;
+    wchar_t text[16];
+    swprintf_s(text, L"%d:%02d", seconds / 60, seconds % 60);
+    return text;
+}
+
+// Gives memory pages back to Windows after a break (the next one is a while away).
+void TrimMemory() { SetProcessWorkingSetSize(GetCurrentProcess(), static_cast<SIZE_T>(-1), static_cast<SIZE_T>(-1)); }
 
 } // namespace
 
@@ -19,6 +33,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings)
     : instance(instance), showRequest(showRequest), settings(Settings::Load())
 {
     Lang::Use(settings.Language);
+    Theme::UseAccent(settings);
     DarkMode::UseForMenus();
 
     WNDCLASSEXW wc{sizeof wc};
@@ -38,6 +53,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings)
 
 App::~App()
 {
+    card.reset();
     tray.Remove();
     if (window) DestroyWindow(window);
     if (icon) DestroyIcon(icon);
@@ -77,9 +93,13 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     case Tray::CallbackMessage:
         switch (LOWORD(l)) {
         case WM_CONTEXTMENU: ShowMenu(); break;
+        case WM_MOUSEMOVE: UpdateTrayTip(); break;   // the tip is made when it is about to show
         case NIN_SELECT:
         case NIN_KEYSELECT: ShowSettings(); break;
         }
+        return 0;
+    case BreakCard::DoneMessage:
+        BreakDone(w != 0, static_cast<int>(l));
         return 0;
     }
     if (message == taskbarCreated && taskbarCreated != 0) {
@@ -89,14 +109,78 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     return DefWindowProcW(window, message, w, l);
 }
 
-// Once a second: save what changed, and keep the tray tip current. (Reminders and the screen come in later chunks.)
+// Once a second: save what changed, and show whatever reminder is due.
 void App::OnTick()
 {
     if (dirty) {
         dirty = false;
         settings.Save();
     }
-    tray.SetTip(Paused() ? L"BlinkBuddy\n" + Lang::T(L"Reminders paused") : L"BlinkBuddy");
+    if (card || Paused()) return;
+    bool fullscreen = settings.PauseInFullscreen && FullscreenAppRunning();
+    switch (reminders.Tick(IdleSeconds(), fullscreen)) {
+    case Reminders::Due::Blink: Blink(false); break;
+    case Reminders::Due::LookAway: StartBreak(false); break;
+    case Reminders::Due::StandUp: StartBreak(true); break;
+    case Reminders::Due::Nothing: break;
+    }
+}
+
+void App::Blink(bool instant)
+{
+    // (The eyelids style - closing over the whole screen - arrives with the guided breaks, chunk 7.)
+    eye.Play(settings, instant);
+}
+
+void App::StartBreak(bool standUp)
+{
+    if (card) return;
+    // (The guided eye exercises and the stretch coach arrive in chunk 7; until then every break is a card.)
+    card = std::make_unique<BreakCard>(window, standUp, settings);
+}
+
+void App::BreakDone(bool standUp, int snoozeSeconds)
+{
+    card.reset();
+    reminders.BreakFinished(standUp, snoozeSeconds);
+    TrimMemory();
+}
+
+std::wstring App::BreakStatus() const
+{
+    if (Paused()) {
+        if (pausedUntil == Clock::time_point::max()) return Lang::T(L"Reminders paused");
+        // The time it resumes, as Windows writes times here.
+        SYSTEMTIME st{};
+        FILETIME ft{};
+        auto ticks = std::chrono::duration_cast<std::chrono::seconds>(pausedUntil.time_since_epoch()).count();
+        ULARGE_INTEGER u{};
+        u.QuadPart = (ticks + 11644473600LL) * 10000000LL;   // Unix seconds -> FILETIME
+        ft.dwLowDateTime = u.LowPart;
+        ft.dwHighDateTime = u.HighPart;
+        FILETIME local{};
+        FileTimeToLocalFileTime(&ft, &local);
+        FileTimeToSystemTime(&local, &st);
+        wchar_t time[32] = {};
+        GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, TIME_NOSECONDS, &st, nullptr, time, 32);
+        return Lang::F(L"Paused until {0}", {time});
+    }
+    if (!settings.BreakEnabled) return Lang::T(L"Breaks are off");
+    return Lang::F(L"Next break in {0}", {MinSec(reminders.SecondsToBreak())});
+}
+
+std::wstring App::StandUpStatus() const
+{
+    if (Paused()) return Lang::T(L"Reminders paused");
+    if (!settings.LongBreakEnabled) return Lang::T(L"Stand-up reminders are off");
+    return Lang::F(L"Next stand-up in {0}", {MinSec(reminders.SecondsToStandUp())});
+}
+
+void App::UpdateTrayTip()
+{
+    std::wstring tip = L"BlinkBuddy\n" + BreakStatus();
+    if (settings.LongBreakEnabled) tip += L"\n" + StandUpStatus();
+    tray.SetTip(tip);
 }
 
 void App::ShowMenu()
@@ -106,6 +190,7 @@ void App::ShowMenu()
     // (The settings window arrives in chunk 5: until then its item is shown, greyed.)
     AppendMenuW(menu, MF_STRING | MF_GRAYED, CmdSettings, Lang::T(L"Settings").c_str());
     SetMenuDefaultItem(menu, CmdSettings, FALSE);
+    AppendMenuW(menu, MF_STRING | (card ? MF_GRAYED : 0), CmdBreakNow, Lang::T(L"Take a break now").c_str());
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
     if (Paused()) {
         AppendMenuW(menu, MF_STRING, CmdResume, Lang::T(L"Resume reminders").c_str());
@@ -128,6 +213,7 @@ void App::ShowMenu()
 
     switch (command) {
     case CmdSettings: ShowSettings(); break;
+    case CmdBreakNow: StartBreak(false); break;
     case CmdPause30: Pause(30); break;
     case CmdPause60: Pause(60); break;
     case CmdPauseUntilResumed: Pause(-1); break;
@@ -138,21 +224,22 @@ void App::ShowMenu()
 
 void App::ShowSettings()
 {
-    // Chunk 5.
+    // Chunk 5. Meanwhile a click on the tray icon shows the blink cue, so you can see BlinkBuddy is running.
+    Blink(true);
 }
 
 void App::Pause(int minutes)
 {
-    pausedUntil = minutes < 0 ? std::chrono::system_clock::time_point::max()
-                              : std::chrono::system_clock::now() + std::chrono::minutes(minutes);
+    pausedUntil = minutes < 0 ? Clock::time_point::max() : Clock::now() + std::chrono::minutes(minutes);
 }
 
-bool App::Paused() const { return std::chrono::system_clock::now() < pausedUntil; }
+bool App::Paused() const { return Clock::now() < pausedUntil; }
 
 void App::Exit()
 {
     KillTimer(window, TickTimer);
     if (dirty) settings.Save();
+    card.reset();
     tray.Remove();
     PostQuitMessage(0);
 }

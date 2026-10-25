@@ -39,8 +39,8 @@ Each chunk builds and runs on its own, ends in a commit, and leaves the app usab
 
 | # | Chunk | Done when |
 |---|---|---|
-| 1 | **Foundation:** build, entry point, single instance, settings (load/save/migrate), translations, tray icon and menu, the tick | It starts in the tray, reads your settings, and exits cleanly |
-| 2 | **Reminders:** blink eye popup, look-away and stand-up cards, idle and full-screen detection, chime, pause | Reminders work like the C# version (simple cards) |
+| 1 | **Foundation:** build, entry point, single instance, settings (load/save/migrate), translations, tray icon and menu, the tick — **done** | It starts in the tray, reads your settings, and exits cleanly |
+| 2 | **Reminders:** blink eye popup, look-away and stand-up cards, idle and full-screen detection, chime, pause — **done** (the eyelids blink style, eye exercises and stretch coach come with chunk 7) | Reminders work like the C# version (simple cards) |
 | 3 | **Screen:** colour-effect filter (brightness, warmth, effects), night schedule and location, modes and per-app rules, real backlight, visibility guard | The screen filter matches the C# version |
 | 4 | **UI toolkit:** Direct2D window with per-monitor DPI, a layout grid, and the controls (tabs, toggle, slider, choices, drop-down, buttons, pickers, colour wheel) | A test window shows every control |
 | 5 | **Settings window:** the five pages, folding sections, Simple/Advanced | All settings can be changed |
