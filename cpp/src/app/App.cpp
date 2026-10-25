@@ -1,10 +1,18 @@
 #include "app/App.h"
 #include "core/Lang.h"
+#include "core/Modes.h"
+#include "features/screen/Backlight.h"
 #include "platform/Activity.h"
 #include "platform/DarkMode.h"
+#include "platform/KeepAwake.h"
+#include "platform/Location.h"
 #include "ui/Theme.h"
 #include "resource.h"
 #include <commctrl.h>
+#include <wtsapi32.h>
+#include <memory>
+
+#pragma comment(lib, "wtsapi32.lib")
 
 namespace bb {
 namespace {
@@ -13,7 +21,11 @@ constexpr UINT_PTR TickTimer = 1;
 constexpr wchar_t WindowClass[] = L"BlinkBuddy.App";
 
 // Menu commands.
-enum : UINT { CmdSettings = 1, CmdBreakNow, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit };
+enum : UINT {
+    CmdSettings = 1, CmdBreakNow, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit,
+    CmdFilter, CmdAwakeOff, CmdAwake1h, CmdAwake2h, CmdAwakeOn,
+    CmdMode,   // CmdMode + mode, for each screen mode
+};
 
 // "4:05": minutes and seconds.
 std::wstring MinSec(int seconds)
@@ -47,12 +59,26 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings)
     LoadIconWithScaleDown(instance, MAKEINTRESOURCEW(IDI_APP), GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), &icon);
     tray.Add(window, icon, L"BlinkBuddy");
     taskbarCreated = RegisterWindowMessageW(L"TaskbarCreated");
+
+    KeepAwake::Set(settings.KeepAwake);
+    frontWatch = std::make_unique<FrontWatch>(window, FrontChangedMessage);
+    WTSRegisterSessionNotification(window, NOTIFY_FOR_THIS_SESSION);   // to reapply the filter after unlocking
+    ApplyScreen();
+    if (settings.HardwareBrightness) {
+        probing = Probe::Refresh;
+        Backlight::Probe(window, ProbedMessage);
+    }
+
     SetTimer(window, TickTimer, 1000, nullptr);
     if (openSettings) ShowSettings();
 }
 
 App::~App()
 {
+    frontWatch.reset();
+    WTSUnRegisterSessionNotification(window);
+    filter.Off();
+    KeepAwake::Set(false);
     card.reset();
     tray.Remove();
     if (window) DestroyWindow(window);
@@ -74,7 +100,12 @@ int App::Run()
     }
 }
 
-void App::Changed() { dirty = true; }
+void App::Changed(bool screen)
+{
+    dirty = true;
+    reminders.BlinkIntervalChanged();
+    if (screen) ApplyScreen();
+}
 
 LRESULT CALLBACK App::WindowProc(HWND window, UINT message, WPARAM w, LPARAM l)
 {
@@ -101,6 +132,23 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     case BreakCard::DoneMessage:
         BreakDone(w != 0, static_cast<int>(l));
         return 0;
+    case FrontChangedMessage:
+        CheckRules();
+        return 0;
+    case LocatedMessage: {
+        std::unique_ptr<Location::Fix> fix(reinterpret_cast<Location::Fix*>(l));
+        Located(fix->lat, fix->lon, fix->ok);
+        return 0;
+    }
+    case ProbedMessage:
+        Probed(LOWORD(w), HIWORD(w), static_cast<int>(l));
+        return 0;
+    case WM_DISPLAYCHANGE:
+        ReapplyScreen();
+        return 0;
+    case WM_WTSSESSION_CHANGE:
+        if (w == WTS_SESSION_UNLOCK) ReapplyScreen();
+        return 0;
     }
     if (message == taskbarCreated && taskbarCreated != 0) {
         tray.AddAgain();
@@ -109,13 +157,14 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     return DefWindowProcW(window, message, w, l);
 }
 
-// Once a second: save what changed, and show whatever reminder is due.
+// Once a second: save what changed, keep the screen up to date, and show whatever reminder is due.
 void App::OnTick()
 {
     if (dirty) {
         dirty = false;
         settings.Save();
     }
+    ScreenTick();
     if (card || Paused()) return;
     bool fullscreen = settings.PauseInFullscreen && FullscreenAppRunning();
     switch (reminders.Tick(IdleSeconds(), fullscreen)) {
@@ -185,6 +234,7 @@ void App::UpdateTrayTip()
 
 void App::ShowMenu()
 {
+    auto checked = [](bool on) -> UINT { return on ? MF_CHECKED : MF_UNCHECKED; };
     HMENU menu = CreatePopupMenu();
     HMENU pause = CreatePopupMenu();
     // (The settings window arrives in chunk 5: until then its item is shown, greyed.)
@@ -192,6 +242,20 @@ void App::ShowMenu()
     SetMenuDefaultItem(menu, CmdSettings, FALSE);
     AppendMenuW(menu, MF_STRING | (card ? MF_GRAYED : 0), CmdBreakNow, Lang::T(L"Take a break now").c_str());
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
+
+    // Screen modes, the filter, and keeping the PC awake (for a while, or until switched off).
+    HMENU modes = CreatePopupMenu();
+    for (int m = 0; m < Modes::Count; m++)
+        AppendMenuW(modes, MF_STRING | checked(settings.Mode == m), CmdMode + m, Lang::T(Modes::Names[m]).c_str());
+    AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(modes), Lang::T(L"Screen mode").c_str());
+    AppendMenuW(menu, MF_STRING | checked(settings.FilterEnabled), CmdFilter, Lang::T(L"Screen filter").c_str());
+    HMENU awake = CreatePopupMenu();
+    AppendMenuW(awake, MF_STRING | checked(!KeepingAwake()), CmdAwakeOff, Lang::T(L"Off").c_str());
+    AppendMenuW(awake, MF_STRING, CmdAwake1h, Lang::T(L"For 1 hour").c_str());
+    AppendMenuW(awake, MF_STRING, CmdAwake2h, Lang::T(L"For 2 hours").c_str());
+    AppendMenuW(awake, MF_STRING | checked(settings.KeepAwake), CmdAwakeOn, Lang::T(L"Until I turn it off").c_str());
+    AppendMenuW(menu, MF_POPUP | checked(KeepingAwake()), reinterpret_cast<UINT_PTR>(awake), Lang::T(L"Keep PC awake").c_str());
+
     if (Paused()) {
         AppendMenuW(menu, MF_STRING, CmdResume, Lang::T(L"Resume reminders").c_str());
     } else {
@@ -219,6 +283,14 @@ void App::ShowMenu()
     case CmdPauseUntilResumed: Pause(-1); break;
     case CmdResume: pausedUntil = {}; break;
     case CmdExit: Exit(); break;
+    case CmdFilter: ToggleFilter(); break;
+    case CmdAwakeOff: SetKeepAwake(false); break;
+    case CmdAwake1h: KeepAwakeFor(60); break;
+    case CmdAwake2h: KeepAwakeFor(120); break;
+    case CmdAwakeOn: SetKeepAwake(true); break;
+    default:
+        if (command >= CmdMode && command - CmdMode < static_cast<UINT>(Modes::Count)) ChooseMode(static_cast<int>(command - CmdMode));
+        break;
     }
 }
 

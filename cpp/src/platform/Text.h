@@ -13,6 +13,7 @@ std::wstring Trim(std::wstring_view s);
 std::wstring TrimEnd(std::wstring_view s);
 std::vector<std::wstring> SplitLines(std::wstring_view s);   // on \n, dropping \r
 bool EqualsNoCase(std::wstring_view a, std::wstring_view b);
+std::wstring Lower(std::wstring s);   // the same in every language (no Turkish dotless i)
 std::wstring ReplaceAll(std::wstring s, std::wstring_view from, std::wstring_view to);
 
 } // namespace bb

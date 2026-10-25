@@ -24,10 +24,10 @@ cpp/
   src/
     main.cpp         entry point: one copy at a time, then the app
     app/             the tray app: message loop, tray icon and menu, the 1-second tick
-    core/            plain logic with no windows: settings, translations, (later) schedules and timers
-    platform/        thin wrappers over Windows: handles, dark mode, paths
+    core/            plain logic with no windows: settings, translations, reminders, night schedule, colour maths, modes
+    platform/        thin wrappers over Windows: windows, dark mode, files, location, the app in front, keep awake
     ui/              (chunk 4) the Direct2D toolkit: window, layout, controls
-    features/        (chunks 2+) reminders, screen filter, reading strip, mini mode, ...
+    features/        reminders, screen (colour filter, backlight), and later reading strip, mini mode, ...
 ```
 
 **Rules of thumb:** `core/` never touches a window, so it can be tested on its own. `platform/` hides raw Win32
@@ -41,7 +41,7 @@ Each chunk builds and runs on its own, ends in a commit, and leaves the app usab
 |---|---|---|
 | 1 | **Foundation:** build, entry point, single instance, settings (load/save/migrate), translations, tray icon and menu, the tick — **done** | It starts in the tray, reads your settings, and exits cleanly |
 | 2 | **Reminders:** blink eye popup, look-away and stand-up cards, idle and full-screen detection, chime, pause — **done** (the eyelids blink style, eye exercises and stretch coach come with chunk 7) | Reminders work like the C# version (simple cards) |
-| 3 | **Screen:** colour-effect filter (brightness, warmth, effects), night schedule and location, modes and per-app rules, real backlight, visibility guard | The screen filter matches the C# version |
+| 3 | **Screen:** colour-effect filter (brightness, warmth, effects), night schedule and location, modes and per-app rules, real backlight, visibility guard — **done** (tone curves come with chunk 8; the settings for all this with chunk 5) | The screen filter matches the C# version |
 | 4 | **UI toolkit:** Direct2D window with per-monitor DPI, a layout grid, and the controls (tabs, toggle, slider, choices, drop-down, buttons, pickers, colour wheel) | A test window shows every control |
 | 5 | **Settings window:** the five pages, folding sections, Simple/Advanced | All settings can be changed |
 | 6 | **Extras:** mini mode, focus timer, reading strip, keyboard shortcuts, the app-rules dialog | Feature parity for these |

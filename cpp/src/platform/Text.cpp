@@ -57,6 +57,14 @@ bool EqualsNoCase(std::wstring_view a, std::wstring_view b)
     return CompareStringOrdinal(a.data(), static_cast<int>(a.size()), b.data(), static_cast<int>(b.size()), TRUE) == CSTR_EQUAL;
 }
 
+std::wstring Lower(std::wstring s)
+{
+    if (!s.empty())
+        LCMapStringEx(LOCALE_NAME_INVARIANT, LCMAP_LOWERCASE, s.c_str(), static_cast<int>(s.size()), s.data(),
+                      static_cast<int>(s.size()), nullptr, nullptr, 0);
+    return s;
+}
+
 std::wstring ReplaceAll(std::wstring s, std::wstring_view from, std::wstring_view to)
 {
     for (size_t at = s.find(from); at != std::wstring::npos; at = s.find(from, at + to.size()))
