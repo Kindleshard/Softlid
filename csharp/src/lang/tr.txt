@@ -1,0 +1,389 @@
+Ayarlar
+Ekran filtresi
+Okuma şeridi
+Hatırlatıcıları duraklat
+30 dakika
+1 saat
+Ben devam ettirene kadar
+Hatırlatıcıları sürdür
+Şimdi mola ver
+Çıkış
+{0} (saat diliminize göre)
+Ekran
+Zamanlama
+Göz kırpma
+Ekstralar
+Dişli simgesi BlinkBuddy'nin kendi seçeneklerini içerir
+Mini mod: bu pencereyi her zaman üstte kalan küçük bir göze dönüştür
+Ctrl+Alt+Shift ile F: aç/kapat · ↑ ↓: parlaklık · ← →: sıcaklık
+Parlaklık
+Varsayılana sıfırla
+Mavi ışık filtresi
+Ekranın gerçek arka ışığıyla karart
+Ekran arka ışığı
+Renkleri ters çevir
+Ton
+Parlak alanları yumuşatır, koyuları derinleştirir; Parlaklığın üzerine uygulanır.
+Motor
+Test laboratuvarı...
+Tüm motorları ve güçleri bir test resminde karşılaştırıp puanlayın
+Standart
+Gecikme yok, ek yük yok, her yerde çalışır.
+Akıllı (GPU)
+En iyi görüntü; yaklaşık bir karelik gecikme, birkaç watt.
+Deneysel
+Akıllı katman
+Daha az güç harcar; hareket ederken hafif izler bırakabilir.
+DesktopLUT
+Gecikme yok, renklere sadık; DesktopLUT ve yönetici izni gerekir.
+Deneysel: her biri bir şeyden ödün verir
+DesktopLUT ayrı ve ücretsiz bir programdır ({0}, yaklaşık 1 MB). BlinkBuddy en son sürümünü indirip kullanıcı klasörünüze kurabilir. Başlarken yönetici izni ister ve BlinkBuddy onu 15 saniyelik bir kontrolle korur.
+İndir ve kur
+Bende var...
+Şimdi değil
+Siz seçene kadar hiçbir şey indirilmez.
+Her pikselin çevresine bakar: büyük parlak alanlar yumuşatılır, yazılar, kenarlar ve renkler kontrastını korur.
+Akıllı filtrenin karartması, ekranın üzerinde tek bir katman olarak; yalnızca bir şey değiştiğinde yeniden çizilir.
+Windows içinde bir renk tablosu uygulayan ücretsiz bir program. BlinkBuddy onu korur: 15 saniyelik kontrol, çökme bekçisi ve Ctrl+Alt+Shift+L panik tuşu ekranı eski hâline getirir.
+Güç
+Özel
+Eğriyi üç kaydırıcıyla kendiniz ayarlayın (yalnızca Standart motor)
+Giriş parlaklığı (soldan sağa) ve gördüğünüz (aşağıdan yukarıya)
+Beyazlar şu an %{0:0} seviyesinde.\nKoyu tonlar derinleşir; parlak tonlar birbirinden ayrılır, böylece yazılar ve renkler net kalır.
+Ekran çoğunlukla beyazken daha fazla karart
+Gölgeleri koyulaştır
+Parlak alanları sıkıştır
+Beyazları sınırla
+en fazla %{0:0}
+DesktopLUT.exe'nin konumu
+Gözat...
+15 saniyelik kontrolü yeniden çalıştır
+Başlatılıyor...
+Gece zamanlaması
+Mavi ışık filtresini gece yavaşça açar, sabah yeniden kapatır.
+Gün batımından gün doğumuna
+Özel saatler
+Gün batımı ve doğumu, izin verildiğinde Windows konumunuzdan, aksi hâlde saat diliminizden alınır.
+Açılış saati
+Kapanış saati
+Geçiş süresi
+{0} sa {1:00} dk
+Başlangıç saatinde yavaşça devreye girer ve bitiş saatinde tamamen normale döner.
+Gün batımı {0}, gün doğumu {1} ({2}).
+{0} saatine kadar tam güç, ardından {1} saatine kadar yavaşça azalır.
+En yüksek güç, Ekran sekmesindeki Mavi ışık filtresidir.
+Göz kırpma hatırlatıcısı
+Rahat gözler dakikada ~15 kez kırpar; ekrana bakarken bu ~5'e kadar düşebilir.
+Hatırlatma sıklığı
+Göz kırpma stili
+Göz simgesi
+Göz kapakları
+1 ekranın arka ışığı kontrol ediliyor.
+Simge boyutu
+Simge opaklığı
+Konum
+Her göz kırpmada ekranı karart
+Göz kırpmanın koyuluğu
+Tamamen kapalı
+Ekran üstü bir gölge; ekranın arka ışığına hiç dokunulmaz.
+Önizleme
+Uzağa bakma hatırlatıcısı
+20-20-20 kuralı: her 20 dakikada bir, 20 saniye boyunca 6 m uzağa bakın.
+Sıklık
+{0} dk
+Uzağa bakma süresi
+Mola sırasında rehberli göz egzersizleri
+Ses
+her egzersizi sesli okur
+Molalarda ekranı karart
+Mola başlarken ve biterken çan çal
+Bilgisayardan 5+ dakika uzak kalmak mola sayılır.
+Sonraki mola: {0}
+Ayağa kalkma hatırlatıcısı
+Yaklaşık her saat başı kalkın, hareket edin ve birkaç dakika esneyin.
+Mola süresi
+Animasyonlu koçla rehberli esneme
+her esnemeyi sesli duyurur
+Mola süresi kadar bilgisayardan uzak kalmak bir mola sayılır. Ondan önceki son 2 dakikaya denk gelen uzağa bakma molası atlanır.
+Ayağa kalkma hatırlatıcıları kapalı
+Şimdi kalk
+Farenizi izleyen bir şerit dışında her yeri karartır. Ctrl+Alt+Shift+R.
+Şerit yüksekliği
+Şerit dışını karart
+Yumuşak kenarlar
+Film greni
+Tüm ekranda film gibi ince bir gren.
+Gren gücü
+Gren tonu
+Daha koyu
+Karışık
+Daha açık
+Daha kaba
+Hareketli (daha fazla güç)
+BlinkBuddy seçenekleri
+BlinkBuddy'nin kendisinin nasıl davrandığı.
+Dil
+Windows ile aynı
+Windows ile başlat
+Tam ekran uygulamalarda hatırlatıcıları duraklat
+Görünüm
+Sade
+Gelişmiş
+Sade görünüm yalnızca temel ayarları gösterir, "Daha fazla seçenek" olmadan. Renkleri tersine çevirme, Film greni, gün ışığından soğuk renk, özel gece saatleri, zorunlu molalar ve bilgisayarı uyanık tutma kapanır; ton, Yumuşak ile Güçlü arasında Standart motoru kullanır. Uygulamalar için modlar saklanır ama duraklar.
+Mini mod
+Göze dönüştür
+Her zaman üstte kalan küçük bir göz. Parlaklık, mavi ışık filtresi, arka ışık (açıksa) ve göz kırpma hatırlatıcıları için üzerine gelin; buraya dönmek için tıklayın. Uzaklaştığınızda %65'e kadar soluklaşır.
+Üzerinden ayrıldıktan sonra solma gecikmesi
+Solma hızı
+Sürüm {0}
+Güncellemeleri denetle
+Henüz denetlenmedi.
+Güncellemeleri otomatik denetle (haftalık)
+Tüm ayarları başlangıçtaki hâline getir
+Tüm ayarları sıfırla
+Yumuşak
+Dengeli
+Güçlü
+Geçmek için Esc  ·  {0}
+Tekrar hoş geldiniz!
+Mola bitti. Birkaç kez göz kırpın ve devam edin.
+Bitti
+Kapalı
+Kapalı: mavi ışık filtresi Ekran sekmesindeki ayarda kalır.
+Windows konumu kapalı ve saat diliminiz BlinkBuddy'nin bildiği bir yer değil, bu yüzden güneşin ne zaman battığını bilemiyor. Windows Ayarları'nda masaüstü uygulamaları için konumu açın ya da özel saatleri kullanın.
+Bugün {0} için güneş batmıyor, filtre dinleniyor.
+Bugün {0} için güneş doğmuyor, filtre açık kalıyor.
+{0} ile {1} arasında açık.
+{0} saatine kadar dinleniyor.
+Devreye giriyor: yolun %{0:0} kadarı tamam, {1} itibarıyla tam güçte.
+Azalıyor: {0} itibarıyla normale dönüyor.
+konumunuz (Windows'tan)
+BlinkBuddy {0} çıktı
+Kurmak için BlinkBuddy seçeneklerini açın.
+Görünürlük koruması: parlaklık %100 seviyesinde ve koyu ayrıntılar görünsün diye eğri yumuşatıldı.
+Görünürlük koruması: ekran okunabilir kalsın diye parlaklık %{0:0} seviyesinde tutuluyor (ayar: %{1}).
+Windows burada bir gama eğrisini kabul etmiyor (HDR açık olabilir), bu yüzden yalnızca düz karartma etkin.
+Hatırlatıcılar duraklatıldı
+{0} saatine kadar duraklatıldı
+Molalar kapalı
+Sonraki ayağa kalkma: {0}
+{0} ekranın arka ışığı kontrol ediliyor.
+{1} ekrandan {0} tanesinin arka ışığı kontrol ediliyor.
+Ekran filtresi kapalı, bu yüzden hiçbir şey uygulanmıyor.
+Ton kapalı. Parlaklık ve mavi ışık filtresi yine uygulanır.
+Üç kaydırıcı da sıfırda, bu yüzden hiçbir şey değişmiyor.
+Şu an:
+Grafik: geniş, düz bir alan. Ayrıntılar kontrastını korur.
+Ölçülüyor...
+Grafik: geniş, düz bir alan.
+Bu arada Standart kullanılıyor.
+Panik tuşu: Ctrl+Alt+Shift+L.
+Ekranlarınız kontrol ediliyor...
+{0} sn veya daha uzun molalar gerekir
+{0} sürümü çıktı.
+{0} sürümünü kur
+Denetleniyor...
+Sıradaki: {0}
+{0}:{1:00} kaldı  ·  Geçmek için Esc
+Güncellemeler henüz yok: BlinkBuddy'nin bu kopyasının bir yayın kanalı yok.
+En son sürümün numarası okunamadı.
+En son sürümü kullanıyorsunuz ({0}).
+{0} sürümü çıktı (sizdeki {1}).
+Güncellemeler denetlenemedi: {0}
+Bu sürümde kurulacak bir BlinkBuddy.exe yok. Şuradan edinin: {0}
+{0} indiriliyor: {1:0.0} / {2:0.0} MB
+Kuruluyor...
+Güncelleme kurulamadı: {0}
+Beyazlar şu an %{0:0} seviyesinde; ekran çoğunlukla parlak olduğu için biraz daha düşük.\nKoyu tonlar derinleşir; parlak tonlar birbirinden ayrılır, böylece yazılar ve renkler net kalır.
+Monitörleriniz kontrol ediliyor...
+Hiçbir ekran yanıt vermedi. Harici monitörlerde DDC/CI, monitörün menüsünde kapalı olabilir.
+Az önce hiçbir ekran yanıt vermedi.
+Geçiş yok
+Keskin
+Anında
+Maks
+Göz kırpma hatırlatıcıları
+Ekrandan uzağa bakın
+En az 6 m uzaktaki bir şeye bakın ve gözlerinizi dinlendirin.
+Ayağa kalkma molası zamanı
+Kalkın, esneyin, biraz yürüyün, belki suyunuzu tazeleyin.
+5 dk ertele
+Atla
+Ekrandan uzağa, uzaktaki bir şeye bakın ve gözlerinizi gevşetin.
+Başınızı sabit tutarak yavaşça sola ve sağa bakın.
+Şimdi yavaşça yukarı ve aşağı bakın.
+Gözlerinizi yavaş ve geniş bir daire çizerek döndürün.
+Gözlerinizi nazikçe kapatın, sonra birkaç kez yavaşça kırpın.
+Ayağa kalkma zamanı
+Ayağa kalkma zamanı. Birkaç kolay esnemeyle eşlik edin.
+Yukarı uzanma
+İki kolunuzu da yukarı uzatın ve boyunuzu uzatın.
+Omuz çevirme
+Omuzlarınızı yavaşça geriye doğru çevirin.
+Boyun esnetme
+Başınızı nazikçe her iki omza doğru eğin.
+Gövde döndürme
+Üst gövdenizi yavaşça bir yandan diğerine döndürün.
+Göğüs açma
+Kollarınızı iki yana açın ve kürek kemiklerinizi birbirine yaklaştırın.
+Yerinde yürüyüş
+Dizlerinizi kaldırarak yerinde yürüyün.
+Parmak ucunda yükselme
+Parmak uçlarınızda yükselin, sonra yavaşça inin.
+Öne eğilme
+Dizlerinizi hafifçe bükün ve sırtınızı esnetmek için öne sarkın.
+Harika iş!
+Harika iş. Biraz su için ve işinize dönün.
+{0} sn
+Bana sor
+Sistem tepsisinde çalışmaya devam et
+BlinkBuddy'den çık
+Bu pencere kapatıldığında
+Diğer pencerelerin üstünde kalan küçük bir simge. Başlık çubuğunun yanındaki düğmeyle ona geçin; parlaklık, mavi ışık filtresi, arka ışık (açıksa) ve göz kırpma hatırlatıcıları için üzerine gelin, buraya dönmek için tıklayın.
+Simge
+Göz
+Lamba
+Güneş
+Dizüstü
+Göz: yaklaştığınızda açılır. Lamba: ekran kadar parlak. Güneş: yaklaştığınızda parlar. Dizüstü: ekranın parlaklığını ve mavi ışık filtresini gösterir.
+Simge arada bir yumuşak bir parıltıyla nefes alır
+Renk
+Güncelleme var: sürüm {0}
+Güncelle
+Güncelsiniz.
+Mini mod: bu pencereyi üstte kalan küçük bir simgeye küçült
+Molada koyu arka plan
+Kapalı: göz egzersizleri siyah arka plan yerine ekranınızın üzerinde hareket eder.
+Gece bu, daha güçlüyse Ekran sekmesindeki Mavi ışık filtresinin yerini alır; o kaydırıcıdaki yeşil işaret bunu gösterir.
+Gece mavi ışık filtresi
+BlinkBuddy kapatılsın mı?
+Tepside kalırsa göz kırpmanızı ve uzağa bakmanızı hatırlatmaya ve ekran filtresini açık tutmaya devam eder. Çıkarsanız, yeniden başlatana kadar bunların hepsi durur.
+Seçimimi hatırla (Seçenekler'den değiştirebilirsiniz)
+Windows konumunuzla senkronize edildi
+{0} saatiyle senkronize edildi
+Konumunuzla senkronize ediliyor...
+{0} saati, sizin seçiminiz
+Senkronize edilemedi.
+Şehrinizi elle seçin
+Otomatik
+Şehrinizi yazın
+Vurgu rengi
+Windows ile aynı
+Sürekli
+Duraklat
+Sağlık
+Oyun
+Film
+Ofis
+Düzenleme
+Okuma
+Ekran modu
+Bilgisayarı uyanık tut
+2 saatliğine
+Ben kapatana kadar
+Dinlenme zamanı
+Ayağa kalk, uzağa bak, esne. Bir sonraki odak süresi bundan sonra başlar.
+Dinleniyor
+Odak zamanlayıcı: {0}
+{0} modu, öndeki uygulama için
+Bir kural kullanılıyor.
+Orijinal
+Gri tonlama
+Sepya
+E-mürekkep
+Kırmızı gece
+Renk efekti
+Siyah beyaz
+Renk efektleri Standart, Akıllı katman veya DesktopLUT motorunu gerektirir; Akıllı (GPU) bunları göstermez.
+Gün ışığından daha soğuğuna izin ver (10 000 K'ye kadar)
+Uygulamalar için modlar
+Bu uygulamalardan biri öndeyken onun modu kullanılır.
+Uygulama ekle...
+Henüz uygulama yok.
+Penceresi açık uygulama yok.
+Kaldır
+Farenizi izleyen net bir alan dışında her şeyi karartır.
+Bant
+Sütun
+Dikdörtgen
+Daire
+Tümü
+Boyut
+Genişlik
+Kenar çizgisi
+Üstü ve altı
+Yalnızca üstü
+Yalnızca altı
+Solu ve sağı
+Yalnızca solu
+Yalnızca sağı
+Renk tonu
+Fareyi izle
+Tuşlarla taşı
+Ctrl+Alt ve ok tuşları onu taşır; Ctrl+Alt ile + ve - boyutunu değiştirir (Seçenekler'deki Klavye kısayollarına bakın).
+Basılı tutulan tuşları hızlandır
+Tek monitörde kal
+Windows uykuya geçmez ve ekranı kapatmaz.
+Tepsi menüsü de onu 1 veya 2 saat uyanık tutabilir.
+Molaları zorunlu kıl (Atla, Ertele veya Esc yok)
+Odak zamanlayıcı
+Çalış, sonra dinlen, tekrar tekrar.
+Başlat
+Devam et
+Durdur
+Çalışma
+Dinlenme
+Çalışırken uzağa bakma ve ayağa kalkma hatırlatıcılarının yerini alır; göz kırpma hatırlatıcıları devam eder.
+Sonraki molaya kalan süreyi simgenin kenarında göster
+Ekran filtresini aç/kapat
+Daha parlak
+Daha loş
+Daha sıcak (daha fazla mavi ışık filtresi)
+Daha soğuk (daha az mavi ışık filtresi)
+Okuma şeridini aç/kapat
+Bilgisayarı uyanık tutmayı aç/kapat
+Sonraki ekran modu
+Mini modu aç/kapat
+Okuma şeridini yukarı taşı
+Okuma şeridini aşağı taşı
+Okuma şeridini sola taşı
+Okuma şeridini sağa taşı
+Okuma şeridini büyüt
+Okuma şeridini küçült
+Klavye kısayolları
+Bir kutuya tıklayın ve istediğiniz tuşlara basın. Geri tuşu kısayolu kaldırır. Okuma şeridinin hareket tuşları, şerit yerinde dururken çalışır.
+Kullanımda
+Yok
+Tümünü varsayılana sıfırla
+Kapat
+Değiştir...
+Daha fazla seçenek
+Daha az seçenek
+Bir renk seçin
+Kenar çizgisi rengi
+Vurgu rengiyle aynı
+Şekil
+Kenar
+Yumuşak
+Yumuşaklık
+Karartılan taraflar
+Hareket
+Uygulama ekle
+Bir uygulama seçin
+Şu anda açık olan uygulamalar. Listede yok mu? Programını Gözat ile bulun.
+Mod
+İptal
+Ekle
+Programlar
+Gece programı bir uygulamanın modunu değiştirmez; böylece Düzenleme modu gece de gerçek renkleri korur.
+Odak
+Duraklatıldı
+Hazır
+Noktalar: dörtlü turlar halinde tamamlanan çalışma süreleri
+Windows uykuya geçmez ve ekranı kapatmaz. Tepsi menüsü de onu 1 veya 2 saat uyanık tutabilir.
+Bir renk efekti açıkken duraklatıldı
+{0} açıkken duraklatıldı
+Bu bölümü daralt veya genişlet
+Diğer pencerelerin üstünde duran küçük bir simge.
+Başlık çubuğunun yanındaki düğmeyle ya da bu pencereyi simge durumuna küçülterek ona geçin. Hızlı ayarlar için üzerine gelin; buraya dönmek için tıklayın.
+Odak zamanlayıcıyı başlat

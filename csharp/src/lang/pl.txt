@@ -1,0 +1,389 @@
+Ustawienia
+Filtr ekranu
+Pasek do czytania
+Wstrzymaj przypomnienia
+Na 30 minut
+Na 1 godzinę
+Do wznowienia
+Wznów przypomnienia
+Zrób przerwę teraz
+Zakończ
+{0} (wg strefy czasowej)
+Ekran
+Harmonogram
+Mruganie
+Dodatki
+Zębatka zawiera opcje samego BlinkBuddy
+Tryb mini: zwiń to okno do małego oka, które zawsze jest na wierzchu
+Ctrl+Alt+Shift z F: wł./wył. · ↑ ↓: jasność · ← →: ciepło
+Jasność
+Przywróć domyślne
+Filtr światła niebieskiego
+Przyciemniaj prawdziwym podświetleniem ekranu
+Podświetlenie ekranu
+Odwróć kolory
+Ton
+Uspokaja jasne obszary i pogłębia ciemne, ponad ustawienie Jasności.
+Silnik
+Laboratorium testowe...
+Porównaj każdy silnik i siłę na obrazie testowym i oceń je
+Standardowy
+Bez opóźnienia, bez dodatkowej pracy, działa wszędzie.
+Smart (GPU)
+Najlepszy obraz; około jednej klatki opóźnienia, kilka watów.
+Eksperymentalny
+Warstwa Smart
+Oszczędniejsza; przy ruchu może zostawiać lekkie smugi.
+DesktopLUT
+Bez opóźnienia, wierny odcieniom; wymaga DesktopLUT i uprawnień administratora.
+Eksperymentalne: każdy coś poświęca
+DesktopLUT to osobny, darmowy program ({0}, około 1 MB). BlinkBuddy może pobrać jego najnowszą wersję i zainstalować ją w Twoim folderze użytkownika. Przy starcie prosi o uprawnienia administratora, a BlinkBuddy chroni go 15-sekundowym sprawdzeniem.
+Pobierz i zainstaluj
+Mam go już...
+Nie teraz
+Nic nie zostanie pobrane, dopóki nie wybierzesz.
+Patrzy na otoczenie każdego piksela: duże jasne obszary są uspokajane, a tekst, krawędzie i kolory zachowują kontrast.
+Przyciemnianie filtra Smart jako jedna warstwa nad ekranem; przerysowuje się tylko, gdy coś się zmieni.
+Darmowy program, który stosuje tablicę kolorów wewnątrz Windows. BlinkBuddy go pilnuje: 15-sekundowe sprawdzenie, strażnik awarii i klawisz awaryjny Ctrl+Alt+Shift+L przywracają ekran.
+Siła
+Własne
+Ustaw krzywą samodzielnie trzema suwakami (tylko silnik Standardowy)
+Jasność wejściowa (od lewej do prawej) wobec tego, co widzisz (od dołu do góry)
+Biel jest teraz na {0:0}%.\nCiemne tony się pogłębiają; jasne odcienie się rozsuwają, więc tekst i kolory pozostają wyraźne.
+Przyciemniaj mocniej, gdy ekran jest głównie biały
+Przyciemnij cienie
+Ściśnij światła
+Ogranicz biel
+do {0:0}%
+Gdzie jest DesktopLUT.exe
+Przeglądaj...
+Uruchom ponownie 15-sekundowe sprawdzenie
+Uruchamianie...
+Harmonogram nocny
+Stopniowo włącza filtr światła niebieskiego w nocy i wyłącza go rano.
+Od zachodu do wschodu słońca
+Własne godziny
+Zachód i wschód słońca pochodzą z Twojej lokalizacji w Windows, jeśli jest dozwolona, a w przeciwnym razie ze strefy czasowej.
+Włącz o
+Wyłącz o
+Przejście przez
+{0} godz. {1:00} min
+Przejście zaczyna się o godzinie początkowej, a o końcowej wszystko wraca do normy.
+Zachód {0}, wschód {1} — {2}.
+Pełna siła do {0}, potem stopniowe wyłączanie do {1}.
+Siła szczytowa to filtr światła niebieskiego na karcie Ekran.
+Przypomnienie o mruganiu
+Zrelaksowane oczy mrugają ~15 razy na minutę; wpatrzone w ekran nawet tylko ~5.
+Przypominaj co
+Styl mrugnięcia
+Ikona oka
+Powieki
+Sterowanie podświetleniem 1 ekranu.
+Rozmiar ikony
+Krycie ikony
+Położenie
+Przyciemniaj ekran przy każdym mrugnięciu
+Jak ciemne jest mrugnięcie
+Całkiem zamknięte
+Zasłona na ekranie; podświetlenie nigdy nie jest zmieniane.
+Podgląd
+Przypomnienie o patrzeniu w dal
+Zasada 20-20-20: co 20 min patrz przez 20 s na coś oddalonego o 6 m.
+Co
+{0} min
+Patrz w dal przez
+Prowadzone ćwiczenia oczu podczas przerwy
+Głos
+czyta każde ćwiczenie na głos
+Przyciemniaj ekran podczas przerw
+Dźwięk na początek i koniec przerwy
+5+ minut z dala od komputera liczy się jako przerwa.
+Następna przerwa za {0}
+Przypomnienie o wstaniu
+Mniej więcej co godzinę wstań, rusz się i rozciągnij przez kilka minut.
+Długość przerwy
+Prowadzone rozciąganie z animowanym trenerem
+zapowiada każde ćwiczenie na głos
+Bycie z dala od komputera przez długość przerwy liczy się jako przerwa. Przerwa na patrzenie w dal przypadająca w ciągu 2 minut przed nią jest pomijana.
+Przypomnienia o wstaniu są wyłączone
+Wstań teraz
+Przyciemnia wszystko poza paskiem podążającym za myszą. Ctrl+Alt+Shift+R.
+Wysokość paska
+Przyciemnienie poza paskiem
+Miękkie krawędzie
+Ziarno filmowe
+Delikatny szum na całym ekranie, jak na taśmie filmowej.
+Siła ziarna
+Ton ziarna
+Ciemniejsze
+Mieszane
+Jaśniejsze
+Grubsze
+Animowane (więcej energii)
+Opcje BlinkBuddy
+Jak zachowuje się sam BlinkBuddy.
+Język
+Jak w Windows
+Uruchamiaj z Windows
+Wstrzymuj przypomnienia w aplikacjach pełnoekranowych
+Widok
+Prosty
+Zaawansowany
+Widok prosty pokazuje tylko to, co najważniejsze, bez „Więcej opcji”. Wyłącza odwracanie kolorów, ziarno filmowe, chłodniej niż światło dzienne, własne godziny nocne, wymuszone przerwy i nieusypianie komputera; ton używa silnika Standardowy od Delikatnego do Mocnego. Tryby dla aplikacji zostają zapisane, ale są wstrzymane.
+Tryb mini
+Zwiń do oka
+Małe oko zawsze na wierzchu. Najedź na nie, aby ustawić jasność, filtr światła niebieskiego, podświetlenie (gdy włączone) i przypomnienia o mruganiu; kliknij, aby tu wrócić. Gdy się oddalisz, blednie do 65%.
+Opóźnienie blednięcia po najechaniu
+Szybkość blednięcia
+Wersja {0}
+Sprawdź aktualizacje
+Jeszcze nie sprawdzono.
+Sprawdzaj aktualizacje automatycznie (co tydzień)
+Wszystkie ustawienia jak na początku
+Przywróć wszystkie ustawienia
+Łagodny
+Zrównoważony
+Mocny
+Esc, aby pominąć  ·  {0}
+Witaj z powrotem!
+Przerwa skończona. Mrugnij kilka razy i działaj dalej.
+Gotowe
+Wył.
+Wył.: filtr światła niebieskiego pozostaje jak na karcie Ekran.
+Lokalizacja Windows jest wyłączona, a BlinkBuddy nie zna Twojej strefy czasowej, więc nie wie, kiedy zachodzi słońce. Włącz lokalizację dla aplikacji klasycznych w Ustawieniach Windows lub użyj własnych godzin.
+Słońce nie zachodzi dziś w {0}, więc filtr odpoczywa.
+Słońce nie wschodzi dziś w {0}, więc filtr pozostaje włączony.
+Włączony od {0} do {1}.
+Odpoczywa do {0}.
+Wchodzenie: {0:0}% drogi, pełna siła o {1}.
+Wychodzenie: powrót do normy o {0}.
+Twoja lokalizacja (z Windows)
+BlinkBuddy {0} jest dostępny
+Otwórz opcje BlinkBuddy, aby zainstalować.
+Strażnik widoczności: jasność na 100% i złagodzona krzywa, by ciemne szczegóły były widoczne.
+Strażnik widoczności: jasność utrzymana na {0:0}% (ustawiono {1}%), by ekran pozostał czytelny.
+Windows nie akceptuje tu krzywej gamma (może HDR jest włączony), więc działa tylko równomierne przyciemnianie.
+Przypomnienia wstrzymane
+Wstrzymano do {0}
+Przerwy są wyłączone
+Następne wstanie za {0}
+Sterowanie podświetleniem {0} ekranów.
+Sterowanie podświetleniem {0} z {1} ekranów.
+Filtr ekranu jest wyłączony, więc nic nie jest stosowane.
+Ton jest wyłączony. Jasność i filtr światła niebieskiego nadal działają.
+Wszystkie trzy suwaki są na zerze, więc nic się nie zmienia.
+W tej chwili:
+Wykres: duży płaski obszar. Szczegóły zachowują kontrast.
+Pomiar...
+Wykres: duży płaski obszar.
+W międzyczasie używany jest Standardowy.
+Klawisz awaryjny: Ctrl+Alt+Shift+L.
+Sprawdzanie ekranów...
+wymaga przerw co najmniej {0} s
+Wersja {0} jest dostępna.
+Zainstaluj {0}
+Sprawdzanie...
+Dalej: {0}
+Zostało {0}:{1:00}  ·  Esc, aby pominąć
+Aktualizacje nie są jeszcze dostępne: ta kopia BlinkBuddy nie ma kanału wydań.
+Nie udało się odczytać wersji najnowszego wydania.
+Masz najnowszą wersję ({0}).
+Wersja {0} jest dostępna (masz {1}).
+Nie udało się sprawdzić aktualizacji: {0}
+To wydanie nie zawiera pliku BlinkBuddy.exe do zainstalowania. Pobierz je stąd: {0}
+Pobieranie {0}: {1:0.0} z {2:0.0} MB
+Instalowanie...
+Nie udało się zainstalować aktualizacji: {0}
+Biel jest teraz na {0:0}%, nieco niżej, bo ekran jest głównie jasny.\nCiemne tony się pogłębiają; jasne odcienie się rozsuwają, więc tekst i kolory pozostają wyraźne.
+Sprawdzanie monitorów...
+Żaden ekran nie odpowiedział. W monitorach zewnętrznych DDC/CI może być wyłączone w menu monitora.
+Przed chwilą żaden ekran nie odpowiedział.
+Bez przejścia
+Ostre
+Natychmiast
+Maks
+Przypomnienia o mruganiu
+Oderwij wzrok od ekranu
+Znajdź coś oddalonego o co najmniej 6 m i pozwól oczom odpocząć.
+Czas na przerwę na wstanie
+Wstań, rozciągnij się, przejdź się, może dolej sobie wody.
+Odłóż o 5 min
+Pomiń
+Oderwij wzrok od ekranu, spójrz na coś daleko i rozluźnij oczy.
+Powoli patrz w lewo i w prawo, nie ruszając głową.
+Teraz powoli patrz w górę i w dół.
+Zataczaj oczami powolne, szerokie koło.
+Delikatnie zamknij oczy, a potem kilka razy powoli mrugnij.
+Czas wstać
+Czas wstać. Zrób razem kilka łatwych ćwiczeń rozciągających.
+Sięganie w górę
+Wyciągnij obie ręce wysoko w górę i wydłuż się.
+Krążenie ramion
+Powoli krąż ramionami do tyłu.
+Rozciąganie szyi
+Delikatnie przechylaj głowę w stronę każdego ramienia.
+Skręt tułowia
+Powoli skręcaj górną część ciała na boki.
+Otwarcie klatki piersiowej
+Szeroko rozłóż ręce i ściągnij łopatki.
+Marsz w miejscu
+Maszeruj w miejscu, unosząc kolana.
+Wspięcia na palce
+Wspinaj się na palce, a potem powoli opuszczaj.
+Skłon w przód
+Lekko ugnij kolana i zwieś się do przodu, by rozciągnąć plecy.
+Świetna robota!
+Świetna robota. Napij się wody i wracaj do pracy.
+{0} s
+Pytaj mnie
+Działaj dalej w zasobniku
+Zakończ BlinkBuddy
+Po zamknięciu tego okna
+Mała ikona, która zostaje nad innymi oknami. Przełącz się na nią przyciskiem obok paska tytułu; najedź na nią, aby ustawić jasność, filtr światła niebieskiego, podświetlenie (gdy włączone) i przypomnienia o mruganiu, a kliknij, aby tu wrócić.
+Ikona
+Oko
+Lampa
+Słońce
+Laptop
+Oko: otwiera się, gdy się zbliżysz. Lampa: tak jasna jak ekran. Słońce: świeci, gdy się zbliżysz. Laptop: pokazuje jasność ekranu i filtr światła niebieskiego.
+Ikona co jakiś czas oddycha łagodną poświatą
+Kolor
+Dostępna aktualizacja: wersja {0}
+Aktualizuj
+Masz aktualną wersję.
+Tryb mini: zmniejsz to okno do małej ikony na wierzchu
+Ciemne tło podczas przerwy
+Wył.: ćwiczenia oczu poruszają się po Twoim ekranie zamiast na czarnym tle.
+W nocy zastępuje to filtr światła niebieskiego z karty Ekran, ale tylko gdy jest silniejszy; pokazuje to zielony znacznik na tamtym suwaku.
+Filtr światła niebieskiego w nocy
+Zamknąć BlinkBuddy?
+W zasobniku nadal przypomina o mruganiu i patrzeniu w dal oraz utrzymuje filtr ekranu. Zakończenie zatrzymuje to wszystko do ponownego uruchomienia.
+Zapamiętaj mój wybór (można zmienić w Opcjach)
+Zsynchronizowano z lokalizacją Windows
+Zsynchronizowano z czasem: {0}
+Synchronizowanie z lokalizacją...
+Czas: {0}, wybrany przez Ciebie
+Nie udało się zsynchronizować.
+Wybierz miasto ręcznie
+Automatycznie
+Wpisz swoje miasto
+Kolor akcentu
+Jak w Windows
+Bez przerwy
+Pauza
+Zdrowie
+Gra
+Film
+Biuro
+Edycja
+Czytanie
+Tryb ekranu
+Nie usypiaj komputera
+Przez 2 godziny
+Dopóki nie wyłączę
+Czas na odpoczynek
+Wstań, spójrz w dal, rozciągnij się. Potem zacznie się kolejny okres skupienia.
+Odpoczynek
+Minutnik skupienia: {0}
+Tryb {0}, dla aplikacji na wierzchu
+Działa reguła.
+Oryginał
+Skala szarości
+Sepia
+E-papier
+Czerwona noc
+Efekt koloru
+Czarno-biały
+Efekty kolorów wymagają silnika Standardowy, Inteligentna warstwa lub DesktopLUT; Smart (GPU) ich nie pokazuje.
+Pozwól na chłodniej niż światło dzienne (do 10 000 K)
+Tryby dla aplikacji
+Gdy jedna z tych aplikacji jest na wierzchu, używany jest jej tryb.
+Dodaj aplikację...
+Brak aplikacji.
+Nie ma otwartych aplikacji z oknem.
+Usuń
+Przyciemnia wszystko oprócz wyraźnego obszaru podążającego za myszą.
+Pas
+Kolumna
+Prostokąt
+Koło
+Całość
+Rozmiar
+Szerokość
+Obrys
+Nad i pod
+Tylko nad
+Tylko pod
+Z lewej i z prawej
+Tylko z lewej
+Tylko z prawej
+Odcień
+Podążaj za myszą
+Przesuwaj klawiszami
+Ctrl+Alt ze strzałkami go przesuwa; Ctrl+Alt z + i - zmienia rozmiar (zobacz Skróty klawiszowe w Opcjach).
+Przyspieszaj przytrzymane klawisze
+Zostań na jednym monitorze
+Windows nie przejdzie w uśpienie ani nie wyłączy ekranu.
+Menu w zasobniku też może nie usypiać go przez 1 lub 2 godziny.
+Wymuszaj przerwy (bez Pomiń, Drzemka ani Esc)
+Minutnik skupienia
+Praca, potem odpoczynek, w kółko.
+Start
+Wznów
+Zatrzymaj
+Praca
+Odpoczynek
+Gdy działa, zastępuje przypomnienia o patrzeniu w dal i wstawaniu; przypomnienia o mruganiu trwają dalej.
+Pokazuj czas do następnej przerwy na brzegu ikony
+Filtr ekranu wł./wył.
+Jaśniej
+Ciemniej
+Cieplej (więcej filtra światła niebieskiego)
+Chłodniej (mniej filtra światła niebieskiego)
+Pasek do czytania wł./wył.
+Nieusypianie komputera wł./wył.
+Następny tryb ekranu
+Tryb mini wł./wył.
+Przesuń pasek do czytania w górę
+Przesuń pasek do czytania w dół
+Przesuń pasek do czytania w lewo
+Przesuń pasek do czytania w prawo
+Powiększ pasek do czytania
+Zmniejsz pasek do czytania
+Skróty klawiszowe
+Kliknij pole i naciśnij wybrane klawisze. Backspace usuwa skrót. Klawisze ruchu paska do czytania działają, gdy stoi on w miejscu.
+W użyciu
+Brak
+Przywróć wszystkie domyślne
+Zamknij
+Zmień...
+Więcej opcji
+Mniej opcji
+Wybierz kolor
+Kolor obrysu
+Jak kolor akcentu
+Kształt
+Krawędź
+Miękka
+Miękkość
+Przyciemnione strony
+Ruch
+Dodaj aplikację
+Wybierz aplikację
+Aplikacje otwarte teraz. Nie ma jej na liście? Znajdź jej program przyciskiem Przeglądaj.
+Tryb
+Anuluj
+Dodaj
+Programy
+Harmonogram nocny nie zmienia trybu aplikacji, więc Edycja zachowuje prawdziwe kolory także w nocy.
+Skupienie
+Wstrzymano
+Gotowe
+Kropki: ukończone okresy pracy, w rundach po cztery
+Windows nie przejdzie w uśpienie ani nie wyłączy ekranu. Menu w zasobniku też może nie usypiać go przez 1 lub 2 godziny.
+Wstrzymane, gdy włączony jest efekt koloru
+Wstrzymane, gdy włączony jest efekt {0}
+Zwiń lub rozwiń tę sekcję
+Mała ikona, która zostaje nad innymi oknami.
+Przełącz się na nią przyciskiem obok paska tytułu albo minimalizując to okno. Najedź na nią, aby mieć szybkie ustawienia; kliknij, aby tu wrócić.
+Uruchom minutnik skupienia

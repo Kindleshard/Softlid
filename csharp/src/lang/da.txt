@@ -1,0 +1,389 @@
+Indstillinger
+Skærmfilter
+Læsestribe
+Sæt påmindelser på pause
+I 30 minutter
+I 1 time
+Indtil jeg genoptager
+Genoptag påmindelser
+Hold pause nu
+Afslut
+{0} (ud fra din tidszone)
+Skærm
+Tidsplan
+Blink
+Ekstra
+Tandhjulet rummer BlinkBuddys egne indstillinger
+Minitilstand: fold vinduet sammen til et lille øje, der altid ligger øverst
+Ctrl+Alt+Skift med F: til/fra · ↑ ↓: lysstyrke · ← →: varme
+Lysstyrke
+Nulstil til standard
+Blåt lys-filter
+Dæmp med skærmens rigtige baggrundslys
+Baggrundslys
+Inverter farver
+Tone
+Dæmper lyse flader og uddyber mørke, oven på lysstyrken.
+Metode
+Testlaboratorium...
+Sammenlign alle metoder og styrker på et testbillede og bedøm dem
+Standard
+Ingen forsinkelse, intet ekstra arbejde, virker overalt.
+Smart (GPU)
+Bedste billede; cirka ét billedes forsinkelse, et par watt.
+Eksperimentel
+Smart-lag
+Bruger mindre strøm; kan efterlade svage spor ved bevægelse.
+DesktopLUT
+Ingen forsinkelse, farvetro; kræver DesktopLUT og administratorrettigheder.
+Eksperimentelle: hver giver afkald på noget
+DesktopLUT er et separat, gratis program ({0}, cirka 1 MB). BlinkBuddy kan downloade den nyeste version og installere den i din brugermappe. Det beder om administratorrettigheder, når det starter, og BlinkBuddy beskytter det med en kontrol på 15 sekunder.
+Download og installer
+Jeg har det...
+Ikke nu
+Intet downloades, før du vælger det.
+Ser på omgivelserne omkring hver pixel: store lyse flader dæmpes, mens tekst, kanter og farver bevarer deres kontrast.
+Smart-filtrets dæmpning som ét lag over skærmen; det tegnes kun igen, når noget har ændret sig.
+Et gratis program, der anvender en farvetabel inde i Windows. BlinkBuddy holder øje med det: en kontrol på 15 sekunder, en nedbrudsvagt og paniktasten Ctrl+Alt+Skift+L sætter skærmen tilbage.
+Styrke
+Brugerdefineret
+Indstil kurven selv med tre skydere (kun Standard)
+Inputlysstyrke (fra venstre mod højre) mod det, du ser (nedefra og op)
+Hvid ligger på {0:0} % lige nu.\nMørke toner bliver dybere; lyse nuancer glider fra hinanden, så tekst og farver forbliver klare.
+Dæmp mere, når skærmen mest er hvid
+Gør skygger mørkere
+Pres højlys sammen
+Begræns hvid
+til {0:0} %
+Hvor DesktopLUT.exe ligger
+Gennemse...
+Kør kontrollen på 15 sekunder igen
+Starter...
+Natplan
+Toner blåt lys-filteret ind om natten og ud igen om morgenen.
+Solnedgang til solopgang
+Egne tidspunkter
+Solnedgang og solopgang kommer fra din placering i Windows, når det er tilladt, ellers fra din tidszone.
+Tænd kl.
+Sluk kl.
+Overgang over
+{0} t {1:00} min
+Overgangen begynder ved starttidspunktet, og alt er normalt igen ved sluttidspunktet.
+Solnedgang {0}, solopgang {1} i {2}.
+Fuld styrke til {0}, derefter udtoning til {1}.
+Topstyrken er blåt lys-filteret på fanen Skærm.
+Blinkpåmindelse
+Afslappede øjne blinker ~15 gange i minuttet; når de stirrer på en skærm, kun ~5.
+Påmind mig hver
+Blinkstil
+Øjeikon
+Øjenlåg
+Styrer baggrundslyset for 1 skærm.
+Ikonstørrelse
+Ikonets uigennemsigtighed
+Placering
+Dæmp skærmen ved hvert blink
+Hvor mørkt blinket bliver
+Helt lukket
+Et slør på skærmen; baggrundslyset røres aldrig.
+Eksempel
+Kig-væk-påmindelse
+20-20-20-reglen: hvert 20. minut, kig 6 m væk i 20 sekunder.
+Hver
+{0} min
+Kig væk i
+Guidede øjenøvelser i pausen
+Stemme
+læser hver øvelse højt
+Dæmp skærmen i pauser
+Lyd, når en pause begynder og slutter
+5+ minutter væk fra pc'en tæller som en pause.
+Næste pause om {0}
+Stå-op-påmindelse
+Cirka hver time: rejs dig, bevæg dig og stræk ud i et par minutter.
+Pausens længde
+Guidede strækøvelser med en animeret træner
+siger hver strækøvelse højt
+At være væk fra pc'en i pausens længde tæller som én. En kig-væk-pause, der falder i de 2 minutter før, springes over.
+Stå-op-påmindelser er slået fra
+Rejs dig nu
+Dæmper alt undtagen en stribe, der følger musen. Ctrl+Alt+Skift+R.
+Stribens højde
+Dæmpning uden for striben
+Bløde kanter
+Filmkorn
+Fin støj over hele skærmen, som på film.
+Kornstyrke
+Korntone
+Mørkere
+Blandet
+Lysere
+Grovere
+Animeret (mere strøm)
+BlinkBuddy-indstillinger
+Hvordan BlinkBuddy selv opfører sig.
+Sprog
+Som Windows
+Start med Windows
+Sæt påmindelser på pause i fuldskærmsapps
+Visning
+Enkel
+Avanceret
+Enkel viser kun det vigtigste, uden "Flere indstillinger". Den slår Inverter farver, Filmkorn, koldere end dagslys, egne nattetimer, gennemtvungne pauser og at holde pc'en vågen fra; tonen bruger motoren Standard fra Mild til Stærk. Tilstande for apps gemmes, men sættes på pause.
+Minitilstand
+Fold sammen til øjet
+Et lille øje, der altid ligger øverst. Hold musen over det for lysstyrke, blåt lys-filter, baggrundslys (når det er slået til) og blinkpåmindelser; klik for at komme tilbage hertil. Når du går væk, falmer det til 65 %.
+Forsinkelse, før det falmer efter musen er væk
+Hvor hurtigt det falmer
+Version {0}
+Søg efter opdateringer
+Ikke tjekket endnu.
+Søg automatisk efter opdateringer (ugentligt)
+Alle indstillinger som fra start
+Nulstil alle indstillinger
+Mild
+Afbalanceret
+Stærk
+Esc for at springe over  ·  {0}
+Velkommen tilbage!
+Pausen er slut. Blink et par gange, og fortsæt.
+Færdig
+Fra
+Fra: blåt lys-filteret forbliver som indstillet på fanen Skærm.
+Placering i Windows er slået fra, og BlinkBuddy kender ikke din tidszone, så den kan ikke vide, hvornår solen går ned. Slå placering til for skrivebordsapps i Windows-indstillinger, eller brug egne tidspunkter.
+Solen går ikke ned i dag i {0}, så filteret hviler.
+Solen står ikke op i dag i {0}, så filteret forbliver tændt.
+Tændt fra {0} til {1}.
+Hviler til {0}.
+Indtoning: {0:0} % af vejen, fuld styrke kl. {1}.
+Udtoning: normal igen kl. {0}.
+din placering (fra Windows)
+BlinkBuddy {0} er tilgængelig
+Åbn BlinkBuddy-indstillingerne for at installere den.
+Synlighedsvagt: lysstyrke på 100 % og kurven blødgjort, så mørke detaljer forbliver synlige.
+Synlighedsvagt: lysstyrken holdes på {0:0} % (indstillet til {1} %), så skærmen forbliver læselig.
+Windows accepterer ikke en gammakurve her (HDR er måske slået til), så kun den jævne dæmpning er aktiv.
+Påmindelser på pause
+På pause til {0}
+Pauser er slået fra
+Næste stå-op om {0}
+Styrer baggrundslyset for {0} skærme.
+Styrer baggrundslyset for {0} af {1} skærme.
+Skærmfilteret er slået fra, så intet anvendes.
+Tone er slået fra. Lysstyrke og blåt lys-filter gælder stadig.
+Alle tre skydere står på nul, så intet ændres.
+Lige nu:
+Graf: en stor flad flade. Detaljer bevarer deres kontrast.
+Måler...
+Graf: en stor flad flade.
+Standard bruges imens.
+Paniktast: Ctrl+Alt+Skift+L.
+Tjekker dine skærme...
+kræver pauser på {0} s eller længere
+Version {0} er tilgængelig.
+Installer {0}
+Tjekker...
+Næste: {0}
+{0}:{1:00} tilbage  ·  Esc for at springe over
+Opdateringer er ikke tilgængelige endnu: denne kopi af BlinkBuddy har ingen udgivelseskanal.
+Kunne ikke læse versionen af den nyeste udgivelse.
+Du har den nyeste version ({0}).
+Version {0} er tilgængelig (du har {1}).
+Kunne ikke søge efter opdateringer: {0}
+Denne udgivelse indeholder ingen BlinkBuddy.exe at installere. Hent den her: {0}
+Downloader {0}: {1:0.0} af {2:0.0} MB
+Installerer...
+Kunne ikke installere opdateringen: {0}
+Hvid ligger på {0:0} % lige nu, lidt lavere fordi skærmen mest er lys.\nMørke toner bliver dybere; lyse nuancer glider fra hinanden, så tekst og farver forbliver klare.
+Tjekker dine skærme...
+Ingen skærm svarede. På eksterne skærme kan DDC/CI være slået fra i skærmens menu.
+Ingen skærm svarede lige nu.
+Ingen overgang
+Skarpe
+Med det samme
+Max
+Blinkpåmindelser
+Kig væk fra skærmen
+Find noget mindst 6 m væk, og lad øjnene slappe af.
+Tid til en stå-op-pause
+Rejs dig, stræk ud, gå lidt rundt, fyld måske vand på.
+Udsæt 5 min
+Spring over
+Kig væk fra skærmen, på noget langt væk, og lad øjnene blive bløde.
+Kig langsomt til venstre og højre, uden at bevæge hovedet.
+Kig nu langsomt op og ned.
+Rul øjnene i en langsom, bred cirkel.
+Luk øjnene blidt, og blink derefter langsomt et par gange.
+Tid til at rejse sig
+Tid til at rejse sig. Følg med i nogle lette strækøvelser.
+Stræk opad
+Stræk begge arme højt op, og gør dig lang.
+Skulderrulninger
+Rul skuldrene langsomt bagud.
+Nakkestræk
+Vip hovedet blidt mod hver skulder.
+Overkropsdrej
+Drej overkroppen langsomt fra side til side.
+Bryståbner
+Åbn armene vidt, og klem skulderbladene sammen.
+March på stedet
+March på stedet, og løft knæene.
+Tåløft
+Gå op på tæerne, og sænk dig så langsomt.
+Foroverbøjning
+Bøj knæene lidt, og hæng forover for at strække ryggen.
+Flot klaret!
+Flot klaret. Tag en tår vand, og tilbage til arbejdet.
+{0} s
+Spørg mig
+Bliv ved med at køre i systembakken
+Afslut BlinkBuddy
+Når dette vindue lukkes
+Et lille ikon, der ligger over andre vinduer. Skift til det med knappen ved titellinjen; hold musen over det for lysstyrke, blåt lys-filter, baggrundslys (når det er slået til) og blinkpåmindelser, og klik for at komme tilbage hertil.
+Ikon
+Øje
+Lampe
+Sol
+Bærbar
+Øje: åbner sig, når du kommer nær. Lampe: lige så lys som skærmen. Sol: gløder, når du kommer nær. Bærbar: viser skærmens lysstyrke og blåt lys-filteret.
+Ikonet trækker vejret ind imellem med en blød glød
+Farve
+Opdatering tilgængelig: version {0}
+Opdater
+Du er opdateret.
+Minitilstand: gør vinduet til et lille ikon, der ligger øverst
+Mørk baggrund under pausen
+Fra: øjenøvelserne bevæger sig hen over din skærm i stedet for en sort baggrund.
+Om natten erstatter dette blåt lys-filteret på fanen Skærm, men kun når det er stærkere; det grønne mærke på den skyder viser det.
+Blåt lys-filter om natten
+Luk BlinkBuddy?
+I systembakken bliver den ved med at minde dig om at blinke og kigge væk og holder skærmfilteret tændt. Afslut stopper alt dette, indtil du starter den igen.
+Husk mit valg (kan ændres under Indstillinger)
+Synkroniseret med din placering i Windows
+Synkroniseret med tiden i {0}
+Synkroniserer med din placering...
+Tiden i {0}, valgt af dig
+Kunne ikke synkronisere.
+Vælg din by manuelt
+Automatisk
+Skriv din by
+Accentfarve
+Som Windows
+Hele tiden
+Pause
+Sundhed
+Spil
+Film
+Kontor
+Redigering
+Læsning
+Skærmtilstand
+Hold pc'en vågen
+I 2 timer
+Indtil jeg slår det fra
+Tid til at hvile
+Rejs dig, kig langt væk, stræk dig. Den næste fokusperiode starter bagefter.
+Hviler
+Fokustimer: {0}
+Tilstanden {0}, for appen i forgrunden
+En regel er i brug.
+Original
+Gråtoner
+Sepia
+E-blæk
+Rød nat
+Farveeffekt
+Sort-hvid
+Farveeffekter kræver motoren Standard, Smart lag eller DesktopLUT; Smart (GPU) viser dem ikke.
+Tillad koldere end dagslys (op til 10 000 K)
+Tilstande for apps
+Mens en af disse apps er i forgrunden, bruges dens tilstand.
+Tilføj en app...
+Ingen apps endnu.
+Ingen apps med et vindue er åbne.
+Fjern
+Dæmper alt undtagen et klart område, der følger musen.
+Bånd
+Kolonne
+Rektangel
+Cirkel
+Hele
+Størrelse
+Bredde
+Omrids
+Over og under
+Kun over
+Kun under
+Venstre og højre
+Kun venstre
+Kun højre
+Toning
+Følg musen
+Flyt med taster
+Ctrl+Alt med piletasterne flytter den; Ctrl+Alt med + og - ændrer størrelsen (se Tastaturgenveje i Indstillinger).
+Gør holdte taster hurtigere
+Bliv på én skærm
+Windows går ikke i dvale og slukker ikke skærmen.
+Menuen i meddelelsesområdet kan også holde den vågen i 1 eller 2 timer.
+Gennemtving pauser (ingen Spring over, Udsæt eller Esc)
+Fokustimer
+Arbejd, hvil så, igen og igen.
+Start
+Fortsæt
+Stop
+Arbejde
+Hvile
+Mens den kører, overtager den påmindelserne om at kigge væk og rejse sig; blinkepåmindelser fortsætter.
+Vis tiden til næste pause på ikonets kant
+Skærmfilter til/fra
+Lysere
+Mørkere
+Varmere (mere blåt lys-filter)
+Koldere (mindre blåt lys-filter)
+Læsestribe til/fra
+Hold pc'en vågen til/fra
+Næste skærmtilstand
+Minitilstand til/fra
+Flyt læsestriben op
+Flyt læsestriben ned
+Flyt læsestriben til venstre
+Flyt læsestriben til højre
+Gør læsestriben større
+Gør læsestriben mindre
+Tastaturgenveje
+Klik i et felt, og tryk på de taster, du vil have. Backspace fjerner en genvej. Læsestribens flyttetaster virker, mens den står stille.
+I brug
+Ingen
+Nulstil alle til standard
+Luk
+Skift...
+Flere indstillinger
+Færre indstillinger
+Vælg en farve
+Omridsfarve
+Som accentfarven
+Form
+Kant
+Blød
+Blødhed
+Dæmpede sider
+Bevægelse
+Tilføj en app
+Vælg en app
+Apps, der er åbne nu. Er den ikke på listen? Find programmet med Gennemse.
+Tilstand
+Annuller
+Tilføj
+Programmer
+Natplanen ændrer ikke en apps tilstand, så Redigering beholder ægte farver også om natten.
+Fokus
+Sat på pause
+Klar
+Prikkerne: færdige arbejdsperioder, i runder på fire
+Windows går ikke i dvale og slukker ikke skærmen. Menuen i meddelelsesområdet kan også holde den vågen i 1 eller 2 timer.
+Sat på pause, mens en farveeffekt er slået til
+Sat på pause, mens {0} er slået til
+Fold dette afsnit sammen eller ud
+Et lille ikon, der bliver liggende oven på andre vinduer.
+Skift til det med knappen ved siden af titellinjen eller ved at minimere dette vindue. Hold musen over det for hurtige indstillinger; klik på det for at komme tilbage hertil.
+Start fokustimeren

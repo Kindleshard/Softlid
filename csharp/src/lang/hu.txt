@@ -1,0 +1,389 @@
+Beállítások
+Képernyőszűrő
+Olvasósáv
+Emlékeztetők szüneteltetése
+30 percre
+1 órára
+Amíg folytatom
+Emlékeztetők folytatása
+Szünet most
+Kilépés
+{0} (az időzóna alapján)
+Képernyő
+Ütemezés
+Pislogás
+Extrák
+A fogaskerék a BlinkBuddy saját beállításait rejti
+Mini mód: ablak összecsukása egy mindig felül lévő kis szemmé
+Ctrl+Alt+Shift és F: be/ki · ↑ ↓: fényerő · ← →: melegség
+Fényerő
+Alapértelmezés visszaállítása
+Kékfényszűrő
+Halványítás a kijelző valódi háttérvilágításával
+Kijelző háttérvilágítása
+Színek invertálása
+Tónus
+Lecsendesíti a világos területeket és mélyíti a sötéteket, a fényerő felett.
+Módszer
+Tesztlabor...
+Hasonlítsa össze az összes módszert és erősséget egy tesztképen, és értékelje őket
+Normál
+Nincs késleltetés, nincs többletmunka, mindenhol működik.
+Smart (GPU)
+Legjobb kép; körülbelül egy képkocka késés, néhány watt.
+Kísérleti
+Smart réteg
+Takarékosabb; mozgáskor halvány nyomokat hagyhat.
+DesktopLUT
+Nincs késleltetés, színhű; DesktopLUT és rendszergazdai jog kell hozzá.
+Kísérleti: mindegyik feláldoz valamit
+A DesktopLUT egy különálló, ingyenes program ({0}, kb. 1 MB). A BlinkBuddy letöltheti a legújabb kiadását és beállíthatja a felhasználói mappájában. Induláskor rendszergazdai engedélyt kér, a BlinkBuddy pedig 15 másodperces ellenőrzéssel védi.
+Letöltés és beállítás
+Már megvan...
+Most nem
+Semmi sem töltődik le, amíg nem választ.
+Minden képpont környezetét nézi: a nagy világos területek lecsendesednek, a szöveg, az élek és a színek megtartják a kontrasztjukat.
+A Smart szűrő halványítása egyetlen rétegként a képernyő fölött; csak akkor rajzol újra, ha valami változott.
+Egy ingyenes program, amely színtáblát alkalmaz a Windowson belül. A BlinkBuddy őrzi: a 15 másodperces ellenőrzés, egy összeomlás-figyelő és a Ctrl+Alt+Shift+L vészgomb visszaállítja a képernyőt.
+Erősség
+Egyéni
+A görbe beállítása saját kezűleg három csúszkával (csak Normál módszer)
+Bemeneti fényerő (balról jobbra) a látott eredményhez képest (lentről felfelé)
+A fehér most {0:0}%-on áll.\nA sötét tónusok mélyülnek; a világos árnyalatok széthúzódnak, így a szöveg és a színek tiszták maradnak.
+Erősebb halványítás, ha a képernyő nagyrészt fehér
+Árnyékok sötétítése
+Csúcsfények tömörítése
+Fehér korlátozása
+{0:0}%-ra
+A DesktopLUT.exe helye
+Tallózás...
+A 15 másodperces ellenőrzés újrafuttatása
+Indítás...
+Éjszakai ütemezés
+Éjszaka fokozatosan bekapcsolja a kékfényszűrőt, reggel kikapcsolja.
+Napnyugtától napkeltéig
+Egyéni időpontok
+A napnyugta és napkelte a Windows helyadatából jön, ha engedélyezett, egyébként az időzónából.
+Bekapcsolás
+Kikapcsolás
+Átmenet hossza
+{0} ó {1:00} p
+A kezdési időpontban kezd áttűnni, és a záró időpontra teljesen visszaáll.
+Napnyugta {0}, napkelte {1} – {2}.
+Teljes erősség {0}-ig, utána fokozatos kikapcsolás {1}-ig.
+A csúcserősség a Képernyő lapon lévő kékfényszűrő.
+Pislogás-emlékeztető
+A pihent szem percenként ~15-ször pislog; a képernyőt bámulva akár csak ~5-ször.
+Emlékeztetés gyakorisága
+Pislogás stílusa
+Szem ikon
+Szemhéjak
+1 kijelző háttérvilágításának vezérlése.
+Ikon mérete
+Ikon átlátszatlansága
+Hely
+Képernyő sötétítése minden pislogáskor
+Mennyire sötét a pislogás
+Teljesen csukva
+Képernyőn lévő fátyol; a háttérvilágításhoz sosem nyúl.
+Előnézet
+Távolba nézés emlékeztető
+A 20-20-20 szabály: 20 percenként nézz 20 másodpercig 6 m-re.
+Gyakoriság
+{0} perc
+Távolba nézés ideje
+Vezetett szemtorna a szünetben
+Hang
+felolvassa a gyakorlatokat
+Képernyő sötétítése szünet alatt
+Hangjelzés a szünet elején és végén
+5+ perc távollét a géptől szünetnek számít.
+Következő szünet: {0}
+Felállás-emlékeztető
+Nagyjából óránként állj fel, mozogj és nyújts néhány percig.
+Szünet hossza
+Vezetett nyújtás animált edzővel
+bemondja a nyújtásokat
+A szünet hosszáig tartó távollét a géptől egy szünetnek számít. Az előtte lévő 2 percre eső távolba nézés szünet kimarad.
+A felállás-emlékeztetők ki vannak kapcsolva
+Felállás most
+Mindent elsötétít egy egeret követő sáv kivételével. Ctrl+Alt+Shift+R.
+Sáv magassága
+Sötétítés a sávon kívül
+Lágy szélek
+Filmszemcse
+Finom zaj az egész képernyőn, mint a filmen.
+Szemcse erőssége
+Szemcse tónusa
+Sötétebb
+Vegyes
+Világosabb
+Durvább
+Animált (több energia)
+BlinkBuddy beállításai
+Hogyan viselkedik maga a BlinkBuddy.
+Nyelv
+Mint a Windows
+Indítás a Windowszal
+Emlékeztetők szüneteltetése teljes képernyős alkalmazásokban
+Nézet
+Egyszerű
+Haladó
+Az Egyszerű nézet csak a lényeget mutatja, „Több beállítás” nélkül. Kikapcsolja a színek invertálását, a filmszemcsét, a nappali fénynél hidegebbet, az egyéni éjszakai órákat, a kötelező szüneteket és a gép ébren tartását; a tónus a Normál motort használja Gyengédtől Erősig. Az alkalmazásmódok megmaradnak, de szünetelnek.
+Mini mód
+Összecsukás szemmé
+Egy kis szem, ami mindig felül marad. Vidd fölé az egeret a fényerőhöz, a kékfényszűrőhöz, a háttérvilágításhoz (ha be van kapcsolva) és a pislogás-emlékeztetőkhöz; kattints rá, hogy ide visszatérj. Ha eltávolodsz, 65%-ra halványul.
+Halványulás késleltetése az egér eltávolítása után
+Halványulás sebessége
+Verzió: {0}
+Frissítések keresése
+Még nem volt ellenőrzés.
+Frissítések automatikus keresése (hetente)
+Minden beállítás az eredeti állapotba
+Minden beállítás visszaállítása
+Gyengéd
+Kiegyensúlyozott
+Erős
+Esc a kihagyáshoz  ·  {0}
+Üdv újra!
+Vége a szünetnek. Pislogj néhányat, és folytasd.
+Kész
+Ki
+Ki: a kékfényszűrő a Képernyő lapon beállított értéken marad.
+A Windows helymeghatározás ki van kapcsolva, és a BlinkBuddy nem ismeri az időzónádat, így nem tudja, mikor megy le a nap. Kapcsold be a helymeghatározást az asztali alkalmazásokhoz a Windows beállításaiban, vagy használj egyéni időpontokat.
+Ma nem megy le a nap itt: {0}, ezért a szűrő pihen.
+Ma nem kel fel a nap itt: {0}, ezért a szűrő bekapcsolva marad.
+Bekapcsolva {0} és {1} között.
+Pihen {0}-ig.
+Áttűnés: az út {0:0}%-a, teljes erősség {1}-kor.
+Kiúszás: {0}-kor újra normál.
+a helyed (a Windowstól)
+Elérhető a BlinkBuddy {0}
+Nyisd meg a BlinkBuddy beállításait a telepítéshez.
+Láthatóság-védelem: fényerő 100%-on, a görbe lágyítva, hogy a sötét részletek láthatók maradjanak.
+Láthatóság-védelem: a fényerő {0:0}%-on tartva (beállítva: {1}%), hogy a képernyő olvasható maradjon.
+A Windows itt nem fogad el gammagörbét (lehet, hogy be van kapcsolva a HDR), így csak az egyenletes halványítás működik.
+Emlékeztetők szüneteltetve
+Szüneteltetve eddig: {0}
+A szünetek ki vannak kapcsolva
+Következő felállás: {0}
+{0} kijelző háttérvilágításának vezérlése.
+{1} kijelzőből {0} háttérvilágításának vezérlése.
+A képernyőszűrő ki van kapcsolva, így semmi sem érvényesül.
+A tónus ki van kapcsolva. A fényerő és a kékfényszűrő továbbra is érvényes.
+Mindhárom csúszka nullán áll, így semmi sem változik.
+Most:
+Grafikon: nagy, sík terület. A részletek megtartják a kontrasztot.
+Mérés...
+Grafikon: nagy, sík terület.
+Közben a Normál módszer működik.
+Vészgomb: Ctrl+Alt+Shift+L.
+Kijelzők ellenőrzése...
+legalább {0} mp-es szünetek kellenek
+A(z) {0} verzió elérhető.
+{0} telepítése
+Ellenőrzés...
+Következik: {0}
+Még {0}:{1:00}  ·  Esc a kihagyáshoz
+A frissítések még nem érhetők el: a BlinkBuddy e példányának nincs kiadási csatornája.
+Nem sikerült beolvasni a legújabb kiadás verzióját.
+A legújabb verzió van telepítve ({0}).
+A(z) {0} verzió elérhető (neked {1} van).
+Nem sikerült frissítéseket keresni: {0}
+Ez a kiadás nem tartalmaz telepíthető BlinkBuddy.exe fájlt. Innen szerezheted be: {0}
+{0} letöltése: {1:0.0} / {2:0.0} MB
+Telepítés...
+Nem sikerült telepíteni a frissítést: {0}
+A fehér most {0:0}%-on áll, kicsit lejjebb, mert a képernyő nagyrészt világos.\nA sötét tónusok mélyülnek; a világos árnyalatok széthúzódnak, így a szöveg és a színek tiszták maradnak.
+Monitorok ellenőrzése...
+Egyik kijelző sem válaszolt. Külső monitoroknál a DDC/CI ki lehet kapcsolva a monitor menüjében.
+Az imént egyik kijelző sem válaszolt.
+Nincs átmenet
+Éles
+Azonnal
+Max
+Pislogás-emlékeztetők
+Nézz el a képernyőről
+Keress valamit legalább 6 m-re, és hagyd pihenni a szemed.
+Ideje felállni egy kicsit
+Állj fel, nyújtózz, sétálj egyet, talán töltsd újra a vizedet.
+Halasztás 5 percre
+Kihagyás
+Nézz el a képernyőről valami távoli dologra, és lazítsd el a szemed.
+Lassan nézz balra és jobbra, a fejed ne mozdítsd.
+Most lassan nézz fel és le.
+Forgasd a szemed lassú, széles körben.
+Csukd be finoman a szemed, majd pislogj lassan néhányszor.
+Ideje felállni
+Ideje felállni. Csináld velünk ezt a pár könnyű nyújtást.
+Nyújtózás felfelé
+Emeld magasra mindkét karod, és nyújtózz.
+Vállkörzés
+Lassan körözz a válladdal hátrafelé.
+Nyaknyújtás
+Finoman döntsd a fejed mindkét váll felé.
+Törzscsavarás
+Lassan fordítsd a felsőtested egyik oldalról a másikra.
+Mellkasnyitás
+Tárd szét a karod, és húzd össze a lapockáidat.
+Helyben járás
+Járj helyben, emeld a térded.
+Lábujjhegyre emelkedés
+Emelkedj lábujjhegyre, majd lassan ereszkedj le.
+Előrehajlás
+Kicsit hajlítsd be a térded, és lógj előre, hogy nyújtsd a hátad.
+Szép munka!
+Szép munka. Igyál egy korty vizet, és vissza a munkához.
+{0} mp
+Kérdezzen
+Fusson tovább a tálcán
+Kilépés a BlinkBuddyból
+Ha ezt az ablakot bezárom
+Egy kis ikon, amely a többi ablak fölött marad. A címsor melletti gombbal válthatsz rá; vidd fölé az egeret a fényerőhöz, a kékfényszűrőhöz, a háttérvilágításhoz (ha be van kapcsolva) és a pislogás-emlékeztetőkhöz, és kattints rá, hogy ide visszatérj.
+Ikon
+Szem
+Lámpa
+Nap
+Laptop
+Szem: kinyílik, ha közelítesz. Lámpa: olyan fényes, mint a képernyő. Nap: felragyog, ha közelítesz. Laptop: mutatja a képernyő fényerejét és a kékfényszűrőt.
+Az ikon időnként lágy fénnyel lélegzik
+Szín
+Frissítés érhető el: {0} verzió
+Frissítés
+Naprakész vagy.
+Mini mód: ablak kicsinyítése egy mindig felül lévő kis ikonná
+Sötét háttér a szünet alatt
+Ki: a szemgyakorlatok a képernyőd fölött mozognak fekete háttér helyett.
+Éjszaka ez váltja a Képernyő lap kékfényszűrőjét, de csak ha erősebb; a csúszkán lévő zöld jel mutatja.
+Kékfényszűrő éjszaka
+Bezárod a BlinkBuddyt?
+A tálcán tovább emlékeztet a pislogásra és a távolba nézésre, és bekapcsolva tartja a képernyőszűrőt. A kilépés mindezt leállítja, amíg újra el nem indítod.
+Választás megjegyzése (a Beállításokban módosítható)
+Szinkronizálva a Windows-helyadatoddal
+Szinkronizálva ezzel az idővel: {0}
+Szinkronizálás a helyeddel...
+{0} ideje, általad választva
+Nem sikerült szinkronizálni.
+Válaszd ki a városodat kézzel
+Automatikus
+Írd be a városod
+Kiemelőszín
+Mint a Windows
+Folyamatos
+Szünet
+Egészség
+Játék
+Film
+Iroda
+Szerkesztés
+Olvasás
+Képernyőmód
+Gép ébren tartása
+2 órára
+Amíg ki nem kapcsolom
+Ideje pihenni
+Állj fel, nézz a távolba, nyújtózz. Utána indul a következő fókuszidő.
+Pihenés
+Fókuszidőzítő: {0}
+{0} mód, az előtérben lévő alkalmazáshoz
+Egy szabály érvényben van.
+Eredeti
+Szürkeárnyalat
+Szépia
+E-ink
+Vörös éjszaka
+Színeffektus
+Fekete-fehér
+A színeffektusokhoz a Normál, Okos réteg vagy DesktopLUT motor kell; a Smart (GPU) nem jeleníti meg őket.
+Nappali fénynél hidegebb engedélyezése (10 000 K-ig)
+Módok alkalmazásokhoz
+Amíg ezek egyike van előtérben, annak módja érvényes.
+Alkalmazás hozzáadása...
+Még nincs alkalmazás.
+Nincs nyitva ablakos alkalmazás.
+Eltávolítás
+Mindent elsötétít, kivéve egy tiszta területet, amely követi az egeret.
+Sáv
+Oszlop
+Téglalap
+Kör
+Teljes
+Méret
+Szélesség
+Körvonal
+Felül és alul
+Csak felül
+Csak alul
+Bal és jobb oldalt
+Csak balra
+Csak jobbra
+Színárnyalat
+Egér követése
+Mozgatás billentyűkkel
+A Ctrl+Alt és a nyilak mozgatják; a Ctrl+Alt és a + és - a méretét változtatja (lásd a Billentyűparancsokat a Beállításokban).
+Nyomva tartott billentyűk gyorsítása
+Maradjon egy monitoron
+A Windows nem alszik el és nem kapcsolja ki a képernyőt.
+A tálcamenü is ébren tarthatja 1 vagy 2 órára.
+Kötelező szünetek (nincs Kihagyás, Szundi vagy Esc)
+Fókuszidőzítő
+Munka, aztán pihenés, újra és újra.
+Indítás
+Folytatás
+Leállítás
+Munka
+Pihenő
+Amíg fut, átveszi a távolba nézés és felállás emlékeztetőit; a pislogási emlékeztetők folytatódnak.
+A következő szünetig hátralévő idő az ikon szélén
+Képernyőszűrő be/ki
+Világosabb
+Sötétebb
+Melegebb (több kékfényszűrés)
+Hidegebb (kevesebb kékfényszűrés)
+Olvasósáv be/ki
+Gép ébren tartása be/ki
+Következő képernyőmód
+Mini mód be/ki
+Olvasósáv fel
+Olvasósáv le
+Olvasósáv balra
+Olvasósáv jobbra
+Olvasósáv nagyítása
+Olvasósáv kicsinyítése
+Billentyűparancsok
+Kattints egy mezőre, és nyomd le a kívánt billentyűket. A Backspace törli a parancsot. Az olvasósáv mozgatógombjai akkor működnek, ha a sáv egy helyben marad.
+Foglalt
+Nincs
+Mind alapértelmezettre
+Bezárás
+Módosítás...
+Több beállítás
+Kevesebb beállítás
+Szín választása
+Körvonal színe
+Mint a kiemelőszín
+Alak
+Szél
+Lágy
+Lágyság
+Elsötétített oldalak
+Mozgás
+Alkalmazás hozzáadása
+Válassz alkalmazást
+A most megnyitott alkalmazások. Nincs a listában? Keresd meg a programját a Tallózással.
+Mód
+Mégse
+Hozzáadás
+Programok
+Az éjszakai ütemezés nem változtatja meg egy alkalmazás módját, így a Szerkesztés éjjel is valódi színeket mutat.
+Fókusz
+Szüneteltetve
+Kész
+A pöttyök: befejezett munkaszakaszok, négyes körökben
+A Windows nem alszik el és nem kapcsolja ki a képernyőt. A tálcamenü is ébren tarthatja 1 vagy 2 órára.
+Szünetel, amíg színeffektus van bekapcsolva
+Szünetel, amíg a(z) {0} be van kapcsolva
+Szakasz összecsukása vagy kibontása
+Egy kis ikon, amely a többi ablak fölött marad.
+Válts rá a címsor melletti gombbal vagy az ablak kis méretre állításával. Vidd fölé az egeret a gyors beállításokhoz; kattints rá, hogy ide visszatérj.
+Fókuszidőzítő indítása
