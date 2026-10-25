@@ -1,0 +1,3 @@
+# Build output (build.ps1 makes it again)
+build/
+bin/

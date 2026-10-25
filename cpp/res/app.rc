@@ -1,0 +1,29 @@
+// The exe's icon, manifest and translations.
+#include <windows.h>
+#include "resource.h"
+
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "app.manifest"
+IDI_APP ICON "BlinkBuddy.ico"
+
+// One per language, named LANG_<code>; each line matches the same line of en.txt (see src/core/Lang.cpp).
+LANG_CS RCDATA "lang/cs.txt"
+LANG_DA RCDATA "lang/da.txt"
+LANG_DE RCDATA "lang/de.txt"
+LANG_EL RCDATA "lang/el.txt"
+LANG_EN RCDATA "lang/en.txt"
+LANG_ES RCDATA "lang/es.txt"
+LANG_FI RCDATA "lang/fi.txt"
+LANG_FR RCDATA "lang/fr.txt"
+LANG_HU RCDATA "lang/hu.txt"
+LANG_IT RCDATA "lang/it.txt"
+LANG_JA RCDATA "lang/ja.txt"
+LANG_KO RCDATA "lang/ko.txt"
+LANG_NL RCDATA "lang/nl.txt"
+LANG_PL RCDATA "lang/pl.txt"
+LANG_PT RCDATA "lang/pt.txt"
+LANG_RO RCDATA "lang/ro.txt"
+LANG_RU RCDATA "lang/ru.txt"
+LANG_SV RCDATA "lang/sv.txt"
+LANG_TR RCDATA "lang/tr.txt"
+LANG_UK RCDATA "lang/uk.txt"
+LANG_ZH RCDATA "lang/zh.txt"

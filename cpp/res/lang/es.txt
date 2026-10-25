@@ -1,0 +1,389 @@
+Configuración
+Filtro de pantalla
+Franja de lectura
+Pausar recordatorios
+Durante 30 minutos
+Durante 1 hora
+Hasta que los reanude
+Reanudar recordatorios
+Tomar un descanso ahora
+Salir
+{0} (según tu zona horaria)
+Pantalla
+Horario
+Parpadeo
+Extras
+El engranaje contiene las opciones de BlinkBuddy
+Modo mini: plegar esta ventana en un pequeño ojo siempre visible
+Ctrl+Alt+Mayús con F: activar/desactivar · ↑ ↓: brillo · ← →: calidez
+Brillo
+Restablecer valor predeterminado
+Filtro de luz azul
+Atenuar con la retroiluminación real de la pantalla
+Retroiluminación
+Invertir colores
+Tono
+Suaviza las zonas claras y profundiza las oscuras, además del brillo.
+Motor
+Laboratorio de prueba...
+Compara cada motor e intensidad en una imagen de prueba y valóralos
+Estándar
+Sin retraso, sin trabajo extra, funciona en todas partes.
+Smart (GPU)
+La mejor imagen; alrededor de un fotograma de retraso, unos vatios.
+Experimental
+Capa Smart
+Consume menos; puede dejar estelas leves al moverse.
+DesktopLUT
+Sin retraso, fiel al tono; requiere DesktopLUT y permisos de administrador.
+Experimental: cada uno sacrifica algo
+DesktopLUT es un programa gratuito aparte ({0}, alrededor de 1 MB). BlinkBuddy puede descargar su última versión e instalarla en tu carpeta de usuario. Pide permisos de administrador al iniciarse, y BlinkBuddy lo protege con una comprobación de 15 segundos.
+Descargar e instalar
+Ya lo tengo...
+Ahora no
+No se descarga nada hasta que lo elijas.
+Analiza el entorno de cada píxel: las grandes zonas claras se suavizan mientras el texto, los bordes y los colores mantienen su contraste.
+La atenuación del filtro Smart como una capa sobre la pantalla; solo se redibuja cuando algo cambia.
+Un programa gratuito que aplica una tabla de colores dentro de Windows. BlinkBuddy lo protege: una comprobación de 15 segundos, un vigilante de fallos y la tecla de pánico Ctrl+Alt+Mayús+L restauran la pantalla.
+Intensidad
+Personalizado
+Ajusta la curva tú mismo con tres controles (solo motor Estándar)
+Brillo de entrada (de izquierda a derecha) frente a lo que ves (de abajo arriba)
+Los blancos están al {0:0} % ahora.\nLos tonos oscuros se hacen más profundos; los tonos claros se separan, así el texto y los colores siguen nítidos.
+Atenuar más cuando la pantalla es casi toda blanca
+Oscurecer sombras
+Comprimir luces
+Limitar blancos
+al {0:0} %
+Ubicación de DesktopLUT.exe
+Examinar...
+Repetir la comprobación de 15 segundos
+Iniciando...
+Horario nocturno
+Activa gradualmente el filtro de luz azul por la noche y lo retira por la mañana.
+Del atardecer al amanecer
+Horas personalizadas
+El atardecer y el amanecer vienen de tu ubicación en Windows si está permitida y, si no, de tu zona horaria.
+Activar a las
+Desactivar a las
+Transición durante
+{0} h {1:00} min
+Empieza la transición a la hora de inicio y todo vuelve a la normalidad a la hora de fin.
+Atardecer {0}, amanecer {1} en {2}.
+Intensidad máxima hasta las {0}, luego se retira gradualmente hasta las {1}.
+La intensidad máxima es la del filtro de luz azul en la pestaña Pantalla.
+Recordatorio de parpadeo
+Los ojos relajados parpadean ~15 veces por minuto; mirando una pantalla, a veces solo ~5.
+Recordarme cada
+Estilo de parpadeo
+Icono de ojo
+Párpados
+Controlando la retroiluminación de 1 pantalla.
+Tamaño del icono
+Opacidad del icono
+Posición
+Oscurecer la pantalla con cada parpadeo
+Cuánto se oscurece el parpadeo
+Totalmente cerrado
+Un velo en pantalla; la retroiluminación nunca se toca.
+Vista previa
+Recordatorio para mirar lejos
+La regla 20-20-20: cada 20 min, mira a 6 m de distancia durante 20 s.
+Cada
+{0} min
+Mirar lejos durante
+Ejercicios oculares guiados durante el descanso
+Voz
+lee cada ejercicio en voz alta
+Oscurecer la pantalla durante los descansos
+Sonido al empezar y terminar un descanso
+Estar lejos del PC 5+ minutos cuenta como descanso.
+Próximo descanso en {0}
+Recordatorio para levantarse
+Más o menos cada hora, levántate, muévete y estírate unos minutos.
+Duración del descanso
+Estiramientos guiados con un entrenador animado
+anuncia cada estiramiento en voz alta
+Estar lejos del PC durante la duración del descanso cuenta como uno. Se omite un descanso para mirar lejos previsto en los 2 minutos anteriores.
+Los recordatorios para levantarse están desactivados
+Levantarse ahora
+Oscurece todo menos una franja que sigue al ratón. Ctrl+Alt+Mayús+R.
+Altura de la franja
+Oscurecer fuera de la franja
+Bordes suaves
+Grano de película
+Un ruido fino sobre toda la pantalla, como en el cine.
+Intensidad del grano
+Tono del grano
+Más oscuro
+Mixto
+Más claro
+Más grueso
+Animado (más consumo)
+Opciones de BlinkBuddy
+Cómo se comporta BlinkBuddy.
+Idioma
+Igual que Windows
+Iniciar con Windows
+Pausar recordatorios en aplicaciones a pantalla completa
+Vista
+Sencilla
+Avanzada
+Sencilla muestra solo lo esencial, sin «Más opciones». Desactiva Invertir colores, el grano de película, más frío que la luz del día, las horas nocturnas personalizadas, los descansos forzados y mantener el PC despierto; el tono usa el motor Estándar de Suave a Fuerte. Los modos para apps se guardan pero quedan en pausa.
+Modo mini
+Plegar en el ojo
+Un pequeño ojo siempre visible. Pasa el ratón por encima para el brillo, el filtro de luz azul, la retroiluminación (si está activa) y los recordatorios de parpadeo; haz clic para volver aquí. Al alejarte, se atenúa al 65 %.
+Retraso del desvanecido tras pasar el ratón
+Velocidad del desvanecido
+Versión {0}
+Buscar actualizaciones
+Aún no se ha comprobado.
+Buscar actualizaciones automáticamente (semanalmente)
+Todos los ajustes como al principio
+Restablecer todos los ajustes
+Suave
+Equilibrado
+Fuerte
+Esc para saltar  ·  {0}
+¡Bienvenido de nuevo!
+Descanso terminado. Parpadea unas veces y sigue.
+Hecho
+Desactivado
+Desactivado: el filtro de luz azul se queda como en la pestaña Pantalla.
+La ubicación de Windows está desactivada y BlinkBuddy no conoce tu zona horaria, así que no puede saber cuándo se pone el sol. Activa la ubicación para aplicaciones de escritorio en la Configuración de Windows o usa horas personalizadas.
+Hoy el sol no se pone en {0}, así que el filtro descansa.
+Hoy el sol no sale en {0}, así que el filtro sigue activo.
+Activo de {0} a {1}.
+En reposo hasta las {0}.
+Entrando: {0:0} % del camino, intensidad máxima a las {1}.
+Retirándose: vuelve a la normalidad a las {0}.
+tu ubicación (según Windows)
+BlinkBuddy {0} está disponible
+Abre las opciones de BlinkBuddy para instalarlo.
+Protección de visibilidad: brillo al 100 % y curva suavizada para que los detalles oscuros sigan visibles.
+Protección de visibilidad: brillo mantenido al {0:0} % (ajustado al {1} %) para que la pantalla siga legible.
+Windows no acepta una curva gamma aquí (puede que el HDR esté activado), así que solo actúa la atenuación uniforme.
+Recordatorios en pausa
+En pausa hasta las {0}
+Los descansos están desactivados
+Próximo levantarse en {0}
+Controlando la retroiluminación de {0} pantallas.
+Controlando la retroiluminación de {0} de {1} pantallas.
+El filtro de pantalla está desactivado, así que no se aplica nada.
+El tono está desactivado. El brillo y el filtro de luz azul siguen aplicándose.
+Los tres controles están a cero, así que nada cambia.
+Ahora mismo:
+Gráfico: una gran zona plana. Los detalles mantienen su contraste.
+Midiendo...
+Gráfico: una gran zona plana.
+Mientras tanto se usa Estándar.
+Tecla de pánico: Ctrl+Alt+Mayús+L.
+Comprobando tus pantallas...
+necesita descansos de {0} s o más
+La versión {0} está disponible.
+Instalar {0}
+Comprobando...
+Siguiente: {0}
+Quedan {0}:{1:00}  ·  Esc para saltar
+Las actualizaciones aún no están disponibles: esta copia de BlinkBuddy no tiene canal de publicación.
+No se pudo leer la versión de la última publicación.
+Tienes la última versión ({0}).
+La versión {0} está disponible (tienes la {1}).
+No se pudieron buscar actualizaciones: {0}
+Esta publicación no incluye un BlinkBuddy.exe para instalar. Consíguelo aquí: {0}
+Descargando {0}: {1:0.0} de {2:0.0} MB
+Instalando...
+No se pudo instalar la actualización: {0}
+Los blancos están al {0:0} % ahora, un poco más bajos porque la pantalla es casi toda clara.\nLos tonos oscuros se hacen más profundos; los tonos claros se separan, así el texto y los colores siguen nítidos.
+Comprobando tus monitores...
+Ninguna pantalla respondió. En monitores externos, puede que DDC/CI esté desactivado en el menú del monitor.
+Ninguna pantalla respondió hace un momento.
+Sin transición
+Nítido
+Al instante
+Máx
+Recordatorios de parpadeo
+Aparta la vista de la pantalla
+Busca algo a al menos 6 m y deja que tus ojos se relajen.
+Hora de levantarse
+Levántate, estírate, camina un poco, quizá rellena tu agua.
+Posponer 5 min
+Saltar
+Aparta la vista de la pantalla, hacia algo lejano, y relaja los ojos.
+Mira despacio a la izquierda y a la derecha, sin mover la cabeza.
+Ahora mira despacio arriba y abajo.
+Gira los ojos en un círculo lento y amplio.
+Cierra los ojos con suavidad y luego parpadea despacio unas veces.
+Hora de levantarse
+Hora de levantarse. Sigue unos estiramientos sencillos.
+Estiramiento hacia arriba
+Sube los dos brazos bien alto y estírate.
+Giros de hombros
+Gira los hombros despacio hacia atrás.
+Estiramiento de cuello
+Inclina la cabeza con suavidad hacia cada hombro.
+Giro de torso
+Gira despacio la parte superior del cuerpo de un lado a otro.
+Apertura de pecho
+Abre bien los brazos y junta los omóplatos.
+Marcha en el sitio
+Marcha en el sitio levantando las rodillas.
+Elevación de talones
+Ponte de puntillas y luego baja despacio.
+Flexión hacia delante
+Flexiona un poco las rodillas y déjate caer hacia delante para estirar la espalda.
+¡Buen trabajo!
+Buen trabajo. Toma un sorbo de agua y a seguir.
+{0} s
+Preguntarme
+Seguir en la bandeja del sistema
+Salir de BlinkBuddy
+Al cerrar esta ventana
+Un pequeño icono que se queda sobre las demás ventanas. Cambia a él con el botón junto a la barra de título; pasa el ratón por encima para el brillo, el filtro de luz azul, la retroiluminación (si está activa) y los recordatorios de parpadeo, y haz clic para volver aquí.
+Icono
+Ojo
+Lámpara
+Sol
+Portátil
+Ojo: se abre al acercarte. Lámpara: tan brillante como la pantalla. Sol: brilla al acercarte. Portátil: muestra el brillo de la pantalla y el filtro de luz azul.
+El icono respira de vez en cuando con un brillo suave
+Color
+Actualización disponible: versión {0}
+Actualizar
+Estás al día.
+Modo mini: reducir esta ventana a un pequeño icono siempre visible
+Fondo oscuro durante el descanso
+Desactivado: los ejercicios oculares se mueven sobre tu pantalla en lugar de un fondo negro.
+Por la noche esto sustituye al filtro de luz azul de la pestaña Pantalla, pero solo si es más fuerte; la marca verde de ese control lo indica.
+Filtro de luz azul por la noche
+¿Cerrar BlinkBuddy?
+En la bandeja sigue recordándote parpadear y mirar lejos, y mantiene el filtro de pantalla. Salir detiene todo eso hasta que lo vuelvas a abrir.
+Recordar mi elección (puedes cambiarla en Opciones)
+Sincronizado con tu ubicación de Windows
+Sincronizado con la hora de {0}
+Sincronizando con tu ubicación...
+Hora de {0}, elegida por ti
+No se pudo sincronizar.
+Elige tu ciudad manualmente
+Automático
+Escribe tu ciudad
+Color de énfasis
+Igual que Windows
+Continuo
+Pausa
+Salud
+Juego
+Película
+Oficina
+Edición
+Lectura
+Modo de pantalla
+Mantener el PC despierto
+Durante 2 horas
+Hasta que lo apague
+Hora de descansar
+Levántate, mira a lo lejos, estírate. El siguiente periodo de concentración empieza después.
+Descansando
+Temporizador de concentración: {0}
+Modo {0}, para la app en primer plano
+Hay una regla activa.
+Original
+Escala de grises
+Sepia
+Tinta electrónica
+Noche roja
+Efecto de color
+Blanco y negro
+Los efectos de color necesitan el motor Estándar, Capa inteligente o DesktopLUT; Smart (GPU) no los muestra.
+Permitir más frío que la luz del día (hasta 10 000 K)
+Modos para apps
+Mientras una de estas apps está en primer plano, se usa su modo.
+Añadir una app...
+Aún no hay apps.
+No hay apps con ventana abiertas.
+Quitar
+Oscurece todo salvo una zona clara que sigue al ratón.
+Banda
+Columna
+Rectángulo
+Círculo
+Completo
+Tamaño
+Ancho
+Contorno
+Arriba y abajo
+Solo arriba
+Solo abajo
+Izquierda y derecha
+Solo izquierda
+Solo derecha
+Tinte
+Seguir el ratón
+Mover con teclas
+Ctrl+Alt con las flechas la mueve; Ctrl+Alt con + y - cambia su tamaño (ver Atajos de teclado en Opciones).
+Acelerar teclas mantenidas
+Quedarse en un monitor
+Windows no se suspenderá ni apagará la pantalla.
+El menú de la bandeja también puede mantenerlo despierto 1 o 2 horas.
+Forzar descansos (sin Saltar, Posponer ni Esc)
+Temporizador de concentración
+Trabaja, luego descansa, una y otra vez.
+Iniciar
+Reanudar
+Detener
+Trabajo
+Descanso
+Mientras funciona, sustituye a los recordatorios de mirar a lo lejos y levantarse; los de parpadeo siguen.
+Mostrar el tiempo hasta el próximo descanso en el borde del icono
+Activar/desactivar filtro de pantalla
+Más brillo
+Menos brillo
+Más cálido (más filtro de luz azul)
+Más frío (menos filtro de luz azul)
+Activar/desactivar franja de lectura
+Activar/desactivar mantener el PC despierto
+Siguiente modo de pantalla
+Activar/desactivar modo mini
+Subir la franja de lectura
+Bajar la franja de lectura
+Mover la franja de lectura a la izquierda
+Mover la franja de lectura a la derecha
+Agrandar la franja de lectura
+Achicar la franja de lectura
+Atajos de teclado
+Haz clic en una casilla y pulsa las teclas que quieras. Retroceso quita un atajo. Las teclas para mover la franja de lectura funcionan mientras se queda quieta.
+En uso
+Ninguno
+Restablecer todo
+Cerrar
+Cambiar...
+Más opciones
+Menos opciones
+Elegir un color
+Color del contorno
+Igual que el acento
+Forma
+Borde
+Suave
+Suavidad
+Lados oscurecidos
+Movimiento
+Añadir una app
+Elige una app
+Apps abiertas ahora. ¿No está en la lista? Busca su programa con Examinar.
+Modo
+Cancelar
+Añadir
+Programas
+El horario nocturno no cambia el modo de una app, así que Edición mantiene el color real también de noche.
+Concentración
+En pausa
+Listo
+Los puntos: periodos de trabajo completados, en rondas de cuatro
+Windows no se suspenderá ni apagará la pantalla. El menú de la bandeja también puede mantenerlo despierto 1 o 2 horas.
+En pausa mientras haya un efecto de color
+En pausa mientras {0} esté activo
+Contraer o expandir esta sección
+Un icono pequeño que se queda encima de las demás ventanas.
+Cambia a él con el botón junto a la barra de título o minimizando esta ventana. Pasa el ratón por encima para los controles rápidos; haz clic para volver aquí.
+Iniciar el temporizador de concentración

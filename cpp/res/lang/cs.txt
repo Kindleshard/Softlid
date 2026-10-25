@@ -1,0 +1,389 @@
+Nastavení
+Filtr obrazovky
+Čtecí pruh
+Pozastavit připomínky
+Na 30 minut
+Na 1 hodinu
+Dokud neobnovím
+Obnovit připomínky
+Udělat přestávku hned
+Ukončit
+{0} (podle časového pásma)
+Obrazovka
+Plán
+Mrkání
+Doplňky
+Ozubené kolo skrývá možnosti samotného BlinkBuddy
+Mini režim: složit toto okno do malého oka, které je vždy navrchu
+Ctrl+Alt+Shift s F: zap/vyp · ↑ ↓: jas · ← →: teplota
+Jas
+Obnovit výchozí
+Filtr modrého světla
+Ztlumit skutečným podsvícením displeje
+Podsvícení displeje
+Invertovat barvy
+Tón
+Zklidní světlé plochy a prohloubí tmavé, navíc k jasu.
+Metoda
+Testovací laboratoř...
+Porovnejte každou metodu a sílu na testovacím obrázku a ohodnoťte je
+Standardní
+Bez zpoždění, bez práce navíc, funguje všude.
+Smart (GPU)
+Nejlepší obraz; asi jeden snímek zpoždění, pár wattů.
+Experimentální
+Smart vrstva
+Úspornější; při pohybu může zanechávat slabé stopy.
+DesktopLUT
+Bez zpoždění, věrné odstíny; vyžaduje DesktopLUT a práva správce.
+Experimentální: každá něco obětuje
+DesktopLUT je samostatný bezplatný program ({0}, asi 1 MB). BlinkBuddy může stáhnout jeho nejnovější verzi a nainstalovat ji do vaší uživatelské složky. Při spuštění žádá o práva správce a BlinkBuddy ho jistí 15sekundovou kontrolou.
+Stáhnout a nainstalovat
+Už ho mám...
+Teď ne
+Nic se nestáhne, dokud to nevyberete.
+Sleduje okolí každého pixelu: velké světlé plochy se zklidní, zatímco text, hrany a barvy si zachovají kontrast.
+Ztlumení filtru Smart jako jedna vrstva přes obrazovku; překresluje se, jen když se něco změní.
+Bezplatný program, který uvnitř Windows použije tabulku barev. BlinkBuddy ho jistí: 15sekundová kontrola, hlídač pádů a nouzová klávesa Ctrl+Alt+Shift+L obrazovku vrátí.
+Síla
+Vlastní
+Nastavte křivku sami třemi posuvníky (jen Standardní metoda)
+Vstupní jas (zleva doprava) oproti tomu, co vidíte (zdola nahoru)
+Bílá je teď na {0:0} %.\nTmavé tóny se prohloubí; světlé odstíny se od sebe oddálí, takže text a barvy zůstanou zřetelné.
+Ztlumit víc, když je obrazovka většinou bílá
+Ztmavit stíny
+Stlačit světla
+Omezit bílou
+na {0:0} %
+Umístění DesktopLUT.exe
+Procházet...
+Spustit 15sekundovou kontrolu znovu
+Spouštění...
+Noční plán
+Večer postupně zapne filtr modrého světla a ráno ho zase vypne.
+Od západu do východu slunce
+Vlastní časy
+Západ a východ slunce se berou z vaší polohy ve Windows, pokud je povolená, jinak z časového pásma.
+Zapnout v
+Vypnout v
+Přechod během
+{0} h {1:00} min
+Přechod začíná v počáteční čas a v koncový čas je vše zase normální.
+Západ slunce {0}, východ {1} – {2}.
+Plná síla do {0}, pak postupné vypínání do {1}.
+Nejvyšší síla je filtr modrého světla na kartě Obrazovka.
+Připomínka mrkání
+Uvolněné oči mrknou ~15krát za minutu; při zírání do obrazovky jen asi ~5krát.
+Připomenout každých
+Styl mrknutí
+Ikona oka
+Víčka
+Ovládání podsvícení 1 displeje.
+Velikost ikony
+Krytí ikony
+Poloha
+Ztmavit obrazovku při každém mrknutí
+Jak tmavé mrknutí bude
+Úplně zavřené
+Závoj na obrazovce; podsvícení displeje se nikdy nemění.
+Náhled
+Připomínka pohledu do dálky
+Pravidlo 20-20-20: každých 20 min se 20 s dívejte na něco 6 m daleko.
+Každých
+{0} min
+Dívat se do dálky
+Řízená cvičení očí během přestávky
+Hlas
+čte každé cvičení nahlas
+Ztmavit obrazovku během přestávek
+Zvuk na začátku a konci přestávky
+5+ minut mimo počítač se počítá jako přestávka.
+Další přestávka za {0}
+Připomínka vstát
+Zhruba každou hodinu vstaňte, projděte se a pár minut se protahujte.
+Délka přestávky
+Řízené protahování s animovaným trenérem
+ohlásí každý cvik nahlas
+Pobyt mimo počítač po dobu přestávky se počítá jako jedna. Přestávka na pohled do dálky v posledních 2 minutách před ní se vynechá.
+Připomínky vstát jsou vypnuté
+Vstát hned
+Ztmaví vše kromě pruhu, který sleduje myš. Ctrl+Alt+Shift+R.
+Výška pruhu
+Ztmavení mimo pruh
+Měkké okraje
+Filmové zrno
+Jemný šum přes celou obrazovku, jako na filmu.
+Síla zrna
+Tón zrna
+Tmavší
+Smíšené
+Světlejší
+Hrubší
+Animované (víc energie)
+Možnosti BlinkBuddy
+Jak se chová samotný BlinkBuddy.
+Jazyk
+Podle Windows
+Spouštět s Windows
+Pozastavit připomínky v aplikacích na celou obrazovku
+Zobrazení
+Jednoduché
+Pokročilé
+Jednoduché zobrazení ukazuje jen to podstatné, bez „Další možnosti“. Vypne invertování barev, filmové zrno, chladnější než denní světlo, vlastní noční hodiny, vynucené přestávky a nenechat PC usnout; tón používá modul Standardní od Jemného po Silný. Režimy pro aplikace zůstanou uložené, ale pozastavené.
+Mini režim
+Složit do oka
+Malé oko, které je vždy navrchu. Najeďte na něj pro jas, filtr modrého světla, podsvícení (pokud je zapnuté) a připomínky mrkání; kliknutím se vrátíte sem. Když odejdete, vybledne na 65 %.
+Prodleva vyblednutí po najetí
+Rychlost vyblednutí
+Verze {0}
+Zkontrolovat aktualizace
+Zatím nezkontrolováno.
+Kontrolovat aktualizace automaticky (každý týden)
+Všechna nastavení jako na začátku
+Obnovit všechna nastavení
+Jemná
+Vyvážená
+Silná
+Esc pro přeskočení  ·  {0}
+Vítejte zpět!
+Přestávka skončila. Párkrát mrkněte a pokračujte.
+Hotovo
+Vyp.
+Vyp.: filtr modrého světla zůstane podle karty Obrazovka.
+Poloha ve Windows je vypnutá a BlinkBuddy nezná vaše časové pásmo, takže neví, kdy zapadá slunce. Zapněte polohu pro desktopové aplikace v Nastavení Windows, nebo použijte vlastní časy.
+Slunce dnes v {0} nezapadá, takže filtr odpočívá.
+Slunce dnes v {0} nevychází, takže filtr zůstává zapnutý.
+Zapnuto od {0} do {1}.
+Odpočívá do {0}.
+Náběh: {0:0} % cesty, plná síla v {1}.
+Doběh: zpět k normálu v {0}.
+vaše poloha (z Windows)
+BlinkBuddy {0} je k dispozici
+Otevřete možnosti BlinkBuddy a nainstalujte ho.
+Ochrana viditelnosti: jas na 100 % a křivka zjemněná, aby tmavé detaily zůstaly vidět.
+Ochrana viditelnosti: jas držen na {0:0} % (nastaveno {1} %), aby obrazovka zůstala čitelná.
+Windows tu nepřijme gama křivku (možná je zapnuté HDR), takže funguje jen rovnoměrné ztlumení.
+Připomínky pozastaveny
+Pozastaveno do {0}
+Přestávky jsou vypnuté
+Další vstávání za {0}
+Ovládání podsvícení {0} displejů.
+Ovládání podsvícení {0} z {1} displejů.
+Filtr obrazovky je vypnutý, takže se nic nepoužije.
+Tón je vypnutý. Jas a filtr modrého světla platí dál.
+Všechny tři posuvníky jsou na nule, takže se nic nemění.
+Právě teď:
+Graf: velká plochá oblast. Detaily si zachovají kontrast.
+Měření...
+Graf: velká plochá oblast.
+Mezitím se používá Standardní.
+Nouzová klávesa: Ctrl+Alt+Shift+L.
+Kontrola displejů...
+vyžaduje přestávky aspoň {0} s
+Verze {0} je k dispozici.
+Nainstalovat {0}
+Kontroluje se...
+Další: {0}
+Zbývá {0}:{1:00}  ·  Esc pro přeskočení
+Aktualizace zatím nejsou k dispozici: tato kopie BlinkBuddy nemá kanál vydání.
+Nepodařilo se přečíst verzi posledního vydání.
+Máte nejnovější verzi ({0}).
+Verze {0} je k dispozici (máte {1}).
+Aktualizace se nepodařilo zkontrolovat: {0}
+Toto vydání neobsahuje BlinkBuddy.exe k instalaci. Stáhněte ho zde: {0}
+Stahování {0}: {1:0.0} z {2:0.0} MB
+Instaluje se...
+Aktualizaci se nepodařilo nainstalovat: {0}
+Bílá je teď na {0:0} %, o něco níž, protože obrazovka je převážně světlá.\nTmavé tóny se prohloubí; světlé odstíny se od sebe oddálí, takže text a barvy zůstanou zřetelné.
+Kontrola monitorů...
+Žádný displej neodpověděl. U externích monitorů může být DDC/CI v nabídce monitoru vypnuté.
+Před chvílí neodpověděl žádný displej.
+Bez přechodu
+Ostré
+Okamžitě
+Max
+Připomínky mrkání
+Odvraťte zrak od obrazovky
+Najděte něco aspoň 6 m daleko a nechte oči odpočinout.
+Čas na přestávku a protažení
+Vstaňte, protáhněte se, projděte se, třeba si dolijte vodu.
+Odložit o 5 min
+Přeskočit
+Odvraťte zrak od obrazovky na něco daleko a nechte oči změknout.
+Pomalu se dívejte doleva a doprava, hlavou nehýbejte.
+Teď se pomalu dívejte nahoru a dolů.
+Kružte očima pomalu a široce.
+Jemně zavřete oči a pak několikrát pomalu mrkněte.
+Čas vstát
+Čas vstát. Zacvičte si pár snadných protažení.
+Natažení nahoru
+Zvedněte obě paže vysoko nahoru a protáhněte se.
+Kroužení rameny
+Pomalu kružte rameny dozadu.
+Protažení krku
+Jemně nakláněte hlavu ke každému rameni.
+Rotace trupu
+Pomalu otáčejte horní částí těla ze strany na stranu.
+Otevření hrudníku
+Roztáhněte paže a stáhněte lopatky k sobě.
+Pochod na místě
+Pochodujte na místě a zvedejte kolena.
+Výpony na špičky
+Vystupte na špičky a pak pomalu klesněte.
+Předklon
+Mírně pokrčte kolena a nechte se svěsit dopředu, abyste protáhli záda.
+Skvělá práce!
+Skvělá práce. Napijte se vody a zpátky do práce.
+{0} s
+Zeptat se
+Běžet dál v oznamovací oblasti
+Ukončit BlinkBuddy
+Když se toto okno zavře
+Malá ikona, která zůstává nad ostatními okny. Přepněte na ni tlačítkem vedle záhlaví; najeďte na ni pro jas, filtr modrého světla, podsvícení (pokud je zapnuté) a připomínky mrkání a kliknutím se vraťte sem.
+Ikona
+Oko
+Lampa
+Slunce
+Notebook
+Oko: otevře se, když se přiblížíte. Lampa: svítí jako obrazovka. Slunce: rozzáří se, když se přiblížíte. Notebook: ukazuje jas obrazovky a filtr modrého světla.
+Ikona občas dýchá jemnou září
+Barva
+K dispozici je aktualizace: verze {0}
+Aktualizovat
+Máte aktuální verzi.
+Mini režim: zmenšit toto okno na malou ikonu, která je navrchu
+Tmavé pozadí během přestávky
+Vyp.: cvičení očí se pohybují po vaší obrazovce místo na černém pozadí.
+V noci toto nahrazuje filtr modrého světla na kartě Obrazovka, ale jen když je silnější; ukazuje to zelená značka na tom posuvníku.
+Filtr modrého světla v noci
+Zavřít BlinkBuddy?
+V oznamovací oblasti vám dál připomíná mrkat a dívat se do dálky a nechává zapnutý filtr obrazovky. Ukončení to vše zastaví, dokud ho znovu nespustíte.
+Zapamatovat si volbu (lze změnit v Možnostech)
+Synchronizováno s polohou ve Windows
+Synchronizováno s časem {0}
+Synchronizace s vaší polohou...
+Čas {0}, zvolený vámi
+Synchronizace se nezdařila.
+Vyberte město ručně
+Automaticky
+Napište své město
+Barva zvýraznění
+Podle Windows
+Nepřetržitě
+Pozastavit
+Zdraví
+Hra
+Film
+Kancelář
+Úpravy
+Čtení
+Režim obrazovky
+Nenechat PC usnout
+Na 2 hodiny
+Dokud to nevypnu
+Čas na odpočinek
+Vstaňte, podívejte se do dálky, protáhněte se. Potom začne další soustředění.
+Odpočinek
+Časovač soustředění: {0}
+Režim {0}, pro aplikaci v popředí
+Platí pravidlo.
+Původní
+Stupně šedi
+Sépie
+E-ink
+Červená noc
+Barevný efekt
+Černobílá
+Barevné efekty vyžadují modul Standardní, Chytrá vrstva nebo DesktopLUT; Smart (GPU) je nezobrazuje.
+Povolit chladnější než denní světlo (až 10 000 K)
+Režimy pro aplikace
+Když je některá z těchto aplikací v popředí, použije se její režim.
+Přidat aplikaci...
+Zatím žádné aplikace.
+Není otevřena žádná aplikace s oknem.
+Odebrat
+Ztlumí vše kromě jasné oblasti, která sleduje myš.
+Pás
+Sloupec
+Obdélník
+Kruh
+Celá
+Velikost
+Šířka
+Obrys
+Nad a pod
+Jen nad
+Jen pod
+Vlevo a vpravo
+Jen vlevo
+Jen vpravo
+Odstín
+Sledovat myš
+Posouvat klávesami
+Ctrl+Alt se šipkami jej posouvá; Ctrl+Alt s + a - mění velikost (viz Klávesové zkratky v Možnostech).
+Zrychlit držené klávesy
+Zůstat na jednom monitoru
+Windows nepřejde do spánku ani nevypne obrazovku.
+Nabídka v oznamovací oblasti jej také může udržet vzhůru 1 nebo 2 hodiny.
+Vynutit přestávky (bez Přeskočit, Odložit či Esc)
+Časovač soustředění
+Pracuj, pak odpočívej, pořád dokola.
+Spustit
+Pokračovat
+Zastavit
+Práce
+Odpočinek
+Zatímco běží, nahrazuje připomínky pohledu do dálky a vstávání; připomínky mrkání pokračují.
+Zobrazit čas do další přestávky na okraji ikony
+Filtr obrazovky zap./vyp.
+Jasněji
+Tmavěji
+Tepleji (více filtru modrého světla)
+Chladněji (méně filtru modrého světla)
+Čtecí pruh zap./vyp.
+Nenechat PC usnout zap./vyp.
+Další režim obrazovky
+Mini režim zap./vyp.
+Posunout čtecí pruh nahoru
+Posunout čtecí pruh dolů
+Posunout čtecí pruh vlevo
+Posunout čtecí pruh vpravo
+Zvětšit čtecí pruh
+Zmenšit čtecí pruh
+Klávesové zkratky
+Klikněte do pole a stiskněte požadované klávesy. Backspace zkratku odebere. Klávesy pro posun čtecího pruhu fungují, dokud zůstává na místě.
+Používá se
+Žádná
+Obnovit vše na výchozí
+Zavřít
+Změnit...
+Další možnosti
+Méně možností
+Vyberte barvu
+Barva obrysu
+Podle barvy zvýraznění
+Tvar
+Okraj
+Měkký
+Měkkost
+Ztlumené strany
+Pohyb
+Přidat aplikaci
+Vyberte aplikaci
+Aplikace, které jsou právě otevřené. Není v seznamu? Najděte její program tlačítkem Procházet.
+Režim
+Zrušit
+Přidat
+Programy
+Noční plán nemění režim aplikace, takže Úpravy zachovají věrné barvy i v noci.
+Soustředění
+Pozastaveno
+Připraveno
+Tečky: dokončená období práce, v kolech po čtyřech
+Windows nepřejde do spánku ani nevypne obrazovku. Nabídka v oznamovací oblasti jej také může udržet vzhůru 1 nebo 2 hodiny.
+Pozastaveno, dokud je zapnutý barevný efekt
+Pozastaveno, dokud je zapnutý efekt {0}
+Sbalit nebo rozbalit tuto část
+Malá ikona, která zůstává nad ostatními okny.
+Přepněte na ni tlačítkem vedle záhlaví nebo minimalizací tohoto okna. Najeďte na ni pro rychlé ovládání; kliknutím se sem vrátíte.
+Spustit časovač soustředění
