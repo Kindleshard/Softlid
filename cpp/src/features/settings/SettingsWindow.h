@@ -93,6 +93,7 @@ private:
     void PaintShape(ui::Canvas& c, const D2D1_RECT_F& r, int shape, float awake);
     void StripTouched();
     void GrainTouched();
+    void BuildFocusTimer(ui::Stack& st);
     void BuildRules(ui::Stack& st);
     void ShowRules();
 
@@ -121,6 +122,8 @@ private:
               *breakStatus = nullptr, *longStatus = nullptr;
     ui::Icon* syncTick = nullptr;
     ui::Row* rulesRow = nullptr;
+    ui::FocusRing* focusRing = nullptr;
+    ui::Button *focusButton = nullptr, *titleMini = nullptr;
 
     // The city picker.
     ui::TextBox* cityBox = nullptr;

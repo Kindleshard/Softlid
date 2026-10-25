@@ -60,4 +60,11 @@ float ScaleAtCursor()
 
 float ScaleOf(HWND window) { return GetDpiForWindow(window) / 96.0f; }
 
+float ScaleAt(POINT p)
+{
+    UINT x = 96, y = 96;
+    GetDpiForMonitor(MonitorFromPoint(p, MONITOR_DEFAULTTONEAREST), MDT_EFFECTIVE_DPI, &x, &y);
+    return x / 96.0f;
+}
+
 } // namespace bb

@@ -249,7 +249,10 @@ void DirectWindow::Paint()
             target->DrawRectangle({px / 2, px / 2, size.width - px / 2, size.height - px / 2}, canvas.Brush(Palette::Argb(72, 72, 72)), px);
         }
         target->PopAxisAlignedClip();
-        if (target->EndDraw() == D2DERR_RECREATE_TARGET) target.Reset();
+        if (target->EndDraw() == D2DERR_RECREATE_TARGET) {
+            target.Reset();                          // (made again on the next paint)
+            InvalidateRect(hwnd, nullptr, FALSE);   // and that frame is drawn again in full
+        }
     }
     EndPaint(hwnd, &ps);
 }
@@ -397,6 +400,10 @@ LRESULT DirectWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
         if (focused && focused->Enabled() && focused->Key(static_cast<UINT>(w))) return 0;
         Shortcut(static_cast<UINT>(w));
         return 0;
+    case WM_SYSKEYDOWN:
+        // Keys with Alt (and F10): a control that wants them (recording a shortcut) gets them; otherwise Windows' own.
+        if (focused && focused->Enabled() && focused->Key(static_cast<UINT>(w))) return 0;
+        break;
     case WM_SETFOCUS:
     case WM_KILLFOCUS:
         if (focused) focused->Invalidate();

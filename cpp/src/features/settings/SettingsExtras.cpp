@@ -1,8 +1,9 @@
-// The Extras page: the reading strip, modes for apps and film grain. (The focus timer joins it with chunk 6.)
+// The Extras page: the reading strip, the focus timer, modes for apps and film grain.
 #include "features/settings/SettingsWindow.h"
 #include "app/App.h"
 #include "core/Lang.h"
 #include "core/Modes.h"
+#include "features/settings/AppRuleDialog.h"
 #include "platform/ProgramInfo.h"
 #include "ui/Theme.h"
 #include <algorithm>
@@ -99,6 +100,7 @@ void SettingsWindow::BuildExtrasPage(Stack& st)
               [this](int v) { s.StripAccel = v; app.Changed(); }, keys);
     ToggleRow(st, L"Stay on one monitor", s.StripOneMonitor, [this](bool v) { s.StripOneMonitor = v; StripTouched(); }, more);
 
+    BuildFocusTimer(st);
     BuildRules(st);
 
     Shown grainShown = [this] { return s.AdvancedView; };
@@ -170,6 +172,52 @@ void SettingsWindow::GrainTouched()
     app.Changed(true);
 }
 
+// ---- The focus timer: work, then rest, again and again (the Pomodoro way) ----
+
+void SettingsWindow::BuildFocusTimer(Stack& st)
+{
+    Divider(st);
+    SectionHead(st, L'\uE916', L"Focus timer", L"Work, then rest, again and again.");
+    Row& card = st.Add(162);
+    focusRing = &card.Add<FocusRing>();
+    focusRing->SetBounds(24, 4, 154, 154);
+    focusRing->tip = Lang::T(L"The dots: work periods done, in rounds of four");
+    focusRing->progress = [this] {
+        App::Focus f = app.FocusState();
+        return f == App::Focus::Resting ? 1.0f : f == App::Focus::Off ? 0.0f : 1 - app.FocusLeft() / static_cast<float>(std::max(1, s.FocusWork * 60));
+    };
+    focusRing->timeText = [this] { return app.FocusState() == App::Focus::Resting ? Lang::T(L"Rest") : app.FocusText(); };
+    focusRing->stateText = [this] {
+        App::Focus f = app.FocusState();
+        return Lang::T(f == App::Focus::Working ? L"Focus" : f == App::Focus::Paused ? L"Paused" : f == App::Focus::Resting ? L"Resting" : L"Ready");
+    };
+    focusRing->ink = [this] {
+        App::Focus f = app.FocusState();
+        return f == App::Focus::Resting ? Theme::Good : f == App::Focus::Paused ? Theme::Dim : Theme::Accent();
+    };
+    focusRing->done = [this] { return app.FocusDone() == 0 ? 0 : (app.FocusDone() - 1) % 4 + 1; };
+    focusButton = &AddButton(card, L"Start", 200, 24, Edge - 42 - 12 - 200, 42);
+    focusButton->SetTint(Theme::Accent());
+    focusButton->onClick = [this] {
+        if (app.FocusState() == App::Focus::Working) app.FocusPause();
+        else app.FocusStart();
+        RefreshStatus();
+    };
+    auto& stop = card.Add<Button>();
+    stop.SetGlyph(L'\uE71A');
+    stop.SetBounds(Edge - 42, 24, 42, 42);
+    stop.tip = Lang::T(L"Stop");
+    stop.onClick = [this] { app.FocusStop(); RefreshStatus(); };
+    auto minutes = [](int v) { return Lang::F(L"{0} min", {std::to_wstring(v)}); };
+    auto& work = card.Add<Stepper>(L"Work", 5, 90, 5, s.FocusWork, minutes);
+    work.SetBounds(200, 86, 122, 62);
+    work.onChange = [this](int v) { s.FocusWork = v; app.Changed(); RefreshStatus(); };
+    auto& rest = card.Add<Stepper>(L"Rest", 1, 30, 1, s.FocusRest, minutes);
+    rest.SetBounds(Edge - 122, 86, 122, 62);
+    rest.onChange = [this](int v) { s.FocusRest = v; app.Changed(); };
+    Note(st, L"While it runs, it takes over from the look-away and stand-up reminders; blink reminders go on.", 2);
+}
+
 // ---- Modes for apps: a mode that applies while an app is in front ----
 
 void SettingsWindow::BuildRules(Stack& st)
@@ -178,7 +226,19 @@ void SettingsWindow::BuildRules(Stack& st)
     Divider(st, advanced);
     SectionHead(st, L'\uE7F4', L"Modes for apps", L"While one of these apps is in front, its mode is used.", advanced);
     rulesRow = &st.Add(30, advanced);
-    // (Adding an app, from the ones running, comes with its dialog in chunk 6.)
+    Row& addRow = st.Add(52, advanced);
+    AddButton(addRow, L"Add an app...", 24, 8, 170, 34).onClick = [this] {
+        std::vector<std::wstring> taken;
+        for (const auto& r : Modes::Rules(s)) taken.push_back(r.app);
+        AppRuleDialog::Open(Handle(), taken, [this](const Modes::Rule& added) {
+            std::vector<Modes::Rule> rules = Modes::Rules(s);
+            std::erase_if(rules, [&](const Modes::Rule& r) { return r.app == added.app; });
+            rules.push_back(added);
+            Modes::SaveRules(s, rules);
+            app.Changed();
+            ShowRules();
+        }, !unfoldAll);
+    };
     Note(st, L"The night schedule doesn't change an app's mode, so Editing keeps true color at night too.", 2, advanced);
     ShowRules();
 }

@@ -11,5 +11,6 @@ bool FullscreenAppRunning();  // a game, video or presentation fills the screen 
 RECT WorkAreaAtCursor();
 float ScaleAtCursor();        // 1.0 at 100% display scaling
 float ScaleOf(HWND window);
+float ScaleAt(POINT p);       // of the monitor at a point
 
 } // namespace bb

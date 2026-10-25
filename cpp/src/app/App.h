@@ -5,7 +5,9 @@
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/EyePopup.h"
 #include "features/screen/ColorFilter.h"
+#include "features/mini/MiniWindow.h"
 #include "features/settings/SettingsWindow.h"
+#include "features/strip/ReadingStrip.h"
 #include "platform/ForegroundApp.h"
 #include <windows.h>
 #include <chrono>
@@ -28,6 +30,8 @@ public:
 
     int Run();                         // the message loop, until Exit
     void Changed(bool screen = false); // settings changed: saved on the next tick; screen: shown at once
+    Settings& S() { return settings; }
+    const Settings& S() const { return settings; }
 
     // ---- For the settings window ----
     void ShowSettings(const POINT* at = nullptr, bool optionsPage = false);
@@ -60,6 +64,28 @@ public:
     void SetKeepAwake(bool on);
     void SetHardwareBrightness(bool on, std::function<void()> done);
     const std::wstring& BacklightStatus() const { return backlightStatus; }
+    float WarmthNow() const;           // the blue light filter in effect now (0..1), for things drawn to match it
+
+    // ---- Keyboard shortcuts (AppShortcuts.cpp) ----
+    void RegisterHotkeys();            // (again) from the settings
+    void SuspendHotkeys();             // all off for a moment (while the shortcuts window records new keys)
+    bool HotkeyFailed(int id) const;   // another program already uses those keys
+
+    // ---- The focus timer: work, then rest, again and again (AppExtras.cpp) ----
+    enum class Focus { Off, Working, Paused, Resting };
+    Focus FocusState() const { return focus; }
+    int FocusLeft() const { return focusLeft; }
+    int FocusDone() const { return focusDone; }   // work periods finished since BlinkBuddy started
+    void FocusStart();                 // (or resume)
+    void FocusPause();
+    void FocusStop();
+    std::wstring FocusText() const;
+    float BreakProgress() const;       // how far the wait for the next break is (0..1), for mini mode's rim; -1: none
+
+    // ---- Mini mode (AppExtras.cpp) ----
+    void EnterMiniMode();
+    void LeaveMiniMode();              // and the settings open
+    void SaveMiniPosition(POINT at);
 
 private:
     using Clock = std::chrono::system_clock;
@@ -70,6 +96,7 @@ private:
     static constexpr UINT ProbedMessage = WM_APP + 5;         // the displays answered whether they do DDC/CI
     static constexpr UINT RebuildMessage = WM_APP + 6;        // build the settings again (wParam: on the options page)
     static constexpr UINT QuitMessage = WM_APP + 7;           // exit, chosen in the settings
+    static constexpr UINT LeaveMiniMessage = WM_APP + 8;      // mini mode closes and the settings open
 
     static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM w, LPARAM l);
     LRESULT Handle(UINT message, WPARAM w, LPARAM l);
@@ -129,6 +156,23 @@ private:
     std::wstring backlightStatus, guardNote;
 
     std::unique_ptr<SettingsWindow> settingsWindow;   // while open
+
+    // Keyboard shortcuts.
+    void OnHotkey(int id);
+    void ResizeStrip(int direction);
+    unsigned hotkeyFailed = 0;         // a bit per action whose keys another program already uses
+    bool stripKeysOn = false;          // the strip's movement keys are registered (only while it stays put)
+
+    // The focus timer.
+    void FocusTick();
+    Focus focus = Focus::Off;
+    int focusLeft = 0, focusDone = 0;
+    bool restCard = false;             // the break card showing is the focus timer's rest
+
+    // The reading strip and mini mode.
+    std::unique_ptr<ReadingStrip> strip;
+    std::unique_ptr<MiniWindow> mini;
+    void ShowMini();
     HICON bigIcon = nullptr;
     bool offscreen = false;
 };

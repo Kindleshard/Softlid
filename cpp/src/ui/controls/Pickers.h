@@ -112,6 +112,16 @@ public:
     void Paint(Canvas& canvas) override;
 };
 
+// The focus timer's face: a ring that fills as the period runs (accent while working, green while resting), the time in
+// the middle, what is happening under it, and four dots for the periods done in this round of four.
+class FocusRing : public Control {
+public:
+    std::function<float()> progress = [] { return 0.0f; };
+    std::function<std::wstring()> timeText, stateText;
+    std::function<int()> ink, done;
+    void Paint(Canvas& canvas) override;
+};
+
 // BlinkBuddy's eye, looking about (the blink settings' preview).
 class EyeView : public Control {
 public:

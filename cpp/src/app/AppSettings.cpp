@@ -19,6 +19,12 @@ void TrimMemory()
 
 void App::ShowSettings(const POINT* at, bool optionsPage)
 {
+    if (mini) {
+        // Opening the settings (tray, a second start) unfolds mini mode.
+        settings.MiniMode = false;
+        Changed();
+        mini.reset();
+    }
     if (settingsWindow) {
         HWND h = settingsWindow->Handle();
         if (IsIconic(h)) ShowWindow(h, SW_RESTORE);
@@ -126,10 +132,11 @@ void App::SetRunAtStartup(bool on)
 
 void App::SetMiniEnabled(bool on)
 {
-    // (Mini mode itself arrives in chunk 6; until then this is the setting alone.)
     settings.MiniEnabled = on;
-    if (!on) settings.MiniMode = false;
     Changed();
+    if (on) return;
+    settings.MiniMode = false;   // off: it never appears (and closes if it was showing)
+    mini.reset();
 }
 
 } // namespace bb

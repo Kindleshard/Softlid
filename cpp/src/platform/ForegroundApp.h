@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 #include <string>
+#include <vector>
 
 namespace bb {
 
@@ -14,6 +15,12 @@ bool Get(std::wstring& app, HWND& window);
 
 // Whether a window is still there to be seen (not closed, hidden or minimised).
 bool StillShown(HWND window);
+
+// Apps with a window you can see on the taskbar right now (to pick from when adding a rule), with a window title
+// each, sorted by name. Not: hidden or cloaked windows, tool and overlay windows (e.g. a GPU overlay), owned dialogs,
+// the shell, BlinkBuddy.
+struct Running { std::wstring app, title, path; };
+std::vector<Running> RunningApps();
 
 } // namespace ForegroundApp
 

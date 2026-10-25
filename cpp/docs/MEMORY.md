@@ -15,6 +15,7 @@ Measured on Windows 11 at 150% scaling. **Private** memory is what the app itsel
 | C++ chunk 5 (+ settings window) | tray, idle | 2.3 MB | 13.5 MB | 4 | 0% |
 | C++ chunk 5 | settings window open (480×682 units at 150%) | 9.6 MB | 26.6 MB | 4 | 0% |
 | C++ chunk 5 | settings window closed again | 9.6 MB | 1.0 MB | 4 | 0% |
+| C++ chunk 6 (+ mini mode, focus timer, reading strip, shortcuts) | mini mode, icon resting | 7.3 MB | 22.7 MB | 10 | 0% |
 
 Windows are drawn by Direct2D in software (no graphics-card device, which alone would add tens of MB); most of a
 window's cost is its drawing buffer and the fonts. When the settings window closes, its pages go back to Windows

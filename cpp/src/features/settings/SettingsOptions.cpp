@@ -3,6 +3,8 @@
 #include "app/App.h"
 #include "core/Lang.h"
 #include "core/Version.h"
+#include "features/settings/ShortcutsDialog.h"
+#include "ui/MiniArt.h"
 #include "ui/Theme.h"
 
 namespace bb {
@@ -81,7 +83,10 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
     close.SetSelected(s.CloseAction);
     close.onChange = [this](int v) { s.CloseAction = v; app.Changed(); };
 
-    // (Keyboard shortcuts, each changeable in a window of its own, come with chunk 6.)
+    // Keyboard shortcuts: each one changeable, in a window of its own.
+    Row& keysRow = st.Add(46, [this] { return s.AdvancedView; });
+    AddLabel(keysRow, L"Keyboard shortcuts", Fonts::Body(), Theme::Fg, 24, 10, 240, 26);
+    AddButton(keysRow, L"Change...", Edge - 176, 6, 176, 34).onClick = [this] { ShortcutsDialog::Open(app, Handle(), !unfoldAll); };
 
     // Keeping the PC awake (the tray menu has it too, for an hour or two).
     Shown advanced = [this] { return s.AdvancedView; };
@@ -98,18 +103,38 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
     st.Add(24);   // room below the last row
 }
 
-// Mini mode: on or off, how it fades, and the glow that now and then breathes round it. (Its icons, drawn as mini mode
-// draws them, are chosen here once mini mode itself arrives, in chunk 6.)
+// Mini mode: on or off (the button by the title bar switches to it), which icon, how it fades, and the glow that now
+// and then breathes round it.
 void SettingsWindow::BuildMiniOptions(Stack& st)
 {
     Divider(st);
     Shown on = [this] { return s.MiniEnabled; };
     Header(st, L'\uE944', L"Mini mode", L"A small icon that stays on top of other windows.", s.MiniEnabled, [this](bool v) {
         app.SetMiniEnabled(v);
+        titleMini->SetVisible(v);
         UpdateRows();
     });
     Note(st, L"Switch to it with the button next to the title bar, or by minimising this window. Hover over it for quick "
              L"controls; click it to come back here.", 2, on);
+    // The icons as previews (each named in its tip), drawn with the screen's current brightness and warmth.
+    Row& iconRow = st.Add(64, on);
+    AddLabel(iconRow, L"Icon", Fonts::Body(), Theme::Fg, 24, 18, 120, 26);
+    auto& icon = iconRow.Add<TilePicker>(4, s.MiniIcon);
+    icon.SetBounds(150, 6, 4 * 48 + 3 * 13 + 2, 48);
+    icon.painter = [this](Canvas& c, const D2D1_RECT_F& r, int i, float awake) {
+        // On its dark disc, as mini mode draws it.
+        float w = Width(r), d = w * 0.84f, cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2;
+        c.FillCircle(cx, cy, d / 2, Palette::Argb(34, 36, 42));
+        float box = d * 0.66f, bright = s.FilterEnabled ? (s.Brightness - 20) / 80.0f : 1.0f;
+        MiniArt::DrawIcon(c.Target(), {cx - box / 2, cy - box / 2, cx + box / 2, cy + box / 2}, i, awake, bright, app.WarmthNow());
+    };
+    icon.onChange = [this](int v) { s.MiniIcon = v; app.Changed(); };
+    icon.onHover = [&icon](int i) {
+        static const wchar_t* const names[] = {L"Eye", L"Lamp", L"Sun", L"Laptop"};
+        icon.tip = i >= 0 ? Lang::T(names[i]) : L"";
+    };
+    Note(st, L"Eye: opens when you come near. Lamp: as bright as the screen. Sun: glows when you come near. Laptop: shows "
+             L"the screen's brightness and the blue light filter.", 2, on);
     ToggleRow(st, L"Show the time to the next break on the icon's rim", s.MiniCountdown,
               [this](bool v) { s.MiniCountdown = v; app.Changed(); }, on);
     Shown more = More(st, L"mini", on), glow = And(more, [this] { return s.MiniOrbit; });

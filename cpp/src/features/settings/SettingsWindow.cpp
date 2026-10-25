@@ -3,6 +3,7 @@
 #include "core/Lang.h"
 #include "core/Modes.h"
 #include "features/settings/CloseDialog.h"
+#include "ui/MiniArt.h"
 #include "ui/Theme.h"
 #include <algorithm>
 #include <cmath>
@@ -26,6 +27,14 @@ SettingsWindow::SettingsWindow(App& app, Settings& settings, bool unfoldAll) : a
         for (int i = 0; i < 5; i++) pages[i]->SetVisible(i == selected);
         UpdateRows();
     };
+    // Mini mode's button by the title bar (while mini mode is on in Options).
+    titleMini = &Root().Add<Button>();
+    titleMini->SetBounds(Edge - 34, 12, 32, 32);
+    titleMini->iconSize = 20;
+    titleMini->icon = [](Canvas& c, const D2D1_RECT_F& r) { MiniArt::DrawSymbol(c.Target(), r); };
+    titleMini->tip = Lang::T(L"Mini mode: shrink this window into a small icon that stays on top");
+    titleMini->SetVisible(s.MiniEnabled);
+    titleMini->onClick = [this] { this->app.EnterMiniMode(); };
     Root().Add<ui::Divider>().SetBounds(0, 52, W, 1);
     for (int i = 0; i < 5; i++) {
         pages[i] = &Root().Add<ScrollPage>();
@@ -102,6 +111,8 @@ void SettingsWindow::RefreshStatus()
         UpdateRows();
     }
     hwStatus->SetPlainText(app.BacklightStatus());
+    focusRing->Invalidate();
+    focusButton->SetText(app.FocusState() == App::Focus::Working ? L"Pause" : app.FocusState() == App::Focus::Paused ? L"Resume" : L"Start");
 }
 
 void SettingsWindow::SyncFromApp()
@@ -153,6 +164,11 @@ LRESULT SettingsWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
     case WM_SYSCOMMAND:
         if ((w & 0xFFF0) == SC_CLOSE) {
             CloseClicked();
+            return 0;
+        }
+        // Minimising folds the window into mini mode (when mini mode is on) instead of the taskbar.
+        if ((w & 0xFFF0) == SC_MINIMIZE && s.MiniEnabled) {
+            app.EnterMiniMode();
             return 0;
         }
         break;

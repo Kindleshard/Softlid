@@ -351,6 +351,43 @@ void CurveView::Paint(Canvas& c)
     c.Target()->DrawGeometry(path.Get(), c.Brush(Theme::Accent()), std::max(1.5f, H() / 60));
 }
 
+// ---- FocusRing ----
+
+void FocusRing::Paint(Canvas& c)
+{
+    float thick = H() * 0.06f, d = std::min(W(), H()) - thick - 2, cx = W() / 2, cy = H() / 2;
+    int color = ink ? ink() : Theme::Accent();
+    c.OutlineCircle(cx, cy, d / 2, Palette::Argb(52, 52, 56), thick);
+    float p = std::clamp(progress(), 0.0f, 1.0f);
+    if (p > 0) {
+        // From the top, clockwise.
+        float sweep = std::max(1.0f, 360 * p), r = d / 2;
+        auto at = [&](float deg) { return D2D1_POINT_2F{cx + r * std::cos(deg * 3.14159265f / 180), cy + r * std::sin(deg * 3.14159265f / 180)}; };
+        if (sweep >= 359.9f) c.OutlineCircle(cx, cy, r, color, thick);
+        else {
+            gfx::ComPtr<ID2D1PathGeometry> path;
+            gfx::ComPtr<ID2D1GeometrySink> sink;
+            gfx::D2D()->CreatePathGeometry(path.GetAddressOf());
+            path->Open(sink.GetAddressOf());
+            sink->BeginFigure(at(-90), D2D1_FIGURE_BEGIN_HOLLOW);
+            sink->AddArc({at(-90 + sweep), {r, r}, 0, D2D1_SWEEP_DIRECTION_CLOCKWISE, sweep > 180 ? D2D1_ARC_SIZE_LARGE : D2D1_ARC_SIZE_SMALL});
+            sink->EndFigure(D2D1_FIGURE_END_OPEN);
+            sink->Close();
+            gfx::ComPtr<ID2D1StrokeStyle> round;
+            D2D1_STROKE_STYLE_PROPERTIES props{};
+            props.startCap = props.endCap = D2D1_CAP_STYLE_ROUND;
+            gfx::D2D()->CreateStrokeStyle(props, nullptr, 0, round.GetAddressOf());
+            c.Target()->DrawGeometry(path.Get(), c.Brush(color), thick, round.Get());
+        }
+    }
+    IDWriteTextFormat* big = Fonts::Get(22, gfx::Weight::Light);
+    if (timeText) c.Text(timeText(), big, {0, cy - H() * 0.24f, W(), cy + H() * 0.06f}, Theme::Fg, HAlign::Center);
+    if (stateText) c.Text(stateText(), Fonts::Small(), {0, cy + H() * 0.07f, W(), cy + H() * 0.2f}, Theme::Dim, HAlign::Center);
+    float dot = H() * 0.035f, gap = dot * 2.6f, y = cy + H() * 0.25f;
+    int finished = done ? done() : 0;
+    for (int i = 0; i < 4; i++) c.FillCircle(W() / 2 + (i - 1.5f) * gap, y, dot / 2, i < finished ? color : Palette::Argb(70, 70, 74));
+}
+
 // ---- EyeView ----
 
 void EyeView::Set(float x, float y, float openness)

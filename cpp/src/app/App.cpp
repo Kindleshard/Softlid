@@ -1,4 +1,5 @@
 #include "app/App.h"
+#include "core/Hotkeys.h"
 #include "core/Lang.h"
 #include "core/Modes.h"
 #include "features/screen/Backlight.h"
@@ -6,6 +7,7 @@
 #include "platform/DarkMode.h"
 #include "platform/KeepAwake.h"
 #include "platform/Location.h"
+#include "platform/Text.h"
 #include "ui/Theme.h"
 #include "resource.h"
 #include <commctrl.h>
@@ -23,7 +25,7 @@ constexpr wchar_t WindowClass[] = L"BlinkBuddy.App";
 // Menu commands.
 enum : UINT {
     CmdSettings = 1, CmdBreakNow, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit,
-    CmdFilter, CmdAwakeOff, CmdAwake1h, CmdAwake2h, CmdAwakeOn,
+    CmdFilter, CmdStrip, CmdAwakeOff, CmdAwake1h, CmdAwake2h, CmdAwakeOn,
     CmdMode,   // CmdMode + mode, for each screen mode
 };
 
@@ -70,13 +72,18 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
         Backlight::Probe(window, ProbedMessage);
     }
 
+    RegisterHotkeys();
     SetTimer(window, TickTimer, 1000, nullptr);
     if (openSettings) ShowSettings();
+    else if (settings.MiniMode && settings.MiniEnabled) ShowMini();
 }
 
 App::~App()
 {
     settingsWindow.reset();
+    mini.reset();
+    strip.reset();
+    SuspendHotkeys();
     frontWatch.reset();
     WTSUnRegisterSessionNotification(window);
     filter.Off();
@@ -150,6 +157,16 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     case ProbedMessage:
         Probed(LOWORD(w), HIWORD(w), static_cast<int>(l));
         return 0;
+    case LeaveMiniMessage:
+        mini.reset();
+        ShowSettings();
+        return 0;
+    case WM_INPUT:
+        if (strip) strip->MouseMoved();   // the mouse moved: the reading strip follows
+        break;                             // (Windows tidies up the input after)
+    case WM_HOTKEY:
+        OnHotkey(static_cast<int>(w));
+        return 0;
     case QuitMessage:
         Exit();
         return 0;
@@ -184,8 +201,11 @@ void App::OnTick()
     }
     ScreenTick();
     if (card || Paused()) return;
+    FocusTick();
+    if (card) return;
     bool fullscreen = settings.PauseInFullscreen && FullscreenAppRunning();
-    switch (reminders.Tick(IdleSeconds(), fullscreen)) {
+    // While the focus timer runs, it decides when to rest instead of the look-away and stand-up reminders.
+    switch (reminders.Tick(IdleSeconds(), fullscreen, focus == Focus::Off)) {
     case Reminders::Due::Blink: Blink(false); break;
     case Reminders::Due::LookAway: StartBreak(false); break;
     case Reminders::Due::StandUp: StartBreak(true); break;
@@ -209,7 +229,16 @@ void App::StartBreak(bool standUp)
 void App::BreakDone(bool standUp, int snoozeSeconds)
 {
     card.reset();
-    reminders.BreakFinished(standUp, snoozeSeconds);
+    if (restCard) {
+        // The focus timer's rest is over (or snoozed): the next work period.
+        restCard = false;
+        if (focus == Focus::Resting) {
+            focus = Focus::Working;
+            focusLeft = snoozeSeconds > 0 ? snoozeSeconds : settings.FocusWork * 60;
+        }
+    } else {
+        reminders.BreakFinished(standUp, snoozeSeconds);
+    }
     TrimMemory();
 }
 
@@ -247,6 +276,7 @@ void App::UpdateTrayTip()
 {
     std::wstring tip = L"BlinkBuddy\n" + BreakStatus();
     if (settings.LongBreakEnabled) tip += L"\n" + StandUpStatus();
+    if (focus != Focus::Off) tip = L"BlinkBuddy\n" + Lang::F(L"Focus timer: {0}", {FocusText()});
     tray.SetTip(tip);
 }
 
@@ -265,7 +295,13 @@ void App::ShowMenu()
     for (int m = 0; m < Modes::Count; m++)
         AppendMenuW(modes, MF_STRING | checked(settings.Mode == m), CmdMode + m, Lang::T(Modes::Names[m]).c_str());
     AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(modes), Lang::T(L"Screen mode").c_str());
-    AppendMenuW(menu, MF_STRING | checked(settings.FilterEnabled), CmdFilter, Lang::T(L"Screen filter").c_str());
+    // (Each with its shortcut beside it, as menus show them.)
+    auto withKeys = [this](const wchar_t* english, int hotkey) {
+        std::wstring keys = ReplaceAll(Hotkeys::Pretty(Hotkeys::Get(settings, hotkey)), L" ", L"");
+        return Lang::T(english) + (keys.empty() ? L"" : L"	" + keys);
+    };
+    AppendMenuW(menu, MF_STRING | checked(settings.FilterEnabled), CmdFilter, withKeys(L"Screen filter", Hotkeys::Filter).c_str());
+    AppendMenuW(menu, MF_STRING | checked(settings.StripEnabled), CmdStrip, withKeys(L"Reading strip", Hotkeys::Strip).c_str());
     HMENU awake = CreatePopupMenu();
     AppendMenuW(awake, MF_STRING | checked(!KeepingAwake()), CmdAwakeOff, Lang::T(L"Off").c_str());
     AppendMenuW(awake, MF_STRING, CmdAwake1h, Lang::T(L"For 1 hour").c_str());
@@ -301,6 +337,7 @@ void App::ShowMenu()
     case CmdResume: pausedUntil = {}; break;
     case CmdExit: Exit(); break;
     case CmdFilter: ToggleFilter(); break;
+    case CmdStrip: OnHotkey(Hotkeys::Strip); break;
     case CmdAwakeOff: SetKeepAwake(false); break;
     case CmdAwake1h: KeepAwakeFor(60); break;
     case CmdAwake2h: KeepAwakeFor(120); break;
@@ -322,6 +359,9 @@ void App::Exit()
 {
     KillTimer(window, TickTimer);
     settingsWindow.reset();
+    mini.reset();
+    strip.reset();
+    SuspendHotkeys();
     if (dirty) settings.Save();
     card.reset();
     tray.Remove();

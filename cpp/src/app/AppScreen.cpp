@@ -39,6 +39,11 @@ void App::ApplyScreen()
         lastBacklight = backlight;
         Backlight::Set(backlight);
     }
+
+    // The reading strip (made when first switched on), and its movement keys while it stays put.
+    if (s.StripEnabled && !strip) strip = std::make_unique<ReadingStrip>();
+    if (strip) strip->Apply(s, window);
+    if (stripKeysOn != (s.StripEnabled && !s.StripFollow)) RegisterHotkeys();
 }
 
 void App::ReapplyScreen()
@@ -95,6 +100,14 @@ void App::UpdateLocation()
     if (locatedAt != Clock::time_point{} && now - locatedAt < std::chrono::hours(6)) return;
     locatedAt = now;
     Location::Locate(window, LocatedMessage);
+}
+
+// The blue light filter in effect right now (0 when the filter is off, or while a colour effect takes its place).
+float App::WarmthNow() const
+{
+    const Settings& v = screenNow;
+    bool effectShown = v.FilterEnabled && v.ColorEffect != 0 && filter.CanShowEffects();
+    return v.FilterEnabled && !effectShown ? static_cast<float>(Night::Blue(v, NightShown()) / 100) : 0.0f;
 }
 
 std::wstring App::NightStatus() const
