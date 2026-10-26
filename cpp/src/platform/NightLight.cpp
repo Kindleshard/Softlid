@@ -175,47 +175,4 @@ State Parse(const std::vector<uint8_t>& settings, const std::vector<uint8_t>& st
     return s;
 }
 
-// ---- Watching ----
-
-Watcher::~Watcher() { Stop(); }
-
-void Watcher::Start(HWND w, UINT m)
-{
-    Stop();
-    window = w;
-    message = m;
-    for (int i = 0; i < 2; i++) {
-        if (RegOpenKeyExW(HKEY_CURRENT_USER, Keys[i], 0, KEY_NOTIFY, &keys[i]) != ERROR_SUCCESS) {
-            keys[i] = nullptr;
-            continue;
-        }
-        events[i] = CreateEventW(nullptr, FALSE, FALSE, nullptr);
-        RegisterWaitForSingleObject(&waits[i], events[i], [](void* slot, BOOLEAN) {
-            auto* s = static_cast<Slot*>(slot);
-            PostMessageW(s->owner->window, s->owner->message, s->key, 0);
-        }, &slots[i], INFINITE, WT_EXECUTEDEFAULT);
-        Rearm(i);
-    }
-}
-
-// A registry notification fires once: after each change, ask for the next one (only for the key that fired, so
-// requests don't pile up).
-void Watcher::Rearm(int key)
-{
-    if (key >= 0 && key < 2 && keys[key])
-        RegNotifyChangeKeyValue(keys[key], FALSE, REG_NOTIFY_CHANGE_LAST_SET | REG_NOTIFY_THREAD_AGNOSTIC, events[key], TRUE);
-}
-
-void Watcher::Stop()
-{
-    for (int i = 0; i < 2; i++) {
-        if (waits[i]) UnregisterWaitEx(waits[i], INVALID_HANDLE_VALUE);
-        if (keys[i]) RegCloseKey(keys[i]);
-        if (events[i]) CloseHandle(events[i]);
-        waits[i] = nullptr;
-        keys[i] = nullptr;
-        events[i] = nullptr;
-    }
-}
-
 } // namespace bb::NightLight

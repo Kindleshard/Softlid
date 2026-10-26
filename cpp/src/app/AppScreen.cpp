@@ -252,6 +252,7 @@ void App::LabEnd()
 void App::ScreenTick()
 {
     UpdateLocation();
+    NightLightTick();
     if (std::abs(NightShown() - night) > 0.004f) ApplyScreen();
     if (tone.Active() && ++verifyTick % 5 == 0) tone.Verify();
     lut.Poll();
@@ -411,11 +412,10 @@ Settings App::Scheduled() const
 bool App::FollowsNightLight() const { return settings.NightLightSync && nightLight.found && nightLight.scheduled; }
 bool App::NightLightWarming() const { return settings.NightLightSync && nightLight.found && nightLight.on; }
 
-// Night light's settings or state changed (in Windows Settings, or its schedule switched it).
-void App::NightLightChanged(int key)
+// Each second: Night light read again, in case it changed (in Windows Settings, or its schedule switched it).
+// Windows sends no notice of these changes; two small registry reads a second cost next to nothing.
+void App::NightLightTick()
 {
-    if (key >= 0) nightWatch.Rearm(key);
-    else if (!nightWatch.Watching()) nightWatch.Start(window, NightLightMessage);   // (set up since: watch it now)
     NightLight::State now = NightLight::Read();
     if (now == nightLight) return;
     nightLight = now;

@@ -24,32 +24,13 @@ struct State {
     bool operator==(const State&) const = default;
 };
 
+// Reads both values (two small registry reads). Windows changes them without the registry's change notifications
+// firing (tested: a watch on the keys, or on the whole store, stays silent), so they are simply read again each
+// second.
 State Read();
 State Parse(const std::vector<uint8_t>& settings, const std::vector<uint8_t>& state);   // (Read's decoding, for testing)
 
 // BlinkBuddy's blue light filter (%) for a colour temperature.
 int BlueFor(int kelvin);
-
-// Tells `window` (as `message`) when Night light's settings or state change. After each message, Rearm.
-class Watcher {
-public:
-    Watcher() = default;
-    ~Watcher();
-    Watcher(const Watcher&) = delete;
-    Watcher& operator=(const Watcher&) = delete;
-
-    // The message carries the key that changed in wParam: pass it to Rearm, to hear of its next change.
-    void Start(HWND window, UINT message);   // again later if Night light wasn't set up yet (nothing to watch)
-    void Rearm(int key);
-    bool Watching() const { return keys[0] || keys[1]; }
-
-private:
-    void Stop();
-    HKEY keys[2] = {};
-    HANDLE events[2] = {}, waits[2] = {};
-    struct Slot { Watcher* owner; int key; } slots[2] = {{this, 0}, {this, 1}};
-    HWND window = nullptr;
-    UINT message = 0;
-};
 
 } // namespace bb::NightLight

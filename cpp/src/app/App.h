@@ -144,7 +144,6 @@ private:
     static constexpr UINT LabOpenMessage = WM_APP + 10;       // the tone lab opens in the settings' place
     static constexpr UINT LabClosedMessage = WM_APP + 11;     // ... and closed: settings back as they were
     static constexpr UINT UpdateMessage = WM_APP + 12;        // from the updater (lParam: Updater::Result*)
-    static constexpr UINT NightLightMessage = WM_APP + 13;    // Night light changed (wParam: which of its keys)
 
     static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM w, LPARAM l);
     LRESULT Handle(UINT message, WPARAM w, LPARAM l);
@@ -233,9 +232,8 @@ private:
     int hourTick = 0;
 
     // Windows Night light.
-    void NightLightChanged(int key);   // key -1: a look now and then (it may have been set up since)
+    void NightLightTick();             // each second: Night light read again (Windows sends no change notice)
     NightLight::State nightLight;
-    NightLight::Watcher nightWatch;
 
     std::unique_ptr<SettingsWindow> settingsWindow;   // while open
 

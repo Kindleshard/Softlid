@@ -59,13 +59,14 @@ Strength in Settings maps linearly onto the colour temperature: **K = 6500 − 5
 ## Reading it safely
 
 - Check the header and the length; walk the fields by their tags; stop and report "unknown" at an unexpected tag.
-- Watch the two global keys with `RegNotifyChangeKeyValue` rather than polling.
+- Don't rely on `RegNotifyChangeKeyValue`: Windows writes these without notifications firing. Poll them.
 - Sunset and sunrise come from Windows' own location; use them only when the schedule is "Sunset to sunrise".
 
 ## How BlinkBuddy uses it
 
-Read-only, in `platform/NightLight.cpp`, watched with `RegNotifyChangeKeyValue` (and looked at again each hour, in
-case Night light is set up after BlinkBuddy started). With **Sync with Windows Night light** on (Schedule page, on
+Read-only, in `platform/NightLight.cpp`, read again each second. (Windows changes these values without the
+registry's change notifications firing: a watch on the keys, or on the whole store, stayed silent while Night light
+was switched on and off.) With **Sync with Windows Night light** on (Schedule page, on
 by default):
 
 - While Night light is on, BlinkBuddy's blue light filter rests (daytime and night strength both); brightness, tone
