@@ -1,5 +1,6 @@
 #pragma once
 #include "app/Tray.h"
+#include "core/FocusTimer.h"
 #include "core/Reminders.h"
 #include "core/ScreenPlan.h"
 #include "core/Settings.h"
@@ -113,9 +114,9 @@ public:
     bool HotkeyFailed(int id) const override;
 
     // The focus timer (AppExtras.cpp).
-    Focus FocusState() const override { return focus; }
-    int FocusLeft() const override { return focusLeft; }
-    int FocusDone() const override { return focusDone; }   // work periods finished since BlinkBuddy started
+    Focus FocusState() const override { return focusTimer.State(); }
+    int FocusLeft() const override { return focusTimer.Left(); }
+    int FocusDone() const override { return focusTimer.Done(); }
     void FocusStart() override;   // (or resume)
     void FocusPause() override;
     void FocusStop() override;
@@ -245,8 +246,7 @@ private:
 
     // The focus timer.
     void FocusTick();
-    Focus focus = Focus::Off;
-    int focusLeft = 0, focusDone = 0;
+    FocusTimer focusTimer{settings};
     bool restCard = false;             // the break card showing is the focus timer's rest
 
     // The reading strip and mini mode.

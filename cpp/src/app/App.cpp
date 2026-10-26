@@ -1,5 +1,6 @@
 #include "app/App.h"
 #include "core/Hotkeys.h"
+#include "core/Clock.h"
 #include "core/Lang.h"
 #include "core/Modes.h"
 #include "features/breaks/GuidedBreak.h"
@@ -31,15 +32,6 @@ enum : UINT {
     CmdFilter, CmdStrip, CmdAwakeOff, CmdAwake1h, CmdAwake2h, CmdAwakeOn,
     CmdMode,   // CmdMode + mode, for each screen mode
 };
-
-// "4:05": minutes and seconds.
-std::wstring MinSec(int seconds)
-{
-    seconds = seconds < 0 ? 0 : seconds;
-    wchar_t text[16];
-    swprintf_s(text, L"%d:%02d", seconds / 60, seconds % 60);
-    return text;
-}
 
 } // namespace
 
@@ -251,7 +243,7 @@ void App::OnTick()
     if (card) return;
     bool fullscreen = settings.PauseInFullscreen && FullscreenAppRunning();
     // While the focus timer runs, it decides when to rest instead of the look-away and stand-up reminders.
-    switch (reminders.Tick(IdleSeconds(), fullscreen, focus == Focus::Off)) {
+    switch (reminders.Tick(IdleSeconds(), fullscreen, focusTimer.State() == Focus::Off)) {
     case Reminders::Due::Blink: Blink(false); break;
     case Reminders::Due::LookAway: StartBreak(false); break;
     case Reminders::Due::StandUp: StartBreak(true); break;
@@ -285,10 +277,7 @@ void App::BreakDone(bool standUp, int snoozeSeconds)
     if (restCard) {
         // The focus timer's rest is over (or snoozed): the next work period.
         restCard = false;
-        if (focus == Focus::Resting) {
-            focus = Focus::Working;
-            focusLeft = snoozeSeconds > 0 ? snoozeSeconds : settings.FocusWork * 60;
-        }
+        focusTimer.RestOver(snoozeSeconds);
     } else {
         reminders.BreakFinished(standUp, snoozeSeconds);
     }
@@ -329,7 +318,7 @@ void App::UpdateTrayTip()
 {
     std::wstring tip = L"BlinkBuddy\n" + BreakStatus();
     if (settings.LongBreakEnabled) tip += L"\n" + StandUpStatus();
-    if (focus != Focus::Off) tip = L"BlinkBuddy\n" + Lang::F(L"Focus timer: {0}", {FocusText()});
+    if (focusTimer.State() != Focus::Off) tip = L"BlinkBuddy\n" + Lang::F(L"Focus timer: {0}", {FocusText()});
     tray.SetTip(tip);
 }
 

@@ -13,4 +13,12 @@ struct LocalTime {
     std::wstring zone;      // the system's time zone ("W. Europe Standard Time"), to guess a city when none is set
 };
 
+// A count of seconds as "m:ss" ("19:05"; below zero shows as 0:00).
+inline std::wstring MinSec(int seconds)
+{
+    seconds = seconds < 0 ? 0 : seconds;
+    std::wstring ss = std::to_wstring(seconds % 60);
+    return std::to_wstring(seconds / 60) + L":" + (ss.size() < 2 ? L"0" + ss : ss);
+}
+
 } // namespace bb

@@ -4,65 +4,27 @@
 #include <algorithm>
 
 namespace bb {
-namespace {
 
-std::wstring MinSec(int seconds)
-{
-    seconds = std::max(0, seconds);
-    wchar_t text[16];
-    swprintf_s(text, L"%d:%02d", seconds / 60, seconds % 60);
-    return text;
-}
+// ---- The focus timer (core/FocusTimer keeps the time; the app shows the rest) ----
 
-} // namespace
+void App::FocusStart() { focusTimer.Start(); }
+void App::FocusPause() { focusTimer.Pause(); }
+void App::FocusStop() { focusTimer.Stop(); }
+std::wstring App::FocusText() const { return focusTimer.Text(); }
 
-// ---- The focus timer ----
-
-void App::FocusStart()
-{
-    if (focus == Focus::Paused) {
-        focus = Focus::Working;
-        return;
-    }
-    focus = Focus::Working;
-    focusLeft = settings.FocusWork * 60;
-}
-
-void App::FocusPause()
-{
-    if (focus == Focus::Working) focus = Focus::Paused;
-}
-
-void App::FocusStop()
-{
-    focus = Focus::Off;
-    focusLeft = 0;
-}
-
-// Once a second while it works: at the end of a period, the rest card (the look-away and stand-up reminders wait
-// while the timer runs; it decides when to rest instead).
+// Once a second while no break shows: at the end of a work period, the rest card.
 void App::FocusTick()
 {
-    if (focus != Focus::Working || card) return;
-    if (--focusLeft > 0) return;
-    focusDone++;
-    focus = Focus::Resting;
+    if (card || !focusTimer.Tick()) return;
     restCard = true;
     card = std::make_unique<BreakCard>(window, true, settings, settings.FocusRest * 60, Lang::T(L"Time to rest"),
                                        Lang::T(L"Stand up, look away, stretch. The next focus period starts after this."));
 }
 
-std::wstring App::FocusText() const
-{
-    if (focus == Focus::Off) return MinSec(settings.FocusWork * 60);
-    if (focus == Focus::Resting) return Lang::T(L"Resting");
-    return MinSec(focusLeft);
-}
-
 float App::BreakProgress() const
 {
     if (Paused()) return -1;
-    if (focus == Focus::Working || focus == Focus::Paused) return 1 - focusLeft / static_cast<float>(std::max(1, settings.FocusWork * 60));
+    if (focusTimer.Running()) return focusTimer.Progress();
     if (!settings.BreakEnabled) return -1;
     return reminders.BreakProgress();
 }
