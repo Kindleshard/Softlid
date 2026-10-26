@@ -46,6 +46,9 @@ TEST(DayNumbersAndDates)
     CHECK(ParseIsoDate(L"2026-10-26", y, m, d) && y == 2026 && m == 10 && d == 26);
     CHECK(!ParseIsoDate(L"", y, m, d));
     CHECK(!ParseIsoDate(L"2026-13-01", y, m, d));
+    CHECK(!ParseIsoDate(L"2026-02-29", y, m, d));   // not a leap year
+    CHECK(ParseIsoDate(L"2024-02-29", y, m, d));
+    CHECK(!ParseIsoDate(L"2026-04-31", y, m, d));
 }
 
 TEST(UpdatesByHand)

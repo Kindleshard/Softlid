@@ -81,7 +81,7 @@ public:
     void LabBegin();
     void LabCompare(bool without);
     void LabEnd();
-    void LabForget();   // the settings back as they were, without showing them (at exit)
+    bool LabForget();   // the settings back as they were, without showing them (at exit); false: no lab was on
 
 private:
     using Clock = std::chrono::system_clock;

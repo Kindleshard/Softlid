@@ -67,13 +67,13 @@ public:
 
     Reaper() { Create(L"BlinkBuddy.Reaper", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }
 
-    void Run()
+    void Run(bool followUps = true)
     {
         auto now = std::move(waiting);   // (an `after` may hand over more: those wait for the next round)
         waiting.clear();
         for (auto& [object, after] : now) {
             object.reset();
-            if (after) after();
+            if (after && followUps) after();
         }
     }
 
@@ -103,6 +103,6 @@ void DeleteLater(std::shared_ptr<void> object, std::function<void()> after)
     if (r.waiting.size() == 1) PostMessageW(r.Handle(), Reaper::Message, 0, 0);
 }
 
-void DeleteLaterNow() { TheReaper().Run(); }
+void DeleteLaterNow(bool followUps) { TheReaper().Run(followUps); }
 
 } // namespace bb

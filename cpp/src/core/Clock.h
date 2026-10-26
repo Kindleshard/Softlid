@@ -32,7 +32,9 @@ inline std::wstring IsoDate(const LocalTime& t)
 }
 inline bool ParseIsoDate(const std::wstring& text, int& year, int& month, int& day)
 {
-    return swscanf_s(text.c_str(), L"%d-%d-%d", &year, &month, &day) == 3 && month >= 1 && month <= 12 && day >= 1 && day <= 31;
+    if (swscanf_s(text.c_str(), L"%d-%d-%d", &year, &month, &day) != 3 || month < 1 || month > 12 || day < 1) return false;
+    long long daysInMonth = DayNumber(month == 12 ? year + 1 : year, month == 12 ? 1 : month + 1, 1) - DayNumber(year, month, 1);
+    return day <= daysInMonth;   // (not 31 February)
 }
 
 // A count of seconds as "m:ss" ("19:05"; below zero shows as 0:00).

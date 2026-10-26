@@ -1,4 +1,4 @@
-# Checks that the settings window looks exactly as it did: every tab, scrolled through, compared pixel by pixel.
+# Checks that the settings window looks exactly as it did: every tab, scrolled through to its end, compared pixel by pixel.
 #   .\tools\ui-check.ps1 -Update   before a change: the screenshots become the baseline (cpp\build\ui-baseline)
 #   .\tools\ui-check.ps1           after it: compare (exit code = number of views that changed)
 # It runs a diagnostic copy of bin\BlinkBuddy.exe (--offscreen: off the screen, beside a running BlinkBuddy, which is
@@ -83,8 +83,13 @@ try {
     $tabX = @(44, 111, 186, 264, 295)   # the five tabs, in 96-dpi units
     for ($t = 0; $t -lt 5; $t++) {
         Click $h ([int]($tabX[$t] * $s)) ([int](28 * $s)); Start-Sleep -Milliseconds 300
-        for ($part = 0; $part -lt 7; $part++) {
-            SteadyShot $h (Join-Path $shots "tab$t-$part.png")
+        # Scrolled through to the end of the page: a scroll that changes nothing means the end was reached.
+        $previous = $null
+        for ($part = 0; $part -lt 20; $part++) {
+            $out = Join-Path $shots "tab$t-$part.png"
+            SteadyShot $h $out
+            if ($previous -and (Get-FileHash -LiteralPath $out).Hash -eq (Get-FileHash -LiteralPath $previous).Hash) { Remove-Item -LiteralPath $out; break }
+            $previous = $out
             Wheel $h ([int](200 * $s)) ([int](300 * $s)) 9; Start-Sleep -Milliseconds 300
         }
     }
@@ -92,7 +97,8 @@ try {
     Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
 }
 
-if ($Update) { "Baseline: $((Get-ChildItem -LiteralPath $baseline -Filter *.png).Count) views in $baseline"; exit 0 }
+$total = (Get-ChildItem -LiteralPath $shots -Filter *.png).Count
+if ($Update) { "Baseline: $total views in $baseline"; exit 0 }
 
 $changed = 0
 foreach ($f in Get-ChildItem -LiteralPath $shots -Filter *.png | Sort-Object Name) {
@@ -109,5 +115,5 @@ foreach ($f in Get-ChildItem -LiteralPath $shots -Filter *.png | Sort-Object Nam
     if ($n -lt 0) { "{0}: a different size" -f $f.Name; $changed++ }
     elseif ($n -gt $Tolerance) { "{0}: {1} pixels changed (rows {2}-{3})" -f $f.Name, $n, $y0, $y1; $changed++ }
 }
-if ($changed -eq 0) { 'All 35 views match the baseline.' } else { "$changed of 35 views changed: see $shots" }
+if ($changed -eq 0) { "All $total views match the baseline." } else { "$changed of $total views changed: see $shots" }
 exit $changed

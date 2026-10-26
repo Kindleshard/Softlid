@@ -149,6 +149,7 @@ const GammaRamp::Ramp& GammaRamp::Original(const std::wstring& device, HDC dc)
 
 void GammaRamp::Restore()
 {
+    if (applied.empty()) return;   // (nothing of ours: the marker may be another copy's)
     for (auto& [device, ramp] : originals) {
         if (!applied.count(device)) continue;
         HDC dc = CreateDCW(device.c_str(), nullptr, nullptr, nullptr);

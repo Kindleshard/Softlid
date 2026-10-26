@@ -82,7 +82,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
 
 App::~App()
 {
-    DeleteLaterNow();   // (windows closed just before exit)
+    DeleteLaterNow(false);   // (windows closed just before exit: freed, without their follow-ups)
     settingsWindow.reset();
     mini.reset();
     strip.reset();
@@ -408,11 +408,8 @@ void App::Exit()
     mini.reset();
     strip.reset();
     SuspendHotkeys();
-    if (lab) {   // the lab's trial settings aren't kept
-        lab.reset();
-        screen->LabForget();
-        dirty = true;
-    }
+    lab.reset();
+    if (screen->LabForget()) dirty = true;   // the lab's trial settings aren't kept (also when it just closed)
     screen->Stop();
     if (dirty) settings.Save();
     card.reset();

@@ -58,6 +58,6 @@ template <typename T> void DeleteLater(T* object, std::function<void()> after = 
 {
     DeleteLater(std::unique_ptr<T>(object), std::move(after));
 }
-void DeleteLaterNow();   // what is still waiting, now (at exit, when no more messages come)
+void DeleteLaterNow(bool followUps = true);   // what is still waiting, now (at exit, without follow-ups)
 
 } // namespace bb

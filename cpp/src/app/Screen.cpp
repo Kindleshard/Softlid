@@ -222,14 +222,15 @@ void Screen::LabEnd()
     SetToneMode(s.ToneMode);   // clears engine failures from the lab and reapplies
 }
 
-void Screen::LabForget()
+bool Screen::LabForget()
 {
     labCompare = false;
-    if (!labSaved) return;
+    if (!labSaved) return false;
     std::wstring confirmed = s.LutConfirmedBuild;   // a DesktopLUT check passed in the lab still counts
     s = *labSaved;
     s.LutConfirmedBuild = confirmed;
     labSaved.reset();
+    return true;
 }
 
 // ---- The night schedule ----
