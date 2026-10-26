@@ -92,7 +92,7 @@ void App::UseCompactView()
     s.StripCover = 0;
     if (s.KeepAwake || KeepingAwake()) SetKeepAwake(false);
     // (Modes for apps stay listed, but only apply in the Advanced view: see CheckRules.)
-    if (s.ToneMode != 0) SetToneMode(0);   // the engines are Advanced too: Standard takes over
+    if (s.ToneMode != Settings::ToneStandard) SetToneMode(Settings::ToneStandard);   // the engines are Advanced too: Standard takes over
     else Changed(true);
 }
 

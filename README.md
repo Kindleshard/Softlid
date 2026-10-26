@@ -45,7 +45,7 @@ You need Visual Studio 2022 or its Build Tools, with the "Desktop development wi
 powershell -ExecutionPolicy Bypass -File cpp/build.ps1
 ```
 
-`build.ps1` puts `BlinkBuddy.exe` and its `voice` folder in `cpp/bin/`.
+`build.ps1` puts `BlinkBuddy.exe` and its `voice` folder in `cpp/bin/`. It also builds and runs the tests (`cpp/tests`: the core logic, the tone pipeline's decisions, settings, shortcuts and the Night light reader); a failing test stops the build.
 
 ```bash
 powershell -ExecutionPolicy Bypass -File cpp/release.ps1

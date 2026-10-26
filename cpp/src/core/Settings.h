@@ -15,6 +15,7 @@ struct Settings {
 #undef BB_SETTING
 
     static constexpr int CustomLevel = 4;   // ComfortLevel's "custom curve" (standard engine only)
+    static constexpr int ToneStandard = 0, ToneSmartGpu = 2, ToneSmartLayer = 3, ToneDesktopLut = 4;   // ToneMode's engines
 
     // The preset strength the engines use (custom exists only for the standard engine).
     int Level() const { return ComfortLevel < CustomLevel ? ComfortLevel : CustomLevel - 1; }

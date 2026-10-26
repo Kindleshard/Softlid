@@ -93,7 +93,7 @@ bool Resolve(const std::wstring& city, const std::wstring& zone, double& lat, do
     static bool cachedOk;
     static double cachedLat, cachedLon;
     static std::wstring cachedName;
-    std::wstring text = Trim(city), key = text + L"" + zone;
+    std::wstring text = Trim(city), key = text + L"\x1" + zone;
     if (key != cachedText) {
         cachedText = key;
         cachedOk = false;

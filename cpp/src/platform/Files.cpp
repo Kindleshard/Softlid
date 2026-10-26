@@ -64,9 +64,12 @@ std::wstring ExeFolder()
 
 std::wstring TempFolder()
 {
-    wchar_t path[MAX_PATH + 1];
-    DWORD n = GetTempPathW(static_cast<DWORD>(std::size(path)), path);
-    return std::wstring(path, n);
+    // (Asked once for the length, as the path may be longer than MAX_PATH; a failure gives "".)
+    DWORD n = GetTempPathW(0, nullptr);
+    std::wstring path(n, L'\0');
+    n = n ? GetTempPathW(n, path.data()) : 0;
+    path.resize(n < path.size() ? n : 0);
+    return path;
 }
 
 } // namespace bb

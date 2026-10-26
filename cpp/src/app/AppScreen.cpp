@@ -126,7 +126,7 @@ void App::StopTone()
 
 bool App::EffectsAvailable() const
 {
-    return filter.CanShowEffects() && !(settings.ToneEnabled && settings.ToneMode == 2 && !smart.Failed());
+    return filter.CanShowEffects() && !(settings.ToneEnabled && settings.ToneMode == Settings::ToneSmartGpu && !smart.Failed());
 }
 
 void App::SetToneMode(int mode)
@@ -157,7 +157,7 @@ void App::RetestLut()
     lut.Stop();
     lut.ClearFailure();
     dirty = true;
-    if (settings.ToneMode == 4) {
+    if (settings.ToneMode == Settings::ToneDesktopLut) {
         settings.FilterEnabled = settings.ToneEnabled = true;   // the check is meaningless with tone off
         WriteLut();
         lut.Ensure(settings, true);

@@ -9,25 +9,24 @@ namespace bb::ScreenPlan {
 
 namespace {
 
-constexpr int Standard = 0, SmartGpu = 2, SmartLayer = 3, DesktopLut = 4;   // Settings::ToneMode
 
 // The lab's compare button shows the screen without tone; DesktopLUT gets a do-nothing table instead of stopping.
-bool ToneOn(const Settings& s, bool labCompare) { return s.FilterEnabled && s.ToneEnabled && !(labCompare && s.ToneMode != DesktopLut); }
+bool ToneOn(const Settings& s, bool labCompare) { return s.FilterEnabled && s.ToneEnabled && !(labCompare && s.ToneMode != Settings::ToneDesktopLut); }
 
 } // namespace
 
-bool WantsLut(const Settings& s, bool labCompare) { return ToneOn(s, labCompare) && s.ToneMode == DesktopLut; }
+bool WantsLut(const Settings& s, bool labCompare) { return ToneOn(s, labCompare) && s.ToneMode == Settings::ToneDesktopLut; }
 
 Engines Choose(const Settings& s, const State& state)
 {
     Engines e;
     e.on = s.FilterEnabled;
     e.toneOn = ToneOn(s, state.labCompare);
-    e.smart = e.toneOn && s.ToneMode == SmartGpu && !state.smartFailed;
+    e.smart = e.toneOn && s.ToneMode == Settings::ToneSmartGpu && !state.smartFailed;
     // A colour effect pauses the blue light filter, where one can show (not in the GPU filter or the overlays).
     e.effectShown = e.on && s.ColorEffect != ColorMath::NoEffect && !e.smart && state.effectsAvailable;
-    e.layer = e.toneOn && s.ToneMode == SmartLayer && !state.layerFailed;
-    e.lut = e.toneOn && s.ToneMode == DesktopLut && !state.lutFailed;
+    e.layer = e.toneOn && s.ToneMode == Settings::ToneSmartLayer && !state.layerFailed;
+    e.lut = e.toneOn && s.ToneMode == Settings::ToneDesktopLut && !state.lutFailed;
     e.custom = e.toneOn && s.CustomTone() && (s.ShadowCrush > 0 || s.Squeeze > 0 || s.LimiterStrength > 0);
     e.preset = e.toneOn && !s.CustomTone() && !e.smart && !e.layer && !e.lut;
     return e;
