@@ -66,6 +66,23 @@ private:
     void UpdateTip();
     void ReleaseGraphics();
 
+    // The messages OnMessage hands on.
+    void OnSize(WPARAM w, LPARAM l);
+    void OnDpiChanged(WPARAM w, LPARAM l);
+    void OnMinMaxInfo(MINMAXINFO* info);
+    void OnMouseMove(D2D1_POINT_2F p);
+    void OnMouseLeave();
+    void OnLeftDown(D2D1_POINT_2F p);
+    void OnLeftUp(D2D1_POINT_2F p);
+    void OnCaptureChanged(HWND newOwner);
+    void OnWheel(WPARAM w, LPARAM l);
+    void SetPointer();
+    void OnKeyDown(UINT key);
+    void OnCommand(WPARAM w, LPARAM l);
+    LRESULT OnEditColors(HDC dc);
+    void OnDestroy();
+    LRESULT OnFinalDestroy(WPARAM w, LPARAM l);
+
     Container root;
     UINT dpi = 96;
     Options options;

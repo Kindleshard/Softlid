@@ -17,7 +17,7 @@ namespace {
 
 using namespace ui;
 
-constexpr int EngineModes[] = {0, 2, 3, 4};
+constexpr int EngineModes[] = {Settings::ToneStandard, Settings::ToneSmartGpu, Settings::ToneSmartLayer, Settings::ToneDesktopLut};
 
 std::vector<std::wstring> Strengths(bool four)
 {
@@ -31,10 +31,19 @@ std::wstring Off(int v, std::wstring shown) { return v == 0 ? Lang::T(L"Off") : 
 
 void SettingsWindow::BuildTone(Stack& st)
 {
-    Shown advanced = [this] { return s.AdvancedView; };   // the engines and the curve: Advanced only
     toneToggle = &Header(st, L'\uE793', L"Tone", L"Calms bright areas and deepens darks, on top of Brightness.", s.ToneEnabled,
                          [this](bool v) { SetTone(v); });
+    std::vector<ChoiceRow*> engines = BuildToneEngines(st);
+    BuildToneStrength(st, engines);
+    BuildToneGraph(st);
+    BuildToneCustom(st);
+    BuildLutRow(st);
+}
 
+// Which engine does the work: Standard, or an experimental one (Advanced only), with the test lab.
+std::vector<ChoiceRow*> SettingsWindow::BuildToneEngines(Stack& st)
+{
+    Shown advanced = [this] { return s.AdvancedView; };
     Row& engineHead = st.Add(32, advanced);
     AddLabel(engineHead, L"Engine", Fonts::Small(), Theme::Dim, 24, 8, 200, 18);
     Button& lab = AddButton(engineHead, L"Test lab...", Edge - 96, 2, 96, 26);
@@ -65,7 +74,7 @@ void SettingsWindow::BuildTone(Stack& st)
         if (*engines[i].tip) row.tip = Lang::T(engines[i].tip);
         row.onChosen = [this, mode] {
             if (s.ToneMode == mode) return;
-            if (mode == 4 && !LutInstalled()) {
+            if (mode == Settings::ToneDesktopLut && !LutInstalled()) {
                 lutSetupOpen = true;   // DesktopLUT is a separate download: offer to set it up first
                 UpdateRows();
                 return;
@@ -75,9 +84,14 @@ void SettingsWindow::BuildTone(Stack& st)
             ToneChanged();
         };
         rows.push_back(&row);
-        if (mode == 4) BuildLutSetup(st);
+        if (mode == Settings::ToneDesktopLut) BuildLutSetup(st);
     }
+    return rows;
+}
 
+// How strong (the same white level in every engine), or Custom (Standard only); keeps the engine list in line too.
+void SettingsWindow::BuildToneStrength(Stack& st, std::vector<ChoiceRow*> rows)
+{
     Row& strengthHead = st.Add(26);
     AddLabel(strengthHead, L"Strength", Fonts::Small(), Theme::Dim, 24, 6, 200, 18);
     Row& strengthRow = st.Add(56);
@@ -102,17 +116,20 @@ void SettingsWindow::BuildTone(Stack& st)
         for (int i = 0; i < 4; i++) rows[i]->SetChecked(EngineModes[i] == s.ToneMode);
         strength.SetSteps(Strengths(s.AdvancedView));
         strength.SetSelected(s.CustomTone() ? -1 : s.Level());
-        custom.SetVisible(s.ToneMode == 0 && s.AdvancedView);
+        custom.SetVisible(s.ToneMode == Settings::ToneStandard && s.AdvancedView);
         custom.SetTint(s.CustomTone() ? Theme::Accent() : 0);
     });
+}
 
+void SettingsWindow::BuildToneGraph(Stack& st)
+{
     // Below the strength: the graph and status (and, for Standard, adapting to white screens) ...
-    Row& graphRow = st.Add(108, [this] { return s.AdvancedView && !s.CustomTone() && s.ToneMode != 4; });
+    Row& graphRow = st.Add(108, [this] { return s.AdvancedView && !s.CustomTone() && s.ToneMode != Settings::ToneDesktopLut; });
     curve = &graphRow.Add<CurveView>();
     curve->SetBounds(24, 4, 92, 92);
     curve->curve = [this](double x) {
         if (s.CustomTone()) return ToneCurve::Net(x, s.ShadowCrush, s.Squeeze, s.LimiterStrength);
-        return s.ToneMode == 0 ? app.ComfortNet(x) : ToneCurve::Flat(s.Level(), x);
+        return s.ToneMode == Settings::ToneStandard ? app.ComfortNet(x) : ToneCurve::Flat(s.Level(), x);
     };
     curve->tip = Lang::T(L"Input brightness (left to right) against what you see (bottom to top)");
     toneStatus = &AddLabel(graphRow, L"", Fonts::Small(), Theme::Dim, 128, 2, Edge - 128, 66);
@@ -123,10 +140,13 @@ void SettingsWindow::BuildTone(Stack& st)
         ToneChanged();
     });
     updaters.push_back([this, &adaptText, &adapt] {   // (adapting is Standard's)
-        adaptText.SetVisible(s.ToneMode == 0);
-        adapt.SetVisible(s.ToneMode == 0);
+        adaptText.SetVisible(s.ToneMode == Settings::ToneStandard);
+        adapt.SetVisible(s.ToneMode == Settings::ToneStandard);
     });
+}
 
+void SettingsWindow::BuildToneCustom(Stack& st)
+{
     // ... or the custom sliders ...
     Row& customRow = st.Add(106, [this] { return s.CustomTone(); });
     auto percent = [](int v) { return Off(v, std::to_wstring(v) + L"%"); };
@@ -144,9 +164,12 @@ void SettingsWindow::BuildTone(Stack& st)
             s.LimiterStrength = v;
             ToneChanged();
         });
+}
 
+void SettingsWindow::BuildLutRow(Stack& st)
+{
     // ... or where DesktopLUT is, the 15-second check, and its status.
-    Row& lutRow = st.Add(108, [this] { return s.ToneMode == 4; });
+    Row& lutRow = st.Add(108, [this] { return s.ToneMode == Settings::ToneDesktopLut; });
     lutBox = &lutRow.Add<TextBox>();
     lutBox->SetBounds(24, 4, Edge - 24 - 104, 28);
     lutBox->SetText(s.LutPath);
@@ -290,12 +313,12 @@ std::wstring SettingsWindow::ToneDetail() const
         for (size_t at; (at = status.find(L"    ")) != std::wstring::npos;) status.replace(at, 4, L"\n");
         return Lang::T(L"Right now:") + L"\n" + status;
     }
-    if (s.ToneMode == 2) return app.SmartStatus() + L"\n" + Lang::T(L"Graph: a large flat area. Details keep their contrast.");
-    if (s.ToneMode == 3) {
+    if (s.ToneMode == Settings::ToneSmartGpu) return app.SmartStatus() + L"\n" + Lang::T(L"Graph: a large flat area. Details keep their contrast.");
+    if (s.ToneMode == Settings::ToneSmartLayer) {
         std::wstring status = app.LayerStatus();
         return (status.empty() ? Lang::T(L"Measuring...") : status) + L"\n" + Lang::T(L"Graph: a large flat area.");
     }
-    if (s.ToneMode == 4) {
+    if (s.ToneMode == Settings::ToneDesktopLut) {
         std::wstring status = app.LutStatus();
         return (status.empty() ? Lang::T(L"Starting...") : status) +
                (app.LutFailed() ? L" " + Lang::T(L"Standard is used meanwhile.") : L"\n" + Lang::T(L"Panic key: Ctrl+Alt+Shift+L."));

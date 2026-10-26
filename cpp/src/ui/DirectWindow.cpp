@@ -306,105 +306,24 @@ void DirectWindow::ReleaseGraphics() { target.Reset(); }
 LRESULT DirectWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
 {
     switch (message) {
-    case WM_PAINT:
-        Paint();
-        return 0;
-    case WM_ERASEBKGND:
-        return 1;
-    case WM_SIZE:
-        if (target) target->Resize(D2D1::SizeU(LOWORD(l), HIWORD(l)));
-        if (w != SIZE_MINIMIZED) Relayout();
-        return 0;
-    case WM_DPICHANGED: {
-        dpi = HIWORD(w);
-        if (target) target->SetDpi(static_cast<float>(dpi), static_cast<float>(dpi));
-        auto r = reinterpret_cast<const RECT*>(l);
-        fixedWidth = static_cast<float>(r->right - r->left);
-        SetWindowPos(hwnd, nullptr, r->left, r->top, r->right - r->left, r->bottom - r->top, SWP_NOZORDER | SWP_NOACTIVATE);
-        Relayout();
-        return 0;
-    }
-    case WM_GETMINMAXINFO:
-        if (options.resizable && fixedWidth > 0) {
-            auto info = reinterpret_cast<MINMAXINFO*>(l);
-            RECT frame{0, 0, 0, static_cast<LONG>(options.minHeight * Scale())};
-            AdjustWindowRectExForDpi(&frame, static_cast<DWORD>(GetWindowLongPtrW(hwnd, GWL_STYLE)), FALSE, 0, dpi);
-            info->ptMinTrackSize.x = info->ptMaxTrackSize.x = static_cast<LONG>(fixedWidth);
-            info->ptMinTrackSize.y = frame.bottom - frame.top;
-        }
-        return 0;
-    case WM_MOUSEMOVE: {
-        if (!tracking) {
-            TRACKMOUSEEVENT t{sizeof t, TME_LEAVE, hwnd, 0};
-            tracking = TrackMouseEvent(&t) != FALSE;
-        }
-        D2D1_POINT_2F p = ToDips(l);
-        if (captured) {
-            captured->MouseMove(Local(captured, p), true);
-            return 0;
-        }
-        SetHover(root.HitTest(p));
-        if (hover && hover->Enabled()) hover->MouseMove(Local(hover, p), false);
-        return 0;
-    }
-    case WM_MOUSELEAVE:
-        tracking = false;
-        if (!captured) SetHover(nullptr);
-        return 0;
-    case WM_LBUTTONDOWN: {
-        D2D1_POINT_2F p = ToDips(l);
-        Control* hit = root.HitTest(p);
-        SetHover(hit);
-        if (!hit || !hit->Enabled()) return 0;
-        if (hit->focusable) SetFocus(hit);
-        else if (GetFocus() != hwnd) ::SetFocus(hwnd);
-        captured = hit;
-        SetCapture(hwnd);
-        hit->MouseDown(Local(hit, p));
-        return 0;
-    }
-    case WM_LBUTTONUP: {
-        Control* c = captured;
-        captured = nullptr;
-        if (GetCapture() == hwnd) ReleaseCapture();
-        if (!c) return 0;
-        D2D1_POINT_2F local = Local(c, ToDips(l));
-        c->MouseUp(local);
-        // (The control may have been removed by its MouseUp: only click it if it is still under the pointer.)
-        if (Contains({0, 0, c->W(), c->H()}, local) && root.HitTest(ToDips(l)) == c) c->Click();
-        SetHover(root.HitTest(ToDips(l)));
-        return 0;
-    }
-    case WM_CAPTURECHANGED:
-        if (captured && reinterpret_cast<HWND>(l) != hwnd) {
-            Control* c = captured;
-            captured = nullptr;
-            c->MouseUp({-1, -1});
-        }
-        return 0;
-    case WM_MOUSEWHEEL: {
-        POINT pt{GET_X_LPARAM(l), GET_Y_LPARAM(l)};
-        ScreenToClient(hwnd, &pt);
-        for (Control* c = root.HitTest({pt.x / Scale(), pt.y / Scale()}); c; c = c->Parent())
-            if (c->Enabled() && c->Wheel(GET_WHEEL_DELTA_WPARAM(w))) break;
-        return 0;
-    }
+    case WM_PAINT: Paint(); return 0;
+    case WM_ERASEBKGND: return 1;
+    case WM_SIZE: OnSize(w, l); return 0;
+    case WM_DPICHANGED: OnDpiChanged(w, l); return 0;
+    case WM_GETMINMAXINFO: OnMinMaxInfo(reinterpret_cast<MINMAXINFO*>(l)); return 0;
+    case WM_MOUSEMOVE: OnMouseMove(ToDips(l)); return 0;
+    case WM_MOUSELEAVE: OnMouseLeave(); return 0;
+    case WM_LBUTTONDOWN: OnLeftDown(ToDips(l)); return 0;
+    case WM_LBUTTONUP: OnLeftUp(ToDips(l)); return 0;
+    case WM_CAPTURECHANGED: OnCaptureChanged(reinterpret_cast<HWND>(l)); return 0;
+    case WM_MOUSEWHEEL: OnWheel(w, l); return 0;
     case WM_SETCURSOR:
         if (LOWORD(l) == HTCLIENT) {
-            Control* c = captured ? captured : hover;
-            Cursor kind = c && c->Enabled() ? c->cursor : Cursor::Arrow;
-            SetCursor(LoadCursorW(nullptr, kind == Cursor::Hand ? IDC_HAND : kind == Cursor::Cross ? IDC_CROSS : IDC_ARROW));
+            SetPointer();
             return TRUE;
         }
         break;
-    case WM_KEYDOWN:
-        if (w == VK_TAB) {
-            MoveFocus(GetKeyState(VK_SHIFT) < 0);
-            return 0;
-        }
-        if (focused && focused->Enabled() && focused->Key(static_cast<UINT>(w))) return 0;
-        Shortcut(static_cast<UINT>(w));
-        return 0;
+    case WM_KEYDOWN: OnKeyDown(static_cast<UINT>(w)); return 0;
     case WM_SYSKEYDOWN:
         // Keys with Alt (and F10): a control that wants them (recording a shortcut) gets them; otherwise Windows' own.
         if (focused && focused->Enabled() && focused->Key(static_cast<UINT>(w))) return 0;
@@ -421,40 +340,165 @@ LRESULT DirectWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
         if (timers.count(c)) c->Timer();
         return 0;
     }
-    case WM_COMMAND:
-        // From a native child (a text box): the control it belongs to is kept with it.
-        if (l) {
-            auto c = reinterpret_cast<Control*>(GetWindowLongPtrW(reinterpret_cast<HWND>(l), GWLP_USERDATA));
-            if (c) c->Notify(HIWORD(w));
-        }
-        return 0;
-    case WM_CTLCOLOREDIT: {
-        auto dc = reinterpret_cast<HDC>(w);
-        SetTextColor(dc, Gdi(Theme::Fg));
-        SetBkColor(dc, Gdi(EditBackground));
-        return reinterpret_cast<LRESULT>(EditBrush());
-    }
-    case WM_CLOSE:
-        DestroyWindow(hwnd);
-        return 0;
-    case WM_DESTROY:
-        for (Control* c : timers) KillTimer(hwnd, reinterpret_cast<UINT_PTR>(c));
-        timers.clear();
-        ReleaseGraphics();
-        return 0;
-    case WM_NCDESTROY: {
-        LRESULT result = DefWindowProcW(hwnd, message, w, l);
-        SetWindowLongPtrW(hwnd, GWLP_USERDATA, 0);
-        hwnd = nullptr;
-        tooltip = nullptr;
-        if (onClosed) {
-            auto closed = onClosed;   // (a copy: it may delete this object, and with it onClosed)
-            closed();
-        }
-        return result;
-    }
+    case WM_COMMAND: OnCommand(w, l); return 0;
+    case WM_CTLCOLOREDIT: return OnEditColors(reinterpret_cast<HDC>(w));
+    case WM_CLOSE: DestroyWindow(hwnd); return 0;
+    case WM_DESTROY: OnDestroy(); return 0;
+    case WM_NCDESTROY: return OnFinalDestroy(w, l);
     }
     return Window::OnMessage(message, w, l);
+}
+
+// ---- Size and scale ----
+
+void DirectWindow::OnSize(WPARAM w, LPARAM l)
+{
+    if (target) target->Resize(D2D1::SizeU(LOWORD(l), HIWORD(l)));
+    if (w != SIZE_MINIMIZED) Relayout();
+}
+
+void DirectWindow::OnDpiChanged(WPARAM w, LPARAM l)
+{
+    dpi = HIWORD(w);
+    if (target) target->SetDpi(static_cast<float>(dpi), static_cast<float>(dpi));
+    auto r = reinterpret_cast<const RECT*>(l);
+    fixedWidth = static_cast<float>(r->right - r->left);
+    SetWindowPos(hwnd, nullptr, r->left, r->top, r->right - r->left, r->bottom - r->top, SWP_NOZORDER | SWP_NOACTIVATE);
+    Relayout();
+}
+
+// A resizable window keeps its width, and doesn't get shorter than options.minHeight.
+void DirectWindow::OnMinMaxInfo(MINMAXINFO* info)
+{
+    if (!options.resizable || fixedWidth <= 0) return;
+    RECT frame{0, 0, 0, static_cast<LONG>(options.minHeight * Scale())};
+    AdjustWindowRectExForDpi(&frame, static_cast<DWORD>(GetWindowLongPtrW(hwnd, GWL_STYLE)), FALSE, 0, dpi);
+    info->ptMinTrackSize.x = info->ptMaxTrackSize.x = static_cast<LONG>(fixedWidth);
+    info->ptMinTrackSize.y = frame.bottom - frame.top;
+}
+
+// ---- The mouse ----
+
+void DirectWindow::OnMouseMove(D2D1_POINT_2F p)
+{
+    if (!tracking) {
+        TRACKMOUSEEVENT t{sizeof t, TME_LEAVE, hwnd, 0};
+        tracking = TrackMouseEvent(&t) != FALSE;
+    }
+    if (captured) {
+        captured->MouseMove(Local(captured, p), true);
+        return;
+    }
+    SetHover(root.HitTest(p));
+    if (hover && hover->Enabled()) hover->MouseMove(Local(hover, p), false);
+}
+
+void DirectWindow::OnMouseLeave()
+{
+    tracking = false;
+    if (!captured) SetHover(nullptr);
+}
+
+void DirectWindow::OnLeftDown(D2D1_POINT_2F p)
+{
+    Control* hit = root.HitTest(p);
+    SetHover(hit);
+    if (!hit || !hit->Enabled()) return;
+    if (hit->focusable) SetFocus(hit);
+    else if (GetFocus() != hwnd) ::SetFocus(hwnd);
+    captured = hit;
+    SetCapture(hwnd);
+    hit->MouseDown(Local(hit, p));
+}
+
+void DirectWindow::OnLeftUp(D2D1_POINT_2F p)
+{
+    Control* c = captured;
+    captured = nullptr;
+    if (GetCapture() == hwnd) ReleaseCapture();
+    if (!c) return;
+    D2D1_POINT_2F local = Local(c, p);
+    c->MouseUp(local);
+    // (The control may have been removed by its MouseUp: only click it if it is still under the pointer.)
+    if (Contains({0, 0, c->W(), c->H()}, local) && root.HitTest(p) == c) c->Click();
+    SetHover(root.HitTest(p));
+}
+
+void DirectWindow::OnCaptureChanged(HWND newOwner)
+{
+    if (!captured || newOwner == hwnd) return;
+    Control* c = captured;
+    captured = nullptr;
+    c->MouseUp({-1, -1});
+}
+
+// The wheel goes to the control under the pointer, or up its parents until one uses it (e.g. the page scrolls).
+void DirectWindow::OnWheel(WPARAM w, LPARAM l)
+{
+    POINT pt{GET_X_LPARAM(l), GET_Y_LPARAM(l)};
+    ScreenToClient(hwnd, &pt);
+    for (Control* c = root.HitTest({pt.x / Scale(), pt.y / Scale()}); c; c = c->Parent())
+        if (c->Enabled() && c->Wheel(GET_WHEEL_DELTA_WPARAM(w))) break;
+}
+
+void DirectWindow::SetPointer()
+{
+    Control* c = captured ? captured : hover;
+    Cursor kind = c && c->Enabled() ? c->cursor : Cursor::Arrow;
+    SetCursor(LoadCursorW(nullptr, kind == Cursor::Hand ? IDC_HAND : kind == Cursor::Cross ? IDC_CROSS : IDC_ARROW));
+}
+
+// ---- The keyboard ----
+
+// Tab moves the focus; other keys go to the focused control, then (unused) to Shortcut.
+void DirectWindow::OnKeyDown(UINT key)
+{
+    if (key == VK_TAB) {
+        MoveFocus(GetKeyState(VK_SHIFT) < 0);
+        return;
+    }
+    if (focused && focused->Enabled() && focused->Key(key)) return;
+    Shortcut(key);
+}
+
+// ---- Native child windows (text boxes) ----
+
+// From a native child: the control it belongs to is kept with it.
+void DirectWindow::OnCommand(WPARAM w, LPARAM l)
+{
+    if (!l) return;
+    auto c = reinterpret_cast<Control*>(GetWindowLongPtrW(reinterpret_cast<HWND>(l), GWLP_USERDATA));
+    if (c) c->Notify(HIWORD(w));
+}
+
+LRESULT DirectWindow::OnEditColors(HDC dc)
+{
+    SetTextColor(dc, Gdi(Theme::Fg));
+    SetBkColor(dc, Gdi(EditBackground));
+    return reinterpret_cast<LRESULT>(EditBrush());
+}
+
+// ---- Closing ----
+
+void DirectWindow::OnDestroy()
+{
+    for (Control* c : timers) KillTimer(hwnd, reinterpret_cast<UINT_PTR>(c));
+    timers.clear();
+    ReleaseGraphics();
+}
+
+// The last message: the object lets go of the window, then onClosed runs (it may free this object: see DeleteLater).
+LRESULT DirectWindow::OnFinalDestroy(WPARAM w, LPARAM l)
+{
+    LRESULT result = DefWindowProcW(hwnd, WM_NCDESTROY, w, l);
+    SetWindowLongPtrW(hwnd, GWLP_USERDATA, 0);
+    hwnd = nullptr;
+    tooltip = nullptr;
+    if (onClosed) {
+        auto closed = onClosed;   // (a copy: it may delete this object, and with it onClosed)
+        closed();
+    }
+    return result;
 }
 
 } // namespace bb::ui

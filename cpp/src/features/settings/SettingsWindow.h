@@ -78,6 +78,11 @@ private:
 
     // ---- Tone, on the Screen page (SettingsTone.cpp) ----
     void BuildTone(ui::Stack& st);
+    std::vector<ui::ChoiceRow*> BuildToneEngines(ui::Stack& st);
+    void BuildToneStrength(ui::Stack& st, std::vector<ui::ChoiceRow*> rows);
+    void BuildToneGraph(ui::Stack& st);
+    void BuildToneCustom(ui::Stack& st);
+    void BuildLutRow(ui::Stack& st);
     void BuildLutSetup(ui::Stack& st);
     void CompactSlider(ui::Container& parent, float y, std::wstring_view text, int value,
                        std::function<std::wstring(int)> format, std::function<void(int)> changed);
