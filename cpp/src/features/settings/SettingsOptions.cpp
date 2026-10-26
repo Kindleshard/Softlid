@@ -32,7 +32,9 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
     AddLabel(head, L"How BlinkBuddy itself behaves.", Fonts::Small(), Theme::Dim, 56, 38, Edge - 56, 20);
     // The language: Windows' own, or one of the list (each named in its own words). The window is built again in it.
     Row& langRow = st.Add(46);
-    AddLabel(langRow, L"Language", Fonts::Body(), Theme::Fg, 24, 10, 120, 26);
+    // A globe before it: in a language you can't read, it still says where to change it.
+    langRow.Add<Icon>(static_cast<wchar_t>(0xE774), 13.0f, Theme::Accent()).SetBounds(20, 8, 28, 30);
+    AddLabel(langRow, L"Language", Fonts::Body(), Theme::Fg, 54, 10, 94, 26);
     // Alphabetical by name, after "Same as Windows" (Latin letters first, then Greek, Cyrillic and East Asian scripts).
     std::vector<const Lang::Info*> sorted;
     for (const auto& info : Lang::All()) sorted.push_back(&info);
