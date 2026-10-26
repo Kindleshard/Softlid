@@ -260,7 +260,7 @@ void SettingsWindow::BuildResourceUse(Stack& st)
     Note(st, L"Measured only while this page shows, so drawing this window is part of what you see here. Closed, "
              L"BlinkBuddy mostly waits and uses next to nothing.", 2, advanced);
     // A diagnostic copy shows dashes, so its screenshots stay the same (unless "--measure" asks it to measure).
-    if (!unfoldAll || std::wcsstr(GetCommandLineW(), L"--measure")) meter = std::make_unique<ResourceMeter>();
+    measuring = !unfoldAll || std::wcsstr(GetCommandLineW(), L"--measure");
     RefreshUsage();
 }
 
@@ -268,13 +268,14 @@ void SettingsWindow::BuildResourceUse(Stack& st)
 void SettingsWindow::RefreshUsage()
 {
     if (!usageText) return;
-    if (meter && (!s.AdvancedView || tabs->Selected() != 4)) return;
+    if (measuring && (!s.AdvancedView || tabs->Selected() != 4)) return;
     ResourceUse u{0, 0, 0, 0, 0, 0};
-    if (meter) {
+    if (measuring) {
+        if (!meter) meter = std::make_unique<ResourceMeter>();   // (the first time it shows: pdh.dll loads only then)
         u = meter->Sample();
         usageGraph->Add(u.cpu, std::max(0.0, u.gpu));
     }
-    auto num = [this](double v) { return meter ? OneDecimal(v) : std::wstring(L"\u2013"); };
+    auto num = [this](double v) { return measuring ? OneDecimal(v) : std::wstring(L"\u2013"); };
     std::wstring text = Lang::F(L"Processor: {0}% of the whole CPU", {num(u.cpu)}) + L"\n";
     text += u.gpu < 0 ? Lang::T(L"Graphics card: Windows doesn't report it here")
                       : Lang::F(L"Graphics card: {0}% (its busiest engine)", {num(u.gpu)});

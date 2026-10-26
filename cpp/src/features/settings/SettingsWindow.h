@@ -177,7 +177,8 @@ private:
     // Resource use (Options, Advanced view).
     ui::UsageGraph* usageGraph = nullptr;
     ui::Label* usageText = nullptr;
-    std::unique_ptr<ResourceMeter> meter;   // (none in a diagnostic copy)
+    std::unique_ptr<ResourceMeter> meter;   // (made the first time the section shows)
+    bool measuring = false;                 // (not in a diagnostic copy)
 
     int shownSync = -1, shownRule = -1;
 };
