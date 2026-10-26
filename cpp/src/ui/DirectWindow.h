@@ -21,6 +21,7 @@ public:
         bool edge = true;                // a pop-up's thin edge
         int background = 0;              // ARGB; 0: the usual dark
         float minHeight = 0;             // 96-dpi units, for a resizable window
+        float zoom = 1;                  // its own size on top of the display's scaling (0.5 to 1.5: half to 150%)
         HWND owner = nullptr;
         HICON icon = nullptr;
     };
@@ -36,7 +37,7 @@ public:
     std::function<void()> onClosed;       // after the window is gone (to free this object from here: DeleteLater)
 
     Container& Root() { return root; }
-    float Scale() const { return dpi / 96.0f; }
+    float Scale() const { return dpi / 96.0f * options.zoom; }   // pixels per 96-dpi unit (the zoom included)
     D2D1_SIZE_F ClientSize() const;       // 96-dpi units
     POINT ToScreen(D2D1_POINT_2F windowPoint) const;   // pixels
     RECT ToPixels(const D2D1_RECT_F& r) const;         // window client pixels

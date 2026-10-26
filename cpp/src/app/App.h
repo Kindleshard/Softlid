@@ -121,6 +121,7 @@ public:
     void EnterMiniMode() override;
     void LeaveMiniMode() override;
     void SaveMiniPosition(POINT at) override;
+    void ShowMenu() override;   // (also the tray icon's right-click)
 
 private:
     using Clock = std::chrono::system_clock;
@@ -140,7 +141,6 @@ private:
     LRESULT Handle(UINT message, WPARAM w, LPARAM l);
 
     void OnTick();
-    void ShowMenu();
     void SettingsClosed();
     void UpdateTrayTip();
     void Exit(const wchar_t* why);   // why goes in the run log (see RunLog)

@@ -588,6 +588,9 @@ LRESULT MiniWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
             SetWindowPos(hwnd, nullptr, pos.x, pos.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
         }
         return 0;
+    case WM_RBUTTONUP:   // the tray icon's menu: settings, pauses, exit
+        app.ShowMenu();
+        return 0;
     case WM_LBUTTONDOWN:
         pressed = true;
         dragged = false;

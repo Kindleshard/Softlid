@@ -124,6 +124,7 @@ BB_SETTING(int, CloseAction, 0)                 // 0 ask, 1 keep running in the 
 BB_SETTING(text, PanelOrder, L"")               // the features on the settings panel, in order (keys by commas; see SettingsPanel)
 BB_SETTING(text, Folded, L"")                   // settings sections folded shut, separated by bars
 BB_SETTING(int, SettingsHeight, 0)              // the settings window's height at 100% (0 = standard)
+BB_SETTING(int, SettingsZoom, 100)              // %: the settings window's size (50, 75, 100, 125 or 150)
 BB_SETTING(text, Language, L"")                 // "" = the Windows language (if translated)
 BB_SETTING(bool, UpdateCheck, true)
 BB_SETTING(text, LastUpdateCheck, L"")          // yyyy-MM-dd

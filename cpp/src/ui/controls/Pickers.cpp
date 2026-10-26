@@ -259,7 +259,7 @@ void TextBox::Placed()
         if (maxLength > 0) SendMessageW(edit, EM_SETLIMITTEXT, maxLength, 0);
         if (!cue.empty()) SendMessageW(edit, EM_SETCUEBANNER, TRUE, reinterpret_cast<LPARAM>(cue.c_str()));
     }
-    UINT dpi = GetDpiForWindow(w->Handle());
+    UINT dpi = static_cast<UINT>(std::lround(96 * w->Scale()));   // (the window's zoom included)
     if (dpi != fontDpi) {
         if (font) DeleteObject(font);
         font = CreateFontW(-MulDiv(10, dpi, 72), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, Lang::Family());

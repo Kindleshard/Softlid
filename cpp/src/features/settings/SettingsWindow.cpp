@@ -50,6 +50,7 @@ void SettingsWindow::Show(const POINT* at, bool optionsPage, HICON icon, bool ac
     opts.resizable = true;
     opts.minHeight = 360;
     opts.icon = icon;
+    opts.zoom = s.SettingsZoom / 100.0f;
     float height = s.SettingsHeight > 0 ? static_cast<float>(s.SettingsHeight) : H;   // as tall as it was last left
     Open(W, height, at, opts);
     ShowRules();   // again, now the icons can be made at the display's scale

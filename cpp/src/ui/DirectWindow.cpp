@@ -70,6 +70,11 @@ void DirectWindow::Open(float w, float h, const POINT* at, const Options& opts)
     RECT frame{0, 0, static_cast<LONG>(std::lround(w * Scale())), static_cast<LONG>(std::lround(h * Scale()))};
     AdjustWindowRectExForDpi(&frame, style, FALSE, exStyle, dpi);
     int fw = frame.right - frame.left, fh = frame.bottom - frame.top;
+    {   // (never taller than the screen it opens on: zoomed in, the rest scrolls)
+        MONITORINFO mi{sizeof mi};
+        GetMonitorInfoW(monitor, &mi);
+        fh = std::min<int>(fh, mi.rcWork.bottom - mi.rcWork.top);
+    }
     RECT bounds;
     if (at) {
         bounds = {at->x, at->y, at->x + fw, at->y + fh};
@@ -226,7 +231,7 @@ void DirectWindow::Paint()
     // Drawn on the processor, straight into the window's own device context, one changed area at a time: Direct2D's
     // working space is then the size of what changed. (A window target keeps a whole-window buffer and a second copy
     // to present from, and touches both on every paint: twice the memory, for a repaint of one line.)
-    ID2D1RenderTarget* target = IsRectEmpty(&ps.rcPaint) ? nullptr : canvas.Begin(ps.hdc, ps.rcPaint, static_cast<float>(dpi));
+    ID2D1RenderTarget* target = IsRectEmpty(&ps.rcPaint) ? nullptr : canvas.Begin(ps.hdc, ps.rcPaint, 96 * Scale());
     if (target) {
         float s = Scale();
         D2D1_RECT_F clip{ps.rcPaint.left / s, ps.rcPaint.top / s, ps.rcPaint.right / s, ps.rcPaint.bottom / s};

@@ -27,6 +27,7 @@ public:
 
     virtual void LeaveMiniMode() = 0;                 // and the settings open
     virtual void SaveMiniPosition(POINT at) = 0;
+    virtual void ShowMenu() = 0;                      // the tray icon's menu, at the pointer (Settings, pauses, Exit...)
 
 protected:
     ~MiniHost() = default;
