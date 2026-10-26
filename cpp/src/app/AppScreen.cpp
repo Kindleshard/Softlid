@@ -9,6 +9,7 @@
 #include "core/VisibilityGuard.h"
 #include "features/screen/Backlight.h"
 #include "features/tone/LutFiles.h"
+#include "platform/Clock.h"
 #include "platform/KeepAwake.h"
 #include "platform/Location.h"
 #include <algorithm>
@@ -274,9 +275,7 @@ float App::NightNow() const
     Settings v = Scheduled();
     if (!v.ScheduleEnabled) return 0;
     if (now < previewUntil) return 0;
-    SYSTEMTIME local;
-    GetLocalTime(&local);
-    return Night::Factor(v, local);
+    return Night::Factor(v, LocalNow());
 }
 
 float App::NightShown() const { return ruleMode >= 0 ? 0 : NightNow(); }
@@ -313,9 +312,7 @@ float App::WarmthNow() const
 
 std::wstring App::NightStatus() const
 {
-    SYSTEMTIME local;
-    GetLocalTime(&local);
-    return Night::Status(Scheduled(), local);
+    return Night::Status(Scheduled(), LocalNow());
 }
 
 // The line under the schedule's status: still syncing, synced (with Windows location or the time zone's city), failed
@@ -323,7 +320,7 @@ std::wstring App::NightStatus() const
 App::Sync App::SyncState(std::wstring& text) const
 {
     bool windows;
-    std::wstring place = Night::Place(settings, windows);
+    std::wstring place = Night::Place(settings, TimeZoneId(), windows);
     if (settings.CityManual && !place.empty()) {
         text = Lang::F(L"{0} time, chosen by you", {place});
         return Sync::CityChosen;

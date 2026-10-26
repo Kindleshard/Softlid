@@ -63,32 +63,6 @@ constexpr City Cities[] = {
 
 double Mod(double a, double m) { return std::fmod(std::fmod(a, m) + m, m); }
 
-// Case- and accent-insensitive, so "İzmir", "izmir" and "Izmir" all match.
-std::wstring Simplify(const std::wstring& s)
-{
-    std::wstring t = Trim(s);
-    for (wchar_t& c : t) if (c == L'İ' || c == L'ı') c = L'i';   // Turkish dotted / dotless i
-    if (t.empty()) return t;
-    int n = NormalizeString(NormalizationD, t.c_str(), static_cast<int>(t.size()), nullptr, 0);
-    std::wstring d(n > 0 ? n : 0, L'\0');
-    if (n > 0) d.resize(std::max(0, NormalizeString(NormalizationD, t.c_str(), static_cast<int>(t.size()), d.data(), n)));
-    else d = t;
-    std::vector<WORD> types(d.size());
-    GetStringTypeW(CT_CTYPE3, d.c_str(), static_cast<int>(d.size()), types.data());
-    std::wstring out;
-    for (size_t i = 0; i < d.size(); i++) if (!(types[i] & C3_NONSPACING)) out += d[i];
-    CharLowerBuffW(out.data(), static_cast<DWORD>(out.size()));
-    return out;
-}
-
-// The Windows time zone this PC is set to ("Turkey Standard Time").
-std::wstring TimeZoneId()
-{
-    DYNAMIC_TIME_ZONE_INFORMATION tz{};
-    GetDynamicTimeZoneInformation(&tz);
-    return tz.TimeZoneKeyName;
-}
-
 // "41.01, 28.98" (or "41.01 28.98"): coordinates, as Windows location writes them.
 bool ParseCoordinates(const std::wstring& text, double& lat, double& lon)
 {
@@ -98,34 +72,33 @@ bool ParseCoordinates(const std::wstring& text, double& lat, double& lon)
     return swscanf_s(t.c_str(), L"%lf %lf %1ls", &lat, &lon, rest, 2) == 2;
 }
 
-const City* CityOfTimeZone()
+const City* CityOfTimeZone(const std::wstring& zone)
 {
-    std::wstring zone = TimeZoneId();
     for (const City& c : Cities) if (zone == c.zone) return &c;
     return nullptr;
 }
 
 const City* CityNamed(const std::wstring& text)
 {
-    std::wstring key = Simplify(text);
-    for (const City& c : Cities) if (Simplify(c.name) == key) return &c;
+    std::wstring key = FoldForSearch(text);
+    for (const City& c : Cities) if (FoldForSearch(c.name) == key) return &c;
     return nullptr;
 }
 
-// Where the sun times are for, and its name for the status line.
-bool Resolve(const std::wstring& city, double& lat, double& lon, std::wstring& name)
+// Where the sun times are for, and its name for the status line. zone: the time zone, for when no place is set.
+bool Resolve(const std::wstring& city, const std::wstring& zone, double& lat, double& lon, std::wstring& name)
 {
-    // (Looked up again only when the text changes: the status asks each second.)
-    static std::wstring cachedText = L"\x1";
+    // (Looked up again only when the text or the time zone changes: the status asks each second.)
+    static std::wstring cachedText = L"\x2";   // (matches no text and zone)
     static bool cachedOk;
     static double cachedLat, cachedLon;
     static std::wstring cachedName;
-    std::wstring text = Trim(city);
-    if (text != cachedText) {
-        cachedText = text;
+    std::wstring text = Trim(city), key = text + L"" + zone;
+    if (key != cachedText) {
+        cachedText = key;
         cachedOk = false;
         if (text.empty()) {
-            if (const City* c = CityOfTimeZone()) {
+            if (const City* c = CityOfTimeZone(zone)) {
                 cachedLat = c->lat;
                 cachedLon = c->lon;
                 cachedName = Lang::F(L"{0} (from your time zone)", {c->name});
@@ -147,31 +120,17 @@ bool Resolve(const std::wstring& city, double& lat, double& lon, std::wstring& n
     return cachedOk;
 }
 
-int DayOfYear(const SYSTEMTIME& t)
+int DayOfYear(const LocalTime& t)
 {
     static const int before[] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
-    bool leap = (t.wYear % 4 == 0 && t.wYear % 100 != 0) || t.wYear % 400 == 0;
-    return before[t.wMonth - 1] + t.wDay + (leap && t.wMonth > 2 ? 1 : 0);
-}
-
-// Local time minus UTC, in minutes, at noon of a day (so a daylight saving change that night doesn't count).
-double UtcOffsetMinutes(const SYSTEMTIME& day)
-{
-    SYSTEMTIME noon = day, utc{};
-    noon.wHour = 12;
-    noon.wMinute = noon.wSecond = noon.wMilliseconds = 0;
-    if (!TzSpecificLocalTimeToSystemTime(nullptr, &noon, &utc)) return 0;
-    FILETIME a, b;
-    SystemTimeToFileTime(&noon, &a);
-    SystemTimeToFileTime(&utc, &b);
-    auto ticks = [](FILETIME f) { return static_cast<long long>(ULARGE_INTEGER{{f.dwLowDateTime, f.dwHighDateTime}}.QuadPart); };
-    return (ticks(a) - ticks(b)) / 600000000.0;
+    bool leap = (t.year % 4 == 0 && t.year % 100 != 0) || t.year % 400 == 0;
+    return before[t.month - 1] + t.day + (leap && t.month > 2 ? 1 : 0);
 }
 
 enum class Sky { Normal, NoNight, NoDay, Unknown };
 
 // NOAA's approximation, accurate to a minute or two. Times are local minutes after midnight.
-Sky SunTimes(const SYSTEMTIME& day, double lat, double lon, double& rise, double& set)
+Sky SunTimes(const LocalTime& day, double lat, double lon, double& rise, double& set)
 {
     constexpr double pi = std::numbers::pi;
     double g = 2 * pi / 365 * (DayOfYear(day) - 1);
@@ -182,27 +141,27 @@ Sky SunTimes(const SYSTEMTIME& day, double lat, double lon, double& rise, double
     double cosHa = std::cos(90.833 * pi / 180) / (std::cos(phi) * std::cos(decl)) - std::tan(phi) * std::tan(decl);
     if (cosHa < -1) return Sky::NoNight;
     if (cosHa > 1) return Sky::NoDay;
-    double ha = std::acos(cosHa) * 180 / pi, offset = UtcOffsetMinutes(day);
+    double ha = std::acos(cosHa) * 180 / pi, offset = day.utcOffset;
     rise = Mod(720 - 4 * (lon + ha) - eq + offset, 1440);
     set = Mod(720 - 4 * (lon - ha) - eq + offset, 1440);
     return Sky::Normal;
 }
 
 // The night window in minutes after local midnight.
-Sky Window(const Settings& s, const SYSTEMTIME& now, double& start, double& end, std::wstring& where)
+Sky Window(const Settings& s, const LocalTime& now, double& start, double& end, std::wstring& where)
 {
     start = s.NightFrom;
     end = s.NightTo;
     if (s.ScheduleMode == 1) return Sky::Normal;
     double lat, lon;
-    if (!Resolve(s.City, lat, lon, where)) return Sky::Unknown;
+    if (!Resolve(s.City, now.zone, lat, lon, where)) return Sky::Unknown;
     return SunTimes(now, lat, lon, end, start);   // the night runs from sunset to sunrise
 }
 
-void Position(const SYSTEMTIME& now, double start, double end, double& into, double& len)
+void Position(const LocalTime& now, double start, double end, double& into, double& len)
 {
     len = Mod(end - start, 1440);
-    into = Mod(now.wHour * 60 + now.wMinute + now.wSecond / 60.0 - start, 1440);
+    into = Mod(now.hour * 60 + now.minute + now.second / 60.0 - start, 1440);
 }
 
 double FadeMinutes(const Settings& s, double len) { return std::min<double>(s.NightFade, len / 2); }
@@ -211,7 +170,7 @@ double FadeMinutes(const Settings& s, double len) { return std::min<double>(s.Ni
 
 double Blue(const Settings& s, float night) { return s.BlueFilter + std::max(0, s.NightBlue - s.BlueFilter) * night; }
 
-float Factor(const Settings& s, const SYSTEMTIME& now)
+float Factor(const Settings& s, const LocalTime& now)
 {
     double start, end, into, len;
     std::wstring where;
@@ -227,7 +186,7 @@ float Factor(const Settings& s, const SYSTEMTIME& now)
     return static_cast<float>(t * t * (3 - 2 * t));
 }
 
-std::wstring Status(const Settings& s, const SYSTEMTIME& now)
+std::wstring Status(const Settings& s, const LocalTime& now)
 {
     if (!s.ScheduleEnabled) return Lang::T(L"Off: the blue light filter stays as set on the Screen tab.");
     double start, end, into, len;
@@ -252,23 +211,23 @@ std::wstring Status(const Settings& s, const SYSTEMTIME& now)
     return head + L"\n" + state;
 }
 
-std::wstring Place(const Settings& s, bool& fromWindows)
+std::wstring Place(const Settings& s, const std::wstring& zone, bool& fromWindows)
 {
     std::wstring text = Trim(s.City);
     double lat, lon;
     fromWindows = ParseCoordinates(text, lat, lon);
     if (fromWindows) return L"";
-    const City* c = text.empty() ? CityOfTimeZone() : CityNamed(text);
+    const City* c = text.empty() ? CityOfTimeZone(zone) : CityNamed(text);
     return c ? c->name : L"";
 }
 
 std::vector<std::wstring> FindCities(const std::wstring& text, size_t max)
 {
-    std::wstring key = Simplify(text);
+    std::wstring key = FoldForSearch(text);
     std::vector<std::wstring> starts, contains;
     if (key.empty()) return starts;
     for (const City& c : Cities) {
-        std::wstring name = Simplify(c.name);
+        std::wstring name = FoldForSearch(c.name);
         if (name.starts_with(key)) starts.push_back(c.name);
         else if (name.find(key) != std::wstring::npos) contains.push_back(c.name);
     }

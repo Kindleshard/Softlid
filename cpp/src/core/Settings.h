@@ -1,6 +1,7 @@
 #pragma once
 #include "core/Palette.h"
 #include <string>
+#include <string_view>
 
 namespace bb {
 
@@ -21,6 +22,9 @@ struct Settings {
 
     static Settings Load();
     void Save() const;
+    // The file's contents ("Name=Value" lines), without the file: what Load and Save read and write.
+    static Settings FromText(std::wstring_view file);
+    text ToText() const;
     static text FilePath();   // %AppData%\BlinkBuddy\settings.ini
 
 private:

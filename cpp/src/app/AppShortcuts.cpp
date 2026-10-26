@@ -2,6 +2,7 @@
 #include "app/App.h"
 #include "core/ColorMath.h"
 #include "core/Hotkeys.h"
+#include "platform/Keys.h"
 #include "core/Modes.h"
 #include <algorithm>
 
@@ -17,7 +18,7 @@ void App::RegisterHotkeys()
         UnregisterHotKey(window, id);
         if (Hotkeys::IsStripMove(id) && !stripKeysOn) continue;
         UINT mods, vk;
-        if (!Hotkeys::Parse(Hotkeys::Get(settings, id), mods, vk)) continue;
+        if (!Keys::Parse(Hotkeys::Get(settings, id), mods, vk)) continue;
         if (!Hotkeys::Repeats(id)) mods |= MOD_NOREPEAT;
         if (!RegisterHotKey(window, id, mods, vk)) hotkeyFailed |= 1u << id;
     }

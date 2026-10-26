@@ -1,6 +1,5 @@
 #pragma once
 #include "core/Settings.h"
-#include <windows.h>
 #include <string>
 
 namespace bb::Hotkeys {
@@ -24,10 +23,7 @@ std::wstring Get(const Settings& s, int id);   // "" when the action has none
 void Set(Settings& s, int id, const std::wstring& keys);
 inline void ResetAll(Settings& s) { s.Hotkeys.clear(); }
 
-// "Ctrl+Alt+Shift+F" into RegisterHotKey's modifiers (MOD_*) and virtual key.
-bool Parse(const std::wstring& text, UINT& mods, UINT& vk);
-// A key press as text: modifiers, then the key; "" while only modifiers are held (or none).
-std::wstring Describe(UINT vk, bool ctrl, bool alt, bool shift);
+// (Turning keys into Windows key codes and back is in platform/Keys.)
 // For showing: arrows and the plus/minus keys as symbols ("Ctrl + Alt + ↑").
 std::wstring Pretty(const std::wstring& keys);
 

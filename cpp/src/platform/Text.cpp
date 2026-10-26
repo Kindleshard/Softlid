@@ -1,5 +1,6 @@
 #include "platform/Text.h"
 #include <windows.h>
+#include <algorithm>
 
 namespace bb {
 
@@ -70,6 +71,23 @@ std::wstring ReplaceAll(std::wstring s, std::wstring_view from, std::wstring_vie
     for (size_t at = s.find(from); at != std::wstring::npos; at = s.find(from, at + to.size()))
         s.replace(at, from.size(), to);
     return s;
+}
+
+std::wstring FoldForSearch(const std::wstring& s)
+{
+    std::wstring t = Trim(s);
+    for (wchar_t& c : t) if (c == L'İ' || c == L'ı') c = L'i';   // Turkish dotted / dotless i
+    if (t.empty()) return t;
+    int n = NormalizeString(NormalizationD, t.c_str(), static_cast<int>(t.size()), nullptr, 0);
+    std::wstring d(n > 0 ? n : 0, L'\0');
+    if (n > 0) d.resize(std::max(0, NormalizeString(NormalizationD, t.c_str(), static_cast<int>(t.size()), d.data(), n)));
+    else d = t;
+    std::vector<WORD> types(d.size());
+    GetStringTypeW(CT_CTYPE3, d.c_str(), static_cast<int>(d.size()), types.data());
+    std::wstring out;
+    for (size_t i = 0; i < d.size(); i++) if (!(types[i] & C3_NONSPACING)) out += d[i];
+    CharLowerBuffW(out.data(), static_cast<DWORD>(out.size()));
+    return out;
 }
 
 } // namespace bb

@@ -1,6 +1,8 @@
 #include "core/Lang.h"
+#include "platform/Language.h"
 #include "platform/Text.h"
-#include <windows.h>
+#include <cstdlib>
+#include <cwctype>
 #include <unordered_map>
 #include <vector>
 
@@ -25,29 +27,10 @@ bool Known(std::wstring_view code)
     return false;
 }
 
-// A language's lines, from the exe's resources (LANG_<CODE>).
-std::vector<std::wstring> Read(std::wstring_view code)
-{
-    std::wstring name = L"LANG_";
-    for (wchar_t c : code) name += static_cast<wchar_t>(towupper(c));
-    HRSRC res = FindResourceW(nullptr, name.c_str(), RT_RCDATA);
-    if (!res) return {};
-    HGLOBAL data = LoadResource(nullptr, res);
-    auto bytes = static_cast<const char*>(LockResource(data));
-    if (!bytes) return {};
-    return SplitLines(FromUtf8(std::string_view(bytes, SizeofResource(nullptr, res))));
-}
+// A language's lines, as built into the exe.
+std::vector<std::wstring> Read(std::wstring_view code) { return SplitLines(FromUtf8(LanguageText(code))); }
 
 std::wstring Unescape(const std::wstring& s) { return TrimEnd(ReplaceAll(s, L"\\n", L"\n")); }
-
-// The Windows display language as a two-letter code ("tr" for Turkish).
-std::wstring WindowsLanguage()
-{
-    wchar_t locale[LOCALE_NAME_MAX_LENGTH] = {};
-    LCIDToLocaleName(MAKELCID(GetUserDefaultUILanguage(), SORT_DEFAULT), locale, LOCALE_NAME_MAX_LENGTH, 0);
-    std::wstring code(locale);
-    return code.substr(0, code.find(L'-'));
-}
 
 } // namespace
 
@@ -57,7 +40,7 @@ const std::wstring& Code() { return current; }
 
 void Use(std::wstring_view code)
 {
-    std::wstring wanted = code.empty() ? WindowsLanguage() : std::wstring(code);
+    std::wstring wanted = code.empty() ? SystemLanguage() : std::wstring(code);
     current = Known(wanted) ? wanted : L"en";
     table.clear();
     if (current == L"en") return;

@@ -16,4 +16,8 @@ bool EqualsNoCase(std::wstring_view a, std::wstring_view b);
 std::wstring Lower(std::wstring s);   // the same in every language (no Turkish dotless i)
 std::wstring ReplaceAll(std::wstring s, std::wstring_view from, std::wstring_view to);
 
+// For matching what's typed, ignoring case and accents: trimmed, accents dropped, lower-cased, so "İzmir", "izmir"
+// and "Izmir" all give "izmir".
+std::wstring FoldForSearch(const std::wstring& s);
+
 } // namespace bb

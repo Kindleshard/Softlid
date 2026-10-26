@@ -1,6 +1,7 @@
 #include "features/settings/ShortcutsDialog.h"
 #include "app/App.h"
 #include "core/Hotkeys.h"
+#include "platform/Keys.h"
 #include "core/Lang.h"
 #include "ui/DirectWindow.h"
 #include "ui/Theme.h"
@@ -42,7 +43,7 @@ public:
             onKeys(L"");
             return true;
         }
-        std::wstring keys = Hotkeys::Describe(vk, GetKeyState(VK_CONTROL) < 0, GetKeyState(VK_MENU) < 0, GetKeyState(VK_SHIFT) < 0);
+        std::wstring keys = Keys::Describe(vk, GetKeyState(VK_CONTROL) < 0, GetKeyState(VK_MENU) < 0, GetKeyState(VK_SHIFT) < 0);
         if (!keys.empty()) onKeys(keys);   // (only modifiers so far: wait for the key)
         return true;
     }

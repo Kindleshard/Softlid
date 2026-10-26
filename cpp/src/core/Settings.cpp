@@ -40,12 +40,15 @@ text Settings::FilePath() { return RoamingAppData() + L"\\BlinkBuddy\\settings.i
 
 Settings Settings::Load()
 {
-    Settings s;
     std::optional<std::string> bytes = ReadAllBytes(FilePath());
-    if (!bytes) return s;   // first start: the defaults
+    return bytes ? FromText(FromUtf8(*bytes)) : Settings{};   // first start: the defaults
+}
 
+Settings Settings::FromText(std::wstring_view file)
+{
+    Settings s;
     std::set<text> seen;
-    for (const text& line : SplitLines(FromUtf8(*bytes))) {
+    for (const text& line : SplitLines(file)) {
         size_t eq = line.find(L'=');
         if (eq == text::npos || eq == 0) continue;
         text key = Trim(std::wstring_view(line).substr(0, eq)), value = Trim(std::wstring_view(line).substr(eq + 1));
@@ -69,13 +72,15 @@ Settings Settings::Load()
     return s;
 }
 
-void Settings::Save() const
+void Settings::Save() const { WriteAllBytesSafely(FilePath(), ToUtf8(ToText())); }
+
+text Settings::ToText() const
 {
     text out;
 #define BB_SETTING(type, name, value_) out += BB_WIDEN(#name); out += L'='; out += Show(name); out += L"\r\n";
 #include "core/SettingsFields.h"
 #undef BB_SETTING
-    WriteAllBytesSafely(FilePath(), ToUtf8(out));
+    return out;
 }
 
 // Every value back in its range, and old forms of some brought up to date.
