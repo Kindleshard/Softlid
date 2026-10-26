@@ -8,6 +8,7 @@
 #include "ui/MiniArt.h"
 #include "ui/Theme.h"
 #include <shellapi.h>
+#include <algorithm>
 
 namespace bb {
 namespace {
@@ -32,17 +33,25 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
     // The language: Windows' own, or one of the list (each named in its own words). The window is built again in it.
     Row& langRow = st.Add(46);
     AddLabel(langRow, L"Language", Fonts::Body(), Theme::Fg, 24, 10, 120, 26);
-    std::vector<std::wstring> names{Lang::T(L"Same as Windows")};
+    // Alphabetical by name, after "Same as Windows" (Latin letters first, then Greek, Cyrillic and East Asian scripts).
+    std::vector<const Lang::Info*> sorted;
+    for (const auto& info : Lang::All()) sorted.push_back(&info);
+    std::sort(sorted.begin(), sorted.end(), [](const Lang::Info* a, const Lang::Info* b) {
+        return CompareStringEx(LOCALE_NAME_INVARIANT, LINGUISTIC_IGNORECASE, a->name, -1,
+                               b->name, -1, nullptr, nullptr, 0) == CSTR_LESS_THAN;
+    });
+    std::vector<std::wstring> names{Lang::T(L"Same as Windows")}, codes{L""};
     int chosen = 0;
-    for (const auto& info : Lang::All()) {
-        if (s.Language == info.code) chosen = static_cast<int>(names.size());
-        names.push_back(info.name);
+    for (const Lang::Info* info : sorted) {
+        if (s.Language == info->code) chosen = static_cast<int>(names.size());
+        names.push_back(std::wstring(info->name));
+        codes.push_back(std::wstring(info->code));
     }
     auto& language = langRow.Add<DropDown>(std::vector<std::wstring>{});
     language.SetPlainItems(names);
     language.SetBounds(150, 6, Edge - 150, 34);
     language.SetSelected(chosen);
-    language.onChange = [this](int i) { app.SetLanguage(i == 0 ? L"" : Lang::All()[i - 1].code); };
+    language.onChange = [this, codes](int i) { app.SetLanguage(codes[static_cast<size_t>(i)]); };
 
     ToggleRow(st, L"Start with Windows", app.RunAtStartup(), [this](bool v) { app.SetRunAtStartup(v); });
     ToggleRow(st, L"Pause reminders in full-screen apps", s.PauseInFullscreen, [this](bool v) { s.PauseInFullscreen = v; app.Changed(); });
