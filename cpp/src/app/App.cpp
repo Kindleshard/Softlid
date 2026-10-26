@@ -12,6 +12,7 @@
 #include "platform/KeepAwake.h"
 #include "platform/Memory.h"
 #include "platform/MemJournal.h"
+#include "platform/RunLog.h"
 #include "platform/Location.h"
 #include "platform/Text.h"
 #include "ui/Theme.h"
@@ -76,6 +77,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
 
     RegisterHotkeys();
     SetTimer(window, TickTimer, 1000, nullptr);
+    if (!offscreen) RunLog::Write(openSettings ? L"started" : L"started quietly in the tray (as at sign-in)");
     WeeklyUpdateCheck();
     if (openSettings) ShowSettings();
     else if (settings.MiniMode && settings.MiniEnabled) ShowMini();
@@ -194,7 +196,7 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         if (!fx.notifyTitle.empty()) tray.Notify(fx.notifyTitle, fx.notifyText);
         if (fx.restart) {
             Updater::StartNewCopy();   // (it waits for this copy to quit)
-            Exit();
+            Exit(L"restarting into an update");
             return 0;
         }
         if (fx.refresh && settingsWindow) settingsWindow->RefreshStatus();
@@ -203,11 +205,14 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     case WM_INPUT:
         if (strip) strip->MouseMoved();   // the mouse moved: the reading strip follows
         break;                             // (Windows tidies up the input after)
+    case WM_ENDSESSION:   // (BlinkBuddy is simply ended after this)
+        if (w && !offscreen) RunLog::Write(L"Windows is signing out, restarting or shutting down");
+        return 0;
     case WM_HOTKEY:
         OnHotkey(static_cast<int>(w));
         return 0;
     case QuitMessage:
-        Exit();
+        Exit(L"Exit, chosen when closing the settings");
         return 0;
     case RebuildMessage: {
         if (!settingsWindow) return 0;
@@ -387,7 +392,7 @@ void App::ShowMenu()
     case CmdPause60: Pause(60); break;
     case CmdPauseUntilResumed: Pause(-1); break;
     case CmdResume: pausedUntil = {}; break;
-    case CmdExit: Exit(); break;
+    case CmdExit: Exit(L"Exit in the tray menu"); break;
     case CmdFilter: ToggleFilter(); break;
     case CmdStrip: OnHotkey(Hotkeys::Strip); break;
     case CmdAwakeOff: SetKeepAwake(false); break;
@@ -407,8 +412,9 @@ void App::Pause(int minutes)
 
 bool App::Paused() const { return Clock::now() < pausedUntil; }
 
-void App::Exit()
+void App::Exit(const wchar_t* why)
 {
+    if (!offscreen) RunLog::Write(std::wstring(L"exited: ") + why);
     KillTimer(window, TickTimer);
     settingsWindow.reset();
     mini.reset();

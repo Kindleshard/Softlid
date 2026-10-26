@@ -112,9 +112,17 @@ void App::ResetAll()
     Rebuild(false);
 }
 
+// On only when the entry starts this copy: one left by another (the C# version, a copy in another folder) would start
+// that one at sign-in instead, so it shows as off, and switching it on points it here.
 bool App::RunAtStartup() const
 {
-    return RegGetValueW(HKEY_CURRENT_USER, RunKey, L"BlinkBuddy", RRF_RT_REG_SZ, nullptr, nullptr, nullptr) == ERROR_SUCCESS;
+    wchar_t value[2048];
+    DWORD size = sizeof value;
+    if (RegGetValueW(HKEY_CURRENT_USER, RunKey, L"BlinkBuddy", RRF_RT_REG_SZ, nullptr, value, &size) != ERROR_SUCCESS) return false;
+    std::wstring here = L"\"" + ExePath() + L"\"";
+    size_t length = wcslen(value);
+    return length >= here.size() &&
+           CompareStringOrdinal(value, static_cast<int>(here.size()), here.c_str(), static_cast<int>(here.size()), TRUE) == CSTR_EQUAL;
 }
 
 void App::SetRunAtStartup(bool on)

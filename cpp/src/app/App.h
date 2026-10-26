@@ -142,7 +142,7 @@ private:
     void ShowMenu();
     void SettingsClosed();
     void UpdateTrayTip();
-    void Exit();
+    void Exit(const wchar_t* why);   // why goes in the run log (see RunLog)
 
     // Reminders (see core/Reminders for when they fall due).
     void BreakDone(bool standUp, int snoozeSeconds);
