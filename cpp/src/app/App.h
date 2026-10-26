@@ -1,6 +1,7 @@
 #pragma once
 #include "app/Tray.h"
 #include "core/Reminders.h"
+#include "core/ScreenPlan.h"
 #include "core/Settings.h"
 #include "features/breaks/Eyelids.h"
 #include "features/reminders/BreakCard.h"
@@ -162,6 +163,10 @@ private:
     // The screen (AppScreen.cpp): the filter, the night schedule and its place, modes and per-app rules, keeping
     // the PC awake, and the real backlight.
     void ApplyScreen();
+    void StartLut(const Settings& s);
+    void ApplyRamp(const ScreenPlan::Ramp& ramp);
+    void ApplyEngines(const Settings& s, const ScreenPlan::Engines& e, ScreenPlan::Gains gains, float bright);
+    void ApplyExtras(const Settings& s);
     void ReapplyScreen();      // after a display change or unlocking, when Windows may have reset the filter
     void ScreenTick();
     float NightNow() const;    // how far into the night schedule it is: 0 by day (or with no schedule), 1 at night
