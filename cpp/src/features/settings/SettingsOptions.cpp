@@ -79,8 +79,8 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
     // The window's own size, on top of the display's scaling: it is built again at the new size, where it is.
     Row& sizeRow = st.Add(50);
     AddLabel(sizeRow, L"Window size", Fonts::Body(), Theme::Fg, 24, 12, 120, 26);
-    static const int Zooms[] = {50, 75, 100, 125, 150};
-    auto& size = sizeRow.Add<Segmented>(std::vector<std::wstring>{L"50%", L"75%", L"100%", L"125%", L"150%"});
+    static const int Zooms[] = {80, 90, 100, 110, 120};
+    auto& size = sizeRow.Add<Segmented>(std::vector<std::wstring>{L"80%", L"90%", L"100%", L"110%", L"120%"});
     size.SetBounds(150, 8, Edge - 150, 34);
     size.SetSelected(static_cast<int>(std::find(std::begin(Zooms), std::end(Zooms), s.SettingsZoom) - std::begin(Zooms)));
     size.tip = Lang::T(L"Everything in this window, bigger or smaller");

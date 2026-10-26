@@ -156,7 +156,7 @@ void Settings::Clamp()
     if (MiniOrbitColor > 0 && MiniOrbitColor < static_cast<int>(std::size(Palette::Glows))) MiniOrbitColor = Palette::Glows[MiniOrbitColor];
     CloseAction = Fit(CloseAction, 0, 2);
     if (SettingsHeight != 0) SettingsHeight = Fit(SettingsHeight, 360, 2000);
-    SettingsZoom = Fit(SettingsZoom, 50, 150);
+    SettingsZoom = Fit((SettingsZoom + 5) / 10 * 10, 80, 120);   // (to the nearest step offered: 80, 90, 100, 110 or 120)
 }
 
 } // namespace bb

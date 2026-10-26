@@ -21,7 +21,7 @@ public:
         bool edge = true;                // a pop-up's thin edge
         int background = 0;              // ARGB; 0: the usual dark
         float minHeight = 0;             // 96-dpi units, for a resizable window
-        float zoom = 1;                  // its own size on top of the display's scaling (0.5 to 1.5: half to 150%)
+        float zoom = 1;                  // its own size on top of the display's scaling (e.g. 0.8 to 1.2)
         HWND owner = nullptr;
         HICON icon = nullptr;
     };
