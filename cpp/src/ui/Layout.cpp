@@ -85,6 +85,21 @@ void ScrollPage::PaintOver(Canvas& canvas)
     canvas.FillRound(t, ui::Width(t) / 2, grabY >= 0 ? Theme::Dim : Theme::Track);
 }
 
+// ---- Row ----
+
+// On a card: the card's part behind this row (its corners rounded at the block's first and last row), drawn within the
+// row only, so it never covers a neighbour.
+void Row::Paint(Canvas& canvas)
+{
+    if (!card) return;
+    constexpr float Inset = 12, Radius = 8;
+    ID2D1RenderTarget* t = canvas.Target();
+    t->PushAxisAlignedClip({0, 0, W(), H()}, D2D1_ANTIALIAS_MODE_ALIASED);
+    D2D1_RECT_F r{Inset, cardTop ? 0 : -Radius, W() - Inset, cardBottom ? H() : H() + Radius};
+    canvas.FillRound(r, Radius, Theme::Card);
+    t->PopAxisAlignedClip();
+}
+
 // ---- Stack ----
 
 Row& Stack::Add(float height, std::function<bool()> shown)
@@ -92,22 +107,75 @@ Row& Stack::Add(float height, std::function<bool()> shown)
     Row& r = page.Add<Row>();
     r.SetBounds(0, 0, page.W(), height);
     std::function<bool()> own = shown ? std::move(shown) : [] { return true; };
-    if (section) r.shown = [open = section, own] { return open() && own(); };
-    else r.shown = own;
+    if (section) own = [open = section, own] { return open() && own(); };
+    if (blockShown) own = [inBlock = blockShown, own] { return inBlock() && own(); };
+    r.shown = own;
+    r.block = block;
+    r.group = group >= 0 ? group : block;
     rows.push_back(&r);
     return r;
 }
 
+void Stack::BeginBlock(int id, std::function<bool()> shown)
+{
+    section = nullptr;
+    block = id;
+    blockShown = std::move(shown);
+}
+
+void Stack::EndBlock()
+{
+    section = nullptr;
+    block = -1;
+    blockShown = nullptr;
+}
+
 void Stack::Layout()
 {
-    float y = 0;
+    // The rows in their places: those of no block as added; all the blocks' rows where the first block began, block
+    // by block in the order set (blocks not in it after, as added).
+    std::vector<int> ids = order;
+    for (Row* r : rows)
+        if (r->block >= 0 && std::find(ids.begin(), ids.end(), r->block) == ids.end()) ids.push_back(r->block);
+    std::vector<Row*> laid;
+    bool blocksDone = false;
     for (Row* r : rows) {
+        if (r->block < 0) {
+            laid.push_back(r);
+        } else if (!blocksDone) {
+            for (int id : ids)
+                for (Row* b : rows)
+                    if (b->block == id) laid.push_back(b);
+            blocksDone = true;
+        }
+    }
+
+    // Placed top to bottom; each card (a block, or a group of rows) gap apart from what is around it.
+    std::vector<Row*> shown;
+    for (Row* r : laid) {
         bool show = r->shown();
         r->SetVisible(show);
-        if (!show) continue;
-        r->SetBounds(0, y, page.W(), r->H());
-        y += r->H();
+        if (show) shown.push_back(r);
     }
+    float y = 0;
+    int previous = -1;
+    placed.clear();
+    for (size_t i = 0; i < shown.size(); i++) {
+        Row* r = shown[i];
+        int card = r->group;
+        if (card != previous && (card >= 0 || previous >= 0)) y += gap;   // into a card, out of one, or from one to the next
+        r->card = cards && card >= 0;
+        r->cardTop = card >= 0 && card != previous;
+        r->cardBottom = card >= 0 && (i + 1 == shown.size() || shown[i + 1]->group != card);
+        r->SetBounds(0, y, page.W(), r->H());
+        if (r->block >= 0) {
+            if (placed.empty() || placed.back().id != r->block) placed.push_back({r->block, y, y});
+            placed.back().bottom = y + r->H();
+        }
+        y += r->H();
+        previous = card;
+    }
+    if (previous >= 0) y += gap;
     page.SetContentHeight(y);
     page.Invalidate();   // the whole page: where rows ended before (now below them) belongs to the page
     if (DirectWindow* w = page.Window()) w->Placed();

@@ -55,20 +55,15 @@ public:
     }
 };
 
-void SettingsWindow::BuildSchedulePage(Stack& st)
+void SettingsWindow::BuildNight(Stack& st)
 {
-    Toggle& schedule = Header(st, L'\uE708', L"Night schedule", L"Eases the blue light filter in at night and back out in the morning.",
-                              s.ScheduleEnabled, [this](bool v) { s.ScheduleEnabled = v; NightMarker(); NightChanged(); UpdateRows(); });
+    FeatureHead(st, FNight, L"Eases the blue light filter in at night and back out in the morning.");
     Row& nightPausedRow = st.Add(26, [this] { return app.Scheduled().ScheduleEnabled && BluePaused(); });
     Label& nightPaused = AddLabel(nightPausedRow, L"", Fonts::Small(), Theme::Warn, 24, 0, Edge - 24, 22);
     updaters.push_back([this, &nightPaused] { nightPaused.SetPlainText(BluePausedText()); });
     BuildNightLight(st);
     // While Windows Night light's schedule is followed, the schedule's own settings step aside (kept for when it isn't).
     Shown own = [this] { return !app.FollowsNightLight(); };
-    updaters.push_back([this, &schedule] {
-        schedule.SetOn(s.ScheduleEnabled);
-        schedule.SetVisible(!app.FollowsNightLight());   // (the sync switch below says what runs the night)
-    });
     // Sunset to sunrise, or hours of your own (the Advanced view only: Simple keeps to the sun).
     Shown advanced = And(own, [this] { return s.AdvancedView; }), hours = And(advanced, [this] { return s.ScheduleMode == 1; });
     Row& modeRow = st.Add(46, advanced);

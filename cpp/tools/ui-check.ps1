@@ -1,4 +1,4 @@
-# Checks that the settings window looks exactly as it did: every tab, scrolled through to its end, compared pixel by pixel.
+# Checks that the settings window looks exactly as it did: the panel and Options, each scrolled through to its end, compared pixel by pixel.
 #   .\tools\ui-check.ps1 -Update   before a change: the screenshots become the baseline (cpp\build\ui-baseline)
 #   .\tools\ui-check.ps1           after it: compare (exit code = number of views that changed)
 # It runs a diagnostic copy of bin\BlinkBuddy.exe (--offscreen: off the screen, beside a running BlinkBuddy, which is
@@ -86,9 +86,9 @@ try {
     if ($h -eq [IntPtr]::Zero) { throw 'The settings window didn''t open.' }
     Start-Sleep -Seconds 2
     $s = [UiCheck]::GetDpiForWindow($h) / 96.0
-    $tabX = @(44, 111, 186, 264, 295)   # the five tabs, in 96-dpi units
-    for ($t = 0; $t -lt 5; $t++) {
-        Click $h ([int]($tabX[$t] * $s)) ([int](28 * $s)); Start-Sleep -Milliseconds 300
+    # The panel (every card: a diagnostic copy shows them all), then Options, behind the cog by the title bar.
+    for ($t = 0; $t -lt 2; $t++) {
+        if ($t -eq 1) { Click $h ([int](400 * $s)) ([int](27 * $s)); Start-Sleep -Milliseconds 300 }
         # Scrolled through to the end of the page: a scroll that changes nothing means the end was reached.
         $previous = $null
         for ($part = 0; $part -lt 20; $part++) {

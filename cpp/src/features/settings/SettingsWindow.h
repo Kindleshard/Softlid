@@ -50,10 +50,12 @@ private:
     // ---- Row builders ----
     ui::Label& AddLabel(ui::Container& parent, std::wstring_view text, IDWriteTextFormat* font, int color,
                         float x, float y, float w, float h);
-    ui::Row& SectionHead(ui::Stack& st, wchar_t icon, std::wstring_view title, std::wstring_view hint, Shown shown = nullptr);
+    // indent: room on the left (for a grip); foldAt: where the chevron goes (0: just left of a switch)
+    ui::Row& SectionHead(ui::Stack& st, wchar_t icon, std::wstring_view title, std::wstring_view hint, Shown shown = nullptr,
+                         float indent = 0, float foldAt = 0, ui::Label** hintLabel = nullptr);
     ui::Toggle& Header(ui::Stack& st, wchar_t icon, std::wstring_view title, std::wstring_view hint, bool value,
                        std::function<void(bool)> changed, Shown shown = nullptr);
-    void Title(ui::Container& row, wchar_t icon, std::wstring_view title);
+    void Title(ui::Container& row, wchar_t icon, std::wstring_view title, float indent = 0);
     Shown More(ui::Stack& st, const std::wstring& key, Shown shown = nullptr);
     void Divider(ui::Stack& st, Shown shown = nullptr);
     void Note(ui::Stack& st, std::wstring_view text, int lines, Shown shown = nullptr);
@@ -67,8 +69,26 @@ private:
     void SetFolded(const std::wstring& key, bool folded);
     static int LinesFor(std::wstring_view text, IDWriteTextFormat* font, float width);
 
+    // ---- The panel of features, and their list in Options (SettingsPanel.cpp) ----
+    enum Feature { FFilter, FTone, FBlink, FLookAway, FStandUp, FNight, FStrip, FGrain, FFocus, FRules, FeatureCount };
+    void BuildTopBar();
+    void ShowOptions(bool on);       // the cog: Options in place of the panel, or back
+    void BuildPanel(ui::Stack& st);
+    void BuildFeatureList(ui::Stack& st);
+    void FeatureHead(ui::Stack& st, Feature f, std::wstring_view hint);   // a feature's heading on the panel
+    bool FeatureOn(int f) const;
+    bool FeatureListed(int f) const;  // (Film grain and Modes for apps are for the Advanced view)
+    void SetFeature(int f, bool on);  // on: it runs and its card is on the panel; off: it stops, and its card goes
+    void SyncFeatures();              // the switches in the list, as the settings are now
+    std::wstring FeatureSummary(int f) const;   // what it does now, in a line (under its name on the panel)
+    void RefreshSummaries();
+    void LoadOrder();
+    void DragFeature(int f, int page, float windowY);   // page: 0 the panel, 1 the list in Options
+    void DropFeature(int f, int page, float windowY);
+    int DropIndex(int page, float windowY) const;       // where in the order of those shown it would land
+
     // ---- Screen (SettingsScreen.cpp) ----
-    void BuildScreenPage(ui::Stack& st);
+    void BuildFilter(ui::Stack& st);
     void BuildEffects(ui::Stack& st);
     void PaintEffect(ui::Canvas& c, const D2D1_RECT_F& r, int effect, float awake);
     bool BluePaused() const;
@@ -98,11 +118,13 @@ private:
     void LutReady(const std::wstring& path);
     void LutInstallProgress(int kind, const std::wstring& message);
 
-    // ---- Blink (SettingsBlink.cpp) ----
-    void BuildBlinkPage(ui::Stack& st);
+    // ---- Reminders (SettingsBlink.cpp) ----
+    void BuildBlink(ui::Stack& st);
+    void BuildLookAway(ui::Stack& st);
+    void BuildStandUp(ui::Stack& st);
 
     // ---- Schedule (SettingsSchedule.cpp) ----
-    void BuildSchedulePage(ui::Stack& st);
+    void BuildNight(ui::Stack& st);
     void BuildCityPicker(ui::Stack& st);
     void ShowSync();
     void ShowSuggestions(std::vector<std::wstring> names);
@@ -113,7 +135,8 @@ private:
     void NightChanged();
 
     // ---- Extras (SettingsExtras.cpp) ----
-    void BuildExtrasPage(ui::Stack& st);
+    void BuildStrip(ui::Stack& st);
+    void BuildGrain(ui::Stack& st);
     void PaintShape(ui::Canvas& c, const D2D1_RECT_F& r, int shape, float awake);
     void StripTouched();
     void GrainTouched();
@@ -133,15 +156,20 @@ private:
     Settings& s;
     const Settings defaults;
     const bool unfoldAll;
-    ui::TabStrip* tabs = nullptr;
-    ui::ScrollPage* pages[5] = {};
+    ui::ScrollPage* pages[2] = {};   // the panel, and Options
+    bool optionsShown = false;
+    ui::Button *cogButton = nullptr, *backButton = nullptr;
+    ui::Label* pageTitle = nullptr;
+    ui::DropMark* marks[2] = {};
+    ui::Toggle* featureToggles[FeatureCount] = {};
+    ui::Label* summaries[FeatureCount] = {};
+    std::vector<int> order;          // the features, in the order chosen (all of them, shown or not)
     std::vector<std::unique_ptr<ui::Stack>> stacks;
     std::vector<std::function<void()>> updaters;
     std::vector<std::function<void()>> later;
 
     // Controls the app (or another page) changes while the window is open.
-    ui::Toggle *filterToggle = nullptr, *hwToggle = nullptr, *stripToggle = nullptr, *grainToggle = nullptr,
-               *coolToggle = nullptr, *awakeToggle = nullptr;
+    ui::Toggle *hwToggle = nullptr, *coolToggle = nullptr, *awakeToggle = nullptr;
     ui::Slider *brightSlider = nullptr, *blueSlider = nullptr, *backlightSlider = nullptr;
     ui::ModeGrid* modeGrid = nullptr;
     ui::TilePicker* effectPicker = nullptr;
@@ -161,7 +189,6 @@ private:
 
     // Tone.
     static constexpr UINT LutInstallMessage = WM_APP + 21;   // from DesktopLUT's download (see LutFiles::Install)
-    ui::Toggle* toneToggle = nullptr;
     ui::CurveView* curve = nullptr;
     ui::Label *toneStatus = nullptr, *lutStatus = nullptr, *lutSetupStatus = nullptr;
     ui::TextBox* lutBox = nullptr;

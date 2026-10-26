@@ -20,6 +20,12 @@ std::wstring Ms(int v) { return v >= 1000 ? L"1 s" : std::to_wstring(v) + L" ms"
 
 void SettingsWindow::BuildOptionsPage(Stack& st)
 {
+    // On cards, like the panel: one for the features, then one per part (each Divider starts the next).
+    st.cards = true;
+    st.gap = 8;
+    st.Group(1);
+    BuildFeatureList(st);
+    Divider(st);
     Row& head = st.Add(64);
     Title(head, L'\uE713', L"BlinkBuddy options");
     AddLabel(head, L"How BlinkBuddy itself behaves.", Fonts::Small(), Theme::Dim, 56, 38, Edge - 56, 20);
@@ -275,7 +281,7 @@ void SettingsWindow::BuildResourceUse(Stack& st)
 void SettingsWindow::RefreshUsage()
 {
     if (!usageText) return;
-    if (measuring && (!s.AdvancedView || tabs->Selected() != 4)) return;
+    if (measuring && (!s.AdvancedView || !optionsShown)) return;
     ResourceUse u{0, 0, 0, 0, 0, 0};
     if (measuring) {
         if (!meter) meter = std::make_unique<ResourceMeter>();   // (made the first time it shows)

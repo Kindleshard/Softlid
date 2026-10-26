@@ -125,6 +125,30 @@ private:
     std::vector<double> first, second;
 };
 
+// Six dots to take hold of: dragging them moves what they belong to. onDrag gets the pointer's height in the window
+// (96-dpi units) as it moves, onDrop the same when it is let go.
+class DragGrip : public Control {
+public:
+    DragGrip() { cursor = Cursor::Hand; }
+    std::function<void(float)> onDrag, onDrop;
+    bool Dragging() const { return dragging; }
+
+    void Paint(Canvas& canvas) override;
+    void MouseDown(D2D1_POINT_2F p) override;
+    void MouseMove(D2D1_POINT_2F p, bool down) override;
+    void MouseUp(D2D1_POINT_2F p) override;
+
+private:
+    float startY = 0;
+    bool dragging = false;
+};
+
+// Where a dragged item would land: a short bar in the accent colour.
+class DropMark : public Control {
+public:
+    void Paint(Canvas& canvas) override;
+};
+
 // The focus timer's face: a ring that fills as the period runs (accent while working, green while resting), the time in
 // the middle, what is happening under it, and four dots for the periods done in this round of four.
 class FocusRing : public Control {

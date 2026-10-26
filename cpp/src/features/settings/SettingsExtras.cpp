@@ -26,10 +26,9 @@ std::vector<std::wstring> SideNames(int shape)
 
 } // namespace
 
-void SettingsWindow::BuildExtrasPage(Stack& st)
+void SettingsWindow::BuildStrip(Stack& st)
 {
-    stripToggle = &Header(st, L'\uE736', L"Reading strip", L"Dims everything but a clear area that follows your mouse.", s.StripEnabled,
-                          [this](bool v) { s.StripEnabled = v; app.Changed(true); });
+    FeatureHead(st, FStrip, L"Dims everything but a clear area that follows your mouse.");
     // Its shape, each shown as a little screen with its clear area.
     Row& shapeRow = st.Add(64);
     AddLabel(shapeRow, L"Shape", Fonts::Body(), Theme::Fg, 24, 18, 124, 26);
@@ -99,14 +98,12 @@ void SettingsWindow::BuildExtrasPage(Stack& st)
     SliderRow(st, L"Speed up held keys", 0, 100, s.StripAccel, 50, [](int v) { return v == 0 ? std::wstring(L"Off") : std::to_wstring(v) + L"%"; },
               [this](int v) { s.StripAccel = v; app.Changed(); }, keys);
     ToggleRow(st, L"Stay on one monitor", s.StripOneMonitor, [this](bool v) { s.StripOneMonitor = v; StripTouched(); }, more);
+}
 
-    BuildFocusTimer(st);
-    BuildRules(st);
-
+void SettingsWindow::BuildGrain(Stack& st)
+{
     Shown grainShown = [this] { return s.AdvancedView; };
-    Divider(st, grainShown);
-    grainToggle = &Header(st, L'\uE81E', L"Film grain", L"Fine noise over the whole screen, like film.", s.GrainEnabled,
-                          [this](bool v) { s.GrainEnabled = v; app.Changed(true); }, grainShown);
+    FeatureHead(st, FGrain, L"Fine noise over the whole screen, like film.");
     SliderRow(st, L"Grain strength", 5, 100, s.GrainStrength, defaults.GrainStrength, [](int v) { return std::to_wstring(v) + L"%"; },
               [this](int v) { s.GrainStrength = v; GrainTouched(); }, grainShown);
     Row& toneRow = st.Add(44, grainShown);
@@ -117,7 +114,6 @@ void SettingsWindow::BuildExtrasPage(Stack& st)
     tone.onChange = [this](int v) { s.GrainTone = v; GrainTouched(); };
     ToggleRow(st, L"Coarser", s.GrainCoarse, [this](bool v) { s.GrainCoarse = v; GrainTouched(); }, grainShown);
     ToggleRow(st, L"Animated (more power)", s.GrainAnimated, [this](bool v) { s.GrainAnimated = v; GrainTouched(); }, grainShown);
-    st.Add(16);
 }
 
 // A little dimmed screen with shape i's clear area in it, and a few lines of text showing through.
@@ -158,7 +154,7 @@ void SettingsWindow::StripTouched()
 {
     if (!s.StripEnabled) {
         s.StripEnabled = true;
-        stripToggle->SetOn(true);
+        SyncFeatures();
     }
     app.Changed(true);
 }
@@ -167,7 +163,7 @@ void SettingsWindow::GrainTouched()
 {
     if (!s.GrainEnabled) {
         s.GrainEnabled = true;
-        grainToggle->SetOn(true);
+        SyncFeatures();
     }
     app.Changed(true);
 }
@@ -176,8 +172,7 @@ void SettingsWindow::GrainTouched()
 
 void SettingsWindow::BuildFocusTimer(Stack& st)
 {
-    Divider(st);
-    SectionHead(st, L'\uE916', L"Focus timer", L"Work, then rest, again and again.");
+    FeatureHead(st, FFocus, L"Work, then rest, again and again.");
     Row& card = st.Add(162);
     focusRing = &card.Add<FocusRing>();
     focusRing->SetBounds(24, 4, 154, 154);
@@ -223,8 +218,7 @@ void SettingsWindow::BuildFocusTimer(Stack& st)
 void SettingsWindow::BuildRules(Stack& st)
 {
     Shown advanced = [this] { return s.AdvancedView; };   // (in Simple they stay listed but idle)
-    Divider(st, advanced);
-    SectionHead(st, L'\uE7F4', L"Modes for apps", L"While one of these apps is in front, its mode is used.", advanced);
+    FeatureHead(st, FRules, L"While one of these apps is in front, its mode is used.");
     rulesRow = &st.Add(30, advanced);
     Row& addRow = st.Add(52, advanced);
     AddButton(addRow, L"Add an app...", 24, 8, 170, 34).onClick = [this] {

@@ -22,33 +22,21 @@ constexpr UINT LaterMessage = WM_APP + 20;
 
 SettingsWindow::SettingsWindow(SettingsHost& app, Settings& settings, bool unfoldAll) : app(app), s(settings), unfoldAll(unfoldAll)
 {
-    tabs = &Root().Add<TabStrip>(std::vector<std::wstring>{L"Screen", L"Blink", L"Schedule", L"Extras", L"\uE713"});
-    tabs->SetBounds(8, 8, Edge - 44, 40);
-    tabs->tip = Lang::T(L"The cog holds BlinkBuddy's own options");
-    tabs->onChange = [this](int selected) {
-        for (int i = 0; i < 5; i++) pages[i]->SetVisible(i == selected);
-        UpdateRows();
-    };
-    // Mini mode's button by the title bar (while mini mode is on in Options).
-    titleMini = &Root().Add<Button>();
-    titleMini->SetBounds(Edge - 34, 12, 32, 32);
-    titleMini->iconSize = 20;
-    titleMini->icon = [](Canvas& c, const D2D1_RECT_F& r) { MiniArt::DrawSymbol(c.Target(), r); };
-    titleMini->tip = Lang::T(L"Mini mode: shrink this window into a small icon that stays on top");
-    titleMini->SetVisible(s.MiniEnabled);
-    titleMini->onClick = [this] { this->app.EnterMiniMode(); };
-    Root().Add<ui::Divider>().SetBounds(0, 52, W, 1);
-    for (int i = 0; i < 5; i++) {
+    // One panel of the features switched on (each a card, in the order you drag them into), and Options behind the cog.
+    LoadOrder();
+    BuildTopBar();
+    for (int i = 0; i < 2; i++) {
         pages[i] = &Root().Add<ScrollPage>();
         pages[i]->SetBounds(0, 54, W, H - 54);   // (the real height comes with the window)
         pages[i]->SetVisible(i == 0);
         stacks.push_back(std::make_unique<Stack>(*pages[i]));
     }
-    BuildScreenPage(*stacks[0]);
-    BuildBlinkPage(*stacks[1]);
-    BuildSchedulePage(*stacks[2]);
-    BuildExtrasPage(*stacks[3]);
-    BuildOptionsPage(*stacks[4]);
+    BuildPanel(*stacks[0]);
+    BuildOptionsPage(*stacks[1]);
+    for (int i = 0; i < 2; i++) {   // (added last: drawn over the rows)
+        marks[i] = &pages[i]->Add<DropMark>();
+        marks[i]->SetVisible(false);
+    }
 }
 
 SettingsWindow::~SettingsWindow()
@@ -65,10 +53,7 @@ void SettingsWindow::Show(const POINT* at, bool optionsPage, HICON icon, bool ac
     float height = s.SettingsHeight > 0 ? static_cast<float>(s.SettingsHeight) : H;   // as tall as it was last left
     Open(W, height, at, opts);
     ShowRules();   // again, now the icons can be made at the display's scale
-    if (optionsPage) {
-        tabs->SetSelected(4);
-        tabs->onChange(4);
-    }
+    if (optionsPage) ShowOptions(true);
     RefreshStatus();
     SetTimer(Handle(), StatusTimer, 1000, nullptr);
     DirectWindow::Show(activate);
@@ -91,6 +76,7 @@ void SettingsWindow::Layout()
 void SettingsWindow::UpdateRows()
 {
     for (auto& update : updaters) update();
+    RefreshSummaries();
     for (auto& st : stacks) st->Layout();
 }
 
@@ -131,20 +117,19 @@ void SettingsWindow::RefreshStatus()
     RefreshUpdates();
     focusRing->Invalidate();
     RefreshUsage();
+    RefreshSummaries();
     focusButton->SetText(app.FocusState() == Focus::Working ? L"Pause" : app.FocusState() == Focus::Paused ? L"Resume" : L"Start");
 }
 
 void SettingsWindow::SyncFromApp()
 {
-    filterToggle->SetOn(s.FilterEnabled);
-    toneToggle->SetOn(s.ToneEnabled);
+    SyncFeatures();
     lutBox->SetText(s.LutPath);
     brightSlider->SetValue(s.Brightness);
     coolToggle->SetOn(s.CoolRange);
     blueSlider->SetRange(s.CoolRange ? -75 : 0, 100);
     blueSlider->SetValue(s.BlueFilter);
     NightMarker();
-    stripToggle->SetOn(s.StripEnabled);
     modeGrid->SetSelected(s.Mode);
     effectPicker->SetSelected(s.ColorEffect);
     awakeToggle->SetOn(app.KeepingAwake());
@@ -235,29 +220,32 @@ Label& SettingsWindow::AddLabel(Container& parent, std::wstring_view text, IDWri
 }
 
 // The icon makes each section easy to spot while scrolling.
-void SettingsWindow::Title(Container& row, wchar_t icon, std::wstring_view title)
+void SettingsWindow::Title(Container& row, wchar_t icon, std::wstring_view title, float indent)
 {
-    row.Add<Icon>(icon, 14.0f, Theme::Accent()).SetBounds(20, 9, 32, 30);
-    AddLabel(row, title, Fonts::Heading(), Theme::Fg, 56, 10, 300, 28);
+    row.Add<Icon>(icon, 14.0f, Theme::Accent()).SetBounds(20 + indent, 9, 32, 30);
+    AddLabel(row, title, Fonts::Heading(), Theme::Fg, 56 + indent, 10, 300, 28);
 }
 
 // A section's heading: its icon, title and one-line hint, with a chevron that folds the section shut (clicking the
 // title does too); the rows after it, up to the next divider, belong to it. Folded sections are remembered. The
 // chevron sits just left of where a switch goes.
-Row& SettingsWindow::SectionHead(Stack& st, wchar_t icon, std::wstring_view title, std::wstring_view hint, Shown shown)
+Row& SettingsWindow::SectionHead(Stack& st, wchar_t icon, std::wstring_view title, std::wstring_view hint, Shown shown,
+                                 float indent, float foldAt, Label** hintLabel)
 {
     st.EndSection();
-    bool two = LinesFor(hint, Fonts::Small(), Edge - 56) > 1;   // a longer translation gets a second line
+    float hintW = (foldAt > 0 ? foldAt - 4 : Edge) - 56 - indent;
+    bool two = LinesFor(hint, Fonts::Small(), hintW) > 1;   // a longer translation gets a second line
     Row& r = st.Add(two ? 82.0f : 64.0f, shown);
-    Title(r, icon, title);
-    Label& h = AddLabel(r, hint, Fonts::Small(), Theme::Dim, 56, 38, Edge - 56 - (two ? 0 : 0), two ? 38.0f : 20.0f);
+    Title(r, icon, title, indent);
+    Label& h = AddLabel(r, hint, Fonts::Small(), Theme::Dim, 56 + indent, 38, hintW, two ? 38.0f : 20.0f);
+    if (hintLabel) *hintLabel = &h;
     if (two) {
         h.wrap = true;
         h.top = true;
     }
     std::wstring key(title);
     auto& fold = r.Add<FoldButton>(!IsFolded(key));
-    fold.SetBounds(Edge - 84, 13, 28, 28);
+    fold.SetBounds(foldAt > 0 ? foldAt : Edge - 84, 13, 28, 28);
     fold.tip = Lang::T(L"Fold or unfold this section");
     auto toggle = [this, key, &fold] {
         SetFolded(key, !IsFolded(key));
@@ -266,7 +254,7 @@ Row& SettingsWindow::SectionHead(Stack& st, wchar_t icon, std::wstring_view titl
     };
     fold.onClick = toggle;
     auto& area = r.Add<HotArea>();   // the title and hint fold it too
-    area.SetBounds(0, 0, Edge - 90, r.H());
+    area.SetBounds(indent > 0 ? indent + 20 : 0, 0, (foldAt > 0 ? foldAt : Edge - 84) - 6 - (indent > 0 ? indent + 20 : 0), r.H());
     area.onClick = toggle;
     st.Section([this, key] { return !IsFolded(key); });
     return r;
@@ -322,10 +310,15 @@ SettingsWindow::Shown SettingsWindow::More(Stack& st, const std::wstring& key, S
     return [isOpen, visible] { return isOpen() && visible(); };
 }
 
-// A line between sections (it ends the one above).
+// A line between sections (it ends the one above); on a page of grouped cards, the next card instead.
 void SettingsWindow::Divider(Stack& st, Shown shown)
 {
     st.EndSection();
+    if (st.CurrentGroup() >= 0) {
+        st.Add(6);   // (the card's own bottom margin)
+        st.Group(st.CurrentGroup() + 1);
+        return;
+    }
     st.Add(21, std::move(shown)).Add<ui::Divider>().SetBounds(24, 10, Edge - 24, 1);
 }
 
@@ -342,7 +335,10 @@ Toggle& SettingsWindow::ToggleRow(Stack& st, std::wstring_view text, bool value,
 {
     Row& r = st.Add(34, std::move(shown));
     AddLabel(r, text, Fonts::Body(), Theme::Fg, 24, 4, 360, 26);
-    return AddToggle(r, Edge - 44, 6, value, std::move(changed));
+    return AddToggle(r, Edge - 44, 6, value, [this, changed = std::move(changed)](bool v) {
+        changed(v);
+        RefreshSummaries();
+    });
 }
 
 Toggle& SettingsWindow::AddToggle(Container& parent, float x, float y, bool value, std::function<void(bool)> changed)
@@ -363,11 +359,15 @@ Slider& SettingsWindow::SliderRow(Stack& st, std::wstring_view text, int min, in
     shownValue.align = HAlign::Right;
     Slider& slider = r.Add<Slider>(min, max, value);
     slider.SetBounds(16, 28, 396, 30);
-    slider.onChange = [&shownValue, format, changed](int v) {
+    Button& reset = r.Add<Button>();   // a small round "undo" button, there while the value isn't the usual one
+    slider.onChange = [this, &shownValue, &reset, format, changed, def](int v) {
         shownValue.SetText(format(v));
         changed(v);
+        reset.SetVisible(v != def);
+        RefreshSummaries();
     };
-    Button& reset = r.Add<Button>();   // a small round "undo" button
+    reset.SetVisible(value != def);
+    updaters.push_back([&reset, &slider, def] { reset.SetVisible(slider.Value() != def); });   // (set from elsewhere)
     reset.SetGlyph(L'\uE7A7');
     reset.SetBounds(Edge - 30, 29, 28, 28);
     reset.focusable = false;

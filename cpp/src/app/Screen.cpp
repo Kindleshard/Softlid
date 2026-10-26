@@ -370,11 +370,11 @@ void Screen::NightLightTick()
 // on while the app's window is still there to see.
 void Screen::CheckRules()
 {
-    if (s.AppRules.empty() && ruleMode < 0) return;
+    if ((s.AppRules.empty() || !s.RulesEnabled) && ruleMode < 0) return;
     int mode;
     std::wstring front;
     HWND frontWindow;
-    if (!s.AdvancedView) mode = -1;   // (an Advanced feature: kept, but idle in Simple)
+    if (!s.AdvancedView || !s.RulesEnabled) mode = -1;   // (switched off, or an Advanced feature in Simple: kept, but idle)
     else if (ForegroundApp::Get(front, frontWindow)) {
         mode = Modes::RuleFor(s, front);
         ruleWindow = mode >= 0 ? frontWindow : nullptr;

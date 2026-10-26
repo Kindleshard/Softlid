@@ -19,10 +19,9 @@ std::wstring Percent(int v) { return std::to_wstring(v) + L"%"; }
 
 } // namespace
 
-void SettingsWindow::BuildScreenPage(Stack& st)
+void SettingsWindow::BuildFilter(Stack& st)
 {
-    filterToggle = &Header(st, L'\uE706', L"Screen filter", L"Ctrl+Alt+Shift with F: on/off · ↑ ↓: brightness · ← →: warmth",
-                           s.FilterEnabled, [this](bool v) { SetFilter(v); });
+    FeatureHead(st, FFilter, L"Ctrl+Alt+Shift with F: on/off · ↑ ↓: brightness · ← →: warmth");
     // One-click modes; moving a slider makes it your own (Custom) again.
     Row& modeRow = st.Add(88);
     std::vector<std::wstring> glyphs, names;
@@ -91,10 +90,6 @@ void SettingsWindow::BuildScreenPage(Stack& st)
         s.Invert = v;
         FilterTouched();
     }, advanced);
-
-    Divider(st);
-    BuildTone(st);
-    st.Add(16);
 }
 
 // ---- Colour effects: each shown as a little picture through it ----
@@ -184,7 +179,7 @@ void SettingsWindow::ShowEffect()
 void SettingsWindow::SetFilter(bool on)
 {
     s.FilterEnabled = on;
-    filterToggle->SetOn(on);
+    SyncFeatures();
     app.ManualScreenChange();
     app.Changed(true);
     UpdateRows();

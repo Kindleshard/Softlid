@@ -451,3 +451,44 @@ void EyeView::Paint(Canvas& c)
 }
 
 } // namespace bb::ui
+
+namespace bb::ui {
+
+// ---- DragGrip ----
+
+void DragGrip::Paint(Canvas& c)
+{
+    int ink = dragging ? Theme::Accent() : hover ? Theme::Fg : Theme::Track;
+    float cx = W() / 2, cy = H() / 2;
+    for (int col = 0; col < 2; col++)
+        for (int row = 0; row < 3; row++) c.FillCircle(cx - 2.5f + col * 5, cy - 5 + row * 5, 1.3f, ink);
+}
+
+void DragGrip::MouseDown(D2D1_POINT_2F p)
+{
+    startY = p.y;
+    dragging = false;
+}
+
+void DragGrip::MouseMove(D2D1_POINT_2F p, bool down)
+{
+    if (!down) return;
+    if (!dragging && std::abs(p.y - startY) < 4) return;   // (a small slip of the hand isn't a drag)
+    dragging = true;
+    Invalidate();
+    if (onDrag) onDrag(Origin().y + p.y);
+}
+
+void DragGrip::MouseUp(D2D1_POINT_2F p)
+{
+    if (!dragging) return;
+    dragging = false;
+    Invalidate();
+    if (onDrop) onDrop(Origin().y + p.y);
+}
+
+// ---- DropMark ----
+
+void DropMark::Paint(Canvas& c) { c.FillRound({0, 0, W(), H()}, H() / 2, Theme::Accent()); }
+
+} // namespace bb::ui

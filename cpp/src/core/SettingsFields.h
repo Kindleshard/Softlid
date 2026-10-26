@@ -19,12 +19,14 @@ BB_SETTING(int, KeptBrightness, 100)
 BB_SETTING(int, KeptBlue, 0)
 BB_SETTING(int, KeptEffect, 0)
 BB_SETTING(text, AppRules, L"")                 // per-app modes: app.exe=mode=path, separated by bars
+BB_SETTING(bool, RulesEnabled, true)            // those modes apply (off: kept, but idle)
 BB_SETTING(bool, KeepAwake, false)              // keep the PC from sleeping and the screen from turning off
 BB_SETTING(text, Hotkeys, L"")                  // custom shortcuts, action=keys separated by semicolons
 BB_SETTING(bool, ForceRest, false)              // breaks can't be skipped (no Skip, Snooze or Esc)
 BB_SETTING(bool, MiniCountdown, true)           // the mini icon's rim shows the time to the next break
 BB_SETTING(int, FocusWork, 25)                  // min: the focus timer's work period
 BB_SETTING(int, FocusRest, 5)                   // min: and its rest
+BB_SETTING(bool, FocusEnabled, true)            // the focus timer is offered (off: stopped, and its card hidden)
 BB_SETTING(bool, HardwareBrightness, false)     // also drive the display's real backlight
 BB_SETTING(int, Backlight, -1)                  // %, that backlight level (separate from Brightness)
 BB_SETTING(int, HardwareRestore, -1)            // backlight % to return to when that is switched off
@@ -118,6 +120,7 @@ BB_SETTING(bool, AccentFromWindows, false)
 BB_SETTING(int, AccentColor, Palette::Accents[0])   // ARGB (a small number is an old palette index)
 BB_SETTING(int, MiniOrbitColor, 0)              // ARGB (0 = the accent; 1..5 an old palette index)
 BB_SETTING(int, CloseAction, 0)                 // 0 ask, 1 keep running in the tray, 2 exit
+BB_SETTING(text, PanelOrder, L"")               // the features on the settings panel, in order (keys by commas; see SettingsPanel)
 BB_SETTING(text, Folded, L"")                   // settings sections folded shut, separated by bars
 BB_SETTING(int, SettingsHeight, 0)              // the settings window's height at 100% (0 = standard)
 BB_SETTING(text, Language, L"")                 // "" = the Windows language (if translated)

@@ -31,8 +31,7 @@ std::wstring Off(int v, std::wstring shown) { return v == 0 ? Lang::T(L"Off") : 
 
 void SettingsWindow::BuildTone(Stack& st)
 {
-    toneToggle = &Header(st, L'\uE793', L"Tone", L"Calms bright areas and deepens darks, on top of Brightness.", s.ToneEnabled,
-                         [this](bool v) { SetTone(v); });
+    FeatureHead(st, FTone, L"Calms bright areas and deepens darks, on top of Brightness.");
     std::vector<ChoiceRow*> engines = BuildToneEngines(st);
     BuildToneStrength(st, engines);
     BuildToneGraph(st);
@@ -276,7 +275,7 @@ void SettingsWindow::CompactSlider(Container& parent, float y, std::wstring_view
 void SettingsWindow::SetTone(bool on)
 {
     s.ToneEnabled = on;
-    toneToggle->SetOn(on);
+    SyncFeatures();
     app.ManualScreenChange();   // tone is part of a mode (Editing turns it off)
     if (on && !s.FilterEnabled) SetFilter(true);
     else app.Changed(true);

@@ -15,10 +15,9 @@ std::wstring Minutes(int v) { return Lang::F(L"{0} min", {std::to_wstring(v)}); 
 
 } // namespace
 
-void SettingsWindow::BuildBlinkPage(Stack& st)
+void SettingsWindow::BuildBlink(Stack& st)
 {
-    Header(st, L'\uE890', L"Blink reminder", L"Relaxed eyes blink ~15 times a minute; staring at a screen, as few as ~5.", s.BlinkEnabled,
-           [this](bool v) { s.BlinkEnabled = v; app.Changed(); });
+    FeatureHead(st, FBlink, L"Relaxed eyes blink ~15 times a minute; staring at a screen, as few as ~5.");
     SliderRow(st, L"Remind me every", 3, 120, s.BlinkInterval, defaults.BlinkInterval, Seconds,
               [this](int v) { s.BlinkInterval = v; app.Changed(); });
     Row& styleRow = st.Add(46);
@@ -56,10 +55,11 @@ void SettingsWindow::BuildBlinkPage(Stack& st)
               [this](int v) { return s.BlinkStyle == 1 && v >= 100 ? std::wstring(L"Fully closed") : std::to_wstring(v) + L"%"; },
               [this](int v) { s.BlinkFadeDepth = v; app.Changed(); }, darkens);
     Note(st, L"An on-screen shade; the display's backlight is never touched.", 1, darkens);
+}
 
-    Divider(st);
-    Header(st, L'\uE909', L"Look-away reminder", L"The 20-20-20 rule: every 20 min, look 20 ft (6 m) away for 20 s.", s.BreakEnabled,
-           [this](bool v) { s.BreakEnabled = v; app.Changed(); });
+void SettingsWindow::BuildLookAway(Stack& st)
+{
+    FeatureHead(st, FLookAway, L"The 20-20-20 rule: every 20 min, look 20 ft (6 m) away for 20 s.");
     SliderRow(st, L"Every", 5, 60, s.BreakInterval, defaults.BreakInterval, Minutes, [this](int v) { s.BreakInterval = v; app.Changed(); });
     // The spoken lines set a floor: below their total length the voice is switched off rather than cut short.
     int voiceNeeds = Voice::MinimumSeconds(Voice::LookAwayKeys());
@@ -99,10 +99,11 @@ void SettingsWindow::BuildBlinkPage(Stack& st)
     ToggleRow(st, L"Chime when a break starts and ends", s.Sounds, [this](bool v) { s.Sounds = v; app.Changed(); }, breakMore);
     ToggleRow(st, L"Force breaks (no Skip, Snooze or Esc)", s.ForceRest, [this](bool v) { s.ForceRest = v; app.Changed(); }, breakMore);
     Note(st, L"Being away from the PC for 5+ minutes counts as a break.", 1, breakMore);
+}
 
-    Divider(st);
-    Header(st, L'\uE805', L"Stand-up reminder", L"Every hour or so, get up, move and stretch for a few minutes.", s.LongBreakEnabled,
-           [this](bool v) { s.LongBreakEnabled = v; app.Changed(); });
+void SettingsWindow::BuildStandUp(Stack& st)
+{
+    FeatureHead(st, FStandUp, L"Every hour or so, get up, move and stretch for a few minutes.");
     SliderRow(st, L"Every", 30, 120, s.LongBreakInterval, defaults.LongBreakInterval, Minutes,
               [this](int v) { s.LongBreakInterval = v; app.Changed(); });
     SliderRow(st, L"Break length", 1, 15, s.LongBreakDuration, defaults.LongBreakDuration, Minutes,
@@ -119,7 +120,6 @@ void SettingsWindow::BuildBlinkPage(Stack& st)
     AddToggle(stretchVoiceRow, Edge - 44, 6, s.StretchVoice, [this](bool v) { s.StretchVoice = v; app.Changed(); });
     Note(st, L"Being away from the PC for the break length counts as one. A look-away break due in the last 2 minutes before it is skipped.",
          2, standMore);
-    st.Add(16);
 }
 
 } // namespace bb
