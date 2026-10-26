@@ -78,8 +78,10 @@ private:
     void FeatureHead(ui::Stack& st, Feature f, std::wstring_view hint);   // a feature's heading on the panel
     bool FeatureOn(int f) const;
     bool FeatureListed(int f) const;  // (Film grain and Modes for apps are for the Advanced view)
-    void SetFeature(int f, bool on);  // on: it runs and its card is on the panel; off: it stops, and its card goes
-    void SyncFeatures();              // the switches in the list, as the settings are now
+    bool FeatureShown(int f) const;   // made available in Options: its card is on the panel
+    void SetShown(int f, bool on);    // off: its card goes, and the feature stops
+    void SetFeature(int f, bool on);  // its card's switch: it runs, or stops
+    void SyncFeatures();              // the switches (in the list, and on the cards), as the settings are now
     std::wstring FeatureSummary(int f) const;   // what it does now, in a line (under its name on the panel)
     void RefreshSummaries();
     void LoadOrder();
@@ -161,7 +163,8 @@ private:
     ui::Button *cogButton = nullptr, *backButton = nullptr;
     ui::Label* pageTitle = nullptr;
     ui::DropMark* marks[2] = {};
-    ui::Toggle* featureToggles[FeatureCount] = {};
+    ui::Toggle* featureToggles[FeatureCount] = {};   // in Options: on the panel or not
+    ui::Toggle* cardToggles[FeatureCount] = {};      // on the cards: on or off
     ui::Label* summaries[FeatureCount] = {};
     std::vector<int> order;          // the features, in the order chosen (all of them, shown or not)
     std::vector<std::unique_ptr<ui::Stack>> stacks;

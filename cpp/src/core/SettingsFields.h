@@ -121,6 +121,7 @@ BB_SETTING(bool, AccentFromWindows, false)
 BB_SETTING(int, AccentColor, Palette::Accents[0])   // ARGB (a small number is an old palette index)
 BB_SETTING(int, MiniOrbitColor, 0)              // ARGB (0 = the accent; 1..5 an old palette index)
 BB_SETTING(int, CloseAction, 0)                 // 0 ask, 1 keep running in the tray, 2 exit
+BB_SETTING(text, PanelHidden, L"")              // features not on the panel (keys by commas; the focus timer: FocusEnabled)
 BB_SETTING(text, PanelOrder, L"")               // the features on the settings panel, in order (keys by commas; see SettingsPanel)
 BB_SETTING(text, Folded, L"")                   // settings sections folded shut, separated by bars
 BB_SETTING(int, SettingsHeight, 0)              // the settings window's height at 100% (0 = standard)

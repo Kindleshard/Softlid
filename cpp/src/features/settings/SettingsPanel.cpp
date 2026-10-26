@@ -1,5 +1,6 @@
-// The panel: every feature switched on, as a card, in the order you drag them into; and their list in Options, where
-// each is switched on (it runs, and its card shows) or off (it stops, and its card goes).
+// The panel: a card for each feature made available in Options, in the order you drag them into, each with its own
+// switch to start and stop it; and the list in Options, where each is made available (its card is on the panel) or
+// not (its card goes, and the feature stops: nothing runs that you can't see).
 #include "features/settings/SettingsWindow.h"
 #include "features/settings/SettingsHost.h"
 #include "core/ColorMath.h"
@@ -83,7 +84,7 @@ void SettingsWindow::ShowOptions(bool on)
 bool SettingsWindow::FeatureOn(int f) const
 {
     switch (f) {
-    case FFilter: return s.FilterEnabled || s.Mode == Modes::Pause;   // (paused is still in use: the Pause chip is chosen)
+    case FFilter: return s.FilterEnabled;
     case FTone: return s.ToneEnabled;
     case FBlink: return s.BlinkEnabled;
     case FLookAway: return s.BreakEnabled;
@@ -102,10 +103,7 @@ bool SettingsWindow::FeatureListed(int f) const { return (f != FGrain && f != FR
 void SettingsWindow::SetFeature(int f, bool on)
 {
     switch (f) {
-    case FFilter:
-        if (!on && s.Mode == Modes::Pause) s.Mode = -1;   // (switched off, it is no longer paused but off)
-        SetFilter(on);
-        break;
+    case FFilter: SetFilter(on); break;
     case FTone: SetTone(on); break;   // (on, it switches the screen filter on too: tone works on top of it)
     case FBlink: s.BlinkEnabled = on; app.Changed(); break;
     case FLookAway: s.BreakEnabled = on; app.Changed(); break;
@@ -129,10 +127,36 @@ void SettingsWindow::SetFeature(int f, bool on)
     UpdateRows();
 }
 
+// Available on the panel: not in the hidden list (the focus timer: its switch, as it has no other).
+bool SettingsWindow::FeatureShown(int f) const
+{
+    if (f == FFocus) return s.FocusEnabled;
+    std::wstring all = L"," + s.PanelHidden + L",";
+    return all.find(L"," + std::wstring(Features[f].key) + L",") == std::wstring::npos;
+}
+
+void SettingsWindow::SetShown(int f, bool on)
+{
+    if (f == FFocus) {
+        SetFeature(FFocus, on);
+        return;
+    }
+    std::wstring hidden;
+    for (int g = 0; g < FeatureCount; g++)
+        if (g != FFocus && (g == f ? !on : !FeatureShown(g))) hidden += (hidden.empty() ? L"" : L",") + std::wstring(Features[g].key);
+    s.PanelHidden = hidden;
+    app.Changed();
+    if (!on && FeatureOn(f)) SetFeature(f, false);   // (taken off the panel, it stops too)
+    SyncFeatures();
+    UpdateRows();
+}
+
 void SettingsWindow::SyncFeatures()
 {
-    for (int f = 0; f < FeatureCount; f++)
-        if (featureToggles[f]) featureToggles[f]->SetOn(FeatureOn(f));
+    for (int f = 0; f < FeatureCount; f++) {
+        if (featureToggles[f]) featureToggles[f]->SetOn(FeatureShown(f));
+        if (cardToggles[f]) cardToggles[f]->SetOn(FeatureOn(f));
+    }
 }
 
 // The saved order (keys by commas), with any feature it doesn't name added where it comes by default.
@@ -163,23 +187,23 @@ void SettingsWindow::BuildPanel(Stack& st)
         &SettingsWindow::BuildGrain, &SettingsWindow::BuildFocusTimer, &SettingsWindow::BuildRules};
     for (int f = 0; f < FeatureCount; f++) {
         // (a diagnostic copy shows every card: its features stay off, so it never changes the screen it runs beside)
-        st.BeginBlock(f, [this, f] { return (FeatureOn(f) || unfoldAll) && FeatureListed(f); });
+        st.BeginBlock(f, [this, f] { return (FeatureShown(f) || unfoldAll) && FeatureListed(f); });
         (this->*builders[f])(st);
         st.Add(8);   // (the card's own bottom margin)
         st.EndBlock();
     }
     st.SetOrder(order);
 
-    // What is off, and where to switch it on.
+    // What isn't on the panel, and where to add it.
     Row& offRow = st.Add(76, [this] {
         for (int f = 0; f < FeatureCount; f++)
-            if (FeatureListed(f) && !FeatureOn(f)) return true;
+            if (FeatureListed(f) && !FeatureShown(f)) return true;
         return false;
     });
     Label& off = AddLabel(offRow, L"", Fonts::Small(), Theme::Dim, 24, 4, Edge - 24, 38);
     off.align = HAlign::Center;
     off.wrap = off.top = true;
-    Button& open = AddButton(offRow, L"Switch them on in Options", (W - 220) / 2, 44, 220, 28);
+    Button& open = AddButton(offRow, L"Add them in Options", (W - 220) / 2, 44, 220, 28);
     open.onClick = [this] { ShowOptions(true); };
     updaters.push_back([this, &off] {
         std::wstring names;
@@ -187,19 +211,24 @@ void SettingsWindow::BuildPanel(Stack& st)
         for (int f : order) {
             if (!FeatureListed(f)) continue;
             shown++;
-            if (FeatureOn(f)) continue;
+            if (FeatureShown(f)) continue;
             names += (count++ ? L", " : L"") + Lang::T(Features[f].name);
         }
-        off.SetPlainText(count == shown ? Lang::T(L"Every feature is off.") : Lang::F(L"Off: {0}", {names}));
+        off.SetPlainText(count == shown ? Lang::T(L"No features are on the panel.") : Lang::F(L"Not on the panel: {0}", {names}));
     });
     st.Add(12);
 }
 
 // A feature's heading on the panel: a grip to drag it by, its icon and name, what it does now (its hint, a line on
-// what it is for, is the tip), and the chevron that folds it.
+// what it is for, is the tip), the chevron that folds it, and its switch (the focus timer has Start and Stop instead).
 void SettingsWindow::FeatureHead(Stack& st, Feature f, std::wstring_view hint)
 {
-    Row& r = SectionHead(st, Features[f].icon, Features[f].name, FeatureSummary(f), nullptr, 14, Edge - 36, &summaries[f]);
+    bool own = f != FFocus;
+    Row& r = SectionHead(st, Features[f].icon, Features[f].name, FeatureSummary(f), nullptr, 14, own ? 0 : Edge - 36, &summaries[f]);
+    if (own) {
+        cardToggles[f] = &AddToggle(r, Edge - 44, 13, FeatureOn(f), [this, f](bool v) { SetFeature(f, v); });
+        cardToggles[f]->tip = Lang::T(L"On or off");
+    }
     summaries[f]->tip = Lang::T(hint);
     for (auto& child : r.Children())   // (the area that folds it lies over the name: it shows the tip there)
         if (auto* area = dynamic_cast<HotArea*>(child.get())) area->tip = Lang::T(hint);
@@ -215,7 +244,7 @@ void SettingsWindow::FeatureHead(Stack& st, Feature f, std::wstring_view hint)
 void SettingsWindow::BuildFeatureList(Stack& st)
 {
     SectionHead(st, static_cast<wchar_t>(0xE8FD), L"Features",
-                L"Switched on, a feature runs and has its card on the panel. Drag them into the order you like.");
+                L"Switched on, a feature is on the panel, its card with a switch of its own. Drag them into the order you like.");
     // (each row is a block, to be dragged; blocks don't take the section from the heading, so they fold with it here)
     Shown open = [this] { return !IsFolded(L"Features"); };
     for (int f = 0; f < FeatureCount; f++) {
@@ -228,7 +257,7 @@ void SettingsWindow::BuildFeatureList(Stack& st)
         grip.onDrop = [this, f](float y) { DropFeature(f, 1, y); };
         r.Add<Icon>(Features[f].icon, 12.0f, Theme::Accent()).SetBounds(42, 6, 28, 28);
         AddLabel(r, Features[f].name, Fonts::Body(), Theme::Fg, 78, 7, 260, 26);
-        featureToggles[f] = &AddToggle(r, Edge - 44, 9, FeatureOn(f), [this, f](bool v) { SetFeature(f, v); });
+        featureToggles[f] = &AddToggle(r, Edge - 44, 9, FeatureShown(f), [this, f](bool v) { SetShown(f, v); });
         st.EndBlock();
     }
     st.SetOrder(order);
