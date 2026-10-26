@@ -79,6 +79,8 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
         dirty = true;
     };
     tone.ClearLeftover();
+    nightLight = NightLight::Read();
+    nightWatch.Start(window, NightLightMessage);
     ApplyScreen();
     if (settings.HardwareBrightness) {
         probing = Probe::Refresh;
@@ -192,6 +194,9 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         lab->onClosed = [this] { PostMessageW(window, LabClosedMessage, 0, 0); };
         lab->Start(bigIcon);
         return 0;
+    case NightLightMessage:
+        NightLightChanged(static_cast<int>(w));
+        return 0;
     case UpdateMessage: {
         std::unique_ptr<Updater::Result> result(reinterpret_cast<Updater::Result*>(l));
         Updated(*result);
@@ -245,6 +250,7 @@ void App::OnTick()
     if (++hourTick >= 3600) {
         hourTick = 0;
         WeeklyUpdateCheck();
+        NightLightChanged(-1);
     }
     if (card || Paused()) return;
     FocusTick();

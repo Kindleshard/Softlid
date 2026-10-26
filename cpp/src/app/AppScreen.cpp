@@ -270,11 +270,12 @@ float App::NightNow() const
 {
     auto now = Clock::now();
     if (now < previewNightUntil) return 1;   // a moment's preview of the night strength
-    if (!settings.ScheduleEnabled) return 0;
+    Settings v = Scheduled();
+    if (!v.ScheduleEnabled) return 0;
     if (now < previewUntil) return 0;
     SYSTEMTIME local;
     GetLocalTime(&local);
-    return Night::Factor(settings, local);
+    return Night::Factor(v, local);
 }
 
 float App::NightShown() const { return ruleMode >= 0 ? 0 : NightNow(); }
@@ -300,9 +301,11 @@ void App::UpdateLocation()
     Location::Locate(window, LocatedMessage);
 }
 
-// The blue light filter in effect right now (0 when the filter is off, or while a colour effect takes its place).
+// The blue light filter in effect right now (0 when the filter is off, or while a colour effect takes its place;
+// Windows Night light's while that is warming the screen).
 float App::WarmthNow() const
 {
+    if (NightLightWarming()) return NightLight::BlueFor(nightLight.kelvin) / 100.0f;   // Night light's warmth instead
     const Settings& v = screenNow;
     return v.FilterEnabled && !effectShown ? static_cast<float>(Night::Blue(v, NightShown()) / 100) : 0.0f;
 }
@@ -311,7 +314,7 @@ std::wstring App::NightStatus() const
 {
     SYSTEMTIME local;
     GetLocalTime(&local);
-    return Night::Status(settings, local);
+    return Night::Status(Scheduled(), local);
 }
 
 // The line under the schedule's status: still syncing, synced (with Windows location or the time zone's city), failed
@@ -382,9 +385,42 @@ void App::ManualScreenChange()
 
 Settings App::Effective() const
 {
-    Settings v = settings;
+    Settings v = Scheduled();
     if (ruleMode >= 0) Modes::Apply(v, ruleMode);
+    if (NightLightWarming()) v.BlueFilter = v.NightBlue = 0;   // Night light does the warming: no second layer of it
     return v;
+}
+
+// ---- Windows Night light ----
+
+// The settings with the night schedule as it runs: Windows Night light's hours and strength while it has a schedule
+// and BlinkBuddy follows it (the schedule's own settings stay as set, for when it doesn't).
+Settings App::Scheduled() const
+{
+    Settings v = settings;
+    if (!FollowsNightLight()) return v;
+    v.ScheduleEnabled = true;
+    v.ScheduleMode = 1;
+    v.NightFrom = nightLight.Start();
+    v.NightTo = nightLight.End();
+    v.NightBlue = NightLight::BlueFor(nightLight.kelvin);
+    v.NightFade = 0;   // (Night light switches at those times)
+    return v;
+}
+
+bool App::FollowsNightLight() const { return settings.NightLightSync && nightLight.found && nightLight.scheduled; }
+bool App::NightLightWarming() const { return settings.NightLightSync && nightLight.found && nightLight.on; }
+
+// Night light's settings or state changed (in Windows Settings, or its schedule switched it).
+void App::NightLightChanged(int key)
+{
+    if (key >= 0) nightWatch.Rearm(key);
+    else if (!nightWatch.Watching()) nightWatch.Start(window, NightLightMessage);   // (set up since: watch it now)
+    NightLight::State now = NightLight::Read();
+    if (now == nightLight) return;
+    nightLight = now;
+    ApplyScreen();
+    if (settingsWindow) settingsWindow->SyncFromApp();
 }
 
 // Is an app with a rule in front? Checked the moment another window comes to the front (and each second, to be

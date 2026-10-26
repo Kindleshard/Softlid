@@ -60,12 +60,13 @@ void SettingsWindow::BuildScreenPage(Stack& st)
     blueSlider->warm = true;
     NightMarker();
     // A colour effect and the blue light filter take turns: while an effect is on, the slider is greyed and says so
-    // (moving it brings the blue light filter back and the effect goes back to Original).
-    Row& pausedRow = st.Add(26, [this] { return EffectPausesBlue(); });
+    // (moving it brings the blue light filter back and the effect goes back to Original). Windows Night light, while
+    // it is on, takes its place the same way.
+    Row& pausedRow = st.Add(26, [this] { return BluePaused(); });
     Label& paused = AddLabel(pausedRow, L"", Fonts::Small(), Theme::Dim, 24, 0, Edge - 24, 22);
     updaters.push_back([this, &paused] {
-        blueSlider->SetMuted(EffectPausesBlue());
-        paused.SetPlainText(EffectPausedText());
+        blueSlider->SetMuted(BluePaused());
+        paused.SetPlainText(BluePausedText());
     });
 
     // The real backlight: a switch, then a slider of its own; Brightness above always dims pixels.
@@ -159,14 +160,16 @@ void SettingsWindow::PaintEffect(Canvas& c, const D2D1_RECT_F& r, int effect, fl
     t->PopLayer();
 }
 
-// Whether a colour effect is taking the blue light filter's place right now.
-bool SettingsWindow::EffectPausesBlue() const
+// Whether the blue light filter is resting right now: Windows Night light is warming the screen, or a colour effect
+// is taking its place.
+bool SettingsWindow::BluePaused() const
 {
-    return s.FilterEnabled && s.ColorEffect != ColorMath::NoEffect && app.EffectsAvailable();
+    return app.NightLightWarming() || (s.FilterEnabled && s.ColorEffect != ColorMath::NoEffect && app.EffectsAvailable());
 }
 
-std::wstring SettingsWindow::EffectPausedText() const
+std::wstring SettingsWindow::BluePausedText() const
 {
+    if (app.NightLightWarming()) return Lang::T(L"Paused while Windows Night light warms the screen");
     int i = std::clamp(s.ColorEffect, 0, 4);
     return Lang::F(L"Paused while {0} is on", {Lang::T(EffectNames[i])});
 }

@@ -69,12 +69,12 @@ private:
     void BuildScreenPage(ui::Stack& st);
     void BuildEffects(ui::Stack& st);
     void PaintEffect(ui::Canvas& c, const D2D1_RECT_F& r, int effect, float awake);
-    bool EffectPausesBlue() const;
+    bool BluePaused() const;
     void ShowEffect();
     void SetFilter(bool on);         // the screen filter switch (also when a control needs it on)
     void FilterTouched();
     void BacklightToggled(bool on);
-    std::wstring EffectPausedText() const;
+    std::wstring BluePausedText() const;
 
     // ---- Tone, on the Screen page (SettingsTone.cpp) ----
     void BuildTone(ui::Stack& st);
@@ -100,6 +100,8 @@ private:
     void ShowSync();
     void ShowSuggestions(std::vector<std::wstring> names);
     void ChooseCity(const std::wstring& name);
+    void BuildNightLight(ui::Stack& st);
+    void RefreshNightLight();
     void NightMarker();
     void NightChanged();
 
@@ -135,7 +137,7 @@ private:
     ui::ModeGrid* modeGrid = nullptr;
     ui::TilePicker* effectPicker = nullptr;
     ui::Label *ruleStatus = nullptr, *hwStatus = nullptr, *nightStatus = nullptr, *syncStatus = nullptr,
-              *breakStatus = nullptr, *longStatus = nullptr;
+              *breakStatus = nullptr, *longStatus = nullptr, *nightLightStatus = nullptr;
     ui::Icon* syncTick = nullptr;
     ui::Row* rulesRow = nullptr;
     ui::FocusRing* focusRing = nullptr;

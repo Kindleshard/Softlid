@@ -103,6 +103,7 @@ void SettingsWindow::RefreshStatus()
     breakStatus->SetPlainText(app.BreakStatus());
     longStatus->SetPlainText(app.StandUpStatus());
     nightStatus->SetPlainText(app.NightStatus());
+    RefreshNightLight();
     ShowSync();
     // A rule's mode in use.
     if (app.RuleMode() >= 0) ruleStatus->SetPlainText(Lang::F(L"{0} mode, for the app in front", {Lang::T(Modes::Names[app.RuleMode()])}));
@@ -126,6 +127,7 @@ void SettingsWindow::SyncFromApp()
     coolToggle->SetOn(s.CoolRange);
     blueSlider->SetRange(s.CoolRange ? -75 : 0, 100);
     blueSlider->SetValue(s.BlueFilter);
+    NightMarker();
     stripToggle->SetOn(s.StripEnabled);
     modeGrid->SetSelected(s.Mode);
     effectPicker->SetSelected(s.ColorEffect);

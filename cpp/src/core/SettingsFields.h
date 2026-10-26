@@ -49,6 +49,7 @@ BB_SETTING(int, NightFade, 60)                  // min
 BB_SETTING(int, NightFrom, 21 * 60)             // minutes after midnight
 BB_SETTING(int, NightTo, 7 * 60)
 BB_SETTING(int, NightBlue, 60)                  // %: the blue light filter at night
+BB_SETTING(bool, NightLightSync, true)          // follow Windows Night light: its schedule, and it does the warming while on
 
 // Reading strip
 BB_SETTING(bool, StripEnabled, false)

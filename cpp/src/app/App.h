@@ -17,6 +17,7 @@
 #include "features/tone/SmartLayer.h"
 #include "features/tone/ToneLab.h"
 #include "features/update/Updater.h"
+#include "platform/NightLight.h"
 #include "platform/ForegroundApp.h"
 #include <windows.h>
 #include <chrono>
@@ -75,6 +76,12 @@ public:
     void SetHardwareBrightness(bool on, std::function<void()> done);
     const std::wstring& BacklightStatus() const { return backlightStatus; }
     float WarmthNow() const;           // the blue light filter in effect now (0..1), for things drawn to match it
+
+    // ---- Windows Night light (AppScreen.cpp) ----
+    const NightLight::State& NightLightState() const { return nightLight; }
+    bool FollowsNightLight() const;    // the night schedule runs on Night light's (it has one, and sync is on)
+    bool NightLightWarming() const;    // Night light is on now, so BlinkBuddy's blue light filter rests
+    Settings Scheduled() const;        // the settings with the night schedule as it actually runs
 
     // ---- Tone (AppScreen.cpp) ----
     void SetToneMode(int mode);        // an engine chosen (clears the engines' failures)
@@ -137,6 +144,7 @@ private:
     static constexpr UINT LabOpenMessage = WM_APP + 10;       // the tone lab opens in the settings' place
     static constexpr UINT LabClosedMessage = WM_APP + 11;     // ... and closed: settings back as they were
     static constexpr UINT UpdateMessage = WM_APP + 12;        // from the updater (lParam: Updater::Result*)
+    static constexpr UINT NightLightMessage = WM_APP + 13;    // Night light changed (wParam: which of its keys)
 
     static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM w, LPARAM l);
     LRESULT Handle(UINT message, WPARAM w, LPARAM l);
@@ -223,6 +231,11 @@ private:
     UpdateState update;
     bool quietCheck = false;           // the check running is the weekly one
     int hourTick = 0;
+
+    // Windows Night light.
+    void NightLightChanged(int key);   // key -1: a look now and then (it may have been set up since)
+    NightLight::State nightLight;
+    NightLight::Watcher nightWatch;
 
     std::unique_ptr<SettingsWindow> settingsWindow;   // while open
 
