@@ -88,7 +88,12 @@ try {
     $s = [UiCheck]::GetDpiForWindow($h) / 96.0
     # The panel (every card: a diagnostic copy shows them all), then Options, behind the cog by the title bar.
     for ($t = 0; $t -lt 2; $t++) {
-        if ($t -eq 1) { Click $h ([int](400 * $s)) ([int](27 * $s)); Start-Sleep -Milliseconds 300 }
+        if ($t -eq 1) {
+            Click $h ([int](400 * $s)) ([int](27 * $s))
+            # (then the pointer onto an empty part of the bar: the cog isn't left drawn as hovered, or not, by chance)
+            [UiCheck]::PostMessage($h, 0x200, [IntPtr]0, (L ([int](250 * $s)) ([int](27 * $s)))) | Out-Null
+            Start-Sleep -Milliseconds 300
+        }
         # Scrolled through to the end of the page: a scroll that changes nothing means the end was reached.
         $previous = $null
         for ($part = 0; $part -lt 20; $part++) {
