@@ -27,7 +27,6 @@ Screen::Screen(Settings& settings, HWND window, Messages messages, Hooks hooks)
         s.LutConfirmedBuild = build;   // no new check needed until Windows changes
         this->hooks.changed(false);
     };
-    tone.ClearLeftover();
     nightLight = NightLight::Read();
 }
 

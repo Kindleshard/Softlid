@@ -14,6 +14,7 @@ void App::RegisterHotkeys()
 {
     hotkeyFailed = 0;
     stripKeysOn = settings.StripEnabled && !settings.StripFollow;
+    if (offscreen) return;   // (a diagnostic copy leaves the shortcuts to the real one)
     for (int id = 1; id <= Hotkeys::Count; id++) {
         UnregisterHotKey(window, id);
         if (Hotkeys::IsStripMove(id) && !stripKeysOn) continue;

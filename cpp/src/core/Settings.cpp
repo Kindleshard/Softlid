@@ -36,7 +36,13 @@ int Fit(int v, int lo, int hi) { return std::clamp(v, lo, hi); }
 
 } // namespace
 
-text Settings::FilePath() { return RoamingAppData() + L"\\BlinkBuddy\\settings.ini"; }
+namespace {
+text fileOverride;   // (diagnostics: --settings)
+}
+
+void Settings::UseFile(const text& path) { fileOverride = path; }
+
+text Settings::FilePath() { return fileOverride.empty() ? RoamingAppData() + L"\\BlinkBuddy\\settings.ini" : fileOverride; }
 
 Settings Settings::Load()
 {

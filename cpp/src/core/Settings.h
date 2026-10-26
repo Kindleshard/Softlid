@@ -27,6 +27,7 @@ struct Settings {
     static Settings FromText(std::wstring_view file);
     text ToText() const;
     static text FilePath();   // %AppData%\BlinkBuddy\settings.ini
+    static void UseFile(const text& path);   // diagnostics: another file instead (--settings)
 
 private:
     void Clamp();

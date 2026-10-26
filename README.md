@@ -47,6 +47,11 @@ powershell -ExecutionPolicy Bypass -File cpp/build.ps1
 
 `build.ps1` puts `BlinkBuddy.exe` and its `voice` folder in `cpp/bin/`. It also builds and runs the tests (`cpp/tests`: the core logic, the tone pipeline's decisions, settings, shortcuts and the Night light reader); a failing test stops the build.
 
+To check that a change leaves the settings window looking exactly as before, `cpp/tools/ui-check.ps1 -Update` saves a
+baseline of all 35 views (every tab, scrolled through) and `cpp/tools/ui-check.ps1` compares against it, pixel by
+pixel. It runs a diagnostic copy (`--offscreen --settings <file>`) beside a running BlinkBuddy, with settings of its
+own, so nothing of yours is touched.
+
 ```bash
 powershell -ExecutionPolicy Bypass -File cpp/release.ps1
 ```

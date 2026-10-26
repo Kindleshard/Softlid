@@ -106,11 +106,20 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
     // Just updated: the old copy is still quitting (it holds the single-copy lock until then).
     bb::Updater::AfterUpdate(commandLine);
 
+    // Diagnostics: "--offscreen" runs a copy beside the real one, for screenshots (tools/ui-check.ps1): no single-copy
+    // lock, no tray icon, no shortcuts, and with "--settings <file>" a settings file of its own.
+    bool offscreen = std::wcsstr(commandLine, L"--offscreen") != nullptr;
+    if (int count = 0; LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &count)) {
+        for (int i = 1; i + 1 < count; i++)
+            if (std::wcscmp(args[i], L"--settings") == 0) bb::Settings::UseFile(args[i + 1]);
+        LocalFree(args);
+    }
+
     // One copy at a time: a second start asks the running one to show its settings and leaves. (The same names as
     // the C# version, so the two never run side by side.)
-    HANDLE single = CreateMutexW(nullptr, TRUE, L"Local\\BlinkBuddy.Instance");
-    bool first = GetLastError() != ERROR_ALREADY_EXISTS;
-    HANDLE showRequest = CreateEventW(nullptr, FALSE, FALSE, L"Local\\BlinkBuddy.Show");
+    HANDLE single = offscreen ? nullptr : CreateMutexW(nullptr, TRUE, L"Local\\BlinkBuddy.Instance");
+    bool first = offscreen || GetLastError() != ERROR_ALREADY_EXISTS;
+    HANDLE showRequest = CreateEventW(nullptr, FALSE, FALSE, offscreen ? nullptr : L"Local\\BlinkBuddy.Show");
     if (!first) {
         AllowSetForegroundWindow(ASFW_ANY);
         SetEvent(showRequest);
@@ -124,12 +133,14 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
     {
         // "--tray": start quietly (as at sign-in); otherwise the settings open. ("--offscreen": diagnostics, see App.)
         bool openSettings = std::wcsstr(commandLine, L"--tray") == nullptr;
-        bb::App app(instance, showRequest, openSettings, std::wcsstr(commandLine, L"--offscreen") != nullptr);
+        bb::App app(instance, showRequest, openSettings, offscreen);
         code = app.Run();
     }
     CoUninitialize();
     CloseHandle(showRequest);
-    ReleaseMutex(single);
-    CloseHandle(single);
+    if (single) {
+        ReleaseMutex(single);
+        CloseHandle(single);
+    }
     return code;
 }

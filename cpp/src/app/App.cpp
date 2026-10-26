@@ -53,7 +53,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
 
     LoadIconWithScaleDown(instance, MAKEINTRESOURCEW(IDI_APP), GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), &icon);
     LoadIconWithScaleDown(instance, MAKEINTRESOURCEW(IDI_APP), GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), &bigIcon);
-    tray.Add(window, icon, L"BlinkBuddy");
+    if (!offscreen) tray.Add(window, icon, L"BlinkBuddy");   // (a diagnostic copy stays out of the tray)
     taskbarCreated = RegisterWindowMessageW(L"TaskbarCreated");
 
     KeepAwake::Set(settings.KeepAwake);
@@ -66,6 +66,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
             [this] { if (settingsWindow) settingsWindow->SyncFromApp(); },
             [this] { if (settingsWindow) settingsWindow->RefreshStatus(); },
         });
+    if (!offscreen) screen->ClearLeftover();   // (a diagnostic copy beside the real one must not undo its curve)
     ApplyScreen();
     if (settings.HardwareBrightness) {
         probing = Probe::Refresh;

@@ -42,6 +42,7 @@ public:
     void Apply();          // the pipeline only (the app's ApplyScreen calls it)
     void Reset();          // after a display change or unlocking: everything set up again on the next Apply
     void Stop();           // every engine off, the screen plain
+    void ClearLeftover() { tone.ClearLeftover(); }   // at start: a gamma curve a crash left behind (not in a diagnostic copy)
     void Tick();           // each second
     const Settings& Shown() const { return shown; }   // what the screen shows: the settings, or a rule's mode
 
