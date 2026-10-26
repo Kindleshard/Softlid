@@ -1,4 +1,5 @@
 #include "features/tone/Grain.h"
+#include "platform/Memory.h"
 #include "ui/PixelSurface.h"
 #include <algorithm>
 #include <cmath>
@@ -97,8 +98,7 @@ void Grain::Build()
         return TRUE;
     }, reinterpret_cast<LPARAM>(&screens));
     for (const RECT& r : screens) sheets.push_back(std::make_unique<Sheet>(r, block, maxAlpha, tone, random()));
-    // The noise now lives in the compositor; give back the memory used to draw it.
-    SetProcessWorkingSetSize(GetCurrentProcess(), static_cast<SIZE_T>(-1), static_cast<SIZE_T>(-1));
+    TrimMemory();   // the noise now lives in the compositor: give back the memory used to draw it
 }
 
 void Grain::Close() { sheets.clear(); }

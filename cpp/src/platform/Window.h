@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include <memory>
 
 namespace bb {
 
@@ -33,5 +34,15 @@ constexpr DWORD PopupExStyle = WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_NOACTIVA
 
 // Shows a window on top without activating it.
 void ShowOnTop(HWND window);
+
+// Hands an object to a window's thread with a posted message (from a worker thread, say): the receiver takes it with
+// TakePosted and owns it from then on. If the post fails (the window is gone), the object is deleted here.
+template <typename T> void PostOwned(HWND window, UINT message, WPARAM w, T value)
+{
+    auto* heap = new T(std::move(value));
+    if (!PostMessageW(window, message, w, reinterpret_cast<LPARAM>(heap))) delete heap;
+}
+
+template <typename T> std::unique_ptr<T> TakePosted(LPARAM l) { return std::unique_ptr<T>(reinterpret_cast<T*>(l)); }
 
 } // namespace bb

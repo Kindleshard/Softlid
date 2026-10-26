@@ -8,6 +8,7 @@
 #include "platform/Activity.h"
 #include "platform/DarkMode.h"
 #include "platform/KeepAwake.h"
+#include "platform/Memory.h"
 #include "platform/Location.h"
 #include "platform/Text.h"
 #include "ui/Theme.h"
@@ -39,9 +40,6 @@ std::wstring MinSec(int seconds)
     swprintf_s(text, L"%d:%02d", seconds / 60, seconds % 60);
     return text;
 }
-
-// Gives memory pages back to Windows after a break (the next one is a while away).
-void TrimMemory() { SetProcessWorkingSetSize(GetCurrentProcess(), static_cast<SIZE_T>(-1), static_cast<SIZE_T>(-1)); }
 
 } // namespace
 
@@ -166,7 +164,7 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         CheckRules();
         return 0;
     case LocatedMessage: {
-        std::unique_ptr<Location::Fix> fix(reinterpret_cast<Location::Fix*>(l));
+        auto fix = TakePosted<Location::Fix>(l);
         Located(fix->lat, fix->lon, fix->ok);
         return 0;
     }
@@ -194,7 +192,7 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         lab->Start(bigIcon);
         return 0;
     case UpdateMessage: {
-        std::unique_ptr<Updater::Result> result(reinterpret_cast<Updater::Result*>(l));
+        auto result = TakePosted<Updater::Result>(l);
         Updated(*result);
         return 0;
     }

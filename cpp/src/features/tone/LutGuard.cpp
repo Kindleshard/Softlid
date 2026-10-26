@@ -24,9 +24,6 @@ constexpr wchar_t WakeEventName[] = L"Local\\BlinkBuddy.LutWake";
 std::wstring StatusFile() { return RoamingAppData() + L"\\BlinkBuddy\\lut-guard.status"; }
 std::wstring CommandFile() { return RoamingAppData() + L"\\BlinkBuddy\\lut-guard.command"; }
 
-void WriteText(const std::wstring& path, const std::wstring& text) { WriteAllBytesSafely(path, ToUtf8(text)); }
-std::wstring ReadText(const std::wstring& path) { return FromUtf8(ReadAllBytes(path).value_or("")); }
-
 // The processes running a program, by its file name without ".exe" (any letter case).
 std::vector<DWORD> ProcessesNamed(const std::wstring& name)
 {
@@ -283,7 +280,7 @@ private:
     void OnCommand()
     {
         if (done) return;
-        std::wstring text = Trim(ReadText(CommandFile()));
+        std::wstring text = Trim(ReadAllText(CommandFile()));
         size_t space = text.find(L' ');
         if (space == std::wstring::npos) return;
         int seq = _wtoi(text.c_str() + space + 1);
@@ -329,7 +326,7 @@ private:
 
     static void Write(const std::wstring& state, const std::wstring& message, const std::wstring& extra = L"")
     {
-        WriteText(StatusFile(), state + L"|" + message + (extra.empty() ? L"" : L"|" + extra));
+        WriteAllText(StatusFile(), state + L"|" + message + (extra.empty() ? L"" : L"|" + extra));
     }
 
     LRESULT OnMessage(UINT message, WPARAM w, LPARAM l) override
@@ -403,14 +400,13 @@ void LutGuard::Ensure(const Settings& s, bool forceTrial)
     DeleteFileW(StatusFile().c_str());
     DeleteFileW(CommandFile().c_str());
     statusSeen = {};
-    wchar_t exe[MAX_PATH];
-    GetModuleFileNameW(nullptr, exe, MAX_PATH);
     std::wstring args = L"--lut-guard \"" + s.LutPath + L"\" " + (trial ? L"1 " : L"0 ") + std::to_wstring(GetCurrentProcessId()) + L" \"" +
                         LutFiles::CubePath() + L"\"";
+    std::wstring exe = ExePath();
     SHELLEXECUTEINFOW sei{sizeof sei};
     sei.fMask = SEE_MASK_NOCLOSEPROCESS;
     sei.lpVerb = L"runas";
-    sei.lpFile = exe;
+    sei.lpFile = exe.c_str();
     sei.lpParameters = args.c_str();
     sei.nShow = SW_HIDE;
     if (!ShellExecuteExW(&sei)) {
@@ -453,7 +449,7 @@ void LutGuard::ReadStatus()
     WIN32_FILE_ATTRIBUTE_DATA info{};
     if (!GetFileAttributesExW(StatusFile().c_str(), GetFileExInfoStandard, &info) || CompareFileTime(&info.ftLastWriteTime, &statusSeen) <= 0) return;
     statusSeen = info.ftLastWriteTime;
-    std::wstring text = Trim(ReadText(StatusFile()));
+    std::wstring text = Trim(ReadAllText(StatusFile()));
     size_t a = text.find(L'|');
     if (a == std::wstring::npos) return;
     size_t b = text.find(L'|', a + 1);

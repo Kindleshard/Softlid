@@ -2,6 +2,8 @@
 // for (language, accent, view, starting with Windows, resetting everything, updates).
 #include "app/App.h"
 #include "core/Lang.h"
+#include "platform/Files.h"
+#include "platform/Memory.h"
 #include <cstdio>
 #include "ui/Theme.h"
 
@@ -9,12 +11,6 @@ namespace bb {
 namespace {
 
 constexpr wchar_t RunKey[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-
-void TrimMemory()
-{
-    HeapCompact(GetProcessHeap(), 0);   // free blocks at the heap's end go back to Windows
-    SetProcessWorkingSetSize(GetCurrentProcess(), static_cast<SIZE_T>(-1), static_cast<SIZE_T>(-1));
-}
 
 } // namespace
 
@@ -120,9 +116,7 @@ void App::SetRunAtStartup(bool on)
     HKEY key;
     if (RegCreateKeyExW(HKEY_CURRENT_USER, RunKey, 0, nullptr, 0, KEY_SET_VALUE, nullptr, &key, nullptr) != ERROR_SUCCESS) return;
     if (on) {
-        wchar_t path[MAX_PATH];
-        GetModuleFileNameW(nullptr, path, MAX_PATH);
-        std::wstring command = L"\"" + std::wstring(path) + L"\" --tray";
+        std::wstring command = L"\"" + ExePath() + L"\" --tray";
         RegSetValueExW(key, L"BlinkBuddy", 0, REG_SZ, reinterpret_cast<const BYTE*>(command.c_str()),
                        static_cast<DWORD>((command.size() + 1) * sizeof(wchar_t)));
     } else {

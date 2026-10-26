@@ -1,4 +1,5 @@
 #include "platform/Location.h"
+#include "platform/Window.h"
 #include <winrt/Windows.Devices.Geolocation.h>
 #include <winrt/Windows.Foundation.h>
 #include <cmath>
@@ -28,9 +29,9 @@ DWORD WINAPI Work(void* param)
 {
     Request request = *static_cast<Request*>(param);
     delete static_cast<Request*>(param);
-    auto* fix = new Fix{false, 0, 0};
+    Fix fix{false, 0, 0};
     if (!LocationAllowed()) {
-        if (!PostMessageW(request.window, request.message, 0, reinterpret_cast<LPARAM>(fix))) delete fix;
+        PostOwned(request.window, request.message, 0, fix);
         return 0;
     }
     try {
@@ -40,14 +41,14 @@ DWORD WINAPI Work(void* param)
         locator.DesiredAccuracy(PositionAccuracy::Default);
         using std::chrono::minutes, std::chrono::seconds;   // (an answer up to an hour old will do; wait 45 s at most)
         BasicGeoposition at = locator.GetGeopositionAsync(minutes(60), seconds(45)).get().Coordinate().Point().Position();
-        fix->lat = std::round(at.Latitude * 100) / 100;
-        fix->lon = std::round(at.Longitude * 100) / 100;
-        fix->ok = true;
+        fix.lat = std::round(at.Latitude * 100) / 100;
+        fix.lon = std::round(at.Longitude * 100) / 100;
+        fix.ok = true;
     } catch (...) {
         // Location off, denied, or no answer: the time zone's city stands in.
     }
     winrt::uninit_apartment();
-    if (!PostMessageW(request.window, request.message, 0, reinterpret_cast<LPARAM>(fix))) delete fix;
+    PostOwned(request.window, request.message, 0, fix);
     return 0;
 }
 
@@ -60,7 +61,7 @@ void Locate(HWND window, UINT message)
     if (thread) CloseHandle(thread);
     else {
         delete request;
-        PostMessageW(window, message, 0, reinterpret_cast<LPARAM>(new Fix{false, 0, 0}));
+        PostOwned(window, message, 0, Fix{false, 0, 0});
     }
 }
 

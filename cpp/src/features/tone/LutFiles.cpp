@@ -2,6 +2,7 @@
 #include "core/ToneCurve.h"
 #include "platform/Files.h"
 #include "platform/Text.h"
+#include "platform/Window.h"
 #include <shlobj.h>
 #include <urlmon.h>
 #include <regex>
@@ -14,14 +15,6 @@ namespace bb::LutFiles {
 namespace {
 
 constexpr wchar_t Releases[] = L"https://api.github.com/repos/sup3rflyer/DesktopLUT/releases/latest";
-
-void Post(HWND window, UINT message, WPARAM kind, const std::wstring& text)
-{
-    auto* line = new std::wstring(text);
-    if (!PostMessageW(window, message, kind, reinterpret_cast<LPARAM>(line))) delete line;
-}
-
-std::string ReadText(const std::wstring& path) { return ReadAllBytes(path).value_or(""); }
 
 // Runs a program and waits for it (hidden); true if it ran and ended with 0.
 bool RunHidden(std::wstring command)
@@ -41,28 +34,26 @@ bool RunHidden(std::wstring command)
 
 void InstallNow(HWND window, UINT message)
 {
-    wchar_t temp[MAX_PATH];
-    GetTempPathW(MAX_PATH, temp);
-    std::wstring json = std::wstring(temp) + L"BlinkBuddy-DesktopLUT.json", zip = std::wstring(temp) + L"BlinkBuddy-DesktopLUT.zip";
+    std::wstring json = TempFolder() + L"BlinkBuddy-DesktopLUT.json", zip = TempFolder() + L"BlinkBuddy-DesktopLUT.zip";
     auto fail = [&](const std::wstring& why) {
         DeleteFileW(json.c_str());
         DeleteFileW(zip.c_str());
-        Post(window, message, 2, why);
+        PostOwned<std::wstring>(window, message, 2, why);
     };
-    Post(window, message, 0, L"Looking up the latest DesktopLUT release...");
+    PostOwned<std::wstring>(window, message, 0, L"Looking up the latest DesktopLUT release...");
     if (FAILED(URLDownloadToFileW(nullptr, Releases, json.c_str(), 0, nullptr)))
         return fail(L"Couldn't reach GitHub. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
-    std::string text = ReadText(json);
+    std::string text = ReadAllBytes(json).value_or("");
     std::smatch url, tag;
     if (!std::regex_search(text, url, std::regex("\"browser_download_url\"\\s*:\\s*\"([^\"]+\\.zip)\"")))
         return fail(L"The latest release has no download BlinkBuddy recognises. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
     std::wstring version = std::regex_search(text, tag, std::regex("\"tag_name\"\\s*:\\s*\"([^\"]+)\"")) ? FromUtf8(tag[1].str()) : L"latest";
-    Post(window, message, 0, L"Downloading DesktopLUT " + version + L"...");
+    PostOwned<std::wstring>(window, message, 0, L"Downloading DesktopLUT " + version + L"...");
     if (FAILED(URLDownloadToFileW(nullptr, FromUtf8(url[1].str()).c_str(), zip.c_str(), 0, nullptr)))
         return fail(L"The download didn't finish. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
 
     // Unpacking: only the program itself, with the tar that comes with Windows (it reads zip files).
-    Post(window, message, 0, L"Unpacking...");
+    PostOwned<std::wstring>(window, message, 0, L"Unpacking...");
     std::wstring folder = Folder();
     SHCreateDirectoryExW(nullptr, folder.c_str(), nullptr);
     wchar_t system[MAX_PATH];
@@ -78,9 +69,9 @@ void InstallNow(HWND window, UINT message)
     DeleteFileW(zip.c_str());
     if (GetFileAttributesW((folder + L"\\DesktopLUT.exe").c_str()) == INVALID_FILE_ATTRIBUTES ||
         GetFileAttributesW((folder + L"\\DwmHook.dll").c_str()) == INVALID_FILE_ATTRIBUTES)
-        return Post(window, message, 2,
+        return PostOwned<std::wstring>(window, message, 2,
                     L"The download didn't contain DesktopLUT.exe and DwmHook.dll at its top. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
-    Post(window, message, 1, L"DesktopLUT " + version + L" is set up.");
+    PostOwned<std::wstring>(window, message, 1, L"DesktopLUT " + version + L" is set up.");
 }
 
 } // namespace

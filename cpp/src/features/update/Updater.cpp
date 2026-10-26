@@ -3,6 +3,7 @@
 #include "core/Version.h"
 #include "platform/Files.h"
 #include "platform/Text.h"
+#include "platform/Window.h"
 #include <urlmon.h>
 #include <cstdio>
 #include <regex>
@@ -14,11 +15,7 @@
 namespace bb::Updater {
 namespace {
 
-void Post(HWND window, UINT message, Result r)
-{
-    auto* heap = new Result(std::move(r));
-    if (!PostMessageW(window, message, 0, reinterpret_cast<LPARAM>(heap))) delete heap;
-}
+void Post(HWND window, UINT message, Result r) { PostOwned(window, message, 0, std::move(r)); }
 
 Result Note(Result::Kind kind, std::wstring text)
 {
@@ -65,20 +62,6 @@ private:
     void* context;
 };
 
-std::wstring ExePath()
-{
-    wchar_t path[MAX_PATH];
-    GetModuleFileNameW(nullptr, path, MAX_PATH);
-    return path;
-}
-
-std::wstring TempFile(const wchar_t* name)
-{
-    wchar_t temp[MAX_PATH];
-    GetTempPathW(MAX_PATH, temp);
-    return std::wstring(temp) + name;
-}
-
 // "1.2.10-beta" -> {1, 2, 10}; false if it doesn't start with a number.
 bool ParseVersion(const std::wstring& text, int (&out)[3])
 {
@@ -115,7 +98,7 @@ std::wstring Mb(ULONG bytes)
 
 void CheckNow(HWND window, UINT message)
 {
-    std::wstring json = TempFile(L"BlinkBuddy-release.json");
+    std::wstring json = TempFolder() + L"BlinkBuddy-release.json";
     Fetch fetch;
     std::wstring url = L"https://api.github.com/repos/" + std::wstring(ReleaseRepo) + L"/releases/latest";
     HRESULT hr = URLDownloadToFileW(nullptr, url.c_str(), json.c_str(), 0, &fetch);

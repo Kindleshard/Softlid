@@ -1,4 +1,5 @@
 #include "platform/Files.h"
+#include "platform/Text.h"
 #include <windows.h>
 #include <shlobj.h>
 
@@ -44,12 +45,28 @@ std::wstring RoamingAppData()
     return out;
 }
 
-std::wstring ExeFolder()
+std::wstring ReadAllText(const std::wstring& path) { return FromUtf8(ReadAllBytes(path).value_or("")); }
+
+bool WriteAllText(const std::wstring& path, std::wstring_view text) { return WriteAllBytesSafely(path, ToUtf8(text)); }
+
+std::wstring ExePath()
 {
     wchar_t path[MAX_PATH * 2];
     DWORD n = GetModuleFileNameW(nullptr, path, static_cast<DWORD>(std::size(path)));
-    std::wstring out(path, n);
-    return out.substr(0, out.find_last_of(L'\\'));
+    return std::wstring(path, n);
+}
+
+std::wstring ExeFolder()
+{
+    std::wstring path = ExePath();
+    return path.substr(0, path.find_last_of(L'\\'));
+}
+
+std::wstring TempFolder()
+{
+    wchar_t path[MAX_PATH + 1];
+    DWORD n = GetTempPathW(static_cast<DWORD>(std::size(path)), path);
+    return std::wstring(path, n);
 }
 
 } // namespace bb

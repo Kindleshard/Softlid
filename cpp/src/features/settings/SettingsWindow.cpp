@@ -168,7 +168,7 @@ LRESULT SettingsWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
         return 0;
     }
     case LutInstallMessage: {
-        std::unique_ptr<std::wstring> text(reinterpret_cast<std::wstring*>(l));
+        auto text = TakePosted<std::wstring>(l);
         LutInstallProgress(static_cast<int>(w), *text);
         return 0;
     }
