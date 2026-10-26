@@ -34,7 +34,11 @@ COLORREF Gdi(int argb) { return RGB((argb >> 16) & 0xFF, (argb >> 8) & 0xFF, arg
 
 } // namespace
 
-DirectWindow::DirectWindow() { root.window = this; }
+DirectWindow::DirectWindow()
+{
+    root.window = this;
+    Fonts::WindowOpened();
+}
 
 DirectWindow::~DirectWindow()
 {
@@ -43,6 +47,7 @@ DirectWindow::~DirectWindow()
     if (hwnd) for (Control* c : timers) KillTimer(hwnd, reinterpret_cast<UINT_PTR>(c));
     ReleaseGraphics();
     if (editBrush) DeleteObject(editBrush);
+    Fonts::WindowClosed();   // (its controls are gone: fonts released meanwhile can go too)
 }
 
 void DirectWindow::Open(float w, float h, const POINT* at, const Options& opts)

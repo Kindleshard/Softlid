@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <map>
 #include <tuple>
+#include <vector>
 
 namespace bb::ui {
 namespace {
@@ -28,6 +29,15 @@ std::map<std::tuple<int, int, bool>, ComPtr<IDWriteTextFormat>>& Cache()
     return cache;
 }
 
+// Fonts released while a window still uses them (labels keep their font), kept until the last window has gone.
+std::vector<ComPtr<IDWriteTextFormat>>& Retired()
+{
+    static std::vector<ComPtr<IDWriteTextFormat>> retired;
+    return retired;
+}
+
+int windows = 0;   // DirectWindows alive
+
 IDWriteTextFormat* Cached(float points, gfx::Weight weight, bool glyphs)
 {
     auto key = std::make_tuple(static_cast<int>(points * 100), static_cast<int>(weight), glyphs);
@@ -51,7 +61,19 @@ IDWriteTextFormat* Fonts::Small() { return Cached(8.75f, gfx::Weight::Normal, fa
 IDWriteTextFormat* Fonts::Heading() { return Cached(11.5f, gfx::Weight::Semibold, false); }
 IDWriteTextFormat* Fonts::Get(float points, gfx::Weight weight) { return Cached(points, weight, false); }
 IDWriteTextFormat* Fonts::Glyphs(float points) { return Cached(points, gfx::Weight::Normal, true); }
-void Fonts::Release() { Cache().clear(); }
+void Fonts::Release()
+{
+    for (auto& [key, font] : Cache()) Retired().push_back(std::move(font));
+    Cache().clear();
+    if (windows == 0) Retired().clear();
+}
+
+void Fonts::WindowOpened() { windows++; }
+
+void Fonts::WindowClosed()
+{
+    if (--windows == 0) Retired().clear();
+}
 
 Canvas::Canvas(ID2D1RenderTarget* target) : target(target)
 {

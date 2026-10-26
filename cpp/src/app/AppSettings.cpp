@@ -43,7 +43,7 @@ void App::SettingsClosed()
 {
     probeDone = nullptr;
     settingsWindow.reset();   // (allowed from its own onClosed)
-    if (!lab) ui::Fonts::Release();   // (the tone lab may still be using them)
+    ui::Fonts::Release();
     if (dirty) {
         dirty = false;
         settings.Save();

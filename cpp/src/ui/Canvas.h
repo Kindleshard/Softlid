@@ -11,7 +11,10 @@ IDWriteTextFormat* Small();     // 8.75
 IDWriteTextFormat* Heading();   // semibold 11.5
 IDWriteTextFormat* Get(float points, gfx::Weight weight = gfx::Weight::Normal);
 IDWriteTextFormat* Glyphs(float points = 10);   // Segoe Fluent Icons (Windows 11) or Segoe MDL2 Assets (Windows 10)
-void Release();                 // when the last window closes (they come back on next use)
+void Release();                 // to give the memory back (they come back on next use); a window still open keeps
+                                // the ones it uses until it closes, so its labels never point at a freed font
+void WindowOpened();            // (DirectWindow keeps count)
+void WindowClosed();
 } // namespace Fonts
 
 enum class HAlign { Left, Center, Right };

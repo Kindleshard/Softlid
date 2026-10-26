@@ -123,10 +123,11 @@ int State::Strength() const { return std::clamp(static_cast<int>(std::lround((65
 
 int BlueFor(int kelvin) { return std::clamp(static_cast<int>(std::lround((6500 - kelvin) / 46.0)), 0, 100); }
 
-State Read()
+State Read() { return Parse(ReadData(Keys[1]), ReadData(Keys[0])); }
+
+State Parse(const std::vector<uint8_t>& settings, const std::vector<uint8_t>& state)
 {
     State s;
-    std::vector<uint8_t> settings = ReadData(Keys[1]), state = ReadData(Keys[0]);
     size_t at = Fields(settings);
     if (!at) return s;
     Reader r(settings, at);
@@ -136,11 +137,13 @@ State Read()
     bool sunsetMode = true;
     while (r.Field(type, id)) {
         if (type == 10) {
+            if (id != 20 && id != 30 && id != 50 && id != 60) {
+                r.Skip(type);   // (something newer: not used)
+                continue;
+            }
             int time = r.Time();
-            if (id == 20) s.from = time;
-            else if (id == 30) s.to = time;
-            else if (id == 50) s.sunset = time;
-            else if (id == 60) s.sunrise = time;
+            if (time < 0) return State{};   // a time that isn't one: the value isn't what it seems
+            (id == 20 ? s.from : id == 30 ? s.to : id == 50 ? s.sunset : s.sunrise) = time;
         } else if (!r.Number(type, v)) {
             break;
         } else if (id == 0) s.scheduled = v != 0;

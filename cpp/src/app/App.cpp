@@ -221,7 +221,7 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         if (!settingsWindow) return 0;
         POINT at = settingsWindow->Position();
         settingsWindow.reset();
-        if (!lab) ui::Fonts::Release();   // (the language may need another font)
+        ui::Fonts::Release();   // (the language may need another font)
         ShowSettings(&at, w != 0);
         return 0;
     }
