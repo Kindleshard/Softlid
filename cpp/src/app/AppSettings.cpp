@@ -38,13 +38,15 @@ void App::ShowSettings(const POINT* at, bool optionsPage)
 void App::SettingsClosed()
 {
     probeDone = nullptr;
-    settingsWindow.reset();   // (allowed from its own onClosed)
-    ui::Fonts::Release();
     if (dirty) {
         dirty = false;
         settings.Save();
     }
-    TrimMemory();
+    // (This runs inside the window's own closing: it is freed once that is over, and then its memory goes back.)
+    DeleteLater(std::move(settingsWindow), [] {
+        ui::Fonts::Release();
+        TrimMemory();
+    });
 }
 
 void App::Rebuild(bool optionsPage) { PostMessageW(window, RebuildMessage, optionsPage, 0); }

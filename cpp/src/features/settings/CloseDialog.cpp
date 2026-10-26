@@ -35,7 +35,7 @@ public:
             auto done = this->answer;
             int c = choice;
             bool keep = remember->On() && c != 0;
-            delete this;
+            DeleteLater(this);
             done(c, keep);
         };
     }

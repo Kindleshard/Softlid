@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include <functional>
 #include <memory>
 
 namespace bb {
@@ -44,5 +45,19 @@ template <typename T> void PostOwned(HWND window, UINT message, WPARAM w, T valu
 }
 
 template <typename T> std::unique_ptr<T> TakePosted(LPARAM l) { return std::unique_ptr<T>(reinterpret_cast<T*>(l)); }
+
+// Deletes an object once the message being handled is over, then runs `after` (if given). For a window that is done:
+// its onClosed runs inside its own message handling, where deleting it at once would pull the object out from under
+// the code still running in it. (On the UI thread only.)
+void DeleteLater(std::shared_ptr<void> object, std::function<void()> after = {});
+template <typename T> void DeleteLater(std::unique_ptr<T> object, std::function<void()> after = {})
+{
+    DeleteLater(std::shared_ptr<void>(std::move(object)), std::move(after));
+}
+template <typename T> void DeleteLater(T* object, std::function<void()> after = {})
+{
+    DeleteLater(std::unique_ptr<T>(object), std::move(after));
+}
+void DeleteLaterNow();   // what is still waiting, now (at exit, when no more messages come)
 
 } // namespace bb

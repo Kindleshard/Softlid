@@ -93,6 +93,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
 
 App::~App()
 {
+    DeleteLaterNow();   // (windows closed just before exit)
     settingsWindow.reset();
     mini.reset();
     strip.reset();
@@ -188,7 +189,13 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         if (settingsWindow) settingsWindow->Close();   // (its onClosed tidies up)
         LabBegin();
         lab = std::make_unique<ToneLab>(*this);
-        lab->onClosed = [this] { PostMessageW(window, LabClosedMessage, 0, 0); };
+        lab->onClosed = [this] {   // settings back as they were, and the settings window again if it was open
+            DeleteLater(std::move(lab), [this] {
+                LabEnd();
+                if (labReopen) ShowSettings();
+                else TrimMemory();
+            });
+        };
         lab->Start(bigIcon);
         return 0;
     case UpdateMessage: {
@@ -196,12 +203,6 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         Updated(*result);
         return 0;
     }
-    case LabClosedMessage:
-        lab.reset();
-        LabEnd();
-        if (labReopen) ShowSettings();
-        else TrimMemory();
-        return 0;
     case WM_INPUT:
         if (strip) strip->MouseMoved();   // the mouse moved: the reading strip follows
         break;                             // (Windows tidies up the input after)

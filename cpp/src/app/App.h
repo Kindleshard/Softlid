@@ -139,7 +139,6 @@ private:
     static constexpr UINT LeaveMiniMessage = WM_APP + 8;      // mini mode closes and the settings open
     static constexpr UINT ToneFailedMessage = WM_APP + 9;     // a Smart engine gave up: the standard curve takes over
     static constexpr UINT LabOpenMessage = WM_APP + 10;       // the tone lab opens in the settings' place
-    static constexpr UINT LabClosedMessage = WM_APP + 11;     // ... and closed: settings back as they were
     static constexpr UINT UpdateMessage = WM_APP + 12;        // from the updater (lParam: Updater::Result*)
 
     static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM w, LPARAM l);

@@ -32,7 +32,7 @@ public:
     void Open(float w, float h, const POINT* at, const Options& options);
     void Show(bool activate = true);
     void Close();                         // as if closed by its X: Closed() runs, then the window is destroyed
-    std::function<void()> onClosed;       // after the window is gone (may delete this object)
+    std::function<void()> onClosed;       // after the window is gone (to free this object from here: DeleteLater)
 
     Container& Root() { return root; }
     float Scale() const { return dpi / 96.0f; }

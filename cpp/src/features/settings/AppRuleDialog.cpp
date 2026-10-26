@@ -83,7 +83,7 @@ public:
         add->SetBounds(316, 490, 104, 34);
         add->onClick = [this] { if (add->Enabled()) Done(); };
         Check();
-        onClosed = [this] { delete this; };
+        onClosed = [this] { DeleteLater(this); };
     }
 
     // The apps open now (listed once the window knows its scale, for the icons).

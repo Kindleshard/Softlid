@@ -83,7 +83,7 @@ public:
         close.onClick = [this] { Close(); };
         onClosed = [this] {
             this->app.RegisterHotkeys();   // back on, as now set
-            delete this;
+            DeleteLater(this);
         };
         Refresh();
     }
