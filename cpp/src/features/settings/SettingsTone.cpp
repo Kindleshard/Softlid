@@ -3,7 +3,7 @@
 // engine; Custom (the three curve sliders) exists only for Standard. The Simple view offers Standard at Gentle to
 // Strong, without the curve.
 #include "features/settings/SettingsWindow.h"
-#include "app/App.h"
+#include "features/settings/SettingsHost.h"
 #include "core/Lang.h"
 #include "core/ToneCurve.h"
 #include "features/tone/LutFiles.h"

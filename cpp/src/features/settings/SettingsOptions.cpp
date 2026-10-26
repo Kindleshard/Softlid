@@ -1,6 +1,6 @@
 // The Options page (the cog): BlinkBuddy itself, mini mode and updates.
 #include "features/settings/SettingsWindow.h"
-#include "app/App.h"
+#include "features/settings/SettingsHost.h"
 #include "core/Lang.h"
 #include "core/Version.h"
 #include "features/settings/ShortcutsDialog.h"
@@ -204,8 +204,8 @@ void SettingsWindow::BuildUpdates(Stack& st)
 // The update line following the app's state (each second, and whenever the updater reports).
 void SettingsWindow::RefreshUpdates()
 {
-    using Look = App::UpdateState::Look;
-    const App::UpdateState& u = app.Update();
+    using Look = Updater::State::Look;
+    const Updater::State& u = app.Update();
     std::wstring text = !Updater::Available() ? Lang::T(L"Updates aren't available yet: this copy of BlinkBuddy has no release channel.")
                         : u.text.empty()      ? Lang::T(L"Not checked yet.")
                                               : u.text;

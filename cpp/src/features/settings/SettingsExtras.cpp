@@ -1,6 +1,6 @@
 // The Extras page: the reading strip, the focus timer, modes for apps and film grain.
 #include "features/settings/SettingsWindow.h"
-#include "app/App.h"
+#include "features/settings/SettingsHost.h"
 #include "core/Lang.h"
 #include "core/Modes.h"
 #include "features/settings/AppRuleDialog.h"
@@ -183,23 +183,23 @@ void SettingsWindow::BuildFocusTimer(Stack& st)
     focusRing->SetBounds(24, 4, 154, 154);
     focusRing->tip = Lang::T(L"The dots: work periods done, in rounds of four");
     focusRing->progress = [this] {
-        App::Focus f = app.FocusState();
-        return f == App::Focus::Resting ? 1.0f : f == App::Focus::Off ? 0.0f : 1 - app.FocusLeft() / static_cast<float>(std::max(1, s.FocusWork * 60));
+        Focus f = app.FocusState();
+        return f == Focus::Resting ? 1.0f : f == Focus::Off ? 0.0f : 1 - app.FocusLeft() / static_cast<float>(std::max(1, s.FocusWork * 60));
     };
-    focusRing->timeText = [this] { return app.FocusState() == App::Focus::Resting ? Lang::T(L"Rest") : app.FocusText(); };
+    focusRing->timeText = [this] { return app.FocusState() == Focus::Resting ? Lang::T(L"Rest") : app.FocusText(); };
     focusRing->stateText = [this] {
-        App::Focus f = app.FocusState();
-        return Lang::T(f == App::Focus::Working ? L"Focus" : f == App::Focus::Paused ? L"Paused" : f == App::Focus::Resting ? L"Resting" : L"Ready");
+        Focus f = app.FocusState();
+        return Lang::T(f == Focus::Working ? L"Focus" : f == Focus::Paused ? L"Paused" : f == Focus::Resting ? L"Resting" : L"Ready");
     };
     focusRing->ink = [this] {
-        App::Focus f = app.FocusState();
-        return f == App::Focus::Resting ? Theme::Good : f == App::Focus::Paused ? Theme::Dim : Theme::Accent();
+        Focus f = app.FocusState();
+        return f == Focus::Resting ? Theme::Good : f == Focus::Paused ? Theme::Dim : Theme::Accent();
     };
     focusRing->done = [this] { return app.FocusDone() == 0 ? 0 : (app.FocusDone() - 1) % 4 + 1; };
     focusButton = &AddButton(card, L"Start", 200, 24, Edge - 42 - 12 - 200, 42);
     focusButton->SetTint(Theme::Accent());
     focusButton->onClick = [this] {
-        if (app.FocusState() == App::Focus::Working) app.FocusPause();
+        if (app.FocusState() == Focus::Working) app.FocusPause();
         else app.FocusStart();
         RefreshStatus();
     };

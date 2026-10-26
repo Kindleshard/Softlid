@@ -1,5 +1,5 @@
 #include "features/mini/MiniWindow.h"
-#include "app/App.h"
+#include "features/mini/MiniHost.h"
 #include "core/ColorMath.h"
 #include "core/Lang.h"
 #include "platform/Activity.h"
@@ -62,7 +62,7 @@ class MiniWindow::Panel : public DirectWindow {
 public:
     static constexpr float W = 300;
 
-    explicit Panel(App& app) : app(app), s(app.S())
+    explicit Panel(MiniHost& app) : app(app), s(app.S())
     {
         brightLabel = &Text(L"Brightness", 16, 10, 180, 18, Theme::Fg);
         brightText = &Text(L"", 196, 10, 90, 18, Theme::Dim);
@@ -119,7 +119,7 @@ public:
             this->app.Changed();
         };
         focusPause->onClick = [this] {
-            if (this->app.FocusState() == App::Focus::Working) this->app.FocusPause();
+            if (this->app.FocusState() == Focus::Working) this->app.FocusPause();
             else this->app.FocusStart();
             ShowStatus();
         };
@@ -171,16 +171,16 @@ public:
     // the rest card is up then.)
     void ShowStatus()
     {
-        App::Focus focus = app.FocusState();
-        status->SetPlainText(focus != App::Focus::Off ? Lang::F(L"Focus timer: {0}", {app.FocusText()}) : app.BreakStatus());
-        bool on = focus == App::Focus::Working || focus == App::Focus::Paused;
+        Focus focus = app.FocusState();
+        status->SetPlainText(focus != Focus::Off ? Lang::F(L"Focus timer: {0}", {app.FocusText()}) : app.BreakStatus());
+        bool on = focus == Focus::Working || focus == Focus::Paused;
         float y = status->Bounds().top - 3;
         focusStop->SetVisible(on);
         focusStop->SetBounds(260, y, 28, 28);
-        focusPause->SetVisible(focus != App::Focus::Resting);
+        focusPause->SetVisible(focus != Focus::Resting);
         focusPause->SetBounds(on ? 260.0f - 28 - 6 : 260.0f, y, 28, 28);
-        focusPause->SetGlyph(focus == App::Focus::Working ? L'\uE769' : L'\uE768');   // pause : play
-        focusPause->tip = Lang::T(focus == App::Focus::Working ? L"Pause" : focus == App::Focus::Paused ? L"Resume" : L"Start the focus timer");
+        focusPause->SetGlyph(focus == Focus::Working ? L'\uE769' : L'\uE768');   // pause : play
+        focusPause->tip = Lang::T(focus == Focus::Working ? L"Pause" : focus == Focus::Paused ? L"Resume" : L"Start the focus timer");
         float right = focusPause->Visible() ? focusPause->Bounds().left - 6 : W - 16;
         status->SetBounds(16, status->Bounds().top, right - 16, 20);
     }
@@ -210,7 +210,7 @@ private:
         lightText->SetPlainText(std::to_wstring(std::max(0, s.Backlight)) + L"%");
     }
 
-    App& app;
+    MiniHost& app;
     Settings& s;
     Slider *bright, *blue, *light;
     Label *brightLabel, *brightText, *blueLabel, *blueText, *lightLabel, *lightText, *blinkLabel, *status;
@@ -222,7 +222,7 @@ private:
 
 // ---- The icon ----
 
-MiniWindow::MiniWindow(App& app) : app(app), panel(std::make_unique<Panel>(app))
+MiniWindow::MiniWindow(MiniHost& app) : app(app), panel(std::make_unique<Panel>(app))
 {
     POINT cursor;
     GetCursorPos(&cursor);
@@ -264,8 +264,8 @@ RECT MiniWindow::Bounds() const { return {pos.x, pos.y, pos.x + px, pos.y + px};
 
 // What the lamp and the laptop show: the screen's brightness (0 at its lowest, 1 at full).
 float MiniWindow::Bright() const { return app.S().FilterEnabled ? (app.S().Brightness - 20) / 80.0f : 1.0f; }
-bool MiniWindow::FocusOn() const { return app.FocusState() == App::Focus::Working || app.FocusState() == App::Focus::Paused; }
-bool MiniWindow::Flowing() const { return app.FocusState() == App::Focus::Working; }
+bool MiniWindow::FocusOn() const { return app.FocusState() == Focus::Working || app.FocusState() == Focus::Paused; }
+bool MiniWindow::Flowing() const { return app.FocusState() == Focus::Working; }
 float MiniWindow::Progress() const { return app.S().MiniCountdown || FocusOn() ? app.BreakProgress() : -1; }
 
 // A dark disc with a soft rim (the accent while hovered), the chosen icon inside in its current state (or the focus
@@ -305,7 +305,7 @@ void MiniWindow::Draw()
 // The focus timer's time left, in the middle; paused, it is dimmed with a small pause sign under it.
 void MiniWindow::DrawClock(ID2D1RenderTarget* t, const std::wstring& time)
 {
-    bool paused = app.FocusState() == App::Focus::Paused;
+    bool paused = app.FocusState() == Focus::Paused;
     if (!clockFont) {   // (made once: this is drawn up to 30 times a second)
         clockFont = gfx::Font(size * 0.23f * 0.75f, gfx::Weight::Semibold, L"Segoe UI");
         clockFontBig = gfx::Font(size * 0.27f * 0.75f, gfx::Weight::Semibold, L"Segoe UI");

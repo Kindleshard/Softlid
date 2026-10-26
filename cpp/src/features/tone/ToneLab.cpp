@@ -1,5 +1,5 @@
 #include "features/tone/ToneLab.h"
-#include "app/App.h"
+#include "features/tone/ToneLabHost.h"
 #include "core/Lang.h"
 #include "core/ToneCurve.h"
 #include "platform/Files.h"
@@ -202,7 +202,7 @@ private:
 
 std::wstring ToneLab::FeedbackFile() { return RoamingAppData() + L"\\BlinkBuddy\\tone-feedback.txt"; }
 
-ToneLab::ToneLab(App& app) : app(app)
+ToneLab::ToneLab(ToneLabHost& app) : app(app)
 {
     const Settings& s = app.S();
     Container& area = Root();

@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include <optional>
 #include <string>
 
 namespace bb::Updater {
@@ -13,6 +14,15 @@ bool Available();   // a release channel is set
 
 struct Release {
     std::wstring tag, download, page;   // download: empty if the release has no BlinkBuddy.exe
+};
+
+// How the update check stands, for the Options page.
+struct State {
+    enum class Look { Plain, UpToDate, Newer } look = Look::Plain;   // dim; green with a thumbs-up; orange
+    std::wstring text;                     // already translated (empty: not checked yet)
+    float progress = 0;
+    bool busy = false, downloading = false;
+    std::optional<Release> release;        // a newer version, once found
 };
 
 // What a worker thread reports, posted to `window` as `message` with lParam a heap Result* (the receiver deletes it).

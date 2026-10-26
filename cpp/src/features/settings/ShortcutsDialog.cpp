@@ -1,5 +1,5 @@
 #include "features/settings/ShortcutsDialog.h"
-#include "app/App.h"
+#include "features/settings/SettingsHost.h"
 #include "core/Hotkeys.h"
 #include "platform/Keys.h"
 #include "core/Lang.h"
@@ -51,7 +51,7 @@ public:
 
 class Dialog : public DirectWindow {
 public:
-    Dialog(App& app, HWND owner) : app(app), owner(owner)
+    Dialog(SettingsHost& app, HWND owner) : app(app), owner(owner)
     {
         constexpr float rowH = 36, top = 56;
         auto& intro = Root().Add<Label>(L"Click a box and press the keys you want. Backspace removes a shortcut. The reading strip's "
@@ -117,7 +117,7 @@ private:
         }
     }
 
-    App& app;
+    SettingsHost& app;
     HWND owner;
     KeyBox* boxes[Hotkeys::Count + 1] = {};
     Label* marks[Hotkeys::Count + 1] = {};
@@ -125,7 +125,7 @@ private:
 
 } // namespace
 
-void Open(App& app, HWND owner, bool activate)
+void Open(SettingsHost& app, HWND owner, bool activate)
 {
     auto* dialog = new Dialog(app, owner);   // (it deletes itself when it closes)
     RECT o{};

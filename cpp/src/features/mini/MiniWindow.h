@@ -7,7 +7,7 @@
 
 namespace bb {
 
-class App;
+class MiniHost;
 
 // Mini mode: the settings window folded into a round icon that stays on top. Hovering opens a small panel beside it
 // with brightness, the blue light filter, the backlight (when that is on), the blink reminder switch and the focus
@@ -17,7 +17,7 @@ class App;
 // place and a highlight runs along the rim.
 class MiniWindow : public Window {
 public:
-    explicit MiniWindow(App& app);
+    explicit MiniWindow(MiniHost& app);
     ~MiniWindow() override;
 
 private:
@@ -43,7 +43,7 @@ private:
     void OpenPanel();
     POINT StartingPoint() const;
 
-    App& app;
+    MiniHost& app;
     class Panel;
     std::unique_ptr<Panel> panel;
     LayeredCanvas canvas;

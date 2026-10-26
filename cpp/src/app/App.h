@@ -7,7 +7,9 @@
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/EyePopup.h"
 #include "features/screen/ColorFilter.h"
+#include "features/mini/MiniHost.h"
 #include "features/mini/MiniWindow.h"
+#include "features/settings/SettingsHost.h"
 #include "features/settings/SettingsWindow.h"
 #include "features/strip/ReadingStrip.h"
 #include "features/tone/Comfort.h"
@@ -17,6 +19,7 @@
 #include "features/tone/SmartFilter.h"
 #include "features/tone/SmartLayer.h"
 #include "features/tone/ToneLab.h"
+#include "features/tone/ToneLabHost.h"
 #include "features/update/Updater.h"
 #include "platform/NightLight.h"
 #include "platform/ForegroundApp.h"
@@ -32,7 +35,7 @@ namespace bb {
 // The tray app: a hidden window that owns the tray icon and gets the 1-second tick, the menu, and requests from a
 // second copy to show the settings. Everything else (reminders, the screen filter, windows) hangs off this.
 // App.cpp holds the app itself and the reminders; AppScreen.cpp the screen.
-class App {
+class App : public SettingsHost, public MiniHost, public ToneLabHost {
 public:
     // offscreen (diagnostics): the settings open off the screen without taking focus, for a screenshot.
     App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscreen = false);
@@ -41,95 +44,88 @@ public:
     App& operator=(const App&) = delete;
 
     int Run();                         // the message loop, until Exit
-    void Changed(bool screen = false); // settings changed: saved on the next tick; screen: shown at once
-    Settings& S() { return settings; }
-    const Settings& S() const { return settings; }
-
-    // ---- For the settings window ----
     void ShowSettings(const POINT* at = nullptr, bool optionsPage = false);
-    void Rebuild(bool optionsPage);    // the settings built again (new language, accent or view), soon, in place
-    void Quit();                       // Exit, chosen when closing the settings
-    void SetLanguage(const std::wstring& code);
-    void SetAccent(bool fromWindows, int color);
-    void UseCompactView();             // the Simple view keeps only the everyday features: the others are switched off
-    void ResetAll();
-    bool RunAtStartup() const;
-    void SetRunAtStartup(bool on);
-    void SetMiniEnabled(bool on);
 
-    void Blink(bool instant);
-    void StartBreak(bool standUp);
-    std::wstring BreakStatus() const;
-    std::wstring StandUpStatus() const;
+    // What the settings, mini mode and the tone lab ask of the app (the interfaces say what each does).
+    Settings& S() override { return settings; }
+    const Settings& S() const { return settings; }
+    void Changed(bool screen = false) override;
+    void Rebuild(bool optionsPage) override;
+    void Quit() override;
+    void SetLanguage(const std::wstring& code) override;
+    void SetAccent(bool fromWindows, int color) override;
+    void UseCompactView() override;
+    void ResetAll() override;
+    bool RunAtStartup() const override;
+    void SetRunAtStartup(bool on) override;
+    void SetMiniEnabled(bool on) override;
 
-    void ChooseMode(int mode);
-    void ManualScreenChange();         // a slider or a shortcut moved: your own values again, not a preset
-    void PreviewNight();               // a blue light slider moves: show the daytime strength for a few seconds
-    void PreviewNightStrength();       // ... or the night strength for a moment
-    int RuleMode() const { return ruleMode; }
-    bool EffectsAvailable() const;     // colour effects can show: not while the Smart (GPU) engine does the work, nor with the overlays
-    std::wstring NightStatus() const;
-    enum class Sync { Syncing, Synced, Failed, CityChosen };   // how the sun times are tied to a place
-    Sync SyncState(std::wstring& text) const;
-    void SetCity(const std::wstring& city);   // "" goes back to syncing by itself
-    bool KeepingAwake() const;
-    void SetKeepAwake(bool on);
-    void SetHardwareBrightness(bool on, std::function<void()> done);
-    const std::wstring& BacklightStatus() const { return backlightStatus; }
-    float WarmthNow() const;           // the blue light filter in effect now (0..1), for things drawn to match it
+    // Reminders (App.cpp).
+    void Blink(bool instant) override;
+    void StartBreak(bool standUp) override;
+    std::wstring BreakStatus() const override;
+    std::wstring StandUpStatus() const override;
 
-    // ---- Windows Night light (AppScreen.cpp) ----
-    const NightLight::State& NightLightState() const { return nightLight; }
-    bool FollowsNightLight() const;    // the night schedule runs on Night light's (it has one, and sync is on)
-    bool NightLightWarming() const;    // Night light is on now, so BlinkBuddy's blue light filter rests
-    Settings Scheduled() const;        // the settings with the night schedule as it actually runs
+    // The screen (AppScreen.cpp).
+    void ChooseMode(int mode) override;
+    void ManualScreenChange() override;
+    void PreviewNight() override;
+    void PreviewNightStrength() override;
+    int RuleMode() const override { return ruleMode; }
+    bool EffectsAvailable() const override;
+    std::wstring NightStatus() const override;
+    Sync SyncState(std::wstring& text) const override;
+    void SetCity(const std::wstring& city) override;
+    bool KeepingAwake() const override;
+    void SetKeepAwake(bool on) override;
+    void SetHardwareBrightness(bool on, std::function<void()> done) override;
+    const std::wstring& BacklightStatus() const override { return backlightStatus; }
+    float WarmthNow() const override;
 
-    // ---- Tone (AppScreen.cpp) ----
-    void SetToneMode(int mode);        // an engine chosen (clears the engines' failures)
-    void RetestLut();                  // DesktopLUT's 15-second check again (e.g. after choosing another copy)
-    void OpenToneLab();                // (soon: it takes the settings window's place)
-    void LabCompare(bool without);     // the lab's hold-to-compare: the screen without tone while held
-    double ComfortNet(double x) const { return comfort.Net(x); }
-    std::wstring ComfortStatus() const;
-    const std::wstring& ToneStatus() const { return tone.Status(); }
-    std::wstring SmartStatus() const { return smart.Status(); }
-    std::wstring LayerStatus() const { return smartLayer.Status(); }
-    const std::wstring& LutStatus() const { return lut.Status(); }
-    bool LutFailed() const { return lut.Failed(); }
-    const std::wstring& GuardNote() const { return guardNote; }   // while the visibility guard holds brightness up
+    // Windows Night light (AppScreen.cpp).
+    const NightLight::State& NightLightState() const override { return nightLight; }
+    bool FollowsNightLight() const override;
+    bool NightLightWarming() const override;
+    Settings Scheduled() const override;
 
-    // ---- Updates (AppSettings.cpp) ----
-    struct UpdateState {
-        enum class Look { Plain, UpToDate, Newer } look = Look::Plain;   // dim; green with a thumbs-up; orange
-        std::wstring text;                     // already translated (empty: not checked yet)
-        float progress = 0;
-        bool busy = false, downloading = false;
-        std::optional<Updater::Release> release;   // a newer version, once found
-    };
-    const UpdateState& Update() const { return update; }
-    void CheckForUpdates();
-    void InstallUpdate();              // the newer version found: download it, put it in place, restart
+    // Tone (AppScreen.cpp).
+    void SetToneMode(int mode) override;
+    void RetestLut() override;
+    void OpenToneLab() override;
+    void LabCompare(bool without) override;
+    double ComfortNet(double x) const override { return comfort.Net(x); }
+    std::wstring ComfortStatus() const override;
+    const std::wstring& ToneStatus() const override { return tone.Status(); }
+    std::wstring SmartStatus() const override { return smart.Status(); }
+    std::wstring LayerStatus() const override { return smartLayer.Status(); }
+    const std::wstring& LutStatus() const override { return lut.Status(); }
+    bool LutFailed() const override { return lut.Failed(); }
+    const std::wstring& GuardNote() const override { return guardNote; }
 
-    // ---- Keyboard shortcuts (AppShortcuts.cpp) ----
-    void RegisterHotkeys();            // (again) from the settings
-    void SuspendHotkeys();             // all off for a moment (while the shortcuts window records new keys)
-    bool HotkeyFailed(int id) const;   // another program already uses those keys
+    // Updates (AppSettings.cpp).
+    const Updater::State& Update() const override { return update; }
+    void CheckForUpdates() override;
+    void InstallUpdate() override;
 
-    // ---- The focus timer: work, then rest, again and again (AppExtras.cpp) ----
-    enum class Focus { Off, Working, Paused, Resting };
-    Focus FocusState() const { return focus; }
-    int FocusLeft() const { return focusLeft; }
-    int FocusDone() const { return focusDone; }   // work periods finished since BlinkBuddy started
-    void FocusStart();                 // (or resume)
-    void FocusPause();
-    void FocusStop();
-    std::wstring FocusText() const;
-    float BreakProgress() const;       // how far the wait for the next break is (0..1), for mini mode's rim; -1: none
+    // Keyboard shortcuts (AppShortcuts.cpp).
+    void RegisterHotkeys() override;
+    void SuspendHotkeys() override;
+    bool HotkeyFailed(int id) const override;
 
-    // ---- Mini mode (AppExtras.cpp) ----
-    void EnterMiniMode();
-    void LeaveMiniMode();              // and the settings open
-    void SaveMiniPosition(POINT at);
+    // The focus timer (AppExtras.cpp).
+    Focus FocusState() const override { return focus; }
+    int FocusLeft() const override { return focusLeft; }
+    int FocusDone() const override { return focusDone; }   // work periods finished since BlinkBuddy started
+    void FocusStart() override;   // (or resume)
+    void FocusPause() override;
+    void FocusStop() override;
+    std::wstring FocusText() const override;
+    float BreakProgress() const override;
+
+    // Mini mode (AppExtras.cpp).
+    void EnterMiniMode() override;
+    void LeaveMiniMode() override;
+    void SaveMiniPosition(POINT at) override;
 
 private:
     using Clock = std::chrono::system_clock;
@@ -232,7 +228,7 @@ private:
     // Updates.
     void WeeklyUpdateCheck();          // once a week (if allowed) a quiet look; only a newer version is mentioned
     void Updated(const Updater::Result& r);
-    UpdateState update;
+    Updater::State update;
     bool quietCheck = false;           // the check running is the weekly one
     int hourTick = 0;
 

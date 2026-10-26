@@ -1,7 +1,7 @@
 // The Screen page: the screen filter, its modes and colour effects, and the backlight; tone, with its engines, is in
 // SettingsTone.cpp.
 #include "features/settings/SettingsWindow.h"
-#include "app/App.h"
+#include "features/settings/SettingsHost.h"
 #include "core/ColorMath.h"
 #include "core/Lang.h"
 #include "core/Modes.h"

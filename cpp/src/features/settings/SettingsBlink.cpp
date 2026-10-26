@@ -1,6 +1,6 @@
 // The Blink page: blink reminders, look-away breaks and stand-up breaks.
 #include "features/settings/SettingsWindow.h"
-#include "app/App.h"
+#include "features/settings/SettingsHost.h"
 #include "core/Lang.h"
 #include "platform/Voice.h"
 #include "ui/Theme.h"

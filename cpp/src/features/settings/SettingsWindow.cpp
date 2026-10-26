@@ -1,5 +1,5 @@
 #include "features/settings/SettingsWindow.h"
-#include "app/App.h"
+#include "features/settings/SettingsHost.h"
 #include "core/Lang.h"
 #include "core/Modes.h"
 #include "features/settings/CloseDialog.h"
@@ -18,7 +18,7 @@ constexpr UINT LaterMessage = WM_APP + 20;
 
 } // namespace
 
-SettingsWindow::SettingsWindow(App& app, Settings& settings, bool unfoldAll) : app(app), s(settings), unfoldAll(unfoldAll)
+SettingsWindow::SettingsWindow(SettingsHost& app, Settings& settings, bool unfoldAll) : app(app), s(settings), unfoldAll(unfoldAll)
 {
     tabs = &Root().Add<TabStrip>(std::vector<std::wstring>{L"Screen", L"Blink", L"Schedule", L"Extras", L"\uE713"});
     tabs->SetBounds(8, 8, Edge - 44, 40);
@@ -115,7 +115,7 @@ void SettingsWindow::RefreshStatus()
     RefreshTone();
     RefreshUpdates();
     focusRing->Invalidate();
-    focusButton->SetText(app.FocusState() == App::Focus::Working ? L"Pause" : app.FocusState() == App::Focus::Paused ? L"Resume" : L"Start");
+    focusButton->SetText(app.FocusState() == Focus::Working ? L"Pause" : app.FocusState() == Focus::Paused ? L"Resume" : L"Start");
 }
 
 void SettingsWindow::SyncFromApp()

@@ -1,6 +1,6 @@
 // The Schedule page: the night schedule and its place (synced by itself, or a city you pick), and Windows Night light.
 #include "features/settings/SettingsWindow.h"
-#include "app/App.h"
+#include "features/settings/SettingsHost.h"
 #include "core/ColorMath.h"
 #include "core/Lang.h"
 #include "core/Night.h"
@@ -120,11 +120,11 @@ void SettingsWindow::BuildSchedulePage(Stack& st)
 void SettingsWindow::ShowSync()
 {
     std::wstring text;
-    App::Sync state = app.SyncState(text);
+    SettingsHost::Sync state = app.SyncState(text);
     syncStatus->SetPlainText(text);
-    syncStatus->SetColor(state == App::Sync::Failed ? Theme::Bad : state == App::Sync::Syncing ? Theme::Dim : Theme::Good);
-    syncTick->Set(state == App::Sync::Failed ? L'\uE783' : L'\uE73E', state == App::Sync::Failed ? Theme::Bad : Theme::Good);
-    syncTick->SetVisible(state != App::Sync::Syncing);
+    syncStatus->SetColor(state == SettingsHost::Sync::Failed ? Theme::Bad : state == SettingsHost::Sync::Syncing ? Theme::Dim : Theme::Good);
+    syncTick->Set(state == SettingsHost::Sync::Failed ? L'\uE783' : L'\uE73E', state == SettingsHost::Sync::Failed ? Theme::Bad : Theme::Good);
+    syncTick->SetVisible(state != SettingsHost::Sync::Syncing);
     if (static_cast<int>(state) == shownSync) return;
     shownSync = static_cast<int>(state);
     UpdateRows();
@@ -136,7 +136,7 @@ void SettingsWindow::BuildCityPicker(Stack& st)
 {
     Shown sunset = [this] { return s.ScheduleEnabled && s.ScheduleMode == 0 && !app.FollowsNightLight(); };
     Row& linkRow = st.Add(26, [this, sunset] {
-        return sunset() && shownSync == static_cast<int>(App::Sync::Failed) && !pickerOpen && !s.CityManual;
+        return sunset() && shownSync == static_cast<int>(SettingsHost::Sync::Failed) && !pickerOpen && !s.CityManual;
     });
     auto& link = linkRow.Add<Label>(L"Select your city manually", Fonts::Small(), Theme::Accent());
     link.SetBounds(46, 0, Edge - 46, 22);

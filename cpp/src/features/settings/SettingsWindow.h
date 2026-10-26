@@ -13,7 +13,7 @@
 
 namespace bb {
 
-class App;
+class SettingsHost;
 
 // The settings: made when opened and destroyed when closed, so it costs nothing while you aren't looking at it.
 // Each tab is a scrolling stack of rows; rows hide and close up for the Simple view and for options that are off.
@@ -22,7 +22,7 @@ class App;
 class SettingsWindow : public ui::DirectWindow {
 public:
     // unfoldAll (diagnostics): every section and "More options" shown open, without saving that.
-    SettingsWindow(App& app, Settings& settings, bool unfoldAll = false);
+    SettingsWindow(SettingsHost& app, Settings& settings, bool unfoldAll = false);
     ~SettingsWindow() override;
 
     // Opens it (at: its top left on screen, or null to centre it); optionsPage: straight to the cog's page.
@@ -120,7 +120,7 @@ private:
     void BuildUpdates(ui::Stack& st);
     void RefreshUpdates();
 
-    App& app;
+    SettingsHost& app;
     Settings& s;
     const Settings defaults;
     const bool unfoldAll;

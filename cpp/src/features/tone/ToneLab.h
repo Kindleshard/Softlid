@@ -7,14 +7,14 @@
 
 namespace bb {
 
-class App;
+class ToneLabHost;
 
 // A place to judge every engine at every strength on the same picture, and write down what you see. Each rating is
 // a line in %AppData%\BlinkBuddy\tone-feedback.txt. The lab changes the real settings while it is open (the engines
 // work on the whole screen); App puts them back when it closes.
 class ToneLab : public ui::DirectWindow {
 public:
-    explicit ToneLab(App& app);
+    explicit ToneLab(ToneLabHost& app);
     void Start(HICON icon);
     static std::wstring FeedbackFile();
 
@@ -29,7 +29,7 @@ private:
     void Save();
     void Next();
 
-    App& app;
+    ToneLabHost& app;
     ui::Segmented *engine = nullptr, *level = nullptr;
     ui::Segmented* answers[5] = {};
     ui::TextBox* note = nullptr;

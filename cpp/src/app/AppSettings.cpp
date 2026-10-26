@@ -144,7 +144,7 @@ void App::CheckForUpdates()
 {
     if (update.busy) return;
     update.busy = true;
-    update.look = UpdateState::Look::Plain;
+    update.look = Updater::State::Look::Plain;
     update.text = Lang::T(L"Checking...");
     quietCheck = false;
     Updater::Check(window, UpdateMessage);
@@ -181,7 +181,7 @@ void App::WeeklyUpdateCheck()
 void App::Updated(const Updater::Result& r)
 {
     using Kind = Updater::Result::Kind;
-    using Look = UpdateState::Look;
+    using Look = Updater::State::Look;
     switch (r.kind) {
     case Kind::Progress:
         update.progress = r.progress;
