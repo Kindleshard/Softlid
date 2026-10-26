@@ -1,4 +1,4 @@
-// The Blink page: blink reminders, look-away breaks and stand-up breaks.
+// The reminders' cards on the panel: blink reminders, look-away breaks and stand-up breaks.
 #include "features/settings/SettingsWindow.h"
 #include "features/settings/SettingsHost.h"
 #include "core/Lang.h"

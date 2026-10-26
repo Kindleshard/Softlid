@@ -14,6 +14,14 @@ std::vector<std::wstring> Translated(std::vector<std::wstring> english)
 }
 
 constexpr int TileFill = Palette::Argb(40, 40, 43), TileHover = Palette::Argb(46, 46, 50);
+constexpr int ChipFill = Palette::Argb(50, 50, 54), ChipHover = Palette::Argb(60, 60, 65);
+
+// a mixed k of the way towards b (both opaque)
+int Blend(int a, int b, float k)
+{
+    auto ch = [&](int s) { return static_cast<int>(std::lround(((a >> s) & 0xFF) * (1 - k) + ((b >> s) & 0xFF) * k)); };
+    return Palette::Argb(ch(16), ch(8), ch(0));
+}
 
 } // namespace
 
@@ -202,13 +210,30 @@ ModeGrid::ModeGrid(std::vector<std::wstring> glyphs, std::vector<std::wstring> e
     cursor = Cursor::Hand;
 }
 
+// Chips flow left to right, each as wide as its icon and name, onto as many rows as they need; the rows share the
+// height (a chip at most 34 high).
 D2D1_RECT_F ModeGrid::Tile(int i) const
 {
-    constexpr int columns = 4;
-    int rows = (static_cast<int>(names.size()) + columns - 1) / columns;
-    float gap = H() * 0.06f;
-    float w = (W() - gap * (columns - 1)) / columns, h = (H() - gap * (rows - 1)) / std::max(1, rows);
-    return Rect((i % columns) * (w + gap), (i / columns) * (h + gap), w, h);
+    constexpr float gap = 8, pad = 12, space = 7;
+    IDWriteTextFormat* glyphFont = Fonts::Glyphs(11);
+    std::vector<D2D1_RECT_F> chips;
+    float x = 0;
+    int row = 0;
+    for (size_t k = 0; k < names.size(); k++) {
+        float w = pad * 2 + TextWidth(glyphs[k], glyphFont) + space + TextWidth(names[k], Fonts::Small()) + 4;
+        w = std::min(w, W());
+        if (x > 0 && x + w > W()) {
+            x = 0;
+            row++;
+        }
+        chips.push_back({x, static_cast<float>(row), x + w, 0});
+        x += w + gap;
+    }
+    int rows = row + 1;
+    float h = std::min(34.0f, (H() - gap * (rows - 1)) / rows);
+    D2D1_RECT_F r = chips[static_cast<size_t>(i)];
+    float top = r.top * (h + gap);
+    return {r.left, top, r.right, top + h};
 }
 
 int ModeGrid::IndexAt(D2D1_POINT_2F p) const
@@ -220,20 +245,21 @@ int ModeGrid::IndexAt(D2D1_POINT_2F p) const
 void ModeGrid::Paint(Canvas& c)
 {
     IDWriteTextFormat* glyphFont = Fonts::Glyphs(11);
+    int chosenFill = Blend(Theme::Card, Theme::Accent(), 0.24f);
     for (int i = 0; i < static_cast<int>(names.size()); i++) {
         D2D1_RECT_F r = Inset(Tile(i), 0.5f, 0.5f);
         bool on = i == selected;
-        float radius = std::min(Height(r) * 0.22f, 12.0f);
-        c.FillRound(r, radius, on ? Palette::Argb(50, 52, 58) : i == hoverIndex ? TileHover : TileFill);
-        c.OutlineRound(r, radius, on ? Theme::Accent() : Palette::Argb(64, 64, 68), on ? 1.6f : 1);
+        float radius = Height(r) / 2;
+        c.FillRound(r, radius, on ? chosenFill : i == hoverIndex ? ChipHover : ChipFill);
+        if (on) c.OutlineRound(r, radius, Theme::Accent(), 1);
         // The icon and the name side by side, centred together (the name cut short if it can't fit).
-        float glyphW = TextWidth(glyphs[i], glyphFont), space = Height(r) * 0.18f, pad = Height(r) * 0.25f;
-        float room = Width(r) - 2 * pad - glyphW - space;
-        float nameW = std::min(room, TextWidth(names[i], Fonts::Small()) + 1);
+        float glyphW = TextWidth(glyphs[i], glyphFont), space = 7, pad = 12;
+        float nameW = std::min(Width(r) - 2 * pad - glyphW - space, TextWidth(names[i], Fonts::Small()) + 1);
         float x = r.left + (Width(r) - glyphW - space - nameW) / 2;
-        c.Glyph(glyphs[i][0], glyphFont, {x, r.top, x + glyphW, r.bottom}, on ? Theme::Accent() : Theme::Fg);
+        c.Glyph(glyphs[i][0], glyphFont, {x, r.top, x + glyphW, r.bottom}, on ? Theme::Accent() : Theme::Dim);
         c.Text(names[i], Fonts::Small(), {x + glyphW + space, r.top, x + glyphW + space + nameW, r.bottom}, on ? Theme::Fg : Theme::Dim);
     }
+
 }
 
 void ModeGrid::MouseMove(D2D1_POINT_2F p, bool)
@@ -271,8 +297,8 @@ TilePicker::TilePicker(int count, int sel) : count(count), awake(count)
 
 int TilePicker::IndexAt(float x) const
 {
-    int i = static_cast<int>(x / (H() + Gap()));
-    return i >= 0 && i < count && x - i * (H() + Gap()) <= H() ? i : -1;
+    int i = static_cast<int>(x / (Side() + Gap()));
+    return i >= 0 && i < count && x - i * (Side() + Gap()) <= Side() ? i : -1;
 }
 
 void TilePicker::Animate()
@@ -297,9 +323,15 @@ void TilePicker::Timer()
     if (!moving) StopTimer();
 }
 
+void TilePicker::SetCaptions(std::vector<std::wstring> englishNames)
+{
+    captions = Translated(std::move(englishNames));
+    Invalidate();
+}
+
 void TilePicker::Paint(Canvas& c)
 {
-    float s = H();
+    float s = Side();
     for (int i = 0; i < count; i++) {
         D2D1_RECT_F r = Rect(i * (s + Gap()) + 1, 1, s - 2, s - 2);
         bool on = i == selected;
@@ -307,6 +339,11 @@ void TilePicker::Paint(Canvas& c)
         c.OutlineRound(r, s * 0.22f, on ? Theme::Accent() : Palette::Argb(68, 68, 72), on ? std::max(1.5f, s * 0.035f) : 1);
         float k = awake[i] * awake[i] * (3 - 2 * awake[i]);
         if (painter) painter(c, Inset(r, s * 0.12f, s * 0.12f), i, k);
+        if (i < static_cast<int>(captions.size())) {   // its name, centred under it (it may reach into the gaps)
+            float cx = r.left + s / 2, half = s / 2 + Gap() / 2;
+            D2D1_RECT_F box{std::max(0.0f, cx - half), s + 1, std::min(W(), cx + half), H()};   // (kept within the picker)
+            c.Text(captions[i], Fonts::Small(), box, on ? Theme::Fg : Theme::Dim, HAlign::Center);
+        }
     }
     if (!Enabled()) c.Fill({0, 0, W(), H()}, Theme::Bg, 170 / 255.0f);   // greyed (e.g. effects the engine can't show)
 }

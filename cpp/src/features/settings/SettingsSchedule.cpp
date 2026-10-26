@@ -1,9 +1,10 @@
-// The Schedule page: the night schedule and its place (synced by itself, or a city you pick), and Windows Night light.
+// The night schedule's card on the panel: the schedule and its place (synced by itself, or a city you pick), and Windows Night light.
 #include "features/settings/SettingsWindow.h"
 #include "features/settings/SettingsHost.h"
 #include "core/ColorMath.h"
 #include "core/Lang.h"
 #include "core/Night.h"
+#include "platform/Clock.h"
 #include "ui/Theme.h"
 #include <shellapi.h>
 #include <algorithm>
@@ -64,13 +65,32 @@ void SettingsWindow::BuildNight(Stack& st)
     BuildNightLight(st);
     // While Windows Night light's schedule is followed, the schedule's own settings step aside (kept for when it isn't).
     Shown own = [this] { return !app.FollowsNightLight(); };
+    // The day at a glance: when the night runs (and eases in and out), and where now is in it.
+    Row& dayRow = st.Add(52, own);
+    dayBar = &dayRow.Add<DayBar>();
+    dayBar->SetBounds(24, 8, Edge - 24, 40);
+    dayBar->tip = Lang::T(L"Today: the night schedule in amber, and the time now");
+    dayBar->profile = [this] {
+        Settings scheduled = app.Scheduled();
+        LocalTime t = LocalNow();
+        if (unfoldAll) t.year = 2026, t.month = 6, t.day = 21;   // (a diagnostic copy: the same day for its screenshots)
+        std::vector<float> night(96);   // (every 15 minutes)
+        for (size_t i = 0; i < night.size(); i++) {
+            t.hour = static_cast<int>(i) / 4;
+            t.minute = static_cast<int>(i) % 4 * 15;
+            t.second = 0;
+            night[i] = Night::Factor(scheduled, t);
+        }
+        return night;
+    };
+    dayBar->now = [this] { LocalTime t = LocalNow(); return unfoldAll ? 12 * 60 : t.hour * 60 + t.minute; };
     // Sunset to sunrise, or hours of your own (the Advanced view only: Simple keeps to the sun).
     Shown advanced = And(own, [this] { return s.AdvancedView; }), hours = And(advanced, [this] { return s.ScheduleMode == 1; });
     Row& modeRow = st.Add(46, advanced);
     auto& mode = modeRow.Add<Segmented>(std::vector<std::wstring>{L"Sunset to sunrise", L"Custom hours"});
     mode.SetBounds(24, 4, Edge - 24, 34);
     mode.SetSelected(s.ScheduleMode);
-    // The schedule's own strength: at night it takes over from the Blue light filter on the Screen tab.
+    // The schedule's own strength: at night it takes over from the screen filter's Blue light filter.
     Slider& night = SliderRow(st, L"Blue light filter at night", 0, 100, s.NightBlue, defaults.NightBlue,
         [](int v) { return v == 0 ? std::wstring(L"Off") : std::to_wstring(ColorMath::KelvinFor(v)) + L" K"; },
         [this](int v) { s.NightBlue = v; app.PreviewNightStrength(); NightMarker(); NightChanged(); }, own);
@@ -193,7 +213,7 @@ void SettingsWindow::ChooseCity(const std::wstring& name)
     UpdateRows();
 }
 
-// The green mark on the Screen tab's blue light slider: where the night schedule takes the filter.
+// The green mark on the screen filter's blue light slider: where the night schedule takes it.
 // Windows' own Night light, when it is set up here: a switch to sync with it, and what it is doing. Synced, its
 // schedule (if it has one) runs the night, and while it is on BlinkBuddy's blue light filter rests. Read-only:
 // Night light itself is changed in Windows Settings.

@@ -11,7 +11,7 @@ namespace bb::ui {
 namespace {
 
 constexpr int ThumbFill = Palette::Argb(69, 69, 69), ThumbEdge = Palette::Argb(85, 85, 85);
-constexpr int Amber = Palette::Argb(255, 184, 64), Icy = Palette::Argb(200, 230, 255);
+constexpr int Amber = Palette::Argb(255, 184, 64), Icy = Palette::Argb(200, 230, 255), Daylight = Palette::Argb(240, 236, 226);
 constexpr int GreyInk = Palette::Argb(115, 115, 115), Muted = Palette::Argb(120, 120, 120);
 
 // The round thumb the sliders share: a grey disc with a coloured centre that shrinks while dragged and grows under
@@ -283,32 +283,39 @@ int Slider::Tint() const
 void Slider::Paint(Canvas& c)
 {
     float cy = H() / 2, x = X(value), r = H() * 0.3f, th = std::max(2.0f, H() * 0.13f);
-    c.Line(x, cy, End(), cy, Theme::Track, th);
     int tint = muted ? Muted : Tint();
+    bool painted = (shade || warm) && !muted;   // the whole track shows what it does: no filled part
+    if (painted) {
+        // Shade: dark to light. Warm: daylight to amber (and, when it can go cooler, icy blue below 0).
+        std::vector<D2D1_GRADIENT_STOP> stops;
+        if (shade) {
+            stops = {{0, gfx::Color(Palette::Argb(62, 62, 66))}, {1, gfx::Color(Palette::Argb(236, 236, 236))}};
+        } else {
+            float zero = (X(0) - Start()) / std::max(1.0f, End() - Start());
+            if (min < 0) stops.push_back({0, gfx::Color(Icy)});
+            stops.push_back({zero, gfx::Color(Daylight)});
+            stops.push_back({1, gfx::Color(Amber)});
+        }
+        ID2D1RenderTarget* t = c.Target();
+        gfx::ComPtr<ID2D1GradientStopCollection> collection;
+        gfx::ComPtr<ID2D1LinearGradientBrush> brush;
+        t->CreateGradientStopCollection(stops.data(), static_cast<UINT32>(stops.size()), collection.GetAddressOf());
+        t->CreateLinearGradientBrush({{Start(), 0}, {End(), 0}}, collection.Get(), brush.GetAddressOf());
+        gfx::ComPtr<ID2D1StrokeStyle> round;
+        D2D1_STROKE_STYLE_PROPERTIES props{};
+        props.startCap = props.endCap = D2D1_CAP_STYLE_ROUND;
+        gfx::D2D()->CreateStrokeStyle(props, nullptr, 0, round.GetAddressOf());
+        t->DrawLine({Start(), cy}, {End(), cy}, brush.Get(), th * 1.6f, round.Get());
+    } else {
+        c.Line(x, cy, End(), cy, Theme::Track, th);
+    }
     if (marker >= min && marker <= max) {
         // A mark on the track (the night schedule's strength), drawn under the filled part's end and the thumb.
         float mx = X(marker), mr = std::max(3.0f, th * 1.25f);
         c.FillCircle(mx, cy, mr, muted ? Theme::Track : Theme::Good);
         c.OutlineCircle(mx, cy, mr, Theme::Bg, std::max(1.0f, th * 0.4f));
     }
-    if (x - Start() > 1) {
-        if (warm && !muted) {
-            // Warm: the filled part runs from blue to the colour the screen is being warmed towards.
-            ID2D1RenderTarget* t = c.Target();
-            D2D1_GRADIENT_STOP stops[] = {{0, gfx::Color(Theme::Accent())}, {1, gfx::Color(tint)}};
-            gfx::ComPtr<ID2D1GradientStopCollection> collection;
-            gfx::ComPtr<ID2D1LinearGradientBrush> brush;
-            t->CreateGradientStopCollection(stops, 2, collection.GetAddressOf());
-            t->CreateLinearGradientBrush({{Start() - 1, 0}, {x + 1, 0}}, collection.Get(), brush.GetAddressOf());
-            gfx::ComPtr<ID2D1StrokeStyle> round;
-            D2D1_STROKE_STYLE_PROPERTIES props{};
-            props.startCap = props.endCap = D2D1_CAP_STYLE_ROUND;
-            gfx::D2D()->CreateStrokeStyle(props, nullptr, 0, round.GetAddressOf());
-            t->DrawLine({Start(), cy}, {x, cy}, brush.Get(), th, round.Get());
-        } else {
-            c.Line(Start(), cy, x, cy, muted ? tint : Theme::Accent(), th);
-        }
-    }
+    if (!painted && x - Start() > 1) c.Line(Start(), cy, x, cy, muted ? tint : Theme::Accent(), th);
     Thumb(c, x, cy, r, tint, dragging, hover || Focused());
 }
 

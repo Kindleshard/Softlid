@@ -1,4 +1,4 @@
-// The Screen page: the screen filter, its modes and colour effects, and the backlight; tone, with its engines, is in
+// The screen filter's card on the panel: its modes, colour effects and the backlight; tone (its own card), with its engines, is in
 // SettingsTone.cpp.
 #include "features/settings/SettingsWindow.h"
 #include "features/settings/SettingsHost.h"
@@ -57,6 +57,7 @@ void SettingsWindow::BuildFilter(Stack& st)
             FilterTouched();
         });
     blueSlider->warm = true;
+    brightSlider->shade = true;
     NightMarker();
     // A colour effect and the blue light filter take turns: while an effect is on, the slider is greyed and says so
     // (moving it brings the blue light filter back and the effect goes back to Original). Windows Night light, while
@@ -74,6 +75,7 @@ void SettingsWindow::BuildFilter(Stack& st)
         s.Backlight = v;
         app.Changed(true);
     }, [this] { return s.HardwareBrightness; });
+    backlightSlider->shade = true;
     Row& hwRow = st.Add(26, [this] { return s.HardwareBrightness || !app.BacklightStatus().empty(); });
     hwStatus = &AddLabel(hwRow, L"", Fonts::Small(), Theme::Dim, 24, 2, Edge - 24, 20);
     BuildEffects(st);
@@ -96,10 +98,11 @@ void SettingsWindow::BuildFilter(Stack& st)
 
 void SettingsWindow::BuildEffects(Stack& st)
 {
-    Row& row = st.Add(80);   // (with room above it, apart from the sliders)
+    Row& row = st.Add(98);   // (with room above it, apart from the sliders)
     AddLabel(row, L"Color effect", Fonts::Body(), Theme::Fg, 24, 34, 124, 26);
     effectPicker = &row.Add<TilePicker>(5, s.ColorEffect);
-    effectPicker->SetBounds(150, 22, 5 * 48 + 4 * 13 + 2, 48);
+    effectPicker->SetBounds(150, 22, 5 * 48 + 4 * 13 + 2, 48 + 18);
+    effectPicker->SetCaptions({std::begin(EffectNames), std::end(EffectNames)});
     effectPicker->painter = [this](Canvas& c, const D2D1_RECT_F& r, int i, float awake) { PaintEffect(c, r, i, awake); };
     effectPicker->onChange = [this](int effect) {
         s.ColorEffect = effect;

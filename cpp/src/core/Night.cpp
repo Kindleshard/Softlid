@@ -188,7 +188,7 @@ float Factor(const Settings& s, const LocalTime& now)
 
 std::wstring Status(const Settings& s, const LocalTime& now)
 {
-    if (!s.ScheduleEnabled) return Lang::T(L"Off: the blue light filter stays as set on the Screen tab.");
+    if (!s.ScheduleEnabled) return Lang::T(L"Off: the blue light filter stays as set in the screen filter.");
     double start, end, into, len;
     std::wstring where;
     switch (Window(s, now, start, end, where)) {

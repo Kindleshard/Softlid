@@ -116,6 +116,10 @@ void SettingsWindow::RefreshStatus()
     RefreshTone();
     RefreshUpdates();
     focusRing->Invalidate();
+    if (int minute = static_cast<int>(GetTickCount64() / 60000); dayBar && minute != dayMinute) {
+        dayMinute = minute;
+        dayBar->Invalidate();   // (the night's profile and the time now move on)
+    }
     RefreshUsage();
     RefreshSummaries();
     focusButton->SetText(app.FocusState() == Focus::Working ? L"Pause" : app.FocusState() == Focus::Paused ? L"Resume" : L"Start");

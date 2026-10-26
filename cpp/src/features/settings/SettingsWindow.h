@@ -178,6 +178,8 @@ private:
     ui::Icon* syncTick = nullptr;
     ui::Row* rulesRow = nullptr;
     ui::FocusRing* focusRing = nullptr;
+    ui::DayBar* dayBar = nullptr;
+    int dayMinute = -1;   // (the bar is drawn again when the minute changes)
     ui::Button *focusButton = nullptr, *titleMini = nullptr;
 
     // The city picker.

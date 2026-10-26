@@ -492,3 +492,44 @@ void DragGrip::MouseUp(D2D1_POINT_2F p)
 void DropMark::Paint(Canvas& c) { c.FillRound({0, 0, W(), H()}, H() / 2, Theme::Accent()); }
 
 } // namespace bb::ui
+
+namespace bb::ui {
+
+// ---- DayBar ----
+
+void DayBar::Paint(Canvas& c)
+{
+    constexpr float LabelH = 16;
+    float barH = std::max(6.0f, H() - LabelH - 2), radius = std::min(8.0f, barH / 2);
+    D2D1_ROUNDED_RECT bar{{0, 0, W(), barH}, radius, radius};
+    ID2D1RenderTarget* t = c.Target();
+    t->FillRoundedRectangle(bar, c.Brush(Palette::Argb(52, 52, 56)));
+    // The night, slice by slice, within the bar's rounded ends.
+    std::vector<float> night = profile ? profile() : std::vector<float>{};
+    gfx::ComPtr<ID2D1RoundedRectangleGeometry> shape;
+    gfx::D2D()->CreateRoundedRectangleGeometry(bar, shape.GetAddressOf());
+    gfx::ComPtr<ID2D1Layer> layer;
+    if (shape && !night.empty() && SUCCEEDED(t->CreateLayer(layer.GetAddressOf()))) {
+        t->PushLayer(D2D1::LayerParameters(D2D1::InfiniteRect(), shape.Get()), layer.Get());
+        float w = W() / night.size();
+        for (size_t i = 0; i < night.size(); i++)
+            if (night[i] > 0.01f) c.Fill({i * w, 0, (i + 1) * w + 0.5f, barH}, Palette::Argb(255, 184, 64), 0.85f * night[i]);
+        t->PopLayer();
+    }
+    // Now.
+    if (now) {
+        float x = W() * std::clamp(now(), 0, 24 * 60) / (24 * 60.0f);
+        c.FillRound({x - 1.5f, -2, x + 1.5f, barH + 2}, 1.5f, Theme::Fg);
+    }
+    // The hours.
+    const wchar_t* hours[] = {L"00", L"06", L"12", L"18", L"24"};
+    for (int i = 0; i < 5; i++) {
+        float x = W() * i / 4;
+        HAlign align = i == 0 ? HAlign::Left : i == 4 ? HAlign::Right : HAlign::Center;
+        D2D1_RECT_F box = i == 0 ? D2D1_RECT_F{0, barH + 2, 40, H()} : i == 4 ? D2D1_RECT_F{W() - 40, barH + 2, W(), H()}
+                                 : D2D1_RECT_F{x - 20, barH + 2, x + 20, H()};
+        c.Text(hours[i], Fonts::Small(), box, Theme::Dim, align);
+    }
+}
+
+} // namespace bb::ui

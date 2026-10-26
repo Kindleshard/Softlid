@@ -1,4 +1,4 @@
-// The Options page (the cog): BlinkBuddy itself, mini mode and updates.
+// Options (the cog): the features' switches, then BlinkBuddy itself, mini mode and updates.
 #include "features/settings/SettingsWindow.h"
 #include "features/settings/SettingsHost.h"
 #include "core/Lang.h"
@@ -135,10 +135,11 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
     ToggleRow(st, L"Fold this window into the icon, so you see where it went", s.MiniFold,
               [this](bool v) { s.MiniFold = v; app.Changed(); }, on);
     // The icons as previews (each named in its tip), drawn with the screen's current brightness and warmth.
-    Row& iconRow = st.Add(64, on);
+    Row& iconRow = st.Add(82, on);
     AddLabel(iconRow, L"Icon", Fonts::Body(), Theme::Fg, 24, 18, 120, 26);
     auto& icon = iconRow.Add<TilePicker>(4, s.MiniIcon);
-    icon.SetBounds(150, 6, 4 * 48 + 3 * 13 + 2, 48);
+    icon.SetBounds(150, 6, 4 * 48 + 3 * 13 + 2, 48 + 18);
+    icon.SetCaptions({L"Eye", L"Lamp", L"Sun", L"Laptop"});
     icon.painter = [this](Canvas& c, const D2D1_RECT_F& r, int i, float awake) {
         // On its dark disc, as mini mode draws it.
         float w = Width(r), d = w * 0.84f, cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2;

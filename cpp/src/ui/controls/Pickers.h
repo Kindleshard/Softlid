@@ -143,6 +143,16 @@ private:
     bool dragging = false;
 };
 
+// A day from midnight to midnight: the night shaded in amber (as deep as the night is at each moment), a mark at the
+// time now, and the hours under it.
+class DayBar : public Control {
+public:
+    std::function<std::vector<float>()> profile;   // how far into the night it is (0 day .. 1 full night), evenly
+                                                  // through the day from midnight
+    std::function<int()> now;                      // the minute of the day now
+    void Paint(Canvas& canvas) override;
+};
+
 // Where a dragged item would land: a short bar in the accent colour.
 class DropMark : public Control {
 public:

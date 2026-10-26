@@ -75,8 +75,8 @@ private:
     D2D1_POINT_2F Spot(int i) const;
 };
 
-// The screen modes as a grid of compact tiles (four to a row), each an icon beside its name; the chosen one is
-// outlined in the accent. Selected can be -1 (none).
+// The screen modes as chips (pills that flow onto as many rows as they need), each an icon beside its name; the
+// chosen one is tinted and outlined in the accent. Selected can be -1 (none).
 class ModeGrid : public Choice {
 public:
     ModeGrid(std::vector<std::wstring> glyphs, std::vector<std::wstring> englishNames);
@@ -101,6 +101,7 @@ public:
     std::function<void(Canvas&, const D2D1_RECT_F&, int, float)> painter;
     std::function<void(int)> onHover;
     int Hovered() const { return hoverIndex; }
+    void SetCaptions(std::vector<std::wstring> englishNames);   // a name under each tile (the tiles shrink to make room)
 
     void Paint(Canvas& canvas) override;
     void MouseMove(D2D1_POINT_2F p, bool) override;
@@ -110,13 +111,16 @@ public:
     void EnabledChanged() override { Invalidate(); }
 
 private:
-    float Gap() const { return H() * 0.28f; }
+    static constexpr float CaptionH = 18;
+    float Side() const { return captions.empty() ? H() : H() - CaptionH; }   // a tile's side
+    float Gap() const { return Side() * 0.28f; }
     float Target(int i) const { return i == hoverIndex ? 1.0f : i == selected ? 0.75f : 0.45f; }
     int IndexAt(float x) const;
     void Animate();
     void SetHoverIndex(int i);
     int count, hoverIndex = -1;
     std::vector<float> awake;
+    std::vector<std::wstring> captions;
     ULONGLONG last = 0;
 };
 

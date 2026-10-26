@@ -115,7 +115,8 @@ public:
     void SetMarker(int v);                // a value marked in green on the track (-1: none), e.g. the night strength
     void SetMuted(bool on);               // greyed but still movable (the blue light filter while an effect is on)
     std::function<void(int)> onChange;
-    bool warm = false;                    // the blue light filter: blue turning amber as the value goes up
+    bool warm = false;                    // the blue light filter: a track from daylight to amber (icy below 0)
+    bool shade = false;                   // brightness: a track from dark to light
 
     void Paint(Canvas& canvas) override;
     void MouseDown(D2D1_POINT_2F p) override;
