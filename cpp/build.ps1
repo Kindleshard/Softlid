@@ -17,6 +17,11 @@ $commands = "`"$vcvars`" >nul && cmake -S `"$PSScriptRoot`" -B `"$build`" -G Nin
 cmd /c $commands
 if ($LASTEXITCODE -ne 0) { throw "Build failed ($LASTEXITCODE)." }
 
+
+# The tests run before anything is copied: a failing test stops the build.
+& (Join-Path $build 'BlinkBuddyTests.exe')
+if ($LASTEXITCODE -ne 0) { throw "Tests failed ($LASTEXITCODE)." }
+
 $bin = Join-Path $PSScriptRoot 'bin'
 New-Item -ItemType Directory -Force -Path $bin | Out-Null
 $exe = Join-Path $bin 'BlinkBuddy.exe'

@@ -18,3 +18,12 @@ target_compile_options(BlinkBuddy PRIVATE /W4 /permissive- /utf-8 /EHsc
 target_link_options(BlinkBuddy PRIVATE /MANIFEST:NO   # the manifest is in app.rc
     $<$<CONFIG:Release>:/LTCG /OPT:REF /OPT:ICF>)
 target_link_libraries(BlinkBuddy PRIVATE user32 gdi32 shell32 ole32 comctl32 advapi32 shlwapi uxtheme)
+
+# The tests: the core logic (and the few platform pieces it reads through), run by build.ps1 after each build.
+file(GLOB TEST_SOURCES CONFIGURE_DEPENDS tests/*.cpp src/core/*.cpp)
+add_executable(BlinkBuddyTests ${TEST_SOURCES}
+    src/platform/Text.cpp src/platform/Files.cpp src/platform/NightLight.cpp)
+target_include_directories(BlinkBuddyTests PRIVATE src res tests)
+target_compile_definitions(BlinkBuddyTests PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
+target_compile_options(BlinkBuddyTests PRIVATE /W4 /permissive- /utf-8 /EHsc)
+target_link_libraries(BlinkBuddyTests PRIVATE user32 shell32 ole32 advapi32)
