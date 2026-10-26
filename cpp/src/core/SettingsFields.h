@@ -110,6 +110,7 @@ BB_SETTING(int, MiniY, -1)
 BB_SETTING(int, MiniFadeDelay, 500)             // ms
 BB_SETTING(int, MiniFadeTime, 150)              // ms
 BB_SETTING(bool, MiniEnabled, true)
+BB_SETTING(bool, MiniOnMinimize, true)          // minimising the settings window switches to mini mode (not the taskbar)
 BB_SETTING(int, MiniIcon, 0)                    // 0 eye, 1 lamp, 2 sun, 3 laptop
 BB_SETTING(bool, MiniOrbit, false)
 BB_SETTING(int, MiniOrbitSeconds, 60)

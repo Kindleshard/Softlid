@@ -118,7 +118,14 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
         UpdateRows();
     });
     Note(st, L"Switch to it with the button next to the title bar, or by minimising this window. Hover over it for quick "
-             L"controls; click it to come back here.", 2, on);
+             L"controls; click it to come back here.", 2, And(on, [this] { return s.MiniOnMinimize; }));
+    Note(st, L"Switch to it with the button next to the title bar. Hover over it for quick controls; click it to come back "
+             L"here.", 2, And(on, [this] { return !s.MiniOnMinimize; }));
+    ToggleRow(st, L"Minimising this window switches to mini mode", s.MiniOnMinimize, [this](bool v) {
+        s.MiniOnMinimize = v;
+        app.Changed();
+        UpdateRows();   // (the note above says how to get there)
+    }, on);
     // The icons as previews (each named in its tip), drawn with the screen's current brightness and warmth.
     Row& iconRow = st.Add(64, on);
     AddLabel(iconRow, L"Icon", Fonts::Body(), Theme::Fg, 24, 18, 120, 26);

@@ -198,8 +198,8 @@ LRESULT SettingsWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
             CloseClicked();
             return 0;
         }
-        // Minimising folds the window into mini mode (when mini mode is on) instead of the taskbar.
-        if ((w & 0xFFF0) == SC_MINIMIZE && s.MiniEnabled) {
+        // Minimising folds the window into mini mode instead of the taskbar (when mini mode is on, and set so).
+        if ((w & 0xFFF0) == SC_MINIMIZE && s.MiniEnabled && s.MiniOnMinimize) {
             app.EnterMiniMode();
             return 0;
         }
