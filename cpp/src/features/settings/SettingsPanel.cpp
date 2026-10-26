@@ -83,7 +83,7 @@ void SettingsWindow::ShowOptions(bool on)
 bool SettingsWindow::FeatureOn(int f) const
 {
     switch (f) {
-    case FFilter: return s.FilterEnabled;
+    case FFilter: return s.FilterEnabled || s.Mode == Modes::Pause;   // (paused is still in use: the Pause chip is chosen)
     case FTone: return s.ToneEnabled;
     case FBlink: return s.BlinkEnabled;
     case FLookAway: return s.BreakEnabled;
@@ -102,7 +102,10 @@ bool SettingsWindow::FeatureListed(int f) const { return (f != FGrain && f != FR
 void SettingsWindow::SetFeature(int f, bool on)
 {
     switch (f) {
-    case FFilter: SetFilter(on); break;
+    case FFilter:
+        if (!on && s.Mode == Modes::Pause) s.Mode = -1;   // (switched off, it is no longer paused but off)
+        SetFilter(on);
+        break;
     case FTone: SetTone(on); break;   // (on, it switches the screen filter on too: tone works on top of it)
     case FBlink: s.BlinkEnabled = on; app.Changed(); break;
     case FLookAway: s.BreakEnabled = on; app.Changed(); break;
@@ -213,8 +216,10 @@ void SettingsWindow::BuildFeatureList(Stack& st)
 {
     SectionHead(st, static_cast<wchar_t>(0xE8FD), L"Features",
                 L"Switched on, a feature runs and has its card on the panel. Drag them into the order you like.");
+    // (each row is a block, to be dragged; blocks don't take the section from the heading, so they fold with it here)
+    Shown open = [this] { return !IsFolded(L"Features"); };
     for (int f = 0; f < FeatureCount; f++) {
-        st.BeginBlock(f, [this, f] { return FeatureListed(f); });
+        st.BeginBlock(f, [this, f, open] { return open() && FeatureListed(f); });
         Row& r = st.Add(40);
         auto& grip = r.Add<DragGrip>();
         grip.SetBounds(18, 5, 18, 30);
@@ -302,6 +307,7 @@ std::wstring SettingsWindow::FeatureSummary(int f) const
     const std::wstring dot = L" \u00B7 ";
     switch (f) {
     case FFilter: {
+        if (s.Mode == Modes::Pause) return Lang::T(L"Paused");
         std::wstring mode = s.Mode >= 0 && s.Mode < Modes::Count ? Lang::T(Modes::Names[s.Mode]) : Lang::T(L"Custom");
         std::wstring blue = s.BlueFilter == 0 ? Lang::T(L"No blue light filter") : Num(ColorMath::KelvinFor(s.BlueFilter)) + L" K";
         return mode + dot + Num(s.Brightness) + L"%" + dot + blue;
