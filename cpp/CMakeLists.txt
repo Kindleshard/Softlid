@@ -17,7 +17,13 @@ target_compile_options(BlinkBuddy PRIVATE /W4 /permissive- /utf-8 /EHsc
     $<$<CONFIG:Release>:/GL /Gy /Gw>)
 target_link_options(BlinkBuddy PRIVATE /MANIFEST:NO   # the manifest is in app.rc
     $<$<CONFIG:Release>:/LTCG /OPT:REF /OPT:ICF>)
-target_link_libraries(BlinkBuddy PRIVATE user32 gdi32 shell32 ole32 comctl32 advapi32 shlwapi uxtheme)
+target_link_libraries(BlinkBuddy PRIVATE user32 gdi32 shell32 ole32 comctl32 advapi32 shlwapi uxtheme delayimp)
+# Loaded the first time they are used, not at start: the tray app idles without drawing (Direct2D, DirectWrite),
+# the GPU engine (Direct3D, the shader compiler), downloads, the backlight, the magnifier filter (off by default),
+# sounds or the file dialog - and most sessions never use some of them.
+target_link_options(BlinkBuddy PRIVATE
+    /DELAYLOAD:d2d1.dll /DELAYLOAD:dwrite.dll /DELAYLOAD:d3d11.dll /DELAYLOAD:dxgi.dll /DELAYLOAD:d3dcompiler_47.dll
+    /DELAYLOAD:urlmon.dll /DELAYLOAD:dxva2.dll /DELAYLOAD:magnification.dll /DELAYLOAD:winmm.dll /DELAYLOAD:comdlg32.dll)
 
 # The tests: the core logic (and the few platform pieces it reads through), run by build.ps1 after each build.
 file(GLOB TEST_SOURCES CONFIGURE_DEPENDS tests/*.cpp src/core/*.cpp)
