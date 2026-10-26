@@ -17,8 +17,11 @@ class MiniHost;
 // place and a highlight runs along the rim.
 class MiniWindow : public Window {
 public:
-    explicit MiniWindow(MiniHost& app);
+    // hidden: made, but not shown until Reveal (while the settings window folds into it: see MiniMorph)
+    explicit MiniWindow(MiniHost& app, bool hidden = false);
     ~MiniWindow() override;
+    void Reveal();
+    RECT Bounds() const;        // where it is on screen
 
 private:
     LRESULT OnMessage(UINT message, WPARAM w, LPARAM l) override;
@@ -31,7 +34,6 @@ private:
     bool FocusOn() const;
     bool Flowing() const;
     float Bright() const;
-    RECT Bounds() const;
 
     void CheckHover();          // every 120 ms
     void FadeStep();            // every 15 ms while waiting to fade, or fading

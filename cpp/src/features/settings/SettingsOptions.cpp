@@ -132,6 +132,8 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
         app.Changed();
         UpdateRows();   // (the note above says how to get there)
     }, on);
+    ToggleRow(st, L"Fold this window into the icon, so you see where it went", s.MiniFold,
+              [this](bool v) { s.MiniFold = v; app.Changed(); }, on);
     // The icons as previews (each named in its tip), drawn with the screen's current brightness and warmth.
     Row& iconRow = st.Add(64, on);
     AddLabel(iconRow, L"Icon", Fonts::Body(), Theme::Fg, 24, 18, 120, 26);

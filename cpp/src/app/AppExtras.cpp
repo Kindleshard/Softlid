@@ -1,6 +1,7 @@
 // The app's extras: the focus timer, and mini mode (the settings folded into a small eye that stays on top).
 #include "app/App.h"
 #include "core/Lang.h"
+#include <dwmapi.h>
 #include "platform/MemJournal.h"
 #include <algorithm>
 
@@ -38,8 +39,23 @@ void App::EnterMiniMode()
     MemJournal::Note(L"mini mode");
     settings.MiniMode = true;
     Changed();
+    // The settings window folds into the icon (when set so in Options): its picture is taken before it
+    // closes, without Windows' own closing fade, and the icon shows once the picture has landed where it will be.
+    MiniMorph::Picture picture;
+    if (settingsWindow && settings.MiniFold && (!offscreen || CloakedCopy())) {   // (a cloaked diagnostic copy too)
+        picture = MiniMorph::Take(settingsWindow->Handle());
+        BOOL off = TRUE;
+        DwmSetWindowAttribute(settingsWindow->Handle(), DWMWA_TRANSITIONS_FORCEDISABLED, &off, sizeof off);
+    }
     if (settingsWindow) settingsWindow->Close();   // (its onClosed tidies up)
-    ShowMini();
+    bool fold = !picture.pixels.empty() && !mini;
+    if (!mini) mini = std::make_unique<MiniWindow>(*this, fold);
+    if (fold) {
+        morph = std::make_unique<MiniMorph>(std::move(picture), mini->Bounds(), [this] {
+            if (mini) mini->Reveal();
+            DeleteLater(std::move(morph));
+        });
+    }
 }
 
 void App::ShowMini()

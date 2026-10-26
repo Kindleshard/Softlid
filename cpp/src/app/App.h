@@ -8,6 +8,7 @@
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/EyePopup.h"
 #include "features/mini/MiniHost.h"
+#include "features/mini/MiniMorph.h"
 #include "features/mini/MiniWindow.h"
 #include "features/settings/SettingsHost.h"
 #include "features/settings/SettingsWindow.h"
@@ -207,6 +208,7 @@ private:
     // The reading strip and mini mode.
     std::unique_ptr<ReadingStrip> strip;
     std::unique_ptr<MiniWindow> mini;
+    std::unique_ptr<MiniMorph> morph;   // the settings window folding into it, while it does
     void ShowMini();
     HICON bigIcon = nullptr;
     bool offscreen = false;

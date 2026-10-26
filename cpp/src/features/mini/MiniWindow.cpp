@@ -224,7 +224,7 @@ private:
 
 // ---- The icon ----
 
-MiniWindow::MiniWindow(MiniHost& app) : app(app), panel(std::make_unique<Panel>(app))
+MiniWindow::MiniWindow(MiniHost& app, bool hidden) : app(app), panel(std::make_unique<Panel>(app))
 {
     POINT cursor;
     GetCursorPos(&cursor);
@@ -233,6 +233,12 @@ MiniWindow::MiniWindow(MiniHost& app) : app(app), panel(std::make_unique<Panel>(
     pos = StartingPoint();
     Create(L"BlinkBuddy.Mini", WS_POPUP, PopupExStyle | WS_EX_LAYERED, {pos.x, pos.y, pos.x + px, pos.y + px});
     Draw();
+    if (!hidden) Reveal();
+}
+
+void MiniWindow::Reveal()
+{
+    if (IsWindowVisible(hwnd)) return;
     ShowWindow(hwnd, SW_SHOWNOACTIVATE);
     nextBreath = GetTickCount64() + static_cast<ULONGLONG>(std::max(3, app.S().MiniOrbitSeconds)) * 1000;
     SetTimer(hwnd, HoverTimer, 120, nullptr);
