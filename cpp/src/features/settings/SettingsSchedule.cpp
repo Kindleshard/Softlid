@@ -84,6 +84,12 @@ void SettingsWindow::BuildNight(Stack& st)
         return night;
     };
     dayBar->now = [this] { LocalTime t = LocalNow(); return unfoldAll ? 12 * 60 : t.hour * 60 + t.minute; };
+    // Where the sun times come from, in green, just under the day: Windows location, or the time zone's city (also
+    // while the schedule is off, so you see it before switching it on).
+    Row& syncRow = st.Add(28, [this] { return s.ScheduleMode == 0 && !app.FollowsNightLight(); });
+    syncTick = &syncRow.Add<Icon>(L'\uE73E', 10.0f, Theme::Good);   // a check mark
+    syncTick->SetBounds(22, 2, 22, 22);
+    syncStatus = &AddLabel(syncRow, L"Syncing with your location...", Fonts::Small(), Theme::Dim, 46, 2, Edge - 46, 22);
     // Sunset to sunrise, or hours of your own (the Advanced view only: Simple keeps to the sun).
     Shown advanced = And(own, [this] { return s.AdvancedView; }), hours = And(advanced, [this] { return s.ScheduleMode == 1; });
     Row& modeRow = st.Add(46, advanced);
@@ -115,11 +121,6 @@ void SettingsWindow::BuildNight(Stack& st)
     Row& statusRow = st.Add(70);
     nightStatus = &AddLabel(statusRow, L"", Fonts::Body(), Theme::Dim, 24, 4, Edge - 24, 62);
     nightStatus->wrap = nightStatus->top = true;
-    // When (and with what) the sun times were last synced, in green: Windows location, or the time zone's city.
-    Row& syncRow = st.Add(28, [this] { return s.ScheduleEnabled && s.ScheduleMode == 0 && !app.FollowsNightLight(); });
-    syncTick = &syncRow.Add<Icon>(L'\uE73E', 10.0f, Theme::Good);   // a check mark
-    syncTick->SetBounds(22, 2, 22, 22);
-    syncStatus = &AddLabel(syncRow, L"Syncing with your location...", Fonts::Small(), Theme::Dim, 46, 2, Edge - 46, 22);
     BuildCityPicker(st);
     mode.onChange = [this](int v) {
         s.ScheduleMode = v;

@@ -135,7 +135,7 @@ void SettingsWindow::SyncFromApp()
     blueSlider->SetRange(s.CoolRange ? -75 : 0, 100);
     blueSlider->SetValue(s.BlueFilter);
     NightMarker();
-    modeGrid->SetSelected(s.Mode);
+    modeGrid->SetSelected(std::max(-1, s.Mode - 1));   // (the chips start at mode 1: no Pause)
     effectPicker->SetSelected(s.ColorEffect);
     awakeToggle->SetOn(app.KeepingAwake());
     UpdateRows();

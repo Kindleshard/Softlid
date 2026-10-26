@@ -22,18 +22,19 @@ std::wstring Percent(int v) { return std::to_wstring(v) + L"%"; }
 void SettingsWindow::BuildFilter(Stack& st)
 {
     FeatureHead(st, FFilter, L"Ctrl+Alt+Shift with F: on/off · ↑ ↓: brightness · ← →: warmth");
-    // One-click modes; moving a slider makes it your own (Custom) again.
+    // One-click modes; moving a slider makes it your own (Custom) again. Not Pause: the card's switch does that (the
+    // chips are modes 1 on, so chip i is mode i + 1).
     Row& modeRow = st.Add(88);
     std::vector<std::wstring> glyphs, names;
-    for (int i = 0; i < Modes::Count; i++) {
+    for (int i = Modes::Health; i < Modes::Count; i++) {
         glyphs.push_back(Modes::Glyphs[i]);
         names.push_back(Modes::Names[i]);
     }
     modeGrid = &modeRow.Add<ModeGrid>(glyphs, names);
     modeGrid->SetBounds(24, 4, Edge - 24, 80);
-    modeGrid->SetSelected(s.Mode);
-    modeGrid->onChange = [this](int mode) {
-        app.ChooseMode(mode);
+    modeGrid->SetSelected(std::max(-1, s.Mode - 1));
+    modeGrid->onChange = [this](int chip) {
+        app.ChooseMode(chip + 1);
         SyncFromApp();
     };
     Row& ruleRow = st.Add(26, [this] { return app.RuleMode() >= 0; });
@@ -193,7 +194,7 @@ void SettingsWindow::FilterTouched()
 {
     if (!s.FilterEnabled) SetFilter(true);
     else app.Changed(true);
-    modeGrid->SetSelected(s.Mode);
+    modeGrid->SetSelected(std::max(-1, s.Mode - 1));
 }
 
 void SettingsWindow::BacklightToggled(bool on)

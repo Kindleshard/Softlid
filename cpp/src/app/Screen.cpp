@@ -290,6 +290,10 @@ SettingsHost::Sync Screen::SyncState(std::wstring& text) const
         text = Lang::F(L"{0} time, chosen by you", {place});
         return Sync::CityChosen;
     }
+    if (syncedAt == Clock::time_point{} && !s.CityManual && !s.ScheduleEnabled && !place.empty()) {
+        text = Lang::F(L"Synced with {0} time", {place});   // (off, it doesn't look you up: the time zone's city)
+        return Sync::Synced;
+    }
     if (syncedAt == Clock::time_point{} && !s.CityManual) {
         text = Lang::T(L"Syncing with your location...");
         return Sync::Syncing;
