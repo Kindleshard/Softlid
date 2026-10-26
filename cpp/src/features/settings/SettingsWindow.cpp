@@ -3,6 +3,7 @@
 #include "core/Lang.h"
 #include "core/Modes.h"
 #include "features/settings/CloseDialog.h"
+#include "platform/Memory.h"
 #include "ui/MiniArt.h"
 #include "ui/Theme.h"
 #include <algorithm>
@@ -98,6 +99,18 @@ void SettingsWindow::Later(std::function<void()> work)
     PostMessageW(Handle(), LaterMessage, 0, 0);
 }
 
+// Most of the open window's memory is the drawing engine's working space (Direct2D drawing on the processor): its
+// buffers and caches, filled while you scroll and click. Left alone for a few seconds, the window hands those pages
+// back to Windows (as it does when it closes); the next scroll or click brings back what it needs from the standby
+// list, where they still are unless another program wanted the room.
+void SettingsWindow::IdleCheck()
+{
+    constexpr ULONGLONG Idle = 4000;
+    if (trimmed || GetTickCount64() - lastInput < Idle) return;
+    trimmed = true;
+    TrimMemory();
+}
+
 void SettingsWindow::RefreshStatus()
 {
     breakStatus->SetPlainText(app.BreakStatus());
@@ -155,10 +168,15 @@ void SettingsWindow::CloseClicked()
 
 LRESULT SettingsWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
 {
+    if ((message >= WM_MOUSEFIRST && message <= WM_MOUSELAST) || message == WM_KEYDOWN || message == WM_CHAR) {
+        lastInput = GetTickCount64();
+        trimmed = false;
+    }
     switch (message) {
     case WM_TIMER:
         if (w == StatusTimer) {
             RefreshStatus();
+            IdleCheck();
             return 0;
         }
         break;

@@ -14,18 +14,16 @@ TEST(CpuPercentOfTheWholeProcessor)
     CHECK_NEAR(ResourceMeter::CpuPercent(second, 0, 4), 0, 1e-9);            // no time passed
 }
 
-TEST(GpuPercentOfTheBusiestEngineKind)
+TEST(GpuPercentOfTheBusiestEngine)
 {
-    std::vector<std::pair<std::wstring, double>> engines{
-        {L"pid_42_luid_0x0_0xD1A3_phys_0_eng_0_engtype_3D", 3.0},
-        {L"pid_42_luid_0x0_0xD1A3_phys_0_eng_1_engtype_3D", 2.5},   // two 3D engines: 5.5 together
-        {L"pid_42_luid_0x0_0xD1A3_phys_0_eng_5_engtype_Copy", 4.0},
-        {L"pid_420_luid_0x0_0xD1A3_phys_0_eng_0_engtype_3D", 90.0}, // another program (and not "pid_42_")
-    };
-    CHECK_NEAR(ResourceMeter::GpuPercent(engines, 42), 5.5, 1e-9);
-    CHECK_NEAR(ResourceMeter::GpuPercent(engines, 420), 90, 1e-9);
-    CHECK_NEAR(ResourceMeter::GpuPercent(engines, 7), -1, 1e-9);   // no engines at all
-    CHECK_NEAR(ResourceMeter::GpuPercent({{L"pid_7_eng_0_engtype_3D", 250.0}}, 7), 100, 1e-9);
+    const int64_t second = 10'000'000;   // 100 ns units
+    std::vector<int64_t> before{100, 5'000, -1, 0}, after{100 + 200'000, 5'000 + 500'000, -1, 0};
+    CHECK_NEAR(ResourceMeter::GpuPercent(before, after, second), 5, 1e-9);           // 2% and 5%: the busiest
+    CHECK_NEAR(ResourceMeter::GpuPercent({0}, {0}, second), 0, 1e-9);               // answered, idle
+    CHECK_NEAR(ResourceMeter::GpuPercent({-1, -1}, {-1, -1}, second), -1, 1e-9);    // never used the graphics card
+    CHECK_NEAR(ResourceMeter::GpuPercent({}, {0}, second), -1, 1e-9);               // the first sample
+    CHECK_NEAR(ResourceMeter::GpuPercent({0}, {3 * second}, second), 100, 1e-9);    // (rounding between samples)
+    CHECK_NEAR(ResourceMeter::GpuPercent({0}, {second}, 0), -1, 1e-9);              // no time passed
 }
 
 TEST(ResourceSampleOfThisProgram)

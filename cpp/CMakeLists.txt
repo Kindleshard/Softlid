@@ -23,8 +23,7 @@ target_link_libraries(BlinkBuddy PRIVATE user32 gdi32 shell32 ole32 comctl32 adv
 # sounds or the file dialog - and most sessions never use some of them.
 target_link_options(BlinkBuddy PRIVATE
     /DELAYLOAD:d2d1.dll /DELAYLOAD:dwrite.dll /DELAYLOAD:d3d11.dll /DELAYLOAD:dxgi.dll /DELAYLOAD:d3dcompiler_47.dll
-    /DELAYLOAD:urlmon.dll /DELAYLOAD:dxva2.dll /DELAYLOAD:magnification.dll /DELAYLOAD:winmm.dll /DELAYLOAD:comdlg32.dll
-    /DELAYLOAD:pdh.dll)
+    /DELAYLOAD:urlmon.dll /DELAYLOAD:dxva2.dll /DELAYLOAD:magnification.dll /DELAYLOAD:winmm.dll /DELAYLOAD:comdlg32.dll)
 
 # The tests: the core logic (and the few platform pieces it reads through), run by build.ps1 after each build.
 file(GLOB TEST_SOURCES CONFIGURE_DEPENDS tests/*.cpp src/core/*.cpp)

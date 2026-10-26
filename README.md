@@ -91,8 +91,10 @@ Measured on Windows 11 at 150% scaling. Private memory is what the app itself us
 |---|---|---|
 | C# version | 24.6 MB | — |
 | C++ version 1.0.0 | 2.9 MB | 10.2 MB |
+| C++, slimmed settings window | 2.0 MB | 4.1 MB |
 
-When the settings window closes, its working set drops back to about 1 MB. Details for every step of the rewrite
+Left alone for a few seconds, the open settings window gives its pages back to Windows: about 0.5 MB of its own in
+RAM. When it closes, its working set drops back to about 1 MB. Details for every step of the rewrite
 are in [cpp/docs/MEMORY.md](cpp/docs/MEMORY.md).
 
 ## DesktopLUT

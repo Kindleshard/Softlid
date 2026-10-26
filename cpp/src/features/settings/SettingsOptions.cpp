@@ -271,7 +271,7 @@ void SettingsWindow::RefreshUsage()
     if (measuring && (!s.AdvancedView || tabs->Selected() != 4)) return;
     ResourceUse u{0, 0, 0, 0, 0, 0};
     if (measuring) {
-        if (!meter) meter = std::make_unique<ResourceMeter>();   // (the first time it shows: pdh.dll loads only then)
+        if (!meter) meter = std::make_unique<ResourceMeter>();   // (made the first time it shows)
         u = meter->Sample();
         usageGraph->Add(u.cpu, std::max(0.0, u.gpu));
     }

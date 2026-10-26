@@ -224,26 +224,19 @@ void DirectWindow::Paint()
     PAINTSTRUCT ps;
     BeginPaint(hwnd, &ps);
     if (!target) {
-        RECT r;
-        GetClientRect(hwnd, &r);
-        auto props = D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_SOFTWARE, D2D1::PixelFormat(),
+        // Drawn on the processor, straight into the window's own device context, one changed area at a time: Direct2D's
+        // working space is then the size of what changed. (A window target keeps a whole-window buffer and a second
+        // copy to present from, and touches both on every paint: twice the memory, for a repaint of one line.)
+        auto props = D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_SOFTWARE,
+                                                  D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE),
                                                   static_cast<float>(dpi), static_cast<float>(dpi));
-        auto hwndProps = D2D1::HwndRenderTargetProperties(hwnd, D2D1::SizeU(r.right, r.bottom), D2D1_PRESENT_OPTIONS_RETAIN_CONTENTS);
-        gfx::D2D()->CreateHwndRenderTarget(props, hwndProps, target.GetAddressOf());
+        gfx::D2D()->CreateDCRenderTarget(&props, target.GetAddressOf());
     }
-    if (target) {
-        // The drawing surface always matches the window (a size change can come while it doesn't exist yet).
-        RECT r;
-        GetClientRect(hwnd, &r);
-        D2D1_SIZE_U drawn = target->GetPixelSize();
-        if (drawn.width != static_cast<UINT32>(r.right) || drawn.height != static_cast<UINT32>(r.bottom)) {
-            target->Resize(D2D1::SizeU(r.right, r.bottom));
-            InvalidateRect(hwnd, nullptr, FALSE);   // all of it, now it is bigger
-        }
+    if (target && !IsRectEmpty(&ps.rcPaint) && SUCCEEDED(target->BindDC(ps.hdc, &ps.rcPaint))) {
         target->BeginDraw();
-        target->SetTransform(D2D1::Matrix3x2F::Identity());
         float s = Scale();
         D2D1_RECT_F clip{ps.rcPaint.left / s, ps.rcPaint.top / s, ps.rcPaint.right / s, ps.rcPaint.bottom / s};
+        target->SetTransform(D2D1::Matrix3x2F::Translation(-clip.left, -clip.top));   // (the area bound starts at its corner)
         target->PushAxisAlignedClip(clip, D2D1_ANTIALIAS_MODE_ALIASED);
         target->Clear(gfx::Color(options.background ? options.background : options.popup ? Palette::Argb(43, 43, 43) : Theme::Bg));
         Canvas canvas(target.Get());
@@ -351,9 +344,8 @@ LRESULT DirectWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
 
 // ---- Size and scale ----
 
-void DirectWindow::OnSize(WPARAM w, LPARAM l)
+void DirectWindow::OnSize(WPARAM w, LPARAM)
 {
-    if (target) target->Resize(D2D1::SizeU(LOWORD(l), HIWORD(l)));
     if (w != SIZE_MINIMIZED) Relayout();
 }
 

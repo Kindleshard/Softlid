@@ -32,6 +32,7 @@ public:
 
     void SyncFromApp();     // shortcuts and the tray menu changed settings while it is open: mirror them
     void RefreshStatus();   // the status lines (also once a second)
+    void IdleCheck();       // once a second: left alone for a while, its memory goes back to Windows
 
 protected:
     void Layout() override;
@@ -181,6 +182,8 @@ private:
     bool measuring = false;                 // (not in a diagnostic copy)
 
     int shownSync = -1, shownRule = -1;
+    ULONGLONG lastInput = GetTickCount64();   // the last click, key or mouse move over it
+    bool trimmed = false;                     // memory already given back since then
 };
 
 } // namespace bb

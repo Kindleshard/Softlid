@@ -86,7 +86,7 @@ private:
     Container root;
     UINT dpi = 96;
     Options options;
-    gfx::ComPtr<ID2D1HwndRenderTarget> target;
+    gfx::ComPtr<ID2D1DCRenderTarget> target;
     Control* hover = nullptr;
     Control* captured = nullptr;
     Control* focused = nullptr;

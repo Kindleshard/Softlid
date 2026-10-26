@@ -1,11 +1,8 @@
 #include "platform/ResourceUse.h"
-#include <pdh.h>
-#include <pdhmsg.h>
+#include <winternl.h>
+#include <d3dkmthk.h>
 #include <psapi.h>
 #include <algorithm>
-#include <map>
-
-#pragma comment(lib, "pdh.lib")
 
 namespace bb {
 namespace {
@@ -16,20 +13,26 @@ constexpr double Mb = 1024.0 * 1024.0;
 
 } // namespace
 
+// The graphics card's figures come from the same per-process engine statistics Task Manager's are made from (asked
+// of the graphics kernel directly: the performance counters that also give them cost a few MB just to open).
 ResourceMeter::ResourceMeter()
 {
     cpus = std::max(1, static_cast<int>(GetActiveProcessorCount(ALL_PROCESSOR_GROUPS)));
-    // Only this process's engines ("pid_1234_..."): far fewer than every program's.
-    PDH_HQUERY q = nullptr;
-    PDH_HCOUNTER c = nullptr;
-    std::wstring path = L"\\GPU Engine(pid_" + std::to_wstring(GetCurrentProcessId()) + L"_*)\\Utilization Percentage";
-    if (PdhOpenQueryW(nullptr, 0, &q) == ERROR_SUCCESS) {
-        if (PdhAddEnglishCounterW(q, path.c_str(), 0, &c) == ERROR_SUCCESS) {
-            query = q;
-            counter = c;
-            PdhCollectQueryData(q);   // (a rate needs a first sample)
-        } else {
-            PdhCloseQuery(q);
+    self = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, GetCurrentProcessId());   // (a pseudo-handle isn't enough)
+    D3DKMT_ENUMADAPTERS2 list{};
+    if (self && D3DKMTEnumAdapters2(&list) == 0 && list.NumAdapters > 0) {
+        std::vector<D3DKMT_ADAPTERINFO> info(list.NumAdapters);
+        list.pAdapters = info.data();
+        if (D3DKMTEnumAdapters2(&list) == 0)
+            for (ULONG i = 0; i < list.NumAdapters; i++) {
+                D3DKMT_QUERYSTATISTICS q{};
+                q.Type = D3DKMT_QUERYSTATISTICS_ADAPTER;
+                q.AdapterLuid = info[i].AdapterLuid;
+                if (D3DKMTQueryStatistics(&q) == 0) adapters.push_back({info[i].AdapterLuid, q.QueryResult.AdapterInformation.NodeCount});
+            }
+        for (ULONG i = 0; i < list.NumAdapters; i++) {
+            D3DKMT_CLOSEADAPTER close{info[i].hAdapter};
+            D3DKMTCloseAdapter(&close);
         }
     }
     Sample();
@@ -37,7 +40,7 @@ ResourceMeter::ResourceMeter()
 
 ResourceMeter::~ResourceMeter()
 {
-    if (query) PdhCloseQuery(static_cast<PDH_HQUERY>(query));
+    if (self) CloseHandle(self);
 }
 
 double ResourceMeter::CpuPercent(uint64_t cpuTime, uint64_t wallTime, int cpus)
@@ -46,55 +49,56 @@ double ResourceMeter::CpuPercent(uint64_t cpuTime, uint64_t wallTime, int cpus)
     return std::clamp(100.0 * static_cast<double>(cpuTime) / (static_cast<double>(wallTime) * cpus), 0.0, 100.0);
 }
 
-double ResourceMeter::GpuPercent(const std::vector<std::pair<std::wstring, double>>& engines, DWORD pid)
+double ResourceMeter::GpuPercent(const std::vector<int64_t>& before, const std::vector<int64_t>& after, uint64_t wallTime)
 {
-    std::wstring mine = L"pid_" + std::to_wstring(pid) + L"_";
-    std::map<std::wstring, double> byKind;
-    bool any = false;
-    for (const auto& [name, value] : engines) {
-        if (name.rfind(mine, 0) != 0) continue;
-        any = true;
-        size_t kind = name.find(L"engtype_");
-        byKind[kind == std::wstring::npos ? L"" : name.substr(kind + 8)] += value;
-    }
-    if (!any) return -1;
-    double busiest = 0;
-    for (const auto& [kind, value] : byKind) busiest = std::max(busiest, value);
-    return std::clamp(busiest, 0.0, 100.0);
+    if (wallTime == 0) return -1;
+    double busiest = -1;
+    for (size_t i = 0; i < before.size() && i < after.size(); i++)
+        if (before[i] >= 0 && after[i] >= before[i])
+            busiest = std::max(busiest, 100.0 * static_cast<double>(after[i] - before[i]) / static_cast<double>(wallTime));
+    return busiest < 0 ? -1 : std::min(busiest, 100.0);
+}
+
+// Each engine of each graphics adapter: how long it has run this process's work. An adapter this process has never
+// used doesn't answer (-1).
+std::vector<int64_t> ResourceMeter::GpuTimes() const
+{
+    std::vector<int64_t> times;
+    for (const Adapter& a : adapters)
+        for (unsigned n = 0; n < a.engines; n++) {
+            D3DKMT_QUERYSTATISTICS q{};
+            q.Type = D3DKMT_QUERYSTATISTICS_PROCESS_NODE;
+            q.AdapterLuid = a.luid;
+            q.hProcess = self;
+            q.QueryProcessNode.NodeId = n;
+            times.push_back(D3DKMTQueryStatistics(&q) == 0 ? q.QueryResult.ProcessNodeInformation.RunningTime.QuadPart : -1);
+        }
+    return times;
 }
 
 ResourceUse ResourceMeter::Sample()
 {
     ResourceUse use;
-    HANDLE self = GetCurrentProcess();
+    HANDLE process = GetCurrentProcess();
 
     FILETIME created, exited, kernel, user, now;
     GetSystemTimeAsFileTime(&now);
-    if (GetProcessTimes(self, &created, &exited, &kernel, &user)) {
+    std::vector<int64_t> gpu = GpuTimes();
+    if (GetProcessTimes(process, &created, &exited, &kernel, &user)) {
         uint64_t cpu = Ticks(kernel) + Ticks(user), wall = Ticks(now);
-        if (lastWall) use.cpu = CpuPercent(cpu - lastCpu, wall - lastWall, cpus);
+        if (lastWall) {
+            use.cpu = CpuPercent(cpu - lastCpu, wall - lastWall, cpus);
+            // (no engine answering: this process hasn't used the graphics card, so nothing on it)
+            if (!adapters.empty()) use.gpu = std::max(0.0, GpuPercent(lastGpu, gpu, wall - lastWall));
+        }
         lastCpu = cpu;
         lastWall = wall;
     }
-
-    if (query && PdhCollectQueryData(static_cast<PDH_HQUERY>(query)) == ERROR_SUCCESS) {
-        DWORD size = 0, count = 0;
-        PDH_STATUS status = PdhGetFormattedCounterArrayW(static_cast<PDH_HCOUNTER>(counter), PDH_FMT_DOUBLE, &size, &count, nullptr);
-        std::vector<std::pair<std::wstring, double>> engines;
-        if (status == static_cast<PDH_STATUS>(PDH_MORE_DATA) && size > 0) {
-            std::vector<BYTE> buffer(size);
-            auto items = reinterpret_cast<PDH_FMT_COUNTERVALUE_ITEM_W*>(buffer.data());
-            if (PdhGetFormattedCounterArrayW(static_cast<PDH_HCOUNTER>(counter), PDH_FMT_DOUBLE, &size, &count, items) == ERROR_SUCCESS)
-                for (DWORD i = 0; i < count; i++)
-                    if (items[i].FmtValue.CStatus == ERROR_SUCCESS) engines.emplace_back(items[i].szName, items[i].FmtValue.doubleValue);
-        }
-        double gpu = GpuPercent(engines, GetCurrentProcessId());
-        use.gpu = gpu < 0 ? 0 : gpu;   // (no engines in use: nothing on the graphics card)
-    }
+    lastGpu = std::move(gpu);
 
     PROCESS_MEMORY_COUNTERS_EX2 memory{};
     memory.cb = sizeof memory;
-    if (GetProcessMemoryInfo(self, reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&memory), sizeof memory)) {
+    if (GetProcessMemoryInfo(process, reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&memory), sizeof memory)) {
         use.privateMb = memory.PrivateUsage / Mb;
         use.ramMb = memory.WorkingSetSize / Mb;
         use.ramOwnMb = memory.PrivateWorkingSetSize / Mb;
@@ -102,7 +106,7 @@ ResourceUse ResourceMeter::Sample()
     } else {
         PROCESS_MEMORY_COUNTERS_EX older{};
         older.cb = sizeof older;
-        if (GetProcessMemoryInfo(self, reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&older), sizeof older)) {
+        if (GetProcessMemoryInfo(process, reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&older), sizeof older)) {
             use.privateMb = older.PrivateUsage / Mb;
             use.ramMb = older.WorkingSetSize / Mb;
         }

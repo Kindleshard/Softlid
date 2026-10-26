@@ -86,6 +86,9 @@ D2D1_POINT_2F Control::Origin() const
 
 D2D1_RECT_F Control::VisibleRect() const
 {
+    // (hidden, or on a hidden page: nothing of it shows, so a change to it repaints nothing)
+    for (const Control* c = this; c; c = c->Parent())
+        if (!c->Visible()) return {};
     D2D1_POINT_2F o = Origin();
     D2D1_RECT_F r{o.x, o.y, o.x + W(), o.y + H()};
     for (const Container* p = parent; p; p = p->parent) {

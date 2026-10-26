@@ -50,4 +50,28 @@ since chunk 6 (about half a MB) is the larger program and two hidden windows for
 Pictures for pop-ups are drawn in software (no graphics-card device) and released when the pop-up hides, so memory
 goes back down after each reminder.
 
+**The settings window, slimmed (after the Resource use section).** Measured with a diagnostic copy, settings open on
+the Options page (own pages in RAM, then set aside in all):
+
+| | before | after |
+|---|---|---|
+| Screen tab, just opened | 7.9 / 8.9 MB | 0.1 / 3.8 MB |
+| Options page, scrolled through | 8.1 / 9.2 MB | 1.4 / 4.1 MB |
+| ...left alone for 10 seconds | 8.1 / 9.2 MB | 0.5 / 4.1 MB |
+| ...with the Resource use meter showing | 11.9 / 13.3 MB | 0.6 / 4.1 MB |
+
+Three changes. A probe with a bare Direct2D window and 40 lines of text came to 9 MB set aside, 6.6 MB in RAM: about
+all of what the settings window cost, so the cost was the drawing engine, not BlinkBuddy's own data.
+- Windows are now drawn into their own device context, bound to just the area being repainted, instead of through a
+  window target (which keeps a whole-window buffer plus a copy to present from, and touches both on every paint, even
+  an empty one: 2.9 MB). A small repaint now touches about 1.5 MB instead of 3.3 MB. Screenshots of every settings
+  page and of the control gallery are pixel for pixel the same.
+- Left alone for 4 seconds, the settings window hands its pages back to Windows (as when it closes). Hidden controls
+  (another tab's) no longer ask for repaints, so nothing pulls them back while it sits there.
+- The Resource use meter reads the graphics card from the graphics kernel's per-process engine statistics (what Task
+  Manager's figures come from) instead of the performance counters, which cost 3.8 MB just to open.
+
+(Screenshots inflate these figures: a capture makes the window paint itself whole into a screenshot buffer, about
+10 MB more until the next trim, with either kind of drawing.)
+
 Updated after each chunk.
