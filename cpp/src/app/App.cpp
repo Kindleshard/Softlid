@@ -59,18 +59,13 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
     KeepAwake::Set(settings.KeepAwake);
     frontWatch = std::make_unique<FrontWatch>(window, FrontChangedMessage);
     WTSRegisterSessionNotification(window, NOTIFY_FOR_THIS_SESSION);   // to reapply the filter after unlocking
-    comfort.changed = [this] { ApplyScreen(); };
-    comfort.currentGain = [this] { return colourGain; };
-    lut.changed = [this] {
-        ApplyScreen();
-        if (settingsWindow) settingsWindow->RefreshStatus();
-    };
-    lut.confirmed = [this](const std::wstring& build) {
-        settings.LutConfirmedBuild = build;   // no new check needed until Windows changes
-        dirty = true;
-    };
-    tone.ClearLeftover();
-    nightLight = NightLight::Read();
+    screen = std::make_unique<Screen>(settings, window, Screen::Messages{LocatedMessage, ToneFailedMessage},
+        Screen::Hooks{
+            [this] { ApplyScreen(); },
+            [this](bool screenToo) { Changed(screenToo); },
+            [this] { if (settingsWindow) settingsWindow->SyncFromApp(); },
+            [this] { if (settingsWindow) settingsWindow->RefreshStatus(); },
+        });
     ApplyScreen();
     if (settings.HardwareBrightness) {
         probing = Probe::Refresh;
@@ -94,7 +89,7 @@ App::~App()
     frontWatch.reset();
     WTSUnRegisterSessionNotification(window);
     lab.reset();
-    StopTone();
+    screen->Stop();
     KeepAwake::Set(false);
     card.reset();
     tray.Remove();
@@ -118,11 +113,11 @@ int App::Run()
     }
 }
 
-void App::Changed(bool screen)
+void App::Changed(bool screenToo)
 {
     dirty = true;
     reminders.BlinkIntervalChanged();
-    if (screen) ApplyScreen();
+    if (screenToo) ApplyScreen();
 }
 
 LRESULT CALLBACK App::WindowProc(HWND window, UINT message, WPARAM w, LPARAM l)
@@ -155,11 +150,11 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         BreakDone(w != 0, static_cast<int>(l));
         return 0;
     case FrontChangedMessage:
-        CheckRules();
+        screen->CheckRules();
         return 0;
     case LocatedMessage: {
         auto fix = TakePosted<Location::Fix>(l);
-        Located(fix->lat, fix->lon, fix->ok);
+        screen->Located(fix->lat, fix->lon, fix->ok);
         return 0;
     }
     case ProbedMessage:
@@ -180,11 +175,11 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         }
         labReopen = settingsWindow != nullptr;
         if (settingsWindow) settingsWindow->Close();   // (its onClosed tidies up)
-        LabBegin();
+        screen->LabBegin();
         lab = std::make_unique<ToneLab>(*this);
         lab->onClosed = [this] {   // settings back as they were, and the settings window again if it was open
             DeleteLater(std::move(lab), [this] {
-                LabEnd();
+                screen->LabEnd();
                 if (labReopen) ShowSettings();
                 else TrimMemory();
             });
@@ -414,13 +409,10 @@ void App::Exit()
     SuspendHotkeys();
     if (lab) {   // the lab's trial settings aren't kept
         lab.reset();
-        std::wstring confirmed = settings.LutConfirmedBuild;
-        settings = *labSaved;
-        settings.LutConfirmedBuild = confirmed;
-        labSaved.reset();
+        screen->LabForget();
         dirty = true;
     }
-    StopTone();
+    screen->Stop();
     if (dirty) settings.Save();
     card.reset();
     tray.Remove();

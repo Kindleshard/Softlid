@@ -1,29 +1,21 @@
 #pragma once
+#include "app/Screen.h"
 #include "app/Tray.h"
 #include "core/FocusTimer.h"
 #include "core/Reminders.h"
-#include "core/ScreenPlan.h"
 #include "core/Settings.h"
 #include "features/breaks/Eyelids.h"
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/EyePopup.h"
-#include "features/screen/ColorFilter.h"
 #include "features/mini/MiniHost.h"
 #include "features/mini/MiniWindow.h"
 #include "features/settings/SettingsHost.h"
 #include "features/settings/SettingsWindow.h"
 #include "features/strip/ReadingStrip.h"
-#include "features/tone/Comfort.h"
-#include "features/tone/GammaRamp.h"
-#include "features/tone/Grain.h"
-#include "features/tone/LutGuard.h"
-#include "features/tone/SmartFilter.h"
-#include "features/tone/SmartLayer.h"
 #include "features/tone/ToneLab.h"
 #include "features/tone/ToneLabHost.h"
 #include "features/update/Updater.h"
 #include "features/update/Updates.h"
-#include "platform/NightLight.h"
 #include "platform/ForegroundApp.h"
 #include <windows.h>
 #include <chrono>
@@ -51,7 +43,7 @@ public:
     // What the settings, mini mode and the tone lab ask of the app (the interfaces say what each does).
     Settings& S() override { return settings; }
     const Settings& S() const { return settings; }
-    void Changed(bool screen = false) override;
+    void Changed(bool screenToo = false) override;
     void Rebuild(bool optionsPage) override;
     void Quit() override;
     void SetLanguage(const std::wstring& code) override;
@@ -73,7 +65,7 @@ public:
     void ManualScreenChange() override;
     void PreviewNight() override;
     void PreviewNightStrength() override;
-    int RuleMode() const override { return ruleMode; }
+    int RuleMode() const override;
     bool EffectsAvailable() const override;
     std::wstring NightStatus() const override;
     Sync SyncState(std::wstring& text) const override;
@@ -85,7 +77,7 @@ public:
     float WarmthNow() const override;
 
     // Windows Night light (AppScreen.cpp).
-    const NightLight::State& NightLightState() const override { return nightLight; }
+    const NightLight::State& NightLightState() const override;
     bool FollowsNightLight() const override;
     bool NightLightWarming() const override;
     Settings Scheduled() const override;
@@ -95,14 +87,14 @@ public:
     void RetestLut() override;
     void OpenToneLab() override;
     void LabCompare(bool without) override;
-    double ComfortNet(double x) const override { return comfort.Net(x); }
+    double ComfortNet(double x) const override;
     std::wstring ComfortStatus() const override;
-    const std::wstring& ToneStatus() const override { return tone.Status(); }
-    std::wstring SmartStatus() const override { return smart.Status(); }
-    std::wstring LayerStatus() const override { return smartLayer.Status(); }
-    const std::wstring& LutStatus() const override { return lut.Status(); }
-    bool LutFailed() const override { return lut.Failed(); }
-    const std::wstring& GuardNote() const override { return guardNote; }
+    const std::wstring& ToneStatus() const override;
+    std::wstring SmartStatus() const override;
+    std::wstring LayerStatus() const override;
+    const std::wstring& LutStatus() const override;
+    bool LutFailed() const override;
+    const std::wstring& GuardNote() const override;
 
     // Updates (AppSettings.cpp).
     const Updater::State& Update() const override { return updates.State(); }
@@ -157,22 +149,13 @@ private:
     void Pause(int minutes);   // -1: until resumed
     bool Paused() const;
 
-    // The screen (AppScreen.cpp): the filter, the night schedule and its place, modes and per-app rules, keeping
-    // the PC awake, and the real backlight.
+    // The screen (AppScreen.cpp): the pipeline (app/Screen), and what lies outside it - the real backlight, the
+    // reading strip, modes, keeping the PC awake.
     void ApplyScreen();
-    void StartLut(const Settings& s);
-    void ApplyRamp(const ScreenPlan::Ramp& ramp);
-    void ApplyEngines(const Settings& s, const ScreenPlan::Engines& e, ScreenPlan::Gains gains, float bright);
     void ApplyExtras(const Settings& s);
     void ReapplyScreen();      // after a display change or unlocking, when Windows may have reset the filter
     void ScreenTick();
-    float NightNow() const;    // how far into the night schedule it is: 0 by day (or with no schedule), 1 at night
-    float NightShown() const;  // the same, but 0 while an app's mode is in use (that mode shows as it is)
     void ToggleFilter();
-    Settings Effective() const;
-    void CheckRules();
-    void UpdateLocation();
-    void Located(double lat, double lon, bool ok);
     void KeepAwakeFor(int minutes);
     void Probed(int supported, int total, int current);
 
@@ -191,50 +174,22 @@ private:
     std::unique_ptr<Eyelids> lids;     // the eyelids blink style (made when first used)
     Clock::time_point pausedUntil{};
 
-    ColorFilter filter;
-    Settings screenNow;                // what the screen shows: the settings, or a copy with a rule's mode applied
-    float night = 1;                   // the night strength last shown
-    Clock::time_point previewUntil{}, previewNightUntil{};
-    int ruleMode = -1;                 // the mode a rule applies right now (-1: none)
-    HWND ruleWindow = nullptr;         // that rule's app window
+    std::unique_ptr<Screen> screen;    // (made once the window exists: the engines send it messages)
     std::unique_ptr<FrontWatch> frontWatch;
-    Clock::time_point locatedAt{}, syncedAt{};
     Clock::time_point awakeUntil{};    // a timed keep-awake from the tray
     enum class Probe { None, Refresh, SwitchOn } probing = Probe::None;
     int lastBacklight = -1;
     std::function<void()> probeDone;   // the settings, waiting for the answer
-    std::wstring backlightStatus, guardNote;
+    std::wstring backlightStatus;
 
-    // Tone: the engines, and the test lab (which changes engine, strength and brightness freely; they come back
-    // when it closes).
-    void StopTone();           // every engine off, the screen plain
-    bool WriteLut();
-    SmartGpu::Params SmartParams(float bright) const;
-    void LabBegin();
-    void LabEnd();
-    GammaRamp tone;
-    Comfort comfort;
-    SmartFilter smart;
-    SmartLayer smartLayer;
-    LutGuard lut;
-    Grain grain;
-    std::wstring toneKey = L"off", lutKey;
-    float colourGain = 1;              // overall dimming the colour filter applies right now
-    bool effectShown = false;          // a colour effect is taking the blue light filter's place
-    int verifyTick = 0;
-    std::optional<Settings> labSaved;
-    bool labCompare = false, labReopen = false;
-    std::unique_ptr<ToneLab> lab;
+    std::unique_ptr<ToneLab> lab;      // the tone lab, while open (its settings juggling is Screen's)
+    bool labReopen = false;            // the settings window was open: open it again after
 
     // Updates.
     void WeeklyUpdateCheck();          // (when there is a release channel)
     Updates updates{[this] { Updater::Check(window, UpdateMessage); },
                     [this](const Updater::Release& r) { Updater::Install(r, window, UpdateMessage); }};
     int hourTick = 0;
-
-    // Windows Night light.
-    void NightLightTick();             // each second: Night light read again (Windows sends no change notice)
-    NightLight::State nightLight;
 
     std::unique_ptr<SettingsWindow> settingsWindow;   // while open
 
