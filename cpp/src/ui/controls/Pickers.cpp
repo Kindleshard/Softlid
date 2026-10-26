@@ -326,6 +326,48 @@ LRESULT CALLBACK TextBox::EditProc(HWND hwnd, UINT message, WPARAM w, LPARAM l, 
 
 // ---- CurveView ----
 
+void UsageGraph::Add(double a, double b)
+{
+    first.push_back(a);
+    second.push_back(b);
+    if (first.size() > Points) first.erase(first.begin());
+    if (second.size() > Points) second.erase(second.begin());
+    Invalidate();
+}
+
+void UsageGraph::Paint(Canvas& c)
+{
+    D2D1_RECT_F r{0.5f, 0.5f, W() - 0.5f, H() - 0.5f};
+    c.Fill(r, Palette::Argb(40, 40, 40));
+    c.Target()->DrawRectangle(r, c.Brush(Theme::Line), 1);
+    // The scale: the next of 5, 10, 25, 50, 100% above the highest value.
+    double top = 0;
+    for (double v : first) top = std::max(top, v);
+    for (double v : second) top = std::max(top, v);
+    double scale = 100;
+    for (double step : {5.0, 10.0, 25.0, 50.0}) if (top <= step) { scale = step; break; }
+    c.Line(r.left, r.top + Height(r) / 2, r.right, r.top + Height(r) / 2, Theme::Line, 1, false);   // half the scale
+    c.Text(std::to_wstring(static_cast<int>(scale)) + L"%", Fonts::Small(), Rect(r.left + 4, r.top + 1, 60, 16), Theme::Dim, HAlign::Left, false, true);
+    auto draw = [&](const std::vector<double>& values, int color) {
+        if (values.size() < 2) return;
+        gfx::ComPtr<ID2D1PathGeometry> path;
+        gfx::ComPtr<ID2D1GeometrySink> sink;
+        gfx::D2D()->CreatePathGeometry(path.GetAddressOf());
+        path->Open(sink.GetAddressOf());
+        float step = Width(r) / (Points - 1), x0 = r.right - step * (values.size() - 1);
+        for (size_t i = 0; i < values.size(); i++) {
+            D2D1_POINT_2F p{x0 + step * i, r.bottom - 1 - static_cast<float>(std::min(values[i], scale) / scale) * (Height(r) - 2)};
+            if (i == 0) sink->BeginFigure(p, D2D1_FIGURE_BEGIN_HOLLOW);
+            else sink->AddLine(p);
+        }
+        sink->EndFigure(D2D1_FIGURE_END_OPEN);
+        sink->Close();
+        c.Target()->DrawGeometry(path.Get(), c.Brush(color), 1.5f);
+    };
+    draw(second, Theme::Good);
+    draw(first, Theme::Accent());
+}
+
 void CurveView::Paint(Canvas& c)
 {
     D2D1_RECT_F r{0.5f, 0.5f, W() - 0.5f, H() - 0.5f};

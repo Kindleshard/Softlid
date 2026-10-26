@@ -107,7 +107,8 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
     bb::Updater::AfterUpdate(commandLine);
 
     // Diagnostics: "--offscreen" runs a copy beside the real one, for screenshots (tools/ui-check.ps1): no single-copy
-    // lock, no tray icon, no shortcuts, and with "--settings <file>" a settings file of its own.
+    // lock, no tray icon, no shortcuts, and with "--settings <file>" a settings file of its own. Its Resource use section
+    // shows dashes, so screenshots stay the same; "--measure" makes it measure.
     bool offscreen = std::wcsstr(commandLine, L"--offscreen") != nullptr;
     if (int count = 0; LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &count)) {
         for (int i = 1; i + 1 < count; i++)

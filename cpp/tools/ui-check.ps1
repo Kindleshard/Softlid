@@ -17,6 +17,7 @@ public class UiCheck {
   [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr h);
   [DllImport("user32.dll", CharSet=CharSet.Unicode)] static extern int GetClassName(IntPtr h, StringBuilder s, int n);
   [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
+  [DllImport("user32.dll")] public static extern bool GetClientRect(IntPtr h, out RECT r);
   [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr h, IntPtr hdc, uint flags);
   [DllImport("user32.dll")] public static extern bool PostMessage(IntPtr h, uint m, IntPtr w, IntPtr l);
   [DllImport("user32.dll")] public static extern bool ClientToScreen(IntPtr h, ref PT p);
@@ -48,11 +49,16 @@ $ini = Join-Path $work 'settings.ini'
   'UpdateCheck=False') | Set-Content -LiteralPath $ini -Encoding UTF8
 
 function L([int]$a, [int]$b) { [IntPtr](($b -shl 16) -bor ($a -band 0xFFFF)) }
+# The client area only: the title bar is drawn grey or white by whether the window happens to be the active one.
 function Shot([IntPtr]$h, [string]$out) {
     $r = New-Object UiCheck+RECT; [UiCheck]::GetWindowRect($h, [ref]$r) | Out-Null
+    $c = New-Object UiCheck+RECT; [UiCheck]::GetClientRect($h, [ref]$c) | Out-Null
+    $o = New-Object UiCheck+PT; [UiCheck]::ClientToScreen($h, [ref]$o) | Out-Null
     $bmp = New-Object System.Drawing.Bitmap ($r.R - $r.L), ($r.B - $r.T)
     $g = [System.Drawing.Graphics]::FromImage($bmp); $hdc = $g.GetHdc()
-    [UiCheck]::PrintWindow($h, $hdc, 2) | Out-Null; $g.ReleaseHdc($hdc); $bmp.Save($out); $bmp.Dispose()
+    [UiCheck]::PrintWindow($h, $hdc, 2) | Out-Null; $g.ReleaseHdc($hdc)
+    $client = $bmp.Clone([System.Drawing.Rectangle]::new($o.X - $r.L, $o.Y - $r.T, $c.R, $c.B), $bmp.PixelFormat)
+    $client.Save($out); $client.Dispose(); $g.Dispose(); $bmp.Dispose()
 }
 # A screenshot once the window has stopped changing: a capture taken while a scroll or a tab change is still being
 # drawn is torn (part old, part new). Two captures in a row that are the same mean it is done.

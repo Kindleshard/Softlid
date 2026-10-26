@@ -97,6 +97,7 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
 
     BuildMiniOptions(st);
     BuildUpdates(st);
+    BuildResourceUse(st);
 
     Divider(st);
     Row& resetRow = st.Add(46);
@@ -223,6 +224,66 @@ void SettingsWindow::RefreshUpdates()
         shownDownloading = u.downloading;
         UpdateRows();
     }
+}
+
+} // namespace bb
+
+namespace bb {
+
+using namespace ui;
+
+namespace {
+
+std::wstring OneDecimal(double v)
+{
+    wchar_t text[32];
+    swprintf_s(text, L"%.1f", v);
+    return text;
+}
+
+} // namespace
+
+// What BlinkBuddy itself uses right now (Advanced view): the processor, the graphics card and memory, with the last
+// minute of the first two as a graph. Measured only while this page shows - so drawing this window is part of it.
+void SettingsWindow::BuildResourceUse(Stack& st)
+{
+    Shown advanced = [this] { return s.AdvancedView; };
+    Divider(st, advanced);
+    SectionHead(st, L'\uE9D9', L"Resource use", L"What BlinkBuddy itself uses right now, as Task Manager counts it.", advanced);
+    Row& graphRow = st.Add(84, advanced);
+    usageGraph = &graphRow.Add<UsageGraph>();
+    usageGraph->SetBounds(24, 4, Edge - 24, 72);
+    usageGraph->tip = Lang::T(L"The last minute: processor (accent color) and graphics card (green)");
+    Row& textRow = st.Add(88, advanced);
+    usageText = &AddLabel(textRow, L"", Fonts::Small(), Theme::Dim, 24, 2, Edge - 24, 84);
+    usageText->wrap = usageText->top = true;
+    Note(st, L"Measured only while this page shows, so drawing this window is part of what you see here. Closed, "
+             L"BlinkBuddy mostly waits and uses next to nothing.", 2, advanced);
+    // A diagnostic copy shows dashes, so its screenshots stay the same (unless "--measure" asks it to measure).
+    if (!unfoldAll || std::wcsstr(GetCommandLineW(), L"--measure")) meter = std::make_unique<ResourceMeter>();
+    RefreshUsage();
+}
+
+// Once a second while the Options page shows.
+void SettingsWindow::RefreshUsage()
+{
+    if (!usageText) return;
+    if (meter && (!s.AdvancedView || tabs->Selected() != 4)) return;
+    ResourceUse u{0, 0, 0, 0, 0, 0};
+    if (meter) {
+        u = meter->Sample();
+        usageGraph->Add(u.cpu, std::max(0.0, u.gpu));
+    }
+    auto num = [this](double v) { return meter ? OneDecimal(v) : std::wstring(L"\u2013"); };
+    std::wstring text = Lang::F(L"Processor: {0}% of the whole CPU", {num(u.cpu)}) + L"\n";
+    text += u.gpu < 0 ? Lang::T(L"Graphics card: Windows doesn't report it here")
+                      : Lang::F(L"Graphics card: {0}% (its busiest engine)", {num(u.gpu)});
+    // Memory as Task Manager's Memory column counts it (its own pages in RAM), then all it has set aside.
+    text += L"\n" + (u.ramOwnMb < 0 ? Lang::F(L"Memory: {0} MB in RAM", {num(u.ramMb)})
+                                     : Lang::F(L"Memory: {0} MB in RAM, plus {1} MB of Windows libraries it shares",
+                                               {num(u.ramOwnMb), num(u.ramSharedMb)}));
+    text += L"\n" + Lang::F(L"Set aside in all (in RAM or the page file): {0} MB", {num(u.privateMb)});
+    usageText->SetPlainText(text);
 }
 
 } // namespace bb

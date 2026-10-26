@@ -115,6 +115,7 @@ void SettingsWindow::RefreshStatus()
     RefreshTone();
     RefreshUpdates();
     focusRing->Invalidate();
+    RefreshUsage();
     focusButton->SetText(app.FocusState() == Focus::Working ? L"Pause" : app.FocusState() == Focus::Paused ? L"Resume" : L"Start");
 }
 

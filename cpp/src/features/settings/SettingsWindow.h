@@ -1,5 +1,6 @@
 #pragma once
 #include "core/Settings.h"
+#include "platform/ResourceUse.h"
 #include "ui/DirectWindow.h"
 #include "ui/Layout.h"
 #include "ui/controls/Basic.h"
@@ -124,6 +125,8 @@ private:
     void BuildMiniOptions(ui::Stack& st);
     void BuildUpdates(ui::Stack& st);
     void RefreshUpdates();
+    void BuildResourceUse(ui::Stack& st);
+    void RefreshUsage();
 
     SettingsHost& app;
     Settings& s;
@@ -170,6 +173,12 @@ private:
     ui::Label* updateStatus = nullptr;
     ui::ProgressLine* updateProgress = nullptr;
     bool shownDownloading = false;
+
+    // Resource use (Options, Advanced view).
+    ui::UsageGraph* usageGraph = nullptr;
+    ui::Label* usageText = nullptr;
+    std::unique_ptr<ResourceMeter> meter;   // (none in a diagnostic copy)
+
     int shownSync = -1, shownRule = -1;
 };
 
