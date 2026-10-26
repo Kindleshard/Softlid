@@ -2,6 +2,7 @@
 // for (language, accent, view, starting with Windows, resetting everything, updates).
 #include "app/App.h"
 #include "core/Lang.h"
+#include "platform/Clock.h"
 #include "platform/Files.h"
 #include "platform/Memory.h"
 #include <cstdio>
@@ -138,90 +139,13 @@ void App::SetMiniEnabled(bool on)
 
 } // namespace bb
 
-// ---- Updates ----
 
 namespace bb {
-
-void App::CheckForUpdates()
-{
-    if (update.busy) return;
-    update.busy = true;
-    update.look = Updater::State::Look::Plain;
-    update.text = Lang::T(L"Checking...");
-    quietCheck = false;
-    Updater::Check(window, UpdateMessage);
-}
-
-void App::InstallUpdate()
-{
-    if (update.busy || !update.release) return;
-    update.busy = update.downloading = true;
-    update.progress = 0;
-    Updater::Install(*update.release, window, UpdateMessage);
-}
 
 // Once a week (if allowed), a quiet look for a newer version; only a newer one is mentioned, from the tray.
 void App::WeeklyUpdateCheck()
 {
-    if (!settings.UpdateCheck || !Updater::Available() || update.busy || update.release) return;
-    SYSTEMTIME today;
-    GetLocalTime(&today);
-    int y = 0, m = 0, d = 0;
-    if (swscanf_s(settings.LastUpdateCheck.c_str(), L"%d-%d-%d", &y, &m, &d) == 3) {
-        SYSTEMTIME last{static_cast<WORD>(y), static_cast<WORD>(m), 0, static_cast<WORD>(d)};
-        FILETIME a, b;
-        if (SystemTimeToFileTime(&last, &a) && SystemTimeToFileTime(&today, &b)) {
-            ULONGLONG days = (ULARGE_INTEGER{b.dwLowDateTime, b.dwHighDateTime}.QuadPart -
-                              ULARGE_INTEGER{a.dwLowDateTime, a.dwHighDateTime}.QuadPart) / (10000000ULL * 86400);
-            if (days < 7) return;
-        }
-    }
-    update.busy = quietCheck = true;
-    Updater::Check(window, UpdateMessage);
-}
-
-void App::Updated(const Updater::Result& r)
-{
-    using Kind = Updater::Result::Kind;
-    using Look = Updater::State::Look;
-    switch (r.kind) {
-    case Kind::Progress:
-        update.progress = r.progress;
-        update.look = Look::Newer;
-        update.text = r.text;
-        break;
-    case Kind::Ready:
-        update.text = r.text;
-        Updater::StartNewCopy();   // (it waits for this copy to quit)
-        Exit();
-        return;
-    case Kind::Failed:
-        update.busy = update.downloading = false;
-        update.look = Look::Plain;
-        update.text = r.text;
-        break;
-    default:   // the end of a check
-        update.busy = false;
-        if (quietCheck) {
-            SYSTEMTIME today;
-            GetLocalTime(&today);
-            wchar_t date[16];
-            swprintf_s(date, L"%04d-%02d-%02d", today.wYear, today.wMonth, today.wDay);
-            settings.LastUpdateCheck = date;
-            dirty = true;
-        }
-        if (r.kind == Kind::Newer) {
-            update.release = r.release;
-            update.look = Look::Newer;
-            update.text = Lang::F(L"Update available: version {0}", {r.release.tag});
-            if (quietCheck) tray.Notify(Lang::F(L"BlinkBuddy {0} is available", {r.release.tag}), Lang::T(L"Open BlinkBuddy options to install it."));
-        } else if (!quietCheck) {
-            update.look = r.kind == Kind::UpToDate ? Look::UpToDate : Look::Plain;
-            update.text = r.text;
-        }
-        quietCheck = false;
-    }
-    if (settingsWindow) settingsWindow->RefreshStatus();
+    if (Updater::Available()) updates.Weekly(settings, LocalNow());
 }
 
 } // namespace bb

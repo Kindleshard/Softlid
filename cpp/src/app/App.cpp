@@ -7,6 +7,7 @@
 #include "features/breaks/StretchBreak.h"
 #include "features/screen/Backlight.h"
 #include "platform/Activity.h"
+#include "platform/Clock.h"
 #include "platform/DarkMode.h"
 #include "platform/KeepAwake.h"
 #include "platform/Memory.h"
@@ -191,8 +192,15 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         lab->Start(bigIcon);
         return 0;
     case UpdateMessage: {
-        auto result = TakePosted<Updater::Result>(l);
-        Updated(*result);
+        Updates::Effects fx = updates.Received(*TakePosted<Updater::Result>(l), settings, LocalNow());
+        if (fx.saveSettings) dirty = true;
+        if (!fx.notifyTitle.empty()) tray.Notify(fx.notifyTitle, fx.notifyText);
+        if (fx.restart) {
+            Updater::StartNewCopy();   // (it waits for this copy to quit)
+            Exit();
+            return 0;
+        }
+        if (fx.refresh && settingsWindow) settingsWindow->RefreshStatus();
         return 0;
     }
     case WM_INPUT:

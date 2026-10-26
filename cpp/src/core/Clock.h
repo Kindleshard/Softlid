@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdio>
 #include <string>
 
 namespace bb {
@@ -12,6 +13,27 @@ struct LocalTime {
                             // night doesn't count)
     std::wstring zone;      // the system's time zone ("W. Europe Standard Time"), to guess a city when none is set
 };
+
+// Days since 1 January 1970 for a calendar date (any date, leap years included).
+inline long long DayNumber(int year, int month, int day)
+{
+    year -= month <= 2;
+    long long era = (year >= 0 ? year : year - 399) / 400;
+    long long yoe = year - era * 400, doy = (153 * (month + (month > 2 ? -3 : 9)) + 2) / 5 + day - 1;
+    return era * 146097 + yoe * 365 + yoe / 4 - yoe / 100 + doy - 719468;
+}
+
+// A date as "2026-10-26", and back (false if it isn't one).
+inline std::wstring IsoDate(const LocalTime& t)
+{
+    wchar_t text[16];
+    swprintf_s(text, L"%04d-%02d-%02d", t.year, t.month, t.day);
+    return text;
+}
+inline bool ParseIsoDate(const std::wstring& text, int& year, int& month, int& day)
+{
+    return swscanf_s(text.c_str(), L"%d-%d-%d", &year, &month, &day) == 3 && month >= 1 && month <= 12 && day >= 1 && day <= 31;
+}
 
 // A count of seconds as "m:ss" ("19:05"; below zero shows as 0:00).
 inline std::wstring MinSec(int seconds)

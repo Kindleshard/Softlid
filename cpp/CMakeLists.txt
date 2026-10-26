@@ -29,7 +29,7 @@ target_link_options(BlinkBuddy PRIVATE
 file(GLOB TEST_SOURCES CONFIGURE_DEPENDS tests/*.cpp src/core/*.cpp)
 add_executable(BlinkBuddyTests ${TEST_SOURCES}
     src/platform/Text.cpp src/platform/Files.cpp src/platform/NightLight.cpp src/platform/Keys.cpp
-    src/platform/Language.cpp)
+    src/platform/Language.cpp src/features/update/Updates.cpp)
 target_include_directories(BlinkBuddyTests PRIVATE src res tests)
 target_compile_definitions(BlinkBuddyTests PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_compile_options(BlinkBuddyTests PRIVATE /W4 /permissive- /utf-8 /EHsc)

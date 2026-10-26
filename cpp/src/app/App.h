@@ -22,6 +22,7 @@
 #include "features/tone/ToneLab.h"
 #include "features/tone/ToneLabHost.h"
 #include "features/update/Updater.h"
+#include "features/update/Updates.h"
 #include "platform/NightLight.h"
 #include "platform/ForegroundApp.h"
 #include <windows.h>
@@ -104,9 +105,9 @@ public:
     const std::wstring& GuardNote() const override { return guardNote; }
 
     // Updates (AppSettings.cpp).
-    const Updater::State& Update() const override { return update; }
-    void CheckForUpdates() override;
-    void InstallUpdate() override;
+    const Updater::State& Update() const override { return updates.State(); }
+    void CheckForUpdates() override { updates.Check(); }
+    void InstallUpdate() override { updates.Install(); }
 
     // Keyboard shortcuts (AppShortcuts.cpp).
     void RegisterHotkeys() override;
@@ -226,10 +227,9 @@ private:
     std::unique_ptr<ToneLab> lab;
 
     // Updates.
-    void WeeklyUpdateCheck();          // once a week (if allowed) a quiet look; only a newer version is mentioned
-    void Updated(const Updater::Result& r);
-    Updater::State update;
-    bool quietCheck = false;           // the check running is the weekly one
+    void WeeklyUpdateCheck();          // (when there is a release channel)
+    Updates updates{[this] { Updater::Check(window, UpdateMessage); },
+                    [this](const Updater::Release& r) { Updater::Install(r, window, UpdateMessage); }};
     int hourTick = 0;
 
     // Windows Night light.
