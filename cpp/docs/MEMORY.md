@@ -74,4 +74,28 @@ all of what the settings window cost, so the cost was the drawing engine, not Bl
 (Screenshots inflate these figures: a capture makes the window paint itself whole into a screenshot buffer, about
 10 MB more until the next trim, with either kind of drawing.)
 
+**A correction, and the real setup (with a memory journal).** The figures above came from a diagnostic copy whose
+window sat off every monitor - and Windows paints little of a window no monitor shows, so the drawing engine hardly
+ran. Measured where the window really is (on the monitor, cloaked: drawn but never seen, "--offscreen --cloaked"),
+the settings window cost 16.5 MB set aside with 12 threads. "--memlog <file>" now writes a line whenever memory,
+threads or libraries change, with what just happened, which is how the real setup was followed: the screen filter
+(the magnifier) costs next to nothing; mini mode and the settings window cost what Direct2D's software device costs.
+
+Each Direct2D DC render target brings up its own software device (WARP) with about eight worker threads. Now one
+software device, made without internal threading, draws every window and picture on the app's own thread, and goes
+when the last one closes; mini mode also gives its pages back to Windows a few seconds after it goes still. Screenshots
+of every settings page, the control gallery and the mini icon are pixel for pixel the same. With this PC's settings,
+cloaked, after 20 seconds:
+
+| | before | after |
+|---|---|---|
+| Mini mode, still | 5.7 MB set aside, 4.0 MB in RAM, 8 threads | 5.6 MB, 0.4 MB, 5 threads |
+| Mini mode, breathing without a pause | 7.8 MB, 5.1 MB, 12 threads | 7.1 MB, 4.4 MB, 5 threads |
+| Settings open, left alone | 16.5 MB, 0.6 MB, 12 threads | 13.1 MB, 0.6 MB, 5 threads |
+| Tray only | 1.9 MB, 1.4 MB, 4 threads | the same |
+
+What stays: Direct2D's heap keeps its high-water mark (set aside) while a window is open - its glyph and shape caches
+can be emptied, but the heap keeps the pages reserved; RAM is what the trims give back. A breathing icon redraws 30
+times a second, so it keeps about 4 MB in RAM and a few percent of one core while it breathes.
+
 Updated after each chunk.

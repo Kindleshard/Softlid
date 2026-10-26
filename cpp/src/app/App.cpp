@@ -11,6 +11,7 @@
 #include "platform/DarkMode.h"
 #include "platform/KeepAwake.h"
 #include "platform/Memory.h"
+#include "platform/MemJournal.h"
 #include "platform/Location.h"
 #include "platform/Text.h"
 #include "ui/Theme.h"
@@ -233,6 +234,7 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
 // Once a second: save what changed, keep the screen up to date, and show whatever reminder is due.
 void App::OnTick()
 {
+    MemJournal::Check();
     if (dirty) {
         dirty = false;
         settings.Save();
@@ -257,6 +259,7 @@ void App::OnTick()
 
 void App::Blink(bool instant)
 {
+    MemJournal::Note(L"blink reminder");
     if (settings.BlinkStyle == 1) {
         if (instant) return;   // live tweaks are for the eye icon's size, opacity and place
         if (!lids) lids = std::make_unique<Eyelids>();
@@ -269,6 +272,7 @@ void App::Blink(bool instant)
 void App::StartBreak(bool standUp)
 {
     if (card) return;
+    MemJournal::Note(standUp ? L"stand-up break" : L"look-away break");
     // Eye exercises and the stretch coach take the whole screen; otherwise a small card counts down.
     if (!standUp && settings.Exercises) card = std::make_unique<GuidedBreak>(window, settings, WarmthNow());
     else if (standUp && settings.StretchGuided) card = std::make_unique<StretchBreak>(window, settings);
@@ -286,6 +290,7 @@ void App::BreakDone(bool standUp, int snoozeSeconds)
         reminders.BreakFinished(standUp, snoozeSeconds);
     }
     TrimMemory();
+    MemJournal::Note(L"break over, trimmed");
 }
 
 std::wstring App::BreakStatus() const
@@ -328,6 +333,7 @@ void App::UpdateTrayTip()
 
 void App::ShowMenu()
 {
+    MemJournal::Note(L"tray menu");
     auto checked = [](bool on) -> UINT { return on ? MF_CHECKED : MF_UNCHECKED; };
     HMENU menu = CreatePopupMenu();
     HMENU pause = CreatePopupMenu();

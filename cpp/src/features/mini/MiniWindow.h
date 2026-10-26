@@ -37,6 +37,7 @@ private:
     void FadeStep();            // every 15 ms while waiting to fade, or fading
     void AnimStep();            // while the icon animates, the glow breathes or the focus timer's highlight runs
     void StartAnim();
+    void Settle();      // still now: trims memory a few seconds later
     void SetLit(bool on);
     void Wake();
     void Rest();

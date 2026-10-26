@@ -1,6 +1,7 @@
 #include "features/screen/ColorFilter.h"
 #include "core/ColorMath.h"
 #include "core/Night.h"
+#include "platform/MemJournal.h"
 #include "platform/Window.h"
 #include <magnification.h>
 #include <algorithm>
@@ -59,7 +60,10 @@ void ColorFilter::Apply(const Settings& s, float night, float prescale, float br
 
     if (!magFailed) {
         if (neutral) { StopMagnifier(); return; }
-        if (!magOn) magOn = MagInitialize() != FALSE;
+        if (!magOn) {
+            magOn = MagInitialize() != FALSE;
+            MemJournal::Note(L"magnifier started");
+        }
         ColorMath::Matrix m = ColorMath::Build({k.r * bright, k.g * bright, k.b * bright}, invert, effect, s.GrayStyle);
         MAGCOLOREFFECT e{};
         std::copy(m.begin(), m.end(), &e.transform[0][0]);
@@ -101,6 +105,7 @@ void ColorFilter::StopMagnifier()
     MagSetFullscreenColorEffect(&identity);
     MagUninitialize();
     magOn = false;
+    MemJournal::Note(L"magnifier stopped");
 }
 
 void ColorFilter::ApplyOverlays(bool neutral, float bright, float warmth)

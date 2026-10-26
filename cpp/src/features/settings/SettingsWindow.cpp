@@ -4,6 +4,7 @@
 #include "core/Modes.h"
 #include "features/settings/CloseDialog.h"
 #include "platform/Memory.h"
+#include "platform/MemJournal.h"
 #include "ui/MiniArt.h"
 #include "ui/Theme.h"
 #include <algorithm>
@@ -109,6 +110,7 @@ void SettingsWindow::IdleCheck()
     if (trimmed || GetTickCount64() - lastInput < Idle) return;
     trimmed = true;
     TrimMemory();
+    MemJournal::Note(L"settings idle, trimmed");
 }
 
 void SettingsWindow::RefreshStatus()

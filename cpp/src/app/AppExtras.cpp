@@ -1,6 +1,7 @@
 // The app's extras: the focus timer, and mini mode (the settings folded into a small eye that stays on top).
 #include "app/App.h"
 #include "core/Lang.h"
+#include "platform/MemJournal.h"
 #include <algorithm>
 
 namespace bb {
@@ -34,6 +35,7 @@ float App::BreakProgress() const
 void App::EnterMiniMode()
 {
     if (!settings.MiniEnabled) return;
+    MemJournal::Note(L"mini mode");
     settings.MiniMode = true;
     Changed();
     if (settingsWindow) settingsWindow->Close();   // (its onClosed tidies up)

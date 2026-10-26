@@ -1,5 +1,6 @@
 #include "ui/controls/Pickers.h"
 #include "core/Lang.h"
+#include "platform/MemJournal.h"
 #include "ui/DirectWindow.h"
 #include "ui/EyeArt.h"
 #include "ui/Theme.h"
@@ -250,6 +251,7 @@ void TextBox::Placed()
     if (!w || !w->Handle()) return;
     if (!edit) {
         DWORD style = WS_CHILD | ES_AUTOHSCROLL | (upperCase ? ES_UPPERCASE : 0);
+        MemJournal::Note(L"text box made");
         edit = CreateWindowExW(0, L"EDIT", pending.c_str(), style, 0, 0, 0, 0, w->Handle(), nullptr, GetModuleHandleW(nullptr), nullptr);
         if (!edit) return;
         SetWindowLongPtrW(edit, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));   // (the window routes EN_CHANGE here)

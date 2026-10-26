@@ -60,4 +60,7 @@ template <typename T> void DeleteLater(T* object, std::function<void()> after = 
 }
 void DeleteLaterNow(bool followUps = true);   // what is still waiting, now (at exit, without follow-ups)
 
+// Diagnostics: a copy started with "--offscreen --cloaked" (its windows are on their monitors, but never seen).
+bool CloakedCopy();
+
 } // namespace bb

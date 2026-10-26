@@ -1,6 +1,7 @@
 #pragma once
 #include "platform/Window.h"
 #include "ui/Control.h"
+#include "ui/SoftCanvas.h"
 #include <functional>
 #include <set>
 
@@ -86,7 +87,7 @@ private:
     Container root;
     UINT dpi = 96;
     Options options;
-    gfx::ComPtr<ID2D1DCRenderTarget> target;
+    SoftCanvas canvas;   // (its drawing, on the shared software device)
     Control* hover = nullptr;
     Control* captured = nullptr;
     Control* focused = nullptr;

@@ -6,7 +6,7 @@ LayeredCanvas::~LayeredCanvas() { Release(); }
 
 void LayeredCanvas::Release()
 {
-    target.Reset();
+    canvas.Release();
     if (dc) {
         SelectObject(dc, previous);
         DeleteDC(dc);
@@ -35,24 +35,17 @@ ID2D1RenderTarget* LayeredCanvas::Begin(int w, int h, float scale)
         width = w;
         height = h;
     }
-    if (!target) {
-        // Software drawing: no graphics card device is made, which keeps memory down for these small pictures.
-        D2D1_RENDER_TARGET_PROPERTIES props = D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_SOFTWARE,
-            D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED));
-        if (FAILED(gfx::D2D()->CreateDCRenderTarget(&props, target.GetAddressOf()))) return nullptr;
-        target->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);   // (ClearType needs an opaque background)
-    }
+    // Software drawing (no graphics card device, which keeps memory down for these small pictures), with transparency
+    // kept; the text is grayscale (ClearType needs an opaque background).
     RECT r{0, 0, width, height};
-    target->BindDC(dc, &r);
-    target->SetDpi(96.0f * scale, 96.0f * scale);
-    target->BeginDraw();
-    target->Clear(D2D1::ColorF(0, 0, 0, 0));
-    return target.Get();
+    ID2D1RenderTarget* target = canvas.Begin(dc, r, 96.0f * scale, true);
+    if (target) target->Clear(D2D1::ColorF(0, 0, 0, 0));
+    return target;
 }
 
 void LayeredCanvas::End()
 {
-    if (target && target->EndDraw() == D2DERR_RECREATE_TARGET) target.Reset();
+    canvas.End();
 }
 
 void LayeredCanvas::Present(HWND window, POINT at, BYTE opacity)

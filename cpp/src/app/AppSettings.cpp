@@ -5,6 +5,7 @@
 #include "platform/Clock.h"
 #include "platform/Files.h"
 #include "platform/Memory.h"
+#include "platform/MemJournal.h"
 #include <cstdio>
 #include "ui/Theme.h"
 
@@ -30,9 +31,10 @@ void App::ShowSettings(const POINT* at, bool optionsPage)
         return;
     }
     settingsWindow = std::make_unique<SettingsWindow>(*this, settings, offscreen);
+    MemJournal::Note(L"settings opened");
     settingsWindow->onClosed = [this] { SettingsClosed(); };
     POINT away{-30000, 0};
-    settingsWindow->Show(offscreen ? &away : at, optionsPage, bigIcon, !offscreen);
+    settingsWindow->Show(offscreen && !CloakedCopy() ? &away : at, optionsPage, bigIcon, !offscreen);
 }
 
 // The window is gone (closed with its button): all it held goes back to Windows.
@@ -47,6 +49,7 @@ void App::SettingsClosed()
     DeleteLater(std::move(settingsWindow), [] {
         ui::Fonts::Release();
         TrimMemory();
+        MemJournal::Note(L"settings closed, trimmed");
     });
 }
 

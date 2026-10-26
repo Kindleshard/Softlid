@@ -1,5 +1,6 @@
 #include "platform/Voice.h"
 #include "platform/Files.h"
+#include "platform/MemJournal.h"
 #include <windows.h>
 #include <mmsystem.h>
 #include <cmath>
@@ -118,6 +119,7 @@ int Voice::MinimumSeconds(const std::vector<std::wstring>& keys)
 
 void Voice::Say(const std::wstring& key, const std::wstring& text)
 {
+    MemJournal::Note(L"voice");
     Stop();
     std::wstring clip = Clip(key);
     if (!clip.empty() && Mci(L"open \"" + clip + L"\" type mpegvideo alias " + Alias) == 0) {

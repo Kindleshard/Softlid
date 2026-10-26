@@ -1,5 +1,5 @@
 #pragma once
-#include "ui/Graphics.h"
+#include "ui/SoftCanvas.h"
 #include <windows.h>
 
 namespace bb {
@@ -27,7 +27,7 @@ private:
     HBITMAP bitmap = nullptr;
     HGDIOBJ previous = nullptr;
     int width = 0, height = 0;
-    gfx::ComPtr<ID2D1DCRenderTarget> target;
+    ui::SoftCanvas canvas;
 };
 
 } // namespace bb

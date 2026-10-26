@@ -3,6 +3,7 @@
 #include "core/ColorMath.h"
 #include "core/Lang.h"
 #include "platform/Activity.h"
+#include "platform/Memory.h"
 #include "ui/DirectWindow.h"
 #include "ui/MiniArt.h"
 #include "ui/Theme.h"
@@ -16,7 +17,8 @@ namespace {
 
 using namespace ui;
 
-constexpr UINT_PTR HoverTimer = 1, FadeTimer = 2, AnimTimer = 3;
+constexpr UINT_PTR HoverTimer = 1, FadeTimer = 2, AnimTimer = 3, TrimTimer = 4;
+constexpr UINT TrimDelay = 4000;   // still this long: its drawing memory goes back to Windows (see Settle)
 constexpr ULONGLONG NotIdle = ~0ull;
 constexpr double Faded = 166;          // 65% of 255
 constexpr double BreathSeconds = 3.6;  // one breath of the glow
@@ -382,6 +384,10 @@ void MiniWindow::DrawBreath(ID2D1RenderTarget* t, float cx, float cy, float r, f
     t->DrawEllipse({{cx, cy}, r, r}, b.Get(), ring * (1 + 0.7f * breath));
 }
 
+// Nothing moving any more (no animation, no fade): a few seconds on, the pages used to draw it go back to Windows.
+// It mostly sits still for minutes, redrawing only when the break arc moves on, which needs a small part of them.
+void MiniWindow::Settle() { SetTimer(hwnd, TrimTimer, TrimDelay, nullptr); }
+
 void MiniWindow::StartAnim()
 {
     lastAnim = GetTickCount64();
@@ -414,12 +420,14 @@ void MiniWindow::AnimStep()
     if (awake == target && !breathing && !flowing) {
         KillTimer(hwnd, AnimTimer);
         animating = false;
+        Settle();
     }
 }
 
 // Back to full strength at once when the pointer arrives (the panel too, if it was fading out).
 void MiniWindow::Wake()
 {
+    KillTimer(hwnd, TrimTimer);
     idleSince = NotIdle;
     if (shown < 255) {
         shown = 255;
@@ -479,6 +487,7 @@ void MiniWindow::FadeStep()
     if (k >= 1) {
         KillTimer(hwnd, FadeTimer);
         fading = false;
+        Settle();
     }
 }
 
@@ -548,6 +557,10 @@ LRESULT MiniWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
         if (w == HoverTimer) CheckHover();
         else if (w == FadeTimer) FadeStep();
         else if (w == AnimTimer) AnimStep();
+        else if (w == TrimTimer) {
+            KillTimer(hwnd, TrimTimer);
+            if (!animating && !fading) TrimMemory();
+        }
         return 0;
     case WM_SETCURSOR:
         SetCursor(LoadCursorW(nullptr, IDC_HAND));

@@ -1,4 +1,5 @@
 #include "features/reminders/Chime.h"
+#include "platform/MemJournal.h"
 #include <windows.h>
 #include <mmsystem.h>
 #include <cmath>
@@ -49,6 +50,7 @@ void Play(bool rising)
     // Kept for the life of the app: Windows plays from this memory after Play returns.
     static std::vector<uint8_t> falling = MakeWave(false), risingWave = MakeWave(true);
     const std::vector<uint8_t>& wav = rising ? risingWave : falling;
+    MemJournal::Note(L"chime");
     PlaySoundW(reinterpret_cast<LPCWSTR>(wav.data()), nullptr, SND_MEMORY | SND_ASYNC | SND_NODEFAULT);
 }
 

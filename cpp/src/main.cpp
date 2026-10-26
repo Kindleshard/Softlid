@@ -1,6 +1,7 @@
 // BlinkBuddy: eye care that lives in the tray - blink and break reminders, a screen filter, and more.
 // The entry point: one copy at a time, then the app.
 #include "app/App.h"
+#include "platform/MemJournal.h"
 #include "core/Lang.h"
 #include "features/breaks/GuidedBreak.h"
 #include "features/breaks/StretchBreak.h"
@@ -108,11 +109,14 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
 
     // Diagnostics: "--offscreen" runs a copy beside the real one, for screenshots (tools/ui-check.ps1): no single-copy
     // lock, no tray icon, no shortcuts, and with "--settings <file>" a settings file of its own. Its Resource use section
-    // shows dashes, so screenshots stay the same; "--measure" makes it measure.
+    // shows dashes, so screenshots stay the same; "--measure" makes it measure. "--memlog <file>" writes a line to the file
+    // whenever memory, threads or loaded libraries change (see MemJournal).
     bool offscreen = std::wcsstr(commandLine, L"--offscreen") != nullptr;
+    std::wstring memlog;
     if (int count = 0; LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &count)) {
         for (int i = 1; i + 1 < count; i++)
             if (std::wcscmp(args[i], L"--settings") == 0) bb::Settings::UseFile(args[i + 1]);
+            else if (std::wcscmp(args[i], L"--memlog") == 0) memlog = args[i + 1];
         LocalFree(args);
     }
 
@@ -129,6 +133,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
         return 0;
     }
 
+    if (!memlog.empty()) bb::MemJournal::Start(memlog);
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     int code;
     {

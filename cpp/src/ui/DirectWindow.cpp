@@ -223,34 +223,25 @@ void DirectWindow::Paint()
 {
     PAINTSTRUCT ps;
     BeginPaint(hwnd, &ps);
-    if (!target) {
-        // Drawn on the processor, straight into the window's own device context, one changed area at a time: Direct2D's
-        // working space is then the size of what changed. (A window target keeps a whole-window buffer and a second
-        // copy to present from, and touches both on every paint: twice the memory, for a repaint of one line.)
-        auto props = D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_SOFTWARE,
-                                                  D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE),
-                                                  static_cast<float>(dpi), static_cast<float>(dpi));
-        gfx::D2D()->CreateDCRenderTarget(&props, target.GetAddressOf());
-    }
-    if (target && !IsRectEmpty(&ps.rcPaint) && SUCCEEDED(target->BindDC(ps.hdc, &ps.rcPaint))) {
-        target->BeginDraw();
+    // Drawn on the processor, straight into the window's own device context, one changed area at a time: Direct2D's
+    // working space is then the size of what changed. (A window target keeps a whole-window buffer and a second copy
+    // to present from, and touches both on every paint: twice the memory, for a repaint of one line.)
+    ID2D1RenderTarget* target = IsRectEmpty(&ps.rcPaint) ? nullptr : canvas.Begin(ps.hdc, ps.rcPaint, static_cast<float>(dpi));
+    if (target) {
         float s = Scale();
         D2D1_RECT_F clip{ps.rcPaint.left / s, ps.rcPaint.top / s, ps.rcPaint.right / s, ps.rcPaint.bottom / s};
         target->SetTransform(D2D1::Matrix3x2F::Translation(-clip.left, -clip.top));   // (the area bound starts at its corner)
         target->PushAxisAlignedClip(clip, D2D1_ANTIALIAS_MODE_ALIASED);
         target->Clear(gfx::Color(options.background ? options.background : options.popup ? Palette::Argb(43, 43, 43) : Theme::Bg));
-        Canvas canvas(target.Get());
-        root.PaintTree(canvas, clip);
+        Canvas painter(target);
+        root.PaintTree(painter, clip);
         if (options.popup && options.edge) {
             D2D1_SIZE_F size = ClientSize();
             float px = 1 / s;   // one pixel
-            target->DrawRectangle({px / 2, px / 2, size.width - px / 2, size.height - px / 2}, canvas.Brush(Palette::Argb(72, 72, 72)), px);
+            target->DrawRectangle({px / 2, px / 2, size.width - px / 2, size.height - px / 2}, painter.Brush(Palette::Argb(72, 72, 72)), px);
         }
         target->PopAxisAlignedClip();
-        if (target->EndDraw() == D2DERR_RECREATE_TARGET) {
-            target.Reset();                          // (made again on the next paint)
-            InvalidateRect(hwnd, nullptr, FALSE);   // and that frame is drawn again in full
-        }
+        if (!canvas.End()) InvalidateRect(hwnd, nullptr, FALSE);   // (the device was lost: drawn again in full)
     }
     EndPaint(hwnd, &ps);
 }
@@ -294,7 +285,7 @@ void DirectWindow::UpdateTip()
     SendMessageW(tooltip, TTM_UPDATETIPTEXTW, 0, reinterpret_cast<LPARAM>(&tool));
 }
 
-void DirectWindow::ReleaseGraphics() { target.Reset(); }
+void DirectWindow::ReleaseGraphics() { canvas.Release(); }
 
 LRESULT DirectWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
 {
@@ -352,7 +343,6 @@ void DirectWindow::OnSize(WPARAM w, LPARAM)
 void DirectWindow::OnDpiChanged(WPARAM w, LPARAM l)
 {
     dpi = HIWORD(w);
-    if (target) target->SetDpi(static_cast<float>(dpi), static_cast<float>(dpi));
     auto r = reinterpret_cast<const RECT*>(l);
     fixedWidth = static_cast<float>(r->right - r->left);
     SetWindowPos(hwnd, nullptr, r->left, r->top, r->right - r->left, r->bottom - r->top, SWP_NOZORDER | SWP_NOACTIVATE);

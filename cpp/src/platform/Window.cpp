@@ -1,5 +1,9 @@
 #include "platform/Window.h"
+#include <dwmapi.h>
+#include <cwchar>
 #include <vector>
+
+#pragma comment(lib, "dwmapi.lib")
 
 namespace bb {
 
@@ -22,7 +26,19 @@ bool Window::Create(const wchar_t* className, DWORD style, DWORD exStyle, const 
     }
     hwnd = CreateWindowExW(exStyle, className, L"BlinkBuddy", style, bounds.left, bounds.top,
                            bounds.right - bounds.left, bounds.bottom - bounds.top, owner, nullptr, instance, this);
+    if (hwnd && CloakedCopy()) {
+        BOOL on = TRUE;
+        DwmSetWindowAttribute(hwnd, DWMWA_CLOAK, &on, sizeof on);
+    }
     return hwnd != nullptr;
+}
+
+// Diagnostics ("--offscreen --cloaked"): a copy whose windows are where they would be, on their monitors - so they draw
+// and cost what they do for real - but cloaked: never seen, never in the way.
+bool CloakedCopy()
+{
+    static const bool cloaked = std::wcsstr(GetCommandLineW(), L"--offscreen") && std::wcsstr(GetCommandLineW(), L"--cloaked");
+    return cloaked;
 }
 
 void Window::Destroy()
