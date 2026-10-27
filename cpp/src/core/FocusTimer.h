@@ -6,8 +6,8 @@
 namespace bb {
 
 // The focus timer: work for Settings::FocusWork minutes, then rest for FocusRest, again and again. While it runs, it
-// decides when to rest instead of the look-away and stand-up reminders. The app shows the rest (a break card) and
-// tells it when the rest is over.
+// decides when to rest instead of the stand-up reminder (look-away breaks still come). The app shows the rest (a
+// screen of its own) and tells it when the rest is over.
 class FocusTimer {
 public:
     explicit FocusTimer(const Settings& settings) : s(settings) {}

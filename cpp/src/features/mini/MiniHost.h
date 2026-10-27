@@ -26,10 +26,12 @@ public:
     virtual bool FocusResting(float& progress, int& secondsLeft) const = 0;
     virtual std::wstring BreakStatus() const = 0;
     virtual float BreakProgress() const = 0;          // the wait for the next break (0..1); -1: none
+    virtual float LookAwayProgress() const = 0;       // the wait for the next look-away break alone (0..1); -1: none
 
     virtual void LeaveMiniMode() = 0;                 // and the settings open
     virtual void SaveMiniPosition(POINT at) = 0;
-    virtual void ShowMenu() = 0;                      // the tray icon's menu, at the pointer (Settings, pauses, Exit...)
+    // The tray icon's menu, at the pointer (Settings, pauses, Exit...); fromMini: with Resize, for the icon.
+    virtual void ShowMenu(bool fromMini) = 0;
 
 protected:
     ~MiniHost() = default;

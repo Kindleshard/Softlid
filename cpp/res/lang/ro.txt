@@ -463,3 +463,4 @@ Urmează: concentrare {0} min
 Ridică-te, întinde-te și privește în depărtare
 +5 min
 Sari peste pauză
+Redimensionează...

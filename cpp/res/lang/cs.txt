@@ -463,3 +463,4 @@ Dále: soustředění na {0} min
 Vstaňte, protáhněte se a podívejte se do dálky
 +5 min
 Přeskočit odpočinek
+Změnit velikost...

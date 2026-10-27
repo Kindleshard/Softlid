@@ -256,6 +256,28 @@ TEST(RemindersTiming)
     CHECK(RunTicks(full, 3600, 0, true).empty());   // a full-screen app holds everything back
 }
 
+// While the focus timer runs, the stand-up countdown waits but look-away breaks still come - even when a stand-up
+// break was moments away as it started (that one mustn't keep covering them).
+TEST(RemindersDuringFocus)
+{
+    Settings s;
+    s.LongBreakEnabled = true;
+    s.BlinkEnabled = false;
+    Reminders r(s);
+    for (int t = 0; t < 3500; t++) r.Tick(0, false);   // the stand-up break 100 s away
+    int lookAway = 0, standUp = 0;
+    for (int t = 0; t < 3600; t++) {
+        Reminders::Due d = r.Tick(0, false, false);
+        if (d == Reminders::Due::StandUp) standUp++;
+        if (d == Reminders::Due::LookAway) {
+            lookAway++;
+            r.BreakFinished(false, 0);
+        }
+    }
+    CHECK_EQ(standUp, 0);
+    CHECK_EQ(lookAway, 3);   // every 20 min
+}
+
 // ---- Guided-break timing ----
 
 TEST(SessionPlanUnchanged)

@@ -463,3 +463,4 @@ Als Nächstes: {0} Min. Fokus
 Steh auf, streck dich und schau in die Ferne
 +5 Min.
 Pause überspringen
+Größe ändern...

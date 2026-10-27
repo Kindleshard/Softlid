@@ -463,3 +463,4 @@ Sırada: {0} dk odaklanma
 Kalkın, esneyin ve uzaklara bakın
 +5 dk
 Molayı atla
+Yeniden boyutlandır...

@@ -463,3 +463,4 @@ Härnäst: fokus i {0} min
 Res dig, sträck på dig och titta långt bort
 +5 min
 Hoppa över vilan
+Ändra storlek...

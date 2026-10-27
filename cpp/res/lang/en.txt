@@ -463,3 +463,4 @@ Next: focus for {0} min
 Stand up, stretch, and look far away
 +5 min
 Skip rest
+Resize...

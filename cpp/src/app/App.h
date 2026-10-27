@@ -117,12 +117,13 @@ public:
     std::wstring FocusText() const override;
     bool FocusResting(float& progress, int& secondsLeft) const override;
     float BreakProgress() const override;
+    float LookAwayProgress() const override;
 
     // Mini mode (AppExtras.cpp).
     void EnterMiniMode() override;
     void LeaveMiniMode() override;
     void SaveMiniPosition(POINT at) override;
-    void ShowMenu() override;   // (also the tray icon's right-click)
+    void ShowMenu(bool fromMini) override;   // (also the tray icon's right-click)
 
 private:
     using Clock = std::chrono::system_clock;

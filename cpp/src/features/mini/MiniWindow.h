@@ -14,8 +14,8 @@ class MiniHost;
 // timer; clicking the icon opens the full settings again; dragging moves it. The icon is a per-pixel-alpha window, so
 // its circle is smooth on any background. Left alone, it fades to the opacity set in Options (after the delay and
 // over the time set there). Its rim fills as the next break comes closer; while the focus timer runs, the time left
-// takes the icon's place and the rim is one round: the work period, then the rest in green, with a highlight running
-// along the work part.
+// takes the icon's place and the disc steps in for a second circle round it: one focus round, the work period then the
+// rest in green, with a highlight running along the work part.
 class MiniWindow : public Window {
 public:
     // hidden: made, but not shown until Reveal (while the settings window folds into it: see MiniMorph)
@@ -23,6 +23,7 @@ public:
     ~MiniWindow() override;
     void Reveal();
     RECT Bounds() const;        // where it is on screen
+    void ShowResizer();         // its menu's Resize: a slider for its size, under it
 
 private:
     LRESULT OnMessage(UINT message, WPARAM w, LPARAM l) override;
@@ -32,7 +33,8 @@ private:
     void DrawLap(ID2D1RenderTarget* t, float cx, float cy, float r, float ring, float work, float rest);
     void DrawFlow(ID2D1RenderTarget* t, float cx, float cy, float r, float ring, float progress);
     void DrawBreath(ID2D1RenderTarget* t, float cx, float cy, float r, float ring);
-    float Progress() const;     // the rim's arc: the wait for the next break (when shown), and the focus timer's
+    float Progress() const;     // the rim's arc: the wait for the next look-away break (when shown), or -1
+    float FocusDone() const;    // how far into the focus timer's work period while it runs, or -1
     bool FocusOn() const;
     bool Flowing() const;
     float RestDone() const;     // the focus timer's rest, while it shows: how far into it (0..1), or -1
@@ -49,10 +51,14 @@ private:
     void Rest();
     void OpenPanel();
     POINT StartingPoint() const;
+    void Resize();              // to the size set (Options, or Resize from its menu), round its middle
 
     MiniHost& app;
     class Panel;
     std::unique_ptr<Panel> panel;
+    class Resizer;
+    std::unique_ptr<Resizer> resizer;
+    static constexpr float BaseSize = 56;   // 96-dpi units, at 100%
     LayeredCanvas canvas;
     gfx::ComPtr<IDWriteTextFormat> clockFont, clockFontBig;
     float scale = 1, size = 56, gap = 10;   // size and gap in 96-dpi units
@@ -62,7 +68,7 @@ private:
     POINT grab{};
     ULONGLONG idleSince = 0, lastAnim = 0, nextBreath = 0, breathStart = 0;
     double shown = 255, awake = 0;
-    float drawnBright = -1, drawnWarm = -1, drawnProgress = -2, drawnRest = -2;
+    float drawnBright = -1, drawnWarm = -1, drawnProgress = -2, drawnRest = -2, drawnFocus = -2;
     int drawnIcon = -1, tick = 0;
     std::wstring drawnClock;
 };

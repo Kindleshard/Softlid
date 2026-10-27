@@ -3,7 +3,7 @@
 
 namespace bb {
 
-Reminders::Due Reminders::Tick(int idleSeconds, bool fullscreen, bool breakTimers)
+Reminders::Due Reminders::Tick(int idleSeconds, bool fullscreen, bool standUpTimer)
 {
     // Away from the PC long enough: that was a break.
     if (idleSeconds >= AwaySeconds) {
@@ -12,14 +12,14 @@ Reminders::Due Reminders::Tick(int idleSeconds, bool fullscreen, bool breakTimer
         if (idleSeconds >= s.LongBreakDuration * 60) longElapsed = 0;
         return Due::Nothing;
     }
-    if (breakTimers && s.LongBreakEnabled && ++longElapsed >= s.LongBreakInterval * 60) {
+    if (standUpTimer && s.LongBreakEnabled && ++longElapsed >= s.LongBreakInterval * 60) {
         longElapsed = s.LongBreakInterval * 60;   // (waits there while a full-screen app runs)
         if (!fullscreen) return Due::StandUp;
     }
-    if (breakTimers && s.BreakEnabled && ++breakElapsed >= s.BreakInterval * 60) {
+    if (s.BreakEnabled && ++breakElapsed >= s.BreakInterval * 60) {
         breakElapsed = s.BreakInterval * 60;
-        // A stand-up break is moments away; let it cover this one.
-        if (s.LongBreakEnabled && s.LongBreakInterval * 60 - longElapsed <= 120) breakElapsed = 0;
+        // A stand-up break is moments away; let it cover this one (not while the focus timer holds that countdown).
+        if (standUpTimer && s.LongBreakEnabled && s.LongBreakInterval * 60 - longElapsed <= 120) breakElapsed = 0;
         else if (!fullscreen) return Due::LookAway;
     }
     if (s.BlinkEnabled && --blinkLeft <= 0) {

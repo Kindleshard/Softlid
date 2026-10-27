@@ -463,3 +463,4 @@ Hierna: {0} min focus
 Sta op, rek je uit en kijk in de verte
 +5 min
 Rust overslaan
+Formaat wijzigen...

@@ -463,3 +463,4 @@ Seuraavaksi: keskittymistä {0} min
 Nouse ylös, venyttele ja katso kauas
 +5 min
 Ohita lepo
+Muuta kokoa...

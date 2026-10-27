@@ -15,9 +15,9 @@ public:
     explicit Reminders(const Settings& settings) : s(settings), blinkLeft(settings.BlinkInterval) {}
 
     // One second has passed (not called while paused or while a break shows). idleSeconds: since the last input.
-    // fullscreen: a game or video fills the screen - breaks that fall due wait for it to end. breakTimers: off while
-    // the focus timer decides when to rest instead.
-    Due Tick(int idleSeconds, bool fullscreen, bool breakTimers = true);
+    // fullscreen: a game or video fills the screen - breaks that fall due wait for it to end. standUpTimer: off
+    // while the focus timer decides when to rest instead (the look-away countdown runs on).
+    Due Tick(int idleSeconds, bool fullscreen, bool standUpTimer = true);
 
     // A break ended, or was snoozed for that many seconds (0: taken or skipped).
     void BreakFinished(bool standUp, int snoozeSeconds);

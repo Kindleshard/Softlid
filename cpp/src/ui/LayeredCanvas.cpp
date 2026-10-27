@@ -57,4 +57,20 @@ void LayeredCanvas::Present(HWND window, POINT at, BYTE opacity)
     UpdateLayeredWindow(window, nullptr, &at, &size, dc, &origin, 0, &blend, ULW_ALPHA);
 }
 
+bool LayeredCanvas::Save(const wchar_t* path) const
+{
+    DIBSECTION dib{};
+    if (!bitmap || GetObjectW(bitmap, sizeof dib, &dib) != sizeof dib || !dib.dsBm.bmBits) return false;
+    DWORD bytes = static_cast<DWORD>(width) * height * 4;
+    BITMAPINFOHEADER info{sizeof info, width, -height, 1, 32, BI_RGB};
+    BITMAPFILEHEADER file{0x4D42, static_cast<DWORD>(sizeof file + sizeof info + bytes), 0, 0, sizeof file + sizeof info};
+    HANDLE out = CreateFileW(path, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (out == INVALID_HANDLE_VALUE) return false;
+    DWORD written = 0;
+    bool ok = WriteFile(out, &file, sizeof file, &written, nullptr) && WriteFile(out, &info, sizeof info, &written, nullptr) &&
+              WriteFile(out, dib.dsBm.bmBits, bytes, &written, nullptr);
+    CloseHandle(out);
+    return ok;
+}
+
 } // namespace bb

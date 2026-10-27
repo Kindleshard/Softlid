@@ -463,3 +463,4 @@ A seguir: foco por {0} min
 Levante-se, alongue-se e olhe para longe
 +5 min
 Pular descanso
+Redimensionar...

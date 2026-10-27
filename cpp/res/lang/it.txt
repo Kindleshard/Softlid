@@ -463,3 +463,4 @@ Prossimo: concentrazione per {0} min
 Alzati, fai stretching e guarda lontano
 +5 min
 Salta la pausa
+Ridimensiona...

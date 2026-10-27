@@ -463,3 +463,4 @@ Dalej: skupienie przez {0} min
 Wstań, rozciągnij się i popatrz w dal
 +5 min
 Pomiń odpoczynek
+Zmień rozmiar...

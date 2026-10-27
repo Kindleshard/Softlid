@@ -463,3 +463,4 @@ Næste: fokus i {0} min
 Rejs dig, stræk dig og kig langt væk
 +5 min
 Spring pausen over
+Tilpas størrelse...

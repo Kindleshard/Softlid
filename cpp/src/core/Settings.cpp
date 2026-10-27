@@ -150,6 +150,7 @@ void Settings::Clamp()
     MiniFadeDelay = Fit(MiniFadeDelay, 10, 1000);
     MiniFadeTime = Fit(MiniFadeTime, 0, 200);
     MiniOpacity = Fit(MiniOpacity, 10, 100);
+    MiniSize = Fit(MiniSize, 90, 150);
     NightBlue = Fit(NightBlue, 0, 100);
     MiniIcon = Fit(MiniIcon, 0, 3);
     MiniOrbitSeconds = Fit(MiniOrbitSeconds, 0, 200);

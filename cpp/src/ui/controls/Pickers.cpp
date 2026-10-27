@@ -534,6 +534,18 @@ template <class Test> float MiddleOf(const std::vector<float>& n, Test test)
 
 } // namespace
 
+// The line for now moves on: only the narrow strip around it is drawn again.
+void DayBar::Timer()
+{
+    DirectWindow* w = Window();
+    if (!w || lineX < 0) return;
+    D2D1_POINT_2F o = Origin();
+    D2D1_RECT_F seen = VisibleRect();
+    D2D1_RECT_F strip{std::max(seen.left, o.x + lineX - 6), std::max(seen.top, o.y - 2), std::min(seen.right, o.x + lineX + 6),
+                      std::min(seen.bottom, o.y + lineH + 3)};
+    if (strip.right > strip.left && strip.bottom > strip.top) w->Invalidate(strip);   // (scrolled away: nothing)
+}
+
 // The day as a landscape: the sky through the day (night where the schedule's night is, with a short twilight even
 // when it switches at once), stars and the moon in the middle of the night, the sun in the middle of the day, and
 // hills along the bottom; a white line for now, and the hours under it.
@@ -615,10 +627,32 @@ void DayBar::Paint(Canvas& c)
         hills(0.84f, 0.05f, 3.7f, 2.1f, 0.03f, 7.3f, 0.0f, Palette::Argb(17, 25, 22), 1.0f);
         t->PopLayer();
     }
-    // Now.
+    // Now: a white line rippling gently down the bar (kept whole inside it, even at midnight).
     if (now) {
-        float x = W() * std::clamp(now(), 0, 24 * 60) / (24 * 60.0f);
-        c.FillRound({x - 1.5f, -2, x + 1.5f, barH + 2}, 1.5f, Theme::Fg);
+        float x = std::clamp(W() * std::clamp(now(), 0, 24 * 60) / (24 * 60.0f), 4.0f, W() - 4);
+        float phase = animate ? static_cast<float>(GetTickCount64() % 100000) / 1000.0f * 4.5f : 0;
+        gfx::ComPtr<ID2D1PathGeometry> path;
+        gfx::ComPtr<ID2D1GeometrySink> sink;
+        gfx::D2D()->CreatePathGeometry(path.GetAddressOf());
+        if (path && SUCCEEDED(path->Open(sink.GetAddressOf()))) {
+            constexpr int Steps = 24;
+            for (int s = 0; s <= Steps; s++) {
+                float y = -1 + (barH + 2) * s / Steps;
+                D2D1_POINT_2F p{x + 1.6f * std::sin(y * 0.45f - phase), y};
+                if (s == 0) sink->BeginFigure(p, D2D1_FIGURE_BEGIN_HOLLOW);
+                else sink->AddLine(p);
+            }
+            sink->EndFigure(D2D1_FIGURE_END_OPEN);
+            sink->Close();
+            static gfx::ComPtr<ID2D1StrokeStyle> round = gfx::RoundCaps();
+            t->DrawGeometry(path.Get(), c.Brush(Theme::Fg), 2.6f, round.Get());
+        }
+        lineX = x;
+        lineH = barH;
+        if (animate && !waving) {
+            waving = true;
+            StartTimer(80);   // (about 12 times a second; only the strip around the line is drawn again)
+        }
     }
     // The hours.
     const wchar_t* hours[] = {L"00", L"06", L"12", L"18", L"24"};

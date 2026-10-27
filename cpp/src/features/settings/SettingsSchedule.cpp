@@ -70,6 +70,7 @@ void SettingsWindow::BuildNight(Stack& st)
     dayBar = &dayRow.Add<DayBar>();
     dayBar->SetBounds(24, 8, Edge - 24, 64);
     dayBar->tip = Lang::T(L"Today: the night schedule in amber, and the time now");
+    dayBar->animate = !unfoldAll;   // (a diagnostic copy's screenshots stay the same)
     dayBar->profile = [this] {
         Settings scheduled = app.Scheduled();
         LocalTime t = LocalNow();

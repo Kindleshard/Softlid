@@ -463,3 +463,4 @@ Siguiente: concentración durante {0} min
 Levántate, estírate y mira a lo lejos
 +5 min
 Saltar descanso
+Cambiar tamaño...

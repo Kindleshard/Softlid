@@ -463,3 +463,4 @@ Következik: {0} perc fókusz
 Állj fel, nyújtózz, és nézz a távolba
 +5 perc
 Pihenő kihagyása
+Átméretezés...

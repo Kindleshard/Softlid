@@ -214,9 +214,11 @@ ModeGrid::ModeGrid(std::vector<std::wstring> glyphs, std::vector<std::wstring> e
 // height (a chip at most 34 high).
 D2D1_RECT_F ModeGrid::Tile(int i) const
 {
-    if (iconsOnly) {   // evenly spread from edge to edge, the names' line under them
-        float d = std::min(38.0f, H() - 22), step = names.size() > 1 ? (W() - d) / (names.size() - 1) : 0;
-        return {i * step, 0, i * step + d, d};
+    if (iconsOnly) {   // a group close together, centred with room either side; the names' line under them
+        float d = std::min(38.0f, H() - 22), gap = 12, n = static_cast<float>(names.size());
+        float left = std::max(0.0f, (W() - n * d - (n - 1) * gap) / 2);
+        float x = left + i * (d + gap);
+        return {x, 0, x + d, d};
     }
     constexpr float gap = 8, pad = 12, space = 7;
     IDWriteTextFormat* glyphFont = Fonts::Glyphs(11);

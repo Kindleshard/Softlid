@@ -9,7 +9,9 @@
 #include "ui/MiniArt.h"
 #include "ui/Theme.h"
 #include "ui/controls/Basic.h"
+#include <shellapi.h>
 #include <algorithm>
+#include <cwchar>
 #include <cmath>
 #include <numbers>
 
@@ -24,6 +26,23 @@ constexpr ULONGLONG NotIdle = ~0ull;
 constexpr double BreathSeconds = 3.6;  // one breath of the glow
 constexpr double FlowSeconds = 1.7;    // one run of the focus timer's highlight, splash included
 constexpr int RestGreen = Palette::Argb(95, 208, 138);   // the focus timer's rest, as on its own screen
+
+// Diagnostics ("--offscreen ... --mini-shot <file>"): each frame of the icon is also saved to the file, for screenshots.
+const wchar_t* ShotFile()
+{
+    static const std::wstring file = [] {
+        std::wstring found;
+        if (!std::wcsstr(GetCommandLineW(), L"--offscreen")) return found;
+        int count = 0;
+        if (LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &count)) {
+            for (int i = 1; i + 1 < count; i++)
+                if (std::wcscmp(args[i], L"--mini-shot") == 0) found = args[i + 1];
+            LocalFree(args);
+        }
+        return found;
+    }();
+    return file.empty() ? nullptr : file.c_str();
+}
 constexpr float Pi = std::numbers::pi_v<float>;
 
 std::wstring Kelvin(int blue) { return blue == 0 ? Lang::T(L"Off") : std::to_wstring(ColorMath::KelvinFor(blue)) + L" K"; }
@@ -195,6 +214,91 @@ private:
     double opacity = 1;
 };
 
+// ---- Resize (its right-click menu): a slider for its size, just under where it would end at its largest ----
+
+class MiniWindow::Resizer : public DirectWindow {
+public:
+    static constexpr float W = 240, H = 64;
+
+    explicit Resizer(MiniWindow& icon) : icon(icon)
+    {
+        Settings& s = icon.app.S();
+        Root().Add<Label>(L"Size", Fonts::Body(), Theme::Fg).SetBounds(14, 6, 140, 24);
+        value = &Root().Add<Label>(L"", Fonts::Body(), Theme::Dim);
+        value->align = HAlign::Right;
+        value->SetBounds(W - 84, 6, 70, 24);
+        value->SetPlainText(std::to_wstring(s.MiniSize) + L"%");
+        auto& slider = Root().Add<Slider>(90, 150, s.MiniSize);
+        slider.SetBounds(8, 30, W - 16, 28);
+        slider.onChange = [this](int v) {
+            this->icon.app.S().MiniSize = v;
+            this->icon.app.Changed();
+            this->icon.Resize();
+            value->SetPlainText(std::to_wstring(v) + L"%");
+        };
+        // Centred under the icon, below where its circle would end at 150%; kept on the screen.
+        RECT b = icon.Bounds();
+        int cx = (b.left + b.right) / 2, cy = (b.top + b.bottom) / 2;
+        int largest = static_cast<int>(std::lround(BaseSize * 1.5f * icon.scale));
+        LONG wpx = static_cast<LONG>(W * icon.scale), hpx = static_cast<LONG>(H * icon.scale);
+        MONITORINFO mi{sizeof mi};
+        GetMonitorInfoW(MonitorFromPoint({cx, cy}, MONITOR_DEFAULTTONEAREST), &mi);
+        RECT area = mi.rcWork;
+        POINT at{cx - wpx / 2, cy + largest / 2 + static_cast<LONG>(icon.gap * icon.scale)};
+        at.x = std::max(area.left, std::min(area.right - wpx, at.x));
+        if (at.y + hpx > area.bottom) at.y = cy - largest / 2 - static_cast<LONG>(icon.gap * icon.scale) - hpx;   // (no room: above)
+        Options opts;
+        opts.popup = true;
+        opts.closeOnDeactivate = true;   // a click anywhere else puts it away
+        opts.owner = icon.Handle();
+        Open(W, H, &at, opts);
+        SetWindowLongPtrW(Handle(), GWL_EXSTYLE, GetWindowLongPtrW(Handle(), GWL_EXSTYLE) | WS_EX_TOPMOST);
+        SetWindowPos(Handle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        Show(true);
+    }
+
+protected:
+    bool Shortcut(UINT key) override
+    {
+        if (key != VK_ESCAPE && key != VK_RETURN) return false;
+        Close();
+        return true;
+    }
+
+private:
+    MiniWindow& icon;
+    Label* value = nullptr;
+};
+
+void MiniWindow::ShowResizer()
+{
+    if (resizer) {
+        SetForegroundWindow(resizer->Handle());
+        return;
+    }
+    resizer = std::make_unique<Resizer>(*this);
+    resizer->onClosed = [this] { DeleteLater(std::move(resizer)); };
+}
+
+// To the size set (in Options, or with Resize), round its middle, so it grows and shrinks where it is.
+void MiniWindow::Resize()
+{
+    float want = BaseSize * std::clamp(app.S().MiniSize, 90, 150) / 100.0f;
+    if (std::abs(want - size) < 0.01f) return;
+    POINT middle{pos.x + px / 2, pos.y + px / 2};
+    size = want;
+    px = static_cast<int>(std::lround(size * scale));
+    pos = {middle.x - px / 2, middle.y - px / 2};
+    clockFont.Reset();   // (made again at the new size)
+    clockFontBig.Reset();
+    if (panel->Showing()) {
+        ShowWindow(panel->Handle(), SW_HIDE);
+        SetLit(false);
+    }
+    Draw();   // (the picture's size and place move the window)
+    app.SaveMiniPosition(pos);
+}
+
 // ---- The icon ----
 
 MiniWindow::MiniWindow(MiniHost& app, bool hidden) : app(app), panel(std::make_unique<Panel>(app))
@@ -202,6 +306,7 @@ MiniWindow::MiniWindow(MiniHost& app, bool hidden) : app(app), panel(std::make_u
     POINT cursor;
     GetCursorPos(&cursor);
     scale = ScaleAt(cursor);
+    size = BaseSize * std::clamp(app.S().MiniSize, 90, 150) / 100.0f;
     px = static_cast<int>(std::lround(size * scale));
     pos = StartingPoint();
     Create(L"BlinkBuddy.Mini", WS_POPUP, PopupExStyle | WS_EX_LAYERED, {pos.x, pos.y, pos.x + px, pos.y + px});
@@ -222,6 +327,7 @@ void MiniWindow::Reveal()
 
 MiniWindow::~MiniWindow()
 {
+    resizer.reset();
     panel.reset();
     Destroy();
 }
@@ -247,7 +353,8 @@ RECT MiniWindow::Bounds() const { return {pos.x, pos.y, pos.x + px, pos.y + px};
 float MiniWindow::Bright() const { return app.S().FilterEnabled ? (app.S().Brightness - 20) / 80.0f : 1.0f; }
 bool MiniWindow::FocusOn() const { return app.FocusState() == Focus::Working || app.FocusState() == Focus::Paused; }
 bool MiniWindow::Flowing() const { return app.FocusState() == Focus::Working; }
-float MiniWindow::Progress() const { return app.S().MiniCountdown || FocusOn() ? app.BreakProgress() : -1; }
+float MiniWindow::Progress() const { return app.S().MiniCountdown ? app.LookAwayProgress() : -1; }
+float MiniWindow::FocusDone() const { return FocusOn() ? app.BreakProgress() : -1; }   // (the work period, while it runs)
 
 float MiniWindow::RestDone() const
 {
@@ -265,7 +372,9 @@ std::wstring MiniWindow::Clock() const
 }
 
 // A dark disc with a soft rim (the accent while hovered), the chosen icon inside in its current state (or the focus
-// timer's time), the arc of the wait for the next break, and the breathing glow; the window's own fade is separate.
+// timer's time), the arc of the wait for the next look-away break, and the breathing glow. While the focus timer runs
+// (or rests), the disc steps in and the focus round goes round it as a second, outer circle. The window's own fade is
+// separate.
 void MiniWindow::Draw()
 {
     ID2D1RenderTarget* t = canvas.Begin(px, px, scale);
@@ -276,33 +385,35 @@ void MiniWindow::Draw()
     drawnWarm = app.WarmthNow();
     drawnIcon = s.MiniIcon;
     drawnProgress = Progress();
-    float ring = std::max(1.5f, size / 30), cx = size / 2, cy = size / 2, r = (size - ring - 1) / 2;
+    drawnFocus = FocusDone();
+    drawnRest = RestDone();
+    bool resting = drawnRest >= 0, lap = FocusOn() || resting;
+    float ring = std::max(1.5f, size / 30), cx = size / 2, cy = size / 2, outer = (size - ring - 1) / 2;
+    float r = lap ? outer - ring * 2.4f : outer;
     gfx::ComPtr<ID2D1SolidColorBrush> brush;
     t->CreateSolidColorBrush(gfx::Color(Palette::Argb(34, 36, 42), 242 / 255.0f), brush.GetAddressOf());
     t->FillEllipse({{cx, cy}, r, r}, brush.Get());
     D2D1_COLOR_F rest = gfx::Color(Palette::Argb(90, 96, 110), 120 / 255.0f), on = gfx::Color(Theme::Accent());
     brush->SetColor({rest.r + (on.r - rest.r) * k, rest.g + (on.g - rest.g) * k, rest.b + (on.b - rest.b) * k, rest.a + (on.a - rest.a) * k});
     t->DrawEllipse({{cx, cy}, r, r}, brush.Get(), ring);
-    float box = size * 0.62f;
-    drawnRest = RestDone();
-    bool resting = drawnRest >= 0;
+    float box = size * 0.62f * r / outer;
     drawnClock = Clock();
     if (!drawnClock.empty()) DrawClock(t, drawnClock, resting);   // the focus timer's countdown in place of the icon
     else MiniArt::DrawIcon(t, {(size - box) / 2, (size - box) / 2, (size + box) / 2, (size + box) / 2}, s.MiniIcon, k, drawnBright, drawnWarm);
-    if (FocusOn() || resting) {
-        DrawLap(t, cx, cy, r, ring, resting ? 1.0f : std::max(0.0f, drawnProgress), std::max(0.0f, drawnRest));
-    } else if (drawnProgress > 0.002f) {
-        // The wait for the next break, as an arc filling round the rim from the top.
+    // The wait for the next look-away break, as an arc filling round the rim from the top.
+    if (drawnProgress > 0.002f) {
         brush->SetColor(gfx::Color(Theme::Accent(), 190 / 255.0f));
         gfx::Arc(t, cx, cy, r, -90, 360 * drawnProgress, brush.Get(), ring * 1.15f, gfx::RoundCaps().Get());
     }
-    if (!FocusOn() && !resting) DrawBreath(t, cx, cy, r, ring);   // (the focus timer's flow takes the breath's place)
+    if (lap) DrawLap(t, cx, cy, outer, ring, resting ? 1.0f : std::max(0.0f, drawnFocus), std::max(0.0f, drawnRest));
+    else DrawBreath(t, cx, cy, r, ring);   // (the focus timer's flow takes the breath's place)
     canvas.End();
+    if (const wchar_t* shot = ShotFile()) canvas.Save(shot);   // (diagnostics)
     canvas.Present(hwnd, pos, static_cast<BYTE>(std::lround(shown)));
 }
 
-// The focus timer's lap round the rim: the work period, then the rest in green, one round to a lap. Both show
-// faintly; what has passed is bright (grey while paused), with the highlight running along the work part.
+// The focus timer's round as a circle outside the disc: the work period, then the rest in green, one round to a lap.
+// Both show faintly; what has passed is bright (grey while paused), with the highlight running along the work part.
 void MiniWindow::DrawLap(ID2D1RenderTarget* t, float cx, float cy, float r, float ring, float work, float rest)
 {
     const Settings& s = app.S();
@@ -328,9 +439,9 @@ void MiniWindow::DrawLap(ID2D1RenderTarget* t, float cx, float cy, float r, floa
 void MiniWindow::DrawClock(ID2D1RenderTarget* t, const std::wstring& time, bool resting)
 {
     bool paused = app.FocusState() == Focus::Paused;
-    if (!clockFont) {   // (made once: this is drawn up to 30 times a second)
-        clockFont = gfx::Font(size * 0.23f * 0.75f, gfx::Weight::Semibold, L"Segoe UI");
-        clockFontBig = gfx::Font(size * 0.27f * 0.75f, gfx::Weight::Semibold, L"Segoe UI");
+    if (!clockFont) {   // (made once: this is drawn up to 30 times a second; sized for the disc stepped in)
+        clockFont = gfx::Font(size * 0.20f * 0.75f, gfx::Weight::Semibold, L"Segoe UI");
+        clockFontBig = gfx::Font(size * 0.23f * 0.75f, gfx::Weight::Semibold, L"Segoe UI");
     }
     float shift = paused ? -size * 0.06f : 0;
     gfx::Text(t, time, (time.size() > 4 ? clockFont : clockFontBig).Get(), {0, shift, size, size + shift},
@@ -433,7 +544,7 @@ void MiniWindow::AnimStep()
     awake = target > awake ? std::min(target, awake + speed * dt) : std::max(target, awake - speed * dt);
     bool breathing = breathStart && (now - breathStart) / 1000.0 < BreathSeconds;
     if (!breathing) breathStart = 0;
-    bool flowing = Flowing() && drawnProgress > 0.002f;
+    bool flowing = Flowing();
     Draw();
     // The hover animation at 60 frames a second; a slow breath or the flow at 30.
     SetTimer(hwnd, AnimTimer, awake != target ? 15 : 33, nullptr);
@@ -516,6 +627,8 @@ void MiniWindow::CheckHover()
 {
     const Settings& s = app.S();
     ULONGLONG now = GetTickCount64();
+    // Its size, changed in Options.
+    if (std::abs(BaseSize * std::clamp(s.MiniSize, 90, 150) / 100.0f - size) > 0.01f) Resize();
     // The breath, when it is due.
     if (s.MiniOrbit && !FocusOn() && RestDone() < 0 && now >= nextBreath) {
         nextBreath = now + static_cast<ULONGLONG>((s.MiniOrbitSeconds == 0 ? BreathSeconds : s.MiniOrbitSeconds) * 1000);   // 0: right on
@@ -527,7 +640,8 @@ void MiniWindow::CheckHover()
     // Brightness, the filter or the chosen icon changed (shortcuts, the panel, the schedule): show it.
     if (!animating && (std::abs(Bright() - drawnBright) > 0.005f || std::abs(app.WarmthNow() - drawnWarm) > 0.005f ||
                        s.MiniIcon != drawnIcon || std::abs(Progress() - drawnProgress) > 0.004f ||
-                       std::abs(RestDone() - drawnRest) > 0.004f || Clock() != drawnClock))
+                       std::abs(RestDone() - drawnRest) > 0.004f || std::abs(FocusDone() - drawnFocus) > 0.004f ||
+                       Clock() != drawnClock))
         Draw();
     // Stay above other windows, even ones that made themselves topmost since.
     if (++tick % 16 == 0) SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
@@ -604,7 +718,7 @@ LRESULT MiniWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
         }
         return 0;
     case WM_RBUTTONUP:   // the tray icon's menu: settings, pauses, exit
-        app.ShowMenu();
+        app.ShowMenu(true);
         return 0;
     case WM_LBUTTONDOWN:
         pressed = true;

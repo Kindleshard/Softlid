@@ -40,6 +40,12 @@ float App::BreakProgress() const
     return reminders.BreakProgress();
 }
 
+float App::LookAwayProgress() const
+{
+    if (Paused() || !settings.BreakEnabled) return -1;
+    return reminders.BreakProgress();
+}
+
 // ---- Mini mode ----
 
 void App::EnterMiniMode()

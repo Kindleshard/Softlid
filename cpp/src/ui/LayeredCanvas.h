@@ -18,6 +18,7 @@ public:
     void End();
     void Present(HWND window, POINT at, BYTE opacity = 255);   // opacity also fades the whole picture
     void Release();   // gives the memory back (it is made again on the next Begin)
+    bool Save(const wchar_t* path) const;   // diagnostics: the last frame as a 32-bit .bmp (premultiplied)
 
     int Width() const { return width; }
     int Height() const { return height; }

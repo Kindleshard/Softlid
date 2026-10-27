@@ -188,6 +188,9 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
     // How much of it shows while the pointer is away (hovered, it is always solid).
     SliderRow(st, L"Opacity while not hovered", 10, 100, s.MiniOpacity, defaults.MiniOpacity, [](int v) { return std::to_wstring(v) + L"%"; },
               [this](int v) { s.MiniOpacity = v; app.Changed(); }, on);
+    // Its size (also from its right-click menu: Resize).
+    SliderRow(st, L"Size", 90, 150, s.MiniSize, defaults.MiniSize, [](int v) { return std::to_wstring(v) + L"%"; },
+              [this](int v) { s.MiniSize = v; app.Changed(); }, on);
     Shown more = More(st, L"mini", on), glow = And(more, [this] { return s.MiniOrbit; });
     SliderRow(st, L"Fade-out delay after hovering", 10, 1000, s.MiniFadeDelay, 500, Ms,
               [this](int v) { s.MiniFadeDelay = v; app.Changed(); }, more);

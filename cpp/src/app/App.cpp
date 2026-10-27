@@ -31,7 +31,7 @@ constexpr wchar_t WindowClass[] = L"BlinkBuddy.App";
 
 // Menu commands.
 enum : UINT {
-    CmdSettings = 1, CmdBreakNow, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit,
+    CmdSettings = 1, CmdBreakNow, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit, CmdMiniResize,
     CmdFilter, CmdStrip, CmdAwakeOff, CmdAwake1h, CmdAwake2h, CmdAwakeOn,
     CmdMode,   // CmdMode + mode, for each screen mode
 };
@@ -79,6 +79,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
     SetTimer(window, TickTimer, 1000, nullptr);
     if (!offscreen) RunLog::Write(openSettings ? L"started" : L"started quietly in the tray (as at sign-in)");
     WeeklyUpdateCheck();
+    if (offscreen && std::wcsstr(GetCommandLineW(), L"--focus")) focusTimer.Start();   // (diagnostics: the focus timer running)
     if (openSettings) ShowSettings();
     else if (settings.MiniMode && settings.MiniEnabled) ShowMini();
 }
@@ -144,7 +145,7 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
         return 0;
     case Tray::CallbackMessage:
         switch (LOWORD(l)) {
-        case WM_CONTEXTMENU: ShowMenu(); break;
+        case WM_CONTEXTMENU: ShowMenu(false); break;
         case WM_MOUSEMOVE: UpdateTrayTip(); break;   // the tip is made when it is about to show
         case NIN_SELECT:
         case NIN_KEYSELECT: ShowSettings(); break;
@@ -253,7 +254,7 @@ void App::OnTick()
     FocusTick();
     if (card) return;
     bool fullscreen = settings.PauseInFullscreen && FullscreenAppRunning();
-    // While the focus timer runs, it decides when to rest instead of the look-away and stand-up reminders.
+    // While the focus timer runs, it decides when to rest instead of the stand-up reminder; look-away breaks still come.
     switch (reminders.Tick(IdleSeconds(), fullscreen, focusTimer.State() == Focus::Off)) {
     case Reminders::Due::Blink: Blink(false); break;
     case Reminders::Due::LookAway: StartBreak(false); break;
@@ -336,7 +337,7 @@ void App::UpdateTrayTip()
     tray.SetTip(tip);
 }
 
-void App::ShowMenu()
+void App::ShowMenu(bool fromMini)
 {
     MemJournal::Note(L"tray menu");
     auto checked = [](bool on) -> UINT { return on ? MF_CHECKED : MF_UNCHECKED; };
@@ -375,6 +376,7 @@ void App::ShowMenu()
         AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(pause), Lang::T(L"Pause reminders").c_str());
     }
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
+    if (fromMini && mini) AppendMenuW(menu, MF_STRING, CmdMiniResize, Lang::T(L"Resize...").c_str());   // (its size, on a slider)
     AppendMenuW(menu, MF_STRING, CmdExit, Lang::T(L"Exit").c_str());
 
     // The window must be in front for the menu to close when you click elsewhere.
@@ -393,6 +395,9 @@ void App::ShowMenu()
     case CmdPauseUntilResumed: Pause(-1); break;
     case CmdResume: pausedUntil = {}; break;
     case CmdExit: Exit(L"Exit in the tray menu"); break;
+    case CmdMiniResize:
+        if (mini) mini->ShowResizer();
+        break;
     case CmdFilter: ToggleFilter(); break;
     case CmdStrip: OnHotkey(Hotkeys::Strip); break;
     case CmdAwakeOff: SetKeepAwake(false); break;

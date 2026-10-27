@@ -150,7 +150,13 @@ public:
     std::function<std::vector<float>()> profile;   // how far into the night it is (0 day .. 1 full night), evenly
                                                   // through the day from midnight
     std::function<int()> now;                      // the minute of the day now
+    bool animate = true;                           // the line for now waves gently (not in diagnostic screenshots)
     void Paint(Canvas& canvas) override;
+    void Timer() override;
+
+private:
+    float lineX = -1, lineH = 0;                   // where the line for now was drawn
+    bool waving = false;
 };
 
 // Where a dragged item would land: a short bar in the accent colour.
