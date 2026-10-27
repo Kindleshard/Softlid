@@ -149,6 +149,7 @@ void Settings::Clamp()
     LongBreakDuration = Fit(LongBreakDuration, 1, 15);
     MiniFadeDelay = Fit(MiniFadeDelay, 10, 1000);
     MiniFadeTime = Fit(MiniFadeTime, 0, 200);
+    MiniOpacity = Fit(MiniOpacity, 10, 100);
     NightBlue = Fit(NightBlue, 0, 100);
     MiniIcon = Fit(MiniIcon, 0, 3);
     MiniOrbitSeconds = Fit(MiniOrbitSeconds, 0, 200);

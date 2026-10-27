@@ -302,7 +302,7 @@ SettingsWindow::Shown SettingsWindow::More(Stack& st, const std::wstring& key, S
 {
     static std::vector<std::wstring> unfolded;   // (for as long as BlinkBuddy runs)
     auto isOpen = [this, key] { return unfoldAll || std::find(unfolded.begin(), unfolded.end(), key) != unfolded.end(); };
-    Shown visible = [this, shown] { return s.AdvancedView && (!shown || shown()); };
+    Shown visible = [shown] { return !shown || shown(); };
     Row& row = st.Add(36, visible);
     auto& d = row.Add<Disclosure>(isOpen());
     d.SetBounds(20, 5, 220, 26);

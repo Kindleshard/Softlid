@@ -129,7 +129,7 @@ Wstrzymuj przypomnienia w aplikacjach pełnoekranowych
 Widok
 Prosty
 Zaawansowany
-Widok prosty pokazuje tylko to, co najważniejsze, bez „Więcej opcji”. Wyłącza odwracanie kolorów, ziarno filmowe, chłodniej niż światło dzienne, własne godziny nocne, wymuszone przerwy i nieusypianie komputera; ton używa silnika Standardowy od Delikatnego do Mocnego. Tryby dla aplikacji zostają zapisane, ale są wstrzymane.
+Widok prosty pokazuje tylko to, co najważniejsze. Wyłącza odwracanie kolorów, ziarno filmowe, chłodniej niż światło dzienne, własne godziny nocne, wymuszone przerwy i nieusypianie komputera; ton używa silnika Standardowy od Delikatnego do Mocnego. Tryby dla aplikacji zostają zapisane, ale są wstrzymane.
 Tryb mini
 Zwiń do oka
 Małe oko zawsze na wierzchu. Najedź na nie, aby ustawić jasność, filtr światła niebieskiego, podświetlenie (gdy włączone) i przypomnienia o mruganiu; kliknij, aby tu wrócić. Gdy się oddalisz, blednie do 65%.
@@ -259,11 +259,11 @@ Filtr światła niebieskiego w nocy
 Zamknąć BlinkBuddy?
 W zasobniku nadal przypomina o mruganiu i patrzeniu w dal oraz utrzymuje filtr ekranu. Zakończenie zatrzymuje to wszystko do ponownego uruchomienia.
 Zapamiętaj mój wybór (można zmienić w Opcjach)
-Zsynchronizowano z lokalizacją Windows
-Zsynchronizowano z czasem: {0}
-Synchronizowanie z lokalizacją...
-Czas: {0}, wybrany przez Ciebie
-Nie udało się zsynchronizować.
+Zachód i wschód słońca dla twojej lokalizacji w Windows
+Zachód i wschód słońca: {0}, według strefy czasowej
+Szukanie lokalizacji dla zachodu i wschodu słońca...
+Zachód i wschód słońca: {0}, miasto wybrane przez Ciebie
+Nie udało się znaleźć lokalizacji dla zachodu i wschodu słońca.
 Wybierz miasto ręcznie
 Automatycznie
 Wpisz swoje miasto
@@ -451,3 +451,15 @@ Zachowaj
 Cofnij
 DesktopLUT stosuje teraz tabelę kolorów. Jeśli nic nie zrobisz, zostanie cofnięta za {0} s.\nKlawisz awaryjny w każdej chwili: Ctrl+Alt+Shift+L.
 Dobra robota. Możesz już spojrzeć z powrotem.
+Harmonogram nocny podąża za zachodem i wschodem słońca. BlinkBuddy oblicza je dla tego miejsca: twojej lokalizacji w Windows, jeśli jest dozwolona, albo miasta twojej strefy czasowej.
+Siła harmonogramu nocnego w nocy: {0}
+Zielona kropka: siła harmonogramu nocnego w nocy
+Krycie, gdy kursor nie jest nad ikoną
+Runda skupienia {0} ukończona
+Wdech...
+Zatrzymaj...
+Wydech...
+Dalej: skupienie przez {0} min
+Wstań, rozciągnij się i popatrz w dal
++5 min
+Pomiń odpoczynek

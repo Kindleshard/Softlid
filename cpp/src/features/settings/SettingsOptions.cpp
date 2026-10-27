@@ -72,7 +72,7 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
         }
         app.Rebuild(true);   // built again for the new view, every control showing the settings as they now are
     };
-    Note(st, L"Simple shows just the essentials, without \"More options\". It turns off Invert colors, Film grain, cooler than "
+    Note(st, L"Simple shows just the essentials. It turns off Invert colors, Film grain, cooler than "
              L"daylight, custom night hours, forced breaks and keeping the PC awake; tone uses the Standard "
              L"engine at Gentle to Strong. Modes for apps are kept but pause.", 4);
 
@@ -185,6 +185,9 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
              L"the screen's brightness and the blue light filter.", 2, on);
     ToggleRow(st, L"Show the time to the next break on the icon's rim", s.MiniCountdown,
               [this](bool v) { s.MiniCountdown = v; app.Changed(); }, on);
+    // How much of it shows while the pointer is away (hovered, it is always solid).
+    SliderRow(st, L"Opacity while not hovered", 10, 100, s.MiniOpacity, defaults.MiniOpacity, [](int v) { return std::to_wstring(v) + L"%"; },
+              [this](int v) { s.MiniOpacity = v; app.Changed(); }, on);
     Shown more = More(st, L"mini", on), glow = And(more, [this] { return s.MiniOrbit; });
     SliderRow(st, L"Fade-out delay after hovering", 10, 1000, s.MiniFadeDelay, 500, Ms,
               [this](int v) { s.MiniFadeDelay = v; app.Changed(); }, more);

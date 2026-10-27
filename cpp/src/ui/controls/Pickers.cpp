@@ -497,6 +497,46 @@ namespace bb::ui {
 
 // ---- DayBar ----
 
+namespace {
+
+// The sky's colour for how far into the night it is (0 day .. 1 night): day blue, a warm glow, dusky purple, then
+// night; `noon` (0..1) lightens the day toward midday.
+D2D1_COLOR_F SkyAt(float n, float noon)
+{
+    struct Stop { float at; float r, g, b; };
+    const Stop stops[] = {{0, 140 + 50 * noon, 190 + 34 * noon, 232 + 18 * noon}, {0.35f, 240, 166, 106},
+                          {0.65f, 86, 58, 118}, {1, 14, 20, 48}};
+    n = std::clamp(n, 0.0f, 1.0f);
+    int i = n < 0.35f ? 0 : n < 0.65f ? 1 : 2;
+    float k = (n - stops[i].at) / (stops[i + 1].at - stops[i].at);
+    auto mix = [k](float a, float b) { return (a + (b - a) * k) / 255; };
+    return {mix(stops[i].r, stops[i + 1].r), mix(stops[i].g, stops[i + 1].g), mix(stops[i].b, stops[i + 1].b), 1};
+}
+
+float Fraction(unsigned h) { return (h % 1000) / 1000.0f; }
+
+// Where on the bar (0..1) the middle of the slices that pass `test` is, going round the clock (a night runs over
+// midnight); -1 when none do.
+template <class Test> float MiddleOf(const std::vector<float>& n, Test test)
+{
+    double x = 0, y = 0;
+    for (size_t i = 0; i < n.size(); i++) {
+        if (!test(n[i])) continue;
+        double a = 2 * 3.14159265358979 * (i + 0.5) / n.size();
+        x += std::cos(a);
+        y += std::sin(a);
+    }
+    if (std::abs(x) < 1e-6 && std::abs(y) < 1e-6) return -1;
+    double a = std::atan2(y, x);
+    if (a < 0) a += 2 * 3.14159265358979;
+    return static_cast<float>(a / (2 * 3.14159265358979));
+}
+
+} // namespace
+
+// The day as a landscape: the sky through the day (night where the schedule's night is, with a short twilight even
+// when it switches at once), stars and the moon in the middle of the night, the sun in the middle of the day, and
+// hills along the bottom; a white line for now, and the hours under it.
 void DayBar::Paint(Canvas& c)
 {
     constexpr float LabelH = 16;
@@ -504,16 +544,75 @@ void DayBar::Paint(Canvas& c)
     D2D1_ROUNDED_RECT bar{{0, 0, W(), barH}, radius, radius};
     ID2D1RenderTarget* t = c.Target();
     t->FillRoundedRectangle(bar, c.Brush(Palette::Argb(52, 52, 56)));
-    // The night, slice by slice, within the bar's rounded ends.
     std::vector<float> night = profile ? profile() : std::vector<float>{};
     gfx::ComPtr<ID2D1RoundedRectangleGeometry> shape;
     gfx::D2D()->CreateRoundedRectangleGeometry(bar, shape.GetAddressOf());
     gfx::ComPtr<ID2D1Layer> layer;
     if (shape && !night.empty() && SUCCEEDED(t->CreateLayer(layer.GetAddressOf()))) {
         t->PushLayer(D2D1::LayerParameters(D2D1::InfiniteRect(), shape.Get()), layer.Get());
-        float w = W() / night.size();
-        for (size_t i = 0; i < night.size(); i++)
-            if (night[i] > 0.01f) c.Fill({i * w, 0, (i + 1) * w + 0.5f, barH}, Palette::Argb(255, 184, 64), 0.85f * night[i]);
+        size_t count = night.size();
+        // The sky: the night softened over about 45 minutes each way (twilight), as one gradient across the bar.
+        std::vector<float> sky(count);
+        for (size_t i = 0; i < count; i++) {
+            float sum = 0;
+            for (int d = -3; d <= 3; d++) sum += night[(i + count + d) % count];
+            sky[i] = sum / 7;
+        }
+        std::vector<D2D1_GRADIENT_STOP> stops;
+        for (size_t i = 0; i < count; i++) {
+            float hour = 24.0f * (i + 0.5f) / count, noon = std::clamp(1 - std::abs(hour - 13) / 7, 0.0f, 1.0f);
+            stops.push_back({(i + 0.5f) / count, SkyAt(sky[i], noon)});
+        }
+        gfx::ComPtr<ID2D1GradientStopCollection> collection;
+        gfx::ComPtr<ID2D1LinearGradientBrush> brush;
+        t->CreateGradientStopCollection(stops.data(), static_cast<UINT32>(stops.size()), collection.GetAddressOf());
+        t->CreateLinearGradientBrush({{0, 0}, {W(), 0}}, collection.Get(), brush.GetAddressOf());
+        if (brush) t->FillRectangle({0, 0, W(), barH}, brush.Get());
+        // Stars where it is dark, two to a slice, in the upper part of the sky (the same ones every time).
+        float w = W() / count;
+        for (size_t i = 0; i < count; i++) {
+            if (sky[i] < 0.6f) continue;
+            for (unsigned k = 0; k < 2; k++) {
+                unsigned h = static_cast<unsigned>(i) * 2654435761u + k * 40503u;
+                float x = (i + Fraction(h >> 3)) * w, y = barH * (0.08f + 0.5f * Fraction(h >> 13));
+                c.FillCircle(x, y, 0.6f + 0.5f * Fraction(h >> 23), Palette::Argb(255, 255, 255), (sky[i] - 0.6f) / 0.4f * 0.9f);
+            }
+        }
+        // The moon in the middle of the night (a crescent: the sky's colour bites into it), the sun in the middle of the day.
+        float r = std::max(3.0f, barH * 0.16f);
+        float moon = MiddleOf(night, [](float n) { return n > 0.5f; }), sun = MiddleOf(night, [](float n) { return n < 0.5f; });
+        if (moon >= 0) {
+            float x = std::clamp(moon * W(), r * 2.5f, W() - r * 2.5f), y = barH * 0.32f;   // (whole, even at midnight)
+            c.FillCircle(x, y, r, Palette::Argb(243, 240, 216));
+            D2D1_COLOR_F behind = SkyAt(sky[std::min(count - 1, static_cast<size_t>(x / W() * count))], 0);
+            gfx::ComPtr<ID2D1SolidColorBrush> bite;
+            t->CreateSolidColorBrush(behind, bite.GetAddressOf());
+            t->FillEllipse({{x + r * 0.45f, y - r * 0.25f}, r * 0.85f, r * 0.85f}, bite.Get());
+        }
+        if (sun >= 0) {
+            float x = std::clamp(sun * W(), r * 2.5f, W() - r * 2.5f), y = barH * 0.3f;
+            c.FillCircle(x, y, r * 1.6f, Palette::Argb(255, 236, 170), 0.25f);
+            c.FillCircle(x, y, r * 1.1f, Palette::Argb(255, 224, 138));
+        }
+        // Two rows of hills: far ones, then near ones in front.
+        auto hills = [&](float base, float a1, float f1, float p1, float a2, float f2, float p2, int argb, float alpha) {
+            gfx::ComPtr<ID2D1PathGeometry> path;
+            gfx::ComPtr<ID2D1GeometrySink> sink;
+            gfx::D2D()->CreatePathGeometry(path.GetAddressOf());
+            if (!path || FAILED(path->Open(sink.GetAddressOf()))) return;
+            sink->BeginFigure({0, barH}, D2D1_FIGURE_BEGIN_FILLED);
+            constexpr int Steps = 80;
+            for (int s = 0; s <= Steps; s++) {
+                float u = s / static_cast<float>(Steps), a = u * 6.2831853f;
+                sink->AddLine({u * W(), barH * (base + a1 * std::sin(a * f1 + p1) + a2 * std::sin(a * f2 + p2))});
+            }
+            sink->AddLine({W(), barH});
+            sink->EndFigure(D2D1_FIGURE_END_CLOSED);
+            sink->Close();
+            t->FillGeometry(path.Get(), c.Brush(argb, alpha));
+        };
+        hills(0.72f, 0.07f, 2.3f, 0.6f, 0.04f, 5.1f, 1.3f, Palette::Argb(32, 48, 40), 0.9f);
+        hills(0.84f, 0.05f, 3.7f, 2.1f, 0.03f, 7.3f, 0.0f, Palette::Argb(17, 25, 22), 1.0f);
         t->PopLayer();
     }
     // Now.

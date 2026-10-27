@@ -21,8 +21,8 @@ namespace bb {
 // - the circle: it slides round the screen leaving a glossy trail behind it like a snail, which beads up and dries
 // - closing: it turns into a real eye, with lids that close and open
 // Each movement takes at most 3 s; with more time it repeats. Spoken lines (when on) are never cut: the steps are
-// timed around them. Esc skips (unless breaks are forced). When it is over it posts BreakCard::DoneMessage to its
-// owner (a look-away break, no snooze); the owner then deletes it.
+// timed around them. Esc or Skip ends it, Snooze waits 5 min (neither when breaks are forced). When it is over it posts
+// BreakCard::DoneMessage to its owner (a look-away break, with the snooze length); the owner then deletes it.
 class GuidedBreak : public Window {
 public:
     GuidedBreak(HWND owner, const Settings& s, float warmth);
@@ -36,6 +36,7 @@ private:
     void UpdateCaption();
     void ShowCaption();
     double Now() const;
+    void End(int snoozeSeconds);   // Skip (0), or Snooze: it fades out, then tells the owner
 
     // Motion (each exercise's choreography).
     struct Timing { double pre, cycle, moves, back; int reps; };
@@ -58,6 +59,7 @@ private:
     void Blink(double u, double len);
 
     class Layer;
+    class Buttons;
     HWND owner;
     bool sounds, forced, backdrop, finished = false;
     std::unique_ptr<Voice> voice;
@@ -66,6 +68,7 @@ private:
     std::vector<double> trailBorn;
     std::vector<std::unique_ptr<Layer>> shades;   // the other screens, dark
     std::unique_ptr<Layer> drop, caption;          // see-through windows above the break: the liquid, and the words
+    std::unique_ptr<Buttons> buttons;               // Skip and Snooze (not when breaks are forced)
     LayeredCanvas captionArt;
     gfx::ComPtr<IDWriteTextFormat> captionFont, hintFont;
     RECT bounds{};
@@ -74,6 +77,7 @@ private:
     bool liquidShown = false, started = false;
     double fadeK = 0, outroAt = -1, fadeAt = -1, lastT = 0, trailX = 0, trailY = 0;
     int step = -2, spoken = -1, shownSeconds = -1, trailNext = 0;
+    int snooze = 0;
     float alpha = 0;
     LARGE_INTEGER clockStart{}, frequency{};
 

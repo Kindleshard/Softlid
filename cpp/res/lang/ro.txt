@@ -129,7 +129,7 @@ Pune memento-urile pe pauză în aplicațiile pe tot ecranul
 Vizualizare
 Simplă
 Avansată
-Vizualizarea Simplă arată doar esențialul, fără „Mai multe opțiuni”. Oprește inversarea culorilor, granulația de film, mai rece decât lumina zilei, orele de noapte personalizate, pauzele obligatorii și ținerea PC-ului treaz; tonul folosește motorul Standard de la Blând la Puternic. Modurile pentru aplicații rămân salvate, dar în pauză.
+Vizualizarea Simplă arată doar esențialul. Oprește inversarea culorilor, granulația de film, mai rece decât lumina zilei, orele de noapte personalizate, pauzele obligatorii și ținerea PC-ului treaz; tonul folosește motorul Standard de la Blând la Puternic. Modurile pentru aplicații rămân salvate, dar în pauză.
 Mod mini
 Strânge în ochi
 Un ochi mic, mereu deasupra. Treci cu mouse-ul peste el pentru luminozitate, filtrul de lumină albastră, iluminarea de fundal (când e pornită) și memento-urile de clipire; dă clic ca să revii aici. Când pleci, se estompează la 65%.
@@ -259,11 +259,11 @@ Filtru de lumină albastră noaptea
 Închizi BlinkBuddy?
 În bara de sistem continuă să-ți amintească să clipești și să privești în depărtare și ține filtrul de ecran pornit. Ieșirea oprește toate acestea până îl repornești.
 Ține minte alegerea (o poți schimba în Opțiuni)
-Sincronizat cu locația ta din Windows
-Sincronizat cu ora din {0}
-Se sincronizează cu locația ta...
-Ora din {0}, aleasă de tine
-Sincronizarea a eșuat.
+Apus și răsărit pentru locația ta din Windows
+Apus și răsărit în {0}, după fusul tău orar
+Se caută locația ta pentru apus și răsărit...
+Apus și răsărit în {0}, orașul ales de tine
+Locația ta pentru apus și răsărit nu a fost găsită.
 Alege-ți orașul manual
 Automat
 Scrie-ți orașul
@@ -451,3 +451,15 @@ Păstrează
 Anulează
 DesktopLUT aplică acum tabelul de culori. Dacă nu faci nimic, se anulează în {0} s.\nTastă de urgență oricând: Ctrl+Alt+Shift+L.
 Bravo. Acum poți privi din nou.
+Programul de noapte urmează apusul și răsăritul. BlinkBuddy le calculează pentru acest loc: locația ta din Windows, când e permisă, altfel orașul fusului tău orar.
+Intensitatea programului de noapte, noaptea: {0}
+Punctul verde: intensitatea programului de noapte, noaptea
+Opacitate când indicatorul nu e deasupra
+Runda de concentrare {0} încheiată
+Inspiră...
+Ține...
+Expiră...
+Urmează: concentrare {0} min
+Ridică-te, întinde-te și privește în depărtare
++5 min
+Sari peste pauză

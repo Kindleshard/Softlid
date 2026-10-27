@@ -1,5 +1,6 @@
 #include "features/mini/MiniWindow.h"
 #include "features/mini/MiniHost.h"
+#include "core/Clock.h"
 #include "core/ColorMath.h"
 #include "core/Lang.h"
 #include "platform/Activity.h"
@@ -20,39 +21,10 @@ using namespace ui;
 constexpr UINT_PTR HoverTimer = 1, FadeTimer = 2, AnimTimer = 3, TrimTimer = 4;
 constexpr UINT TrimDelay = 4000;   // still this long: its drawing memory goes back to Windows (see Settle)
 constexpr ULONGLONG NotIdle = ~0ull;
-constexpr double Faded = 166;          // 65% of 255
 constexpr double BreathSeconds = 3.6;  // one breath of the glow
 constexpr double FlowSeconds = 1.7;    // one run of the focus timer's highlight, splash included
+constexpr int RestGreen = Palette::Argb(95, 208, 138);   // the focus timer's rest, as on its own screen
 constexpr float Pi = std::numbers::pi_v<float>;
-
-gfx::ComPtr<ID2D1StrokeStyle> RoundCaps()
-{
-    gfx::ComPtr<ID2D1StrokeStyle> s;
-    D2D1_STROKE_STYLE_PROPERTIES p{};
-    p.startCap = p.endCap = D2D1_CAP_STYLE_ROUND;
-    gfx::D2D()->CreateStrokeStyle(p, nullptr, 0, s.GetAddressOf());
-    return s;
-}
-
-// An arc of a circle, from `start` degrees (0 at the right, clockwise) for `sweep` degrees; too short to see: none.
-void Arc(ID2D1RenderTarget* t, float cx, float cy, float r, float start, float sweep, ID2D1Brush* b, float width, ID2D1StrokeStyle* s)
-{
-    if (sweep < 0.5f) return;
-    if (sweep >= 359.9f) {
-        t->DrawEllipse({{cx, cy}, r, r}, b, width);
-        return;
-    }
-    auto at = [&](float deg) { return D2D1_POINT_2F{cx + r * std::cos(deg * Pi / 180), cy + r * std::sin(deg * Pi / 180)}; };
-    gfx::ComPtr<ID2D1PathGeometry> path;
-    gfx::ComPtr<ID2D1GeometrySink> sink;
-    gfx::D2D()->CreatePathGeometry(path.GetAddressOf());
-    path->Open(sink.GetAddressOf());
-    sink->BeginFigure(at(start), D2D1_FIGURE_BEGIN_HOLLOW);
-    sink->AddArc({at(start + sweep), {r, r}, 0, D2D1_SWEEP_DIRECTION_CLOCKWISE, sweep > 180 ? D2D1_ARC_SIZE_LARGE : D2D1_ARC_SIZE_SMALL});
-    sink->EndFigure(D2D1_FIGURE_END_OPEN);
-    sink->Close();
-    t->DrawGeometry(path.Get(), b, width, s);
-}
 
 std::wstring Kelvin(int blue) { return blue == 0 ? Lang::T(L"Off") : std::to_wstring(ColorMath::KelvinFor(blue)) + L" K"; }
 
@@ -152,6 +124,7 @@ public:
         blue->SetRange(s.CoolRange ? -75 : 0, 100);
         blue->SetValue(s.BlueFilter);
         blue->SetMarker(s.ScheduleEnabled ? s.NightBlue : -1);   // the night schedule's strength
+        blue->tip = s.ScheduleEnabled ? Lang::T(L"The green dot: the night schedule's strength at night") : L"";
         blue->SetMuted(s.FilterEnabled && s.ColorEffect != ColorMath::NoEffect && app.EffectsAvailable());
         blink->SetOn(s.BlinkEnabled);
         light->SetValue(std::max(0, s.Backlight));
@@ -276,6 +249,21 @@ bool MiniWindow::FocusOn() const { return app.FocusState() == Focus::Working || 
 bool MiniWindow::Flowing() const { return app.FocusState() == Focus::Working; }
 float MiniWindow::Progress() const { return app.S().MiniCountdown || FocusOn() ? app.BreakProgress() : -1; }
 
+float MiniWindow::RestDone() const
+{
+    float done;
+    int left;
+    return app.FocusResting(done, left) ? done : -1;
+}
+
+std::wstring MiniWindow::Clock() const
+{
+    float done;
+    int left;
+    if (app.FocusResting(done, left)) return MinSec(left);
+    return FocusOn() ? app.FocusText() : L"";
+}
+
 // A dark disc with a soft rim (the accent while hovered), the chosen icon inside in its current state (or the focus
 // timer's time), the arc of the wait for the next break, and the breathing glow; the window's own fade is separate.
 void MiniWindow::Draw()
@@ -296,22 +284,48 @@ void MiniWindow::Draw()
     brush->SetColor({rest.r + (on.r - rest.r) * k, rest.g + (on.g - rest.g) * k, rest.b + (on.b - rest.b) * k, rest.a + (on.a - rest.a) * k});
     t->DrawEllipse({{cx, cy}, r, r}, brush.Get(), ring);
     float box = size * 0.62f;
-    drawnClock = FocusOn() ? app.FocusText() : L"";
-    if (!drawnClock.empty()) DrawClock(t, drawnClock);   // the focus timer's countdown in place of the icon
+    drawnRest = RestDone();
+    bool resting = drawnRest >= 0;
+    drawnClock = Clock();
+    if (!drawnClock.empty()) DrawClock(t, drawnClock, resting);   // the focus timer's countdown in place of the icon
     else MiniArt::DrawIcon(t, {(size - box) / 2, (size - box) / 2, (size + box) / 2, (size + box) / 2}, s.MiniIcon, k, drawnBright, drawnWarm);
-    // The wait for the next break (or the end of a focus period), as an arc filling round the rim from the top.
-    if (drawnProgress > 0.002f) {
+    if (FocusOn() || resting) {
+        DrawLap(t, cx, cy, r, ring, resting ? 1.0f : std::max(0.0f, drawnProgress), std::max(0.0f, drawnRest));
+    } else if (drawnProgress > 0.002f) {
+        // The wait for the next break, as an arc filling round the rim from the top.
         brush->SetColor(gfx::Color(Theme::Accent(), 190 / 255.0f));
-        Arc(t, cx, cy, r, -90, 360 * drawnProgress, brush.Get(), ring * 1.15f, RoundCaps().Get());
-        if (Flowing()) DrawFlow(t, cx, cy, r, ring, drawnProgress);
+        gfx::Arc(t, cx, cy, r, -90, 360 * drawnProgress, brush.Get(), ring * 1.15f, gfx::RoundCaps().Get());
     }
-    if (!FocusOn()) DrawBreath(t, cx, cy, r, ring);   // (the focus timer's flow takes the breath's place)
+    if (!FocusOn() && !resting) DrawBreath(t, cx, cy, r, ring);   // (the focus timer's flow takes the breath's place)
     canvas.End();
     canvas.Present(hwnd, pos, static_cast<BYTE>(std::lround(shown)));
 }
 
-// The focus timer's time left, in the middle; paused, it is dimmed with a small pause sign under it.
-void MiniWindow::DrawClock(ID2D1RenderTarget* t, const std::wstring& time)
+// The focus timer's lap round the rim: the work period, then the rest in green, one round to a lap. Both show
+// faintly; what has passed is bright (grey while paused), with the highlight running along the work part.
+void MiniWindow::DrawLap(ID2D1RenderTarget* t, float cx, float cy, float r, float ring, float work, float rest)
+{
+    const Settings& s = app.S();
+    float lap = 360.0f * s.FocusWork / std::max(1, s.FocusWork + s.FocusRest), gapDeg = 4, width = ring * 1.15f;
+    auto round = gfx::RoundCaps();
+    gfx::ComPtr<ID2D1SolidColorBrush> b;
+    t->CreateSolidColorBrush(gfx::Color(Theme::Accent(), 0.28f), b.GetAddressOf());
+    gfx::Arc(t, cx, cy, r, -90 + gapDeg / 2, lap - gapDeg, b.Get(), width, round.Get());
+    b->SetColor(gfx::Color(RestGreen, 0.28f));
+    gfx::Arc(t, cx, cy, r, -90 + lap + gapDeg / 2, 360 - lap - gapDeg, b.Get(), width, round.Get());
+    bool paused = app.FocusState() == Focus::Paused;
+    b->SetColor(gfx::Color(paused ? Palette::Argb(107, 116, 128) : Theme::Accent(), 230 / 255.0f));
+    gfx::Arc(t, cx, cy, r, -90 + gapDeg / 2, (lap - gapDeg) * work, b.Get(), width, round.Get());
+    if (rest > 0) {
+        b->SetColor(gfx::Color(RestGreen, 230 / 255.0f));
+        gfx::Arc(t, cx, cy, r, -90 + lap + gapDeg / 2, (360 - lap - gapDeg) * rest, b.Get(), width, round.Get());
+    }
+    if (Flowing() && work > 0.002f) DrawFlow(t, cx, cy, r, ring, lap / 360 * work);
+}
+
+// The focus timer's time left, in the middle (green during the rest); paused, it is dimmed with a small pause sign
+// under it.
+void MiniWindow::DrawClock(ID2D1RenderTarget* t, const std::wstring& time, bool resting)
 {
     bool paused = app.FocusState() == Focus::Paused;
     if (!clockFont) {   // (made once: this is drawn up to 30 times a second)
@@ -319,8 +333,8 @@ void MiniWindow::DrawClock(ID2D1RenderTarget* t, const std::wstring& time)
         clockFontBig = gfx::Font(size * 0.27f * 0.75f, gfx::Weight::Semibold, L"Segoe UI");
     }
     float shift = paused ? -size * 0.06f : 0;
-    gfx::Text(t, time, (time.size() > 4 ? clockFont : clockFontBig).Get(), {0, shift, size, size + shift}, paused ? Theme::Dim : Theme::Fg,
-              gfx::Align::Center);
+    gfx::Text(t, time, (time.size() > 4 ? clockFont : clockFontBig).Get(), {0, shift, size, size + shift},
+              resting ? Palette::Argb(201, 238, 215) : paused ? Theme::Dim : Theme::Fg, gfx::Align::Center);
     if (!paused) return;
     auto pause = gfx::Font(size * 0.13f * 0.75f, gfx::Weight::Normal, L"Segoe Fluent Icons");
     gfx::Text(t, L"\uE769", pause.Get(), {0, size * 0.56f, size, size * 0.76f}, Theme::Dim, gfx::Align::Center);
@@ -334,7 +348,7 @@ void MiniWindow::DrawFlow(ID2D1RenderTarget* t, float cx, float cy, float r, flo
     double phase = std::fmod(now, FlowSeconds) / FlowSeconds;
     float sweep = 360 * progress;
     int glint = Mix(Theme::Accent(), Palette::Argb(255, 255, 255), 2 / 3.0f);
-    auto round = RoundCaps();
+    auto round = gfx::RoundCaps();
     gfx::ComPtr<ID2D1SolidColorBrush> b;
     t->CreateSolidColorBrush(gfx::Color(glint), b.GetAddressOf());
     constexpr double run = 0.7;
@@ -349,7 +363,7 @@ void MiniWindow::DrawFlow(ID2D1RenderTarget* t, float cx, float cy, float r, flo
             if (end <= start) break;
             float k = 1 - i / static_cast<float>(parts);
             b->SetColor(gfx::Color(glint, 235 / 255.0f * k * k * fadeIn));
-            Arc(t, cx, cy, r, -90 + start, end - start, b.Get(), ring * (0.7f + 0.5f * k), round.Get());
+            gfx::Arc(t, cx, cy, r, -90 + start, end - start, b.Get(), ring * (0.7f + 0.5f * k), round.Get());
         }
         return;
     }
@@ -358,7 +372,7 @@ void MiniWindow::DrawFlow(ID2D1RenderTarget* t, float cx, float cy, float r, flo
     float angle = (-90 + sweep) * Pi / 180, x = cx + std::cos(angle) * r, y = cy + std::sin(angle) * r;
     float tip = std::min(sweep, 16.0f);
     b->SetColor(gfx::Color(glint, 220 / 255.0f * fade));
-    Arc(t, cx, cy, r, -90 + sweep - tip, tip, b.Get(), ring * 1.2f, round.Get());
+    gfx::Arc(t, cx, cy, r, -90 + sweep - tip, tip, b.Get(), ring * 1.2f, round.Get());
     float bead = ring * (1.1f - 0.4f * s1), wave = ring * (1.2f + 2.8f * s1);
     b->SetColor(gfx::Color(glint, 240 / 255.0f * fade));
     t->FillEllipse({{x, y}, bead, bead}, b.Get());
@@ -447,7 +461,7 @@ void MiniWindow::Wake()
 }
 
 // When the pointer has left: after the delay set in Options, the panel fades out over the time set there (and
-// closes), and the icon fades to 65% with it.
+// closes), and the icon fades with it to the opacity set there.
 void MiniWindow::Rest()
 {
     if (idleSince != NotIdle) return;
@@ -479,7 +493,8 @@ void MiniWindow::FadeStep()
     double since = static_cast<double>(GetTickCount64() - idleSince) - s.MiniFadeDelay;
     if (since < 0) return;
     double k = s.MiniFadeTime <= 0 ? 1 : std::min(1.0, since / s.MiniFadeTime), e = k * k * (3 - 2 * k);
-    shown = 255 - (255 - Faded) * e;
+    double faded = std::clamp(s.MiniOpacity, 10, 100) * 2.55;   // (as set in Options)
+    shown = 255 - (255 - faded) * e;
     Draw();
     if (panel->Showing()) {
         if (k >= 1) {
@@ -502,7 +517,7 @@ void MiniWindow::CheckHover()
     const Settings& s = app.S();
     ULONGLONG now = GetTickCount64();
     // The breath, when it is due.
-    if (s.MiniOrbit && !FocusOn() && now >= nextBreath) {
+    if (s.MiniOrbit && !FocusOn() && RestDone() < 0 && now >= nextBreath) {
         nextBreath = now + static_cast<ULONGLONG>((s.MiniOrbitSeconds == 0 ? BreathSeconds : s.MiniOrbitSeconds) * 1000);   // 0: right on
         breathStart = now;
         StartAnim();
@@ -512,7 +527,7 @@ void MiniWindow::CheckHover()
     // Brightness, the filter or the chosen icon changed (shortcuts, the panel, the schedule): show it.
     if (!animating && (std::abs(Bright() - drawnBright) > 0.005f || std::abs(app.WarmthNow() - drawnWarm) > 0.005f ||
                        s.MiniIcon != drawnIcon || std::abs(Progress() - drawnProgress) > 0.004f ||
-                       (FocusOn() ? app.FocusText() : L"") != drawnClock))
+                       std::abs(RestDone() - drawnRest) > 0.004f || Clock() != drawnClock))
         Draw();
     // Stay above other windows, even ones that made themselves topmost since.
     if (++tick % 16 == 0) SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);

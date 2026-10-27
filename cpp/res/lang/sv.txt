@@ -129,7 +129,7 @@ Pausa påminnelser i helskärmsappar
 Vy
 Enkel
 Avancerad
-Enkel visar bara det viktigaste, utan ”Fler alternativ”. Den stänger av Invertera färger, Filmkorn, kallare än dagsljus, egna nattimmar, tvingade pauser och att hålla datorn vaken; tonen använder motorn Standard från Mild till Stark. Lägen för appar sparas men pausas.
+Enkel visar bara det viktigaste. Den stänger av Invertera färger, Filmkorn, kallare än dagsljus, egna nattimmar, tvingade pauser och att hålla datorn vaken; tonen använder motorn Standard från Mild till Stark. Lägen för appar sparas men pausas.
 Miniläge
 Vik ihop till ögat
 Ett litet öga som alltid ligger överst. Håll pekaren över det för ljusstyrka, blåljusfiltret, bakgrundsbelysningen (när den är på) och blinkpåminnelser; klicka för att komma tillbaka hit. När du går därifrån bleknar det till 65 %.
@@ -259,11 +259,11 @@ Blåljusfilter på natten
 Stänga BlinkBuddy?
 I aktivitetsfältet fortsätter den påminna dig om att blinka och titta bort, och håller skärmfiltret på. Avsluta stoppar allt det tills du startar den igen.
 Kom ihåg mitt val (ändra det under Alternativ)
-Synkat med din plats i Windows
-Synkat med tiden i {0}
-Synkar med din plats...
-Tiden i {0}, vald av dig
-Det gick inte att synka.
+Solnedgång och soluppgång för din plats i Windows
+Solnedgång och soluppgång i {0}, från din tidszon
+Söker din plats för solnedgång och soluppgång...
+Solnedgång och soluppgång i {0}, staden du valde
+Det gick inte att hitta din plats för solnedgång och soluppgång.
 Välj din stad manuellt
 Automatiskt
 Skriv din stad
@@ -451,3 +451,15 @@ Behåll
 Ångra
 DesktopLUT tillämpar nu färgtabellen. Om du inte gör något ångras den om {0} s.\nNödtangent när som helst: Ctrl+Alt+Skift+L.
 Bra jobbat. Nu kan du titta tillbaka.
+Nattschemat följer solnedgång och soluppgång. BlinkBuddy räknar ut dem för den här platsen: din plats i Windows när det är tillåtet, annars staden för din tidszon.
+Nattschemats styrka på natten: {0}
+Den gröna pricken: nattschemats styrka på natten
+Opacitet när pekaren inte är över
+Fokusomgång {0} klar
+Andas in...
+Håll kvar...
+Andas ut...
+Härnäst: fokus i {0} min
+Res dig, sträck på dig och titta långt bort
++5 min
+Hoppa över vilan

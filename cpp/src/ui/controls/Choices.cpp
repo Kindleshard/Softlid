@@ -214,6 +214,10 @@ ModeGrid::ModeGrid(std::vector<std::wstring> glyphs, std::vector<std::wstring> e
 // height (a chip at most 34 high).
 D2D1_RECT_F ModeGrid::Tile(int i) const
 {
+    if (iconsOnly) {   // evenly spread from edge to edge, the names' line under them
+        float d = std::min(38.0f, H() - 22), step = names.size() > 1 ? (W() - d) / (names.size() - 1) : 0;
+        return {i * step, 0, i * step + d, d};
+    }
     constexpr float gap = 8, pad = 12, space = 7;
     IDWriteTextFormat* glyphFont = Fonts::Glyphs(11);
     std::vector<D2D1_RECT_F> chips;
@@ -244,6 +248,24 @@ int ModeGrid::IndexAt(D2D1_POINT_2F p) const
 
 void ModeGrid::Paint(Canvas& c)
 {
+    if (iconsOnly) {
+        IDWriteTextFormat* big = Fonts::Glyphs(12);
+        for (int i = 0; i < static_cast<int>(names.size()); i++) {
+            D2D1_RECT_F r = Tile(i);
+            bool on = i == selected;
+            float cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2;
+            c.FillCircle(cx, cy, Width(r) / 2, on ? Theme::Accent() : i == hoverIndex ? ChipHover : ChipFill);
+            c.Glyph(glyphs[i][0], big, r, on ? Palette::Argb(13, 42, 58) : i == hoverIndex ? Theme::Fg : Theme::Dim);
+        }
+        // The name: of the one under the pointer while it is there (dim, unless it is the chosen one), else the chosen.
+        int named = hoverIndex >= 0 ? hoverIndex : selected;
+        if (named < 0) return;
+        D2D1_RECT_F r = Tile(named);
+        float cx = (r.left + r.right) / 2, w = TextWidth(names[named], Fonts::Small()) + 4;
+        float x = std::clamp(cx - w / 2, 0.0f, std::max(0.0f, W() - w));
+        c.Text(names[named], Fonts::Small(), {x, r.bottom + 2, x + w, H()}, named == selected ? Theme::Accent() : Theme::Dim);
+        return;
+    }
     IDWriteTextFormat* glyphFont = Fonts::Glyphs(11);
     int chosenFill = Blend(Theme::Card, Theme::Accent(), 0.24f);
     for (int i = 0; i < static_cast<int>(names.size()); i++) {

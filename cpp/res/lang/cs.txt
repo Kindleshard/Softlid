@@ -129,7 +129,7 @@ Pozastavit připomínky v aplikacích na celou obrazovku
 Zobrazení
 Jednoduché
 Pokročilé
-Jednoduché zobrazení ukazuje jen to podstatné, bez „Další možnosti“. Vypne invertování barev, filmové zrno, chladnější než denní světlo, vlastní noční hodiny, vynucené přestávky a nenechat PC usnout; tón používá modul Standardní od Jemného po Silný. Režimy pro aplikace zůstanou uložené, ale pozastavené.
+Jednoduché zobrazení ukazuje jen to podstatné. Vypne invertování barev, filmové zrno, chladnější než denní světlo, vlastní noční hodiny, vynucené přestávky a nenechat PC usnout; tón používá modul Standardní od Jemného po Silný. Režimy pro aplikace zůstanou uložené, ale pozastavené.
 Mini režim
 Složit do oka
 Malé oko, které je vždy navrchu. Najeďte na něj pro jas, filtr modrého světla, podsvícení (pokud je zapnuté) a připomínky mrkání; kliknutím se vrátíte sem. Když odejdete, vybledne na 65 %.
@@ -259,11 +259,11 @@ Filtr modrého světla v noci
 Zavřít BlinkBuddy?
 V oznamovací oblasti vám dál připomíná mrkat a dívat se do dálky a nechává zapnutý filtr obrazovky. Ukončení to vše zastaví, dokud ho znovu nespustíte.
 Zapamatovat si volbu (lze změnit v Možnostech)
-Synchronizováno s polohou ve Windows
-Synchronizováno s časem {0}
-Synchronizace s vaší polohou...
-Čas {0}, zvolený vámi
-Synchronizace se nezdařila.
+Západ a východ slunce pro vaši polohu ve Windows
+Západ a východ slunce: {0}, podle vašeho časového pásma
+Hledání vaší polohy pro západ a východ slunce...
+Západ a východ slunce: {0}, město zvolené vámi
+Vaši polohu pro západ a východ slunce se nepodařilo najít.
 Vyberte město ručně
 Automaticky
 Napište své město
@@ -451,3 +451,15 @@ Ponechat
 Vrátit
 DesktopLUT nyní používá tabulku barev. Pokud nic neuděláte, za {0} s se vrátí zpět.\nNouzová klávesa kdykoli: Ctrl+Alt+Shift+L.
 Výborně. Teď se můžete zase podívat zpět.
+Noční plán se řídí západem a východem slunce. BlinkBuddy je počítá pro toto místo: vaši polohu ve Windows, pokud je povolená, jinak město vašeho časového pásma.
+Síla nočního plánu v noci: {0}
+Zelená tečka: síla nočního plánu v noci
+Neprůhlednost, když na ní není ukazatel
+Kolo soustředění {0} hotovo
+Nadechněte se...
+Zadržte...
+Vydechněte...
+Dále: soustředění na {0} min
+Vstaňte, protáhněte se a podívejte se do dálky
++5 min
+Přeskočit odpočinek

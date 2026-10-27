@@ -1,5 +1,6 @@
 #include "ui/Graphics.h"
 #include "core/Lang.h"
+#include <cmath>
 
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")
@@ -66,6 +67,36 @@ void Outline(ID2D1RenderTarget* target, const D2D1_ROUNDED_RECT& shape, int argb
     ComPtr<ID2D1SolidColorBrush> brush;
     target->CreateSolidColorBrush(Color(argb), brush.GetAddressOf());
     target->DrawRoundedRectangle(shape, brush.Get(), width);
+}
+
+ComPtr<ID2D1StrokeStyle> RoundCaps()
+{
+    ComPtr<ID2D1StrokeStyle> s;
+    D2D1_STROKE_STYLE_PROPERTIES p{};
+    p.startCap = p.endCap = D2D1_CAP_STYLE_ROUND;
+    D2D()->CreateStrokeStyle(p, nullptr, 0, s.GetAddressOf());
+    return s;
+}
+
+void Arc(ID2D1RenderTarget* target, float cx, float cy, float r, float start, float sweep, ID2D1Brush* brush, float width,
+         ID2D1StrokeStyle* style)
+{
+    if (sweep < 0.5f) return;
+    if (sweep >= 359.9f) {
+        target->DrawEllipse({{cx, cy}, r, r}, brush, width);
+        return;
+    }
+    constexpr float Rad = 3.14159265f / 180;
+    auto at = [&](float deg) { return D2D1_POINT_2F{cx + r * std::cos(deg * Rad), cy + r * std::sin(deg * Rad)}; };
+    ComPtr<ID2D1PathGeometry> path;
+    ComPtr<ID2D1GeometrySink> sink;
+    D2D()->CreatePathGeometry(path.GetAddressOf());
+    path->Open(sink.GetAddressOf());
+    sink->BeginFigure(at(start), D2D1_FIGURE_BEGIN_HOLLOW);
+    sink->AddArc({at(start + sweep), {r, r}, 0, D2D1_SWEEP_DIRECTION_CLOCKWISE, sweep > 180 ? D2D1_ARC_SIZE_LARGE : D2D1_ARC_SIZE_SMALL});
+    sink->EndFigure(D2D1_FIGURE_END_OPEN);
+    sink->Close();
+    target->DrawGeometry(path.Get(), brush, width, style);
 }
 
 } // namespace bb::gfx

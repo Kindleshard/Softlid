@@ -65,10 +65,10 @@ void SettingsWindow::BuildNight(Stack& st)
     BuildNightLight(st);
     // While Windows Night light's schedule is followed, the schedule's own settings step aside (kept for when it isn't).
     Shown own = [this] { return !app.FollowsNightLight(); };
-    // The day at a glance: when the night runs (and eases in and out), and where now is in it.
-    Row& dayRow = st.Add(52, own);
+    // The day at a glance, as a landscape: when the night runs (and eases in and out), and where now is in it.
+    Row& dayRow = st.Add(76, own);
     dayBar = &dayRow.Add<DayBar>();
-    dayBar->SetBounds(24, 8, Edge - 24, 40);
+    dayBar->SetBounds(24, 8, Edge - 24, 64);
     dayBar->tip = Lang::T(L"Today: the night schedule in amber, and the time now");
     dayBar->profile = [this] {
         Settings scheduled = app.Scheduled();
@@ -84,12 +84,22 @@ void SettingsWindow::BuildNight(Stack& st)
         return night;
     };
     dayBar->now = [this] { LocalTime t = LocalNow(); return unfoldAll ? 12 * 60 : t.hour * 60 + t.minute; };
-    // Where the sun times come from, in green, just under the day: Windows location, or the time zone's city (also
-    // while the schedule is off, so you see it before switching it on).
-    Row& syncRow = st.Add(28, [this] { return s.ScheduleMode == 0 && !app.FollowsNightLight(); });
-    syncTick = &syncRow.Add<Icon>(L'\uE73E', 10.0f, Theme::Good);   // a check mark
+    // Where the sun times come from, in green with a pin, just under the day: Windows location, or the time zone's city
+    // (also while the schedule is off, so you see it before switching it on). Pointing at it says what it is for.
+    std::wstring syncText;
+    app.SyncState(syncText);
+    int syncLines = 1;
+    for (std::wstring_view text : {std::wstring_view(syncText), std::wstring_view(L"Sunset and sunrise for your location in Windows"),
+                                   std::wstring_view(L"Couldn't find your location for sunset and sunrise.")})
+        syncLines = std::max(syncLines, std::min(2, LinesFor(text, Fonts::Small(), Edge - 46)));   // (a long translation: two)
+    Row& syncRow = st.Add(syncLines * 18.0f + 10, [this] { return s.ScheduleMode == 0 && !app.FollowsNightLight(); });
+    syncTick = &syncRow.Add<Icon>(L'\uECAF', 10.0f, Theme::Good);   // a map pin
     syncTick->SetBounds(22, 2, 22, 22);
-    syncStatus = &AddLabel(syncRow, L"Syncing with your location...", Fonts::Small(), Theme::Dim, 46, 2, Edge - 46, 22);
+    syncStatus = &AddLabel(syncRow, L"Finding your location for sunset and sunrise...", Fonts::Small(), Theme::Dim, 46, 2,
+                           Edge - 46, syncLines > 1 ? 40.0f : 22.0f);
+    syncStatus->wrap = syncStatus->top = syncLines > 1;
+    syncTick->tip = syncStatus->tip = Lang::T(L"The night schedule follows sunset and sunrise. BlinkBuddy works them out for this "
+                                              L"place: your location in Windows when it's allowed, or your time zone's city.");
     // Sunset to sunrise, or hours of your own (the Advanced view only: Simple keeps to the sun).
     Shown advanced = And(own, [this] { return s.AdvancedView; }), hours = And(advanced, [this] { return s.ScheduleMode == 1; });
     Row& modeRow = st.Add(46, advanced);
@@ -131,7 +141,7 @@ void SettingsWindow::BuildNight(Stack& st)
     st.Add(16);
 }
 
-// The line under the status: green with a check when synced (or when you chose the city), red with a mark when it
+// The line under the day bar: green with a pin when synced (or when you chose the city), red with a mark when it
 // couldn't sync, grey while syncing. A change in that state shows or hides the city picker.
 void SettingsWindow::ShowSync()
 {
@@ -139,7 +149,7 @@ void SettingsWindow::ShowSync()
     SettingsHost::Sync state = app.SyncState(text);
     syncStatus->SetPlainText(text);
     syncStatus->SetColor(state == SettingsHost::Sync::Failed ? Theme::Bad : state == SettingsHost::Sync::Syncing ? Theme::Dim : Theme::Good);
-    syncTick->Set(state == SettingsHost::Sync::Failed ? L'\uE783' : L'\uE73E', state == SettingsHost::Sync::Failed ? Theme::Bad : Theme::Good);
+    syncTick->Set(state == SettingsHost::Sync::Failed ? L'\uE783' : L'\uECAF', state == SettingsHost::Sync::Failed ? Theme::Bad : Theme::Good);
     syncTick->SetVisible(state != SettingsHost::Sync::Syncing);
     if (static_cast<int>(state) == shownSync) return;
     shownSync = static_cast<int>(state);
@@ -256,6 +266,8 @@ void SettingsWindow::NightMarker()
 {
     Settings v = app.Scheduled();   // (Night light's strength, when its schedule is followed)
     blueSlider->SetMarker(v.ScheduleEnabled ? v.NightBlue : -1);
+    std::wstring night = v.NightBlue == 0 ? Lang::T(L"Off") : std::to_wstring(ColorMath::KelvinFor(v.NightBlue)) + L" K";
+    nightLegend->SetPlainText(Lang::F(L"The night schedule's strength at night: {0}", {night}));
 }
 
 void SettingsWindow::NightChanged()

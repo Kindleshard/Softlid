@@ -76,8 +76,14 @@ void SettingsWindow::BuildLookAway(Stack& st)
         s.BreakDuration = v;
         app.Changed();
     });
-    ToggleRow(st, L"Guided eye exercises during the break", s.Exercises, [this](bool v) { s.Exercises = v; app.Changed(); UpdateRows(); });
-    Row& voiceRow = st.Add(34, [this] { return s.Exercises; });
+    // When the next one is due, and one now (also to see what it looks like).
+    Row& breakRow = st.Add(46);
+    breakStatus = &AddLabel(breakRow, L"", Fonts::Body(), Theme::Dim, 24, 10, Edge - 176 - 32, 26);
+    AddButton(breakRow, L"Take a break now", Edge - 176, 6, 176, 34).onClick = [this] { app.StartBreak(false); };
+    Shown breakMore = More(st, L"break");
+    ToggleRow(st, L"Guided eye exercises during the break", s.Exercises, [this](bool v) { s.Exercises = v; app.Changed(); UpdateRows(); },
+              breakMore);
+    Row& voiceRow = st.Add(34, [this, breakMore] { return breakMore() && s.Exercises; });
     AddLabel(voiceRow, L"Voice", Fonts::Body(), Theme::Fg, 48, 4, 56, 26);
     voiceHint = &AddLabel(voiceRow, L"reads each exercise aloud", Fonts::Small(), Theme::Dim, 108, 8, 260, 20);
     voiceToggle = &AddToggle(voiceRow, Edge - 44, 6, s.ExerciseVoice, [this](bool v) { s.ExerciseVoice = v; app.Changed(); });
@@ -90,14 +96,12 @@ void SettingsWindow::BuildLookAway(Stack& st)
         toggle->SetEnabled(fits);
         hint->SetPlainText(fits ? Lang::T(L"reads each exercise aloud") : Lang::F(L"needs breaks of {0} s or longer", {std::to_wstring(voiceNeeds)}));
     };
-    Row& breakRow = st.Add(46);
-    breakStatus = &AddLabel(breakRow, L"", Fonts::Body(), Theme::Dim, 24, 10, Edge - 176 - 32, 26);
-    AddButton(breakRow, L"Take a break now", Edge - 176, 6, 176, 34).onClick = [this] { app.StartBreak(false); };
-    Shown breakMore = More(st, L"break");
     ToggleRow(st, L"Dark background behind the break", s.BreakBackdrop, [this](bool v) { s.BreakBackdrop = v; app.Changed(); }, breakMore);
     Note(st, L"Off: the eye exercises move over your screen instead of a black background.", 1, breakMore);
     ToggleRow(st, L"Chime when a break starts and ends", s.Sounds, [this](bool v) { s.Sounds = v; app.Changed(); }, breakMore);
-    ToggleRow(st, L"Force breaks (no Skip, Snooze or Esc)", s.ForceRest, [this](bool v) { s.ForceRest = v; app.Changed(); }, breakMore);
+    // (Forced breaks are for the Advanced view: Simple turns them off.)
+    ToggleRow(st, L"Force breaks (no Skip, Snooze or Esc)", s.ForceRest, [this](bool v) { s.ForceRest = v; app.Changed(); },
+              And(breakMore, [this] { return s.AdvancedView; }));
     Note(st, L"Being away from the PC for 5+ minutes counts as a break.", 1, breakMore);
 }
 

@@ -287,26 +287,26 @@ SettingsHost::Sync Screen::SyncState(std::wstring& text) const
     bool windows;
     std::wstring place = Night::Place(s, TimeZoneId(), windows);
     if (s.CityManual && !place.empty()) {
-        text = Lang::F(L"{0} time, chosen by you", {place});
+        text = Lang::F(L"Sunset and sunrise for {0}, the city you chose", {place});
         return Sync::CityChosen;
     }
     if (syncedAt == Clock::time_point{} && !s.CityManual && !s.ScheduleEnabled && !place.empty()) {
-        text = Lang::F(L"Synced with {0} time", {place});   // (off, it doesn't look you up: the time zone's city)
+        text = Lang::F(L"Sunset and sunrise for {0}, from your time zone", {place});   // (off, it doesn't look you up)
         return Sync::Synced;
     }
     if (syncedAt == Clock::time_point{} && !s.CityManual) {
-        text = Lang::T(L"Syncing with your location...");
+        text = Lang::T(L"Finding your location for sunset and sunrise...");
         return Sync::Syncing;
     }
     if (windows) {
-        text = Lang::T(L"Synced with your Windows location");
+        text = Lang::T(L"Sunset and sunrise for your location in Windows");
         return Sync::Synced;
     }
     if (!place.empty()) {
-        text = Lang::F(L"Synced with {0} time", {place});
+        text = Lang::F(L"Sunset and sunrise for {0}, from your time zone", {place});
         return Sync::Synced;
     }
-    text = Lang::T(L"Couldn't sync.");
+    text = Lang::T(L"Couldn't find your location for sunset and sunrise.");
     return Sync::Failed;
 }
 

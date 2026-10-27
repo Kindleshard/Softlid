@@ -129,7 +129,7 @@ Herinneringen pauzeren in apps op volledig scherm
 Weergave
 Eenvoudig
 Geavanceerd
-Eenvoudig toont alleen het belangrijkste, zonder "Meer opties". Het zet Kleuren omkeren, Filmkorrel, koeler dan daglicht, eigen nachturen, afgedwongen pauzes en de pc wakker houden uit; de toon gebruikt de engine Standaard van Zacht tot Sterk. Modi voor apps blijven bewaard maar pauzeren.
+Eenvoudig toont alleen het belangrijkste. Het zet Kleuren omkeren, Filmkorrel, koeler dan daglicht, eigen nachturen, afgedwongen pauzes en de pc wakker houden uit; de toon gebruikt de engine Standaard van Zacht tot Sterk. Modi voor apps blijven bewaard maar pauzeren.
 Minimodus
 Opvouwen tot oog
 Een klein oog dat altijd bovenop blijft. Beweeg erover voor helderheid, het blauwlichtfilter, de achtergrondverlichting (als die aan is) en knipperherinneringen; klik om hier terug te komen. Als je weggaat, vervaagt het tot 65%.
@@ -259,11 +259,11 @@ Blauwlichtfilter 's nachts
 BlinkBuddy sluiten?
 In het systeemvak blijft het je herinneren om te knipperen en weg te kijken, en houdt het het schermfilter aan. Afsluiten stopt dat allemaal tot je het weer start.
 Mijn keuze onthouden (te wijzigen in Opties)
-Gesynchroniseerd met je Windows-locatie
-Gesynchroniseerd met de tijd van {0}
-Synchroniseren met je locatie...
-Tijd van {0}, door jou gekozen
-Synchroniseren mislukt.
+Zonsondergang en -opkomst voor je locatie in Windows
+Zonsondergang en -opkomst in {0}, uit je tijdzone
+Je locatie voor zonsondergang en -opkomst zoeken...
+Zonsondergang en -opkomst in {0}, de stad die je koos
+Je locatie voor zonsondergang en -opkomst is niet gevonden.
 Kies je stad handmatig
 Automatisch
 Typ je stad
@@ -451,3 +451,15 @@ Behouden
 Ongedaan maken
 DesktopLUT past nu de kleurentabel toe. Als je niets doet, wordt het over {0} s ongedaan gemaakt.\nNoodtoets op elk moment: Ctrl+Alt+Shift+L.
 Goed gedaan. Je kunt nu weer kijken.
+Het nachtschema volgt zonsondergang en zonsopkomst. BlinkBuddy berekent ze voor deze plek: je locatie in Windows als dat mag, anders de stad van je tijdzone.
+Sterkte van het nachtschema 's nachts: {0}
+De groene stip: de sterkte van het nachtschema 's nachts
+Dekking als de aanwijzer er niet op staat
+Focusronde {0} klaar
+Adem in...
+Vasthouden...
+Adem uit...
+Hierna: {0} min focus
+Sta op, rek je uit en kijk in de verte
++5 min
+Rust overslaan

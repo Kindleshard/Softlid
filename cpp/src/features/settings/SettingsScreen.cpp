@@ -22,16 +22,17 @@ std::wstring Percent(int v) { return std::to_wstring(v) + L"%"; }
 void SettingsWindow::BuildFilter(Stack& st)
 {
     FeatureHead(st, FFilter, L"Ctrl+Alt+Shift with F: on/off · ↑ ↓: brightness · ← →: warmth");
-    // One-click modes; moving a slider makes it your own (Custom) again. Not Pause: the card's switch does that (the
-    // chips are modes 1 on, so chip i is mode i + 1).
-    Row& modeRow = st.Add(88);
+    // One-click modes, as a row of round icons; moving a slider makes it your own (Custom) again. Not Pause: the
+    // card's switch does that (the icons are modes 1 on, so icon i is mode i + 1).
+    Row& modeRow = st.Add(70);
     std::vector<std::wstring> glyphs, names;
     for (int i = Modes::Health; i < Modes::Count; i++) {
         glyphs.push_back(Modes::Glyphs[i]);
         names.push_back(Modes::Names[i]);
     }
     modeGrid = &modeRow.Add<ModeGrid>(glyphs, names);
-    modeGrid->SetBounds(24, 4, Edge - 24, 80);
+    modeGrid->iconsOnly = true;   // (a quiet row of icons; the chosen one's name under it)
+    modeGrid->SetBounds(24, 6, Edge - 24, 60);
     modeGrid->SetSelected(std::max(-1, s.Mode - 1));
     modeGrid->onChange = [this](int chip) {
         app.ChooseMode(chip + 1);
@@ -59,6 +60,10 @@ void SettingsWindow::BuildFilter(Stack& st)
         });
     blueSlider->warm = true;
     brightSlider->shade = true;
+    // What the green dot on its track is: the night schedule's strength (while the schedule is on).
+    Row& legendRow = st.Add(24, [this] { return app.Scheduled().ScheduleEnabled; });
+    legendRow.Add<Icon>(L'', 7.0f, Theme::Good).SetBounds(24, 0, 14, 20);   // a dot
+    nightLegend = &AddLabel(legendRow, L"", Fonts::Small(), Theme::Dim, 42, 0, Edge - 42, 20);
     NightMarker();
     // A colour effect and the blue light filter take turns: while an effect is on, the slider is greyed and says so
     // (moving it brings the blue light filter back and the effect goes back to Original). Windows Night light, while
@@ -81,7 +86,7 @@ void SettingsWindow::BuildFilter(Stack& st)
     hwStatus = &AddLabel(hwRow, L"", Fonts::Small(), Theme::Dim, 24, 2, Edge - 24, 20);
     BuildEffects(st);
 
-    Shown more = More(st, L"screen"), advanced = And(more, [this] { return s.AdvancedView; });
+    Shown advanced = More(st, L"screen", [this] { return s.AdvancedView; });   // (all it holds is for the Advanced view)
     coolToggle = &ToggleRow(st, L"Allow cooler than daylight (up to 10 000 K)", s.CoolRange, [this](bool v) {
         s.CoolRange = v;
         if (!v && s.BlueFilter < 0) s.BlueFilter = 0;
@@ -102,10 +107,30 @@ void SettingsWindow::BuildEffects(Stack& st)
     std::vector<std::wstring> names(std::begin(EffectNames), std::end(EffectNames));
     int lines = TilePicker::CaptionLines(names, 48 + 13);   // (a longer translation takes two)
     float caption = TilePicker::CaptionHeight(lines);
-    Row& row = st.Add(80 + caption);   // (with room above it, apart from the sliders)
-    AddLabel(row, L"Color effect", Fonts::Body(), Theme::Fg, 24, 34, 124, 26);
+    // Folded into one line (the effect chosen, and a chevron); a click on it shows the pictures to choose from.
+    static bool effectsOpen = false;   // (for as long as BlinkBuddy runs)
+    Shown open = [this] { return unfoldAll || effectsOpen; };
+    Row& line = st.Add(48);
+    line.Add<ui::Divider>().SetBounds(24, 4, Edge - 24, 1);
+    AddLabel(line, L"Color effect", Fonts::Body(), Theme::Fg, 24, 14, 200, 26);
+    Label& chosen = AddLabel(line, L"", Fonts::Body(), Theme::Dim, 200, 14, Edge - 200 - 26, 26);
+    chosen.align = HAlign::Right;
+    Icon& chevron = line.Add<Icon>(L'', 8.0f, Theme::Dim);
+    chevron.SetBounds(Edge - 20, 16, 20, 22);
+    auto& area = line.Add<HotArea>();
+    area.SetBounds(20, 8, Edge - 20, 38);
+    area.onClick = [this] {
+        effectsOpen = !effectsOpen;
+        UpdateRows();
+    };
+    updaters.push_back([this, &chosen, &chevron, open] {
+        chosen.SetPlainText(Lang::T(EffectNames[std::clamp(s.ColorEffect, 0, 4)]));
+        chevron.Set(open() ? L'' : L'', Theme::Dim);   // down when open, right when folded
+    });
+    Row& row = st.Add(60 + caption, open);
+    int center = static_cast<int>((24 + Edge) / 2);
     effectPicker = &row.Add<TilePicker>(5, s.ColorEffect);
-    effectPicker->SetBounds(150, 22, 5 * 48 + 4 * 13 + 2, 48 + caption);
+    effectPicker->SetBounds(center - (5 * 48 + 4 * 13 + 2) / 2.0f, 2, 5 * 48 + 4 * 13 + 2, 48 + caption);
     effectPicker->SetCaptions(names, lines);
     effectPicker->painter = [this](Canvas& c, const D2D1_RECT_F& r, int i, float awake) { PaintEffect(c, r, i, awake); };
     effectPicker->onChange = [this](int effect) {
@@ -115,7 +140,7 @@ void SettingsWindow::BuildEffects(Stack& st)
         UpdateRows();
     };
     effectPicker->onHover = [this](int i) { effectPicker->tip = i >= 0 ? Lang::T(EffectNames[i]) : L""; };
-    Row& styleRow = st.Add(46, [this] { return s.AdvancedView && s.ColorEffect == ColorMath::Grayscale; });
+    Row& styleRow = st.Add(46, And(open, [this] { return s.AdvancedView && s.ColorEffect == ColorMath::Grayscale; }));
     AddLabel(styleRow, L"Grayscale", Fonts::Body(), Theme::Fg, 24, 10, 124, 26);
     auto& style = styleRow.Add<Segmented>(std::vector<std::wstring>{L"Rec.709", L"Rec.601", L"Black & white"});
     style.SetBounds(150, 6, Edge - 150, 34);

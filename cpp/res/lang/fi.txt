@@ -129,7 +129,7 @@ Keskeytä muistutukset koko näytön sovelluksissa
 Näkymä
 Yksinkertainen
 Laajennettu
-Yksinkertainen näkymä näyttää vain olennaisen, ilman ”Lisää asetuksia” -kohtaa. Se poistaa käytöstä värien käänteistyksen, filmirakeen, päivänvaloa viileämmän värin, omat yöajat, pakotetut tauot ja koneen hereillä pidon; sävy käyttää Vakio-moottoria Lempeästä Vahvaan. Sovellusten tilat säilyvät, mutta ovat tauolla.
+Yksinkertainen näkymä näyttää vain olennaisen. Se poistaa käytöstä värien käänteistyksen, filmirakeen, päivänvaloa viileämmän värin, omat yöajat, pakotetut tauot ja koneen hereillä pidon; sävy käyttää Vakio-moottoria Lempeästä Vahvaan. Sovellusten tilat säilyvät, mutta ovat tauolla.
 Minitila
 Taita silmäksi
 Pieni silmä, joka pysyy aina päällimmäisenä. Vie osoitin sen päälle säätääksesi kirkkautta, sinisen valon suodatinta, taustavaloa (kun se on käytössä) ja räpyttelymuistutuksia; napsauta palataksesi tänne. Kun siirryt pois, se himmenee 65 %:iin.
@@ -259,11 +259,11 @@ Sinisen valon suodatin yöllä
 Suljetaanko BlinkBuddy?
 Ilmaisinalueella se muistuttaa yhä räpyttelemään ja katsomaan kauas sekä pitää näyttösuodattimen päällä. Lopettaminen pysäyttää kaiken, kunnes käynnistät sen uudelleen.
 Muista valintani (muutettavissa Asetuksissa)
-Synkronoitu Windowsin sijaintiisi
-Synkronoitu kohteen {0} aikaan
-Synkronoidaan sijaintiisi...
-Kohteen {0} aika, valitsemasi
-Synkronointi epäonnistui.
+Auringonlasku ja -nousu Windowsin sijaintisi mukaan
+Auringonlasku ja -nousu: {0}, aikavyöhykkeesi mukaan
+Etsitään sijaintiasi auringonlaskua ja -nousua varten...
+Auringonlasku ja -nousu: {0}, valitsemasi kaupunki
+Sijaintiasi ei löytynyt auringonlaskua ja -nousua varten.
 Valitse kaupunkisi itse
 Automaattinen
 Kirjoita kaupunkisi
@@ -451,3 +451,15 @@ Pidä
 Kumoa
 DesktopLUT ottaa nyt väritaulukon käyttöön. Jos et tee mitään, se perutaan {0} s:n kuluttua.\nHätänäppäin milloin tahansa: Ctrl+Alt+Vaihto+L.
 Hyvin tehty. Voit nyt katsoa takaisin.
+Yöajastus seuraa auringonlaskua ja -nousua. BlinkBuddy laskee ne tälle paikalle: Windowsin sijaintisi, kun se on sallittu, muuten aikavyöhykkeesi kaupunki.
+Yöajastuksen voimakkuus yöllä: {0}
+Vihreä piste: yöajastuksen voimakkuus yöllä
+Peittävyys, kun osoitin ei ole päällä
+Keskittymiskierros {0} valmis
+Hengitä sisään...
+Pidätä...
+Hengitä ulos...
+Seuraavaksi: keskittymistä {0} min
+Nouse ylös, venyttele ja katso kauas
++5 min
+Ohita lepo

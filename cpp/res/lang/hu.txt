@@ -129,7 +129,7 @@ Emlékeztetők szüneteltetése teljes képernyős alkalmazásokban
 Nézet
 Egyszerű
 Haladó
-Az Egyszerű nézet csak a lényeget mutatja, „Több beállítás” nélkül. Kikapcsolja a színek invertálását, a filmszemcsét, a nappali fénynél hidegebbet, az egyéni éjszakai órákat, a kötelező szüneteket és a gép ébren tartását; a tónus a Normál motort használja Gyengédtől Erősig. Az alkalmazásmódok megmaradnak, de szünetelnek.
+Az Egyszerű nézet csak a lényeget mutatja. Kikapcsolja a színek invertálását, a filmszemcsét, a nappali fénynél hidegebbet, az egyéni éjszakai órákat, a kötelező szüneteket és a gép ébren tartását; a tónus a Normál motort használja Gyengédtől Erősig. Az alkalmazásmódok megmaradnak, de szünetelnek.
 Mini mód
 Összecsukás szemmé
 Egy kis szem, ami mindig felül marad. Vidd fölé az egeret a fényerőhöz, a kékfényszűrőhöz, a háttérvilágításhoz (ha be van kapcsolva) és a pislogás-emlékeztetőkhöz; kattints rá, hogy ide visszatérj. Ha eltávolodsz, 65%-ra halványul.
@@ -259,11 +259,11 @@ Kékfényszűrő éjszaka
 Bezárod a BlinkBuddyt?
 A tálcán tovább emlékeztet a pislogásra és a távolba nézésre, és bekapcsolva tartja a képernyőszűrőt. A kilépés mindezt leállítja, amíg újra el nem indítod.
 Választás megjegyzése (a Beállításokban módosítható)
-Szinkronizálva a Windows-helyadatoddal
-Szinkronizálva ezzel az idővel: {0}
-Szinkronizálás a helyeddel...
-{0} ideje, általad választva
-Nem sikerült szinkronizálni.
+Napnyugta és napkelte a Windows-helyadatod alapján
+Napnyugta és napkelte: {0}, az időzónád alapján
+Helyed keresése a napnyugtához és napkeltéhez...
+Napnyugta és napkelte: {0}, általad választott város
+Nem sikerült megtalálni a helyed a napnyugtához és napkeltéhez.
 Válaszd ki a városodat kézzel
 Automatikus
 Írd be a városod
@@ -451,3 +451,15 @@ Megtartás
 Visszavonás
 A DesktopLUT most alkalmazza a színtáblát. Ha nem teszel semmit, {0} mp múlva visszavonja.\nVészgomb bármikor: Ctrl+Alt+Shift+L.
 Szép munka. Most már visszanézhetsz.
+Az éjszakai ütemezés a napnyugtát és a napkeltét követi. A BlinkBuddy ehhez a helyhez számolja ki őket: a Windows-helyadatodhoz, ha engedélyezett, egyébként az időzónád városához.
+Az éjszakai ütemezés erőssége éjjel: {0}
+A zöld pont: az éjszakai ütemezés erőssége éjjel
+Átlátszatlanság, amikor nincs fölötte az egér
+{0}. fókuszkör kész
+Lélegezz be...
+Tartsd bent...
+Lélegezz ki...
+Következik: {0} perc fókusz
+Állj fel, nyújtózz, és nézz a távolba
++5 perc
+Pihenő kihagyása

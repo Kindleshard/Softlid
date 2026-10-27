@@ -30,4 +30,9 @@ void Outline(ID2D1RenderTarget* target, const D2D1_ROUNDED_RECT& shape, int argb
 // A pill: a rectangle with fully round ends.
 inline D2D1_ROUNDED_RECT Pill(float x, float y, float w, float h) { return {{x, y, x + w, y + h}, h / 2, h / 2}; }
 
+// An arc of a circle, from `start` degrees (0 at the right, clockwise) for `sweep` degrees; too short to see: none.
+void Arc(ID2D1RenderTarget* target, float cx, float cy, float r, float start, float sweep, ID2D1Brush* brush, float width,
+         ID2D1StrokeStyle* style = nullptr);
+ComPtr<ID2D1StrokeStyle> RoundCaps();   // a stroke with round ends (for arcs)
+
 } // namespace bb::gfx

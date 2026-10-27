@@ -129,7 +129,7 @@ Tam ekran uygulamalarda hatırlatıcıları duraklat
 Görünüm
 Sade
 Gelişmiş
-Sade görünüm yalnızca temel ayarları gösterir, "Daha fazla seçenek" olmadan. Renkleri tersine çevirme, Film greni, gün ışığından soğuk renk, özel gece saatleri, zorunlu molalar ve bilgisayarı uyanık tutma kapanır; ton, Yumuşak ile Güçlü arasında Standart motoru kullanır. Uygulamalar için modlar saklanır ama duraklar.
+Sade görünüm yalnızca temel ayarları gösterir. Renkleri tersine çevirme, Film greni, gün ışığından soğuk renk, özel gece saatleri, zorunlu molalar ve bilgisayarı uyanık tutma kapanır; ton, Yumuşak ile Güçlü arasında Standart motoru kullanır. Uygulamalar için modlar saklanır ama duraklar.
 Mini mod
 Göze dönüştür
 Her zaman üstte kalan küçük bir göz. Parlaklık, mavi ışık filtresi, arka ışık (açıksa) ve göz kırpma hatırlatıcıları için üzerine gelin; buraya dönmek için tıklayın. Uzaklaştığınızda %65'e kadar soluklaşır.
@@ -259,11 +259,11 @@ Gece mavi ışık filtresi
 BlinkBuddy kapatılsın mı?
 Tepside kalırsa göz kırpmanızı ve uzağa bakmanızı hatırlatmaya ve ekran filtresini açık tutmaya devam eder. Çıkarsanız, yeniden başlatana kadar bunların hepsi durur.
 Seçimimi hatırla (Seçenekler'den değiştirebilirsiniz)
-Windows konumunuzla senkronize edildi
-{0} saatiyle senkronize edildi
-Konumunuzla senkronize ediliyor...
-{0} saati, sizin seçiminiz
-Senkronize edilemedi.
+Windows'taki konumunuza göre gün batımı ve gün doğumu
+{0} için gün batımı ve gün doğumu (saat diliminizden)
+Gün batımı ve gün doğumu için konumunuz bulunuyor...
+{0} için gün batımı ve gün doğumu (seçtiğiniz şehir)
+Gün batımı ve gün doğumu için konumunuz bulunamadı.
 Şehrinizi elle seçin
 Otomatik
 Şehrinizi yazın
@@ -451,3 +451,15 @@ Koru
 Geri al
 DesktopLUT şimdi renk tablosunu uyguluyor. Hiçbir şey yapmazsanız {0} sn içinde geri alınır.\nAcil durum tuşu her zaman: Ctrl+Alt+Shift+L.
 Aferin. Artık ekrana dönebilirsiniz.
+Gece zamanlaması gün batımını ve gün doğumunu izler. BlinkBuddy bunları bu yer için hesaplar: izin verildiğinde Windows'taki konumunuz, aksi halde saat diliminizin şehri.
+Gece zamanlamasının gece gücü: {0}
+Yeşil nokta: gece zamanlamasının gece gücü
+Üzerine gelinmediğinde opaklık
+{0}. odak turu tamamlandı
+Nefes alın...
+Tutun...
+Nefes verin...
+Sırada: {0} dk odaklanma
+Kalkın, esneyin ve uzaklara bakın
++5 dk
+Molayı atla

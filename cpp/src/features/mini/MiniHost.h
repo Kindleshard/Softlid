@@ -22,6 +22,8 @@ public:
     virtual void FocusStart() = 0;
     virtual void FocusPause() = 0;
     virtual void FocusStop() = 0;
+    // The focus timer's rest, while it shows: how far into it (0..1) and the seconds left; false when not resting.
+    virtual bool FocusResting(float& progress, int& secondsLeft) const = 0;
     virtual std::wstring BreakStatus() const = 0;
     virtual float BreakProgress() const = 0;          // the wait for the next break (0..1); -1: none
 

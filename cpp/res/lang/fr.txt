@@ -129,7 +129,7 @@ Suspendre les rappels dans les applis plein écran
 Affichage
 Simple
 Avancé
-Simple n'affiche que l'essentiel, sans « Plus d'options ». Il désactive Inverser les couleurs, le grain de film, plus froid que la lumière du jour, les heures de nuit personnalisées, les pauses imposées et le maintien du PC éveillé ; le ton utilise le moteur Standard de Doux à Fort. Les modes par appli sont conservés mais mis en pause.
+Simple n'affiche que l'essentiel. Il désactive Inverser les couleurs, le grain de film, plus froid que la lumière du jour, les heures de nuit personnalisées, les pauses imposées et le maintien du PC éveillé ; le ton utilise le moteur Standard de Doux à Fort. Les modes par appli sont conservés mais mis en pause.
 Mode mini
 Réduire en œil
 Un petit œil toujours au premier plan. Survolez-le pour la luminosité, le filtre de lumière bleue, le rétroéclairage (s'il est activé) et les rappels de clignement ; cliquez pour revenir ici. Quand vous vous éloignez, il s'estompe à 65 %.
@@ -259,11 +259,11 @@ Filtre de lumière bleue la nuit
 Fermer BlinkBuddy ?
 Dans la zone de notification, il continue de vous rappeler de cligner et de regarder au loin, et garde le filtre d'écran actif. Quitter arrête tout cela jusqu'à ce que vous le relanciez.
 Mémoriser mon choix (modifiable dans les options)
-Synchronisé avec votre position Windows
-Synchronisé avec l'heure de {0}
-Synchronisation avec votre position...
-Heure de {0}, choisie par vous
-Échec de la synchronisation.
+Coucher et lever du soleil pour votre position Windows
+Coucher et lever du soleil à {0}, d'après votre fuseau horaire
+Recherche de votre position pour le coucher et le lever du soleil...
+Coucher et lever du soleil à {0}, la ville choisie par vous
+Impossible de trouver votre position pour le coucher et le lever du soleil.
 Choisir votre ville manuellement
 Automatique
 Tapez votre ville
@@ -451,3 +451,15 @@ Garder
 Annuler
 DesktopLUT applique maintenant la table de couleurs. Si vous ne faites rien, c'est annulé dans {0} s.\nTouche d'urgence à tout moment : Ctrl+Alt+Maj+L.
 Bravo. Vous pouvez regarder à nouveau l'écran.
+L'horaire de nuit suit le coucher et le lever du soleil. BlinkBuddy les calcule pour ce lieu : votre position dans Windows si elle est autorisée, sinon la ville de votre fuseau horaire.
+Intensité de l'horaire de nuit la nuit : {0}
+Le point vert : l'intensité de l'horaire de nuit la nuit
+Opacité quand le pointeur n'est pas dessus
+Session de concentration {0} terminée
+Inspirez...
+Retenez...
+Expirez...
+Ensuite : concentration pendant {0} min
+Levez-vous, étirez-vous et regardez au loin
++5 min
+Passer la pause

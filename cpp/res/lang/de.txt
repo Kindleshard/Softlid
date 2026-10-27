@@ -129,7 +129,7 @@ Erinnerungen in Vollbild-Apps pausieren
 Ansicht
 Einfach
 Erweitert
-Einfach zeigt nur das Wesentliche, ohne „Mehr Optionen“. Es schaltet Farben umkehren, Filmkorn, kühler als Tageslicht, eigene Nachtzeiten, erzwungene Pausen und das Wachhalten des PCs aus; der Ton nutzt die Engine Standard von Sanft bis Stark. Modi für Apps bleiben gespeichert, pausieren aber.
+Einfach zeigt nur das Wesentliche. Es schaltet Farben umkehren, Filmkorn, kühler als Tageslicht, eigene Nachtzeiten, erzwungene Pausen und das Wachhalten des PCs aus; der Ton nutzt die Engine Standard von Sanft bis Stark. Modi für Apps bleiben gespeichert, pausieren aber.
 Mini-Modus
 Zum Auge falten
 Ein kleines Auge, das immer oben bleibt. Zeige darauf für Helligkeit, Blaulichtfilter, Hintergrundbeleuchtung (wenn an) und Blinzel-Erinnerungen; klicke darauf, um hierher zurückzukehren. Wenn du weggehst, verblasst es auf 65 %.
@@ -259,11 +259,11 @@ Blaulichtfilter in der Nacht
 BlinkBuddy schließen?
 Im Infobereich erinnert es dich weiter ans Blinzeln und Wegschauen und lässt den Bildschirmfilter an. Beenden stoppt all das, bis du es wieder startest.
 Meine Wahl merken (in den Optionen änderbar)
-Mit deinem Windows-Standort synchronisiert
-Mit der Zeit von {0} synchronisiert
-Wird mit deinem Standort synchronisiert...
-Zeit von {0}, von dir gewählt
-Synchronisierung fehlgeschlagen.
+Sonnenuntergang und -aufgang für deinen Standort in Windows
+Sonnenuntergang und -aufgang für {0}, aus deiner Zeitzone
+Dein Standort für Sonnenuntergang und -aufgang wird gesucht...
+Sonnenuntergang und -aufgang für {0}, von dir gewählt
+Dein Standort für Sonnenuntergang und -aufgang wurde nicht gefunden.
 Wähle deine Stadt manuell
 Automatisch
 Gib deine Stadt ein
@@ -451,3 +451,15 @@ Behalten
 Rückgängig
 DesktopLUT wendet jetzt die Farbtabelle an. Wenn du nichts tust, wird es in {0} s rückgängig gemacht.\nNotfalltaste jederzeit: Strg+Alt+Umschalt+L.
 Gut gemacht. Du kannst jetzt wieder hinsehen.
+Der Nachtplan folgt Sonnenuntergang und -aufgang. BlinkBuddy berechnet sie für diesen Ort: deinen Standort in Windows, wenn erlaubt, sonst die Stadt deiner Zeitzone.
+Stärke des Nachtplans in der Nacht: {0}
+Der grüne Punkt: die Stärke des Nachtplans in der Nacht
+Deckkraft, wenn nicht darauf gezeigt wird
+Fokusrunde {0} geschafft
+Einatmen...
+Halten...
+Ausatmen...
+Als Nächstes: {0} Min. Fokus
+Steh auf, streck dich und schau in die Ferne
++5 Min.
+Pause überspringen

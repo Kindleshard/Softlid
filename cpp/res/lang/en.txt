@@ -129,7 +129,7 @@ Pause reminders in full-screen apps
 View
 Simple
 Advanced
-Simple shows just the essentials, without "More options". It turns off Invert colors, Film grain, cooler than daylight, custom night hours, forced breaks and keeping the PC awake; tone uses the Standard engine at Gentle to Strong. Modes for apps are kept but pause.
+Simple shows just the essentials. It turns off Invert colors, Film grain, cooler than daylight, custom night hours, forced breaks and keeping the PC awake; tone uses the Standard engine at Gentle to Strong. Modes for apps are kept but pause.
 Mini mode
 Fold into the eye
 A small eye that stays on top. Hover over it for brightness, the blue light filter, the backlight (when it is on) and blink reminders; click it to come back here. When you move away it fades to 65%.
@@ -259,11 +259,11 @@ Blue light filter at night
 Close BlinkBuddy?
 In the tray it keeps reminding you to blink and look away, and keeps the screen filter on. Exiting stops all of that until you start it again.
 Remember my choice (change it in Options)
-Synced with your Windows location
-Synced with {0} time
-Syncing with your location...
-{0} time, chosen by you
-Couldn't sync.
+Sunset and sunrise for your location in Windows
+Sunset and sunrise for {0}, from your time zone
+Finding your location for sunset and sunrise...
+Sunset and sunrise for {0}, the city you chose
+Couldn't find your location for sunset and sunrise.
 Select your city manually
 Automatic
 Type your city
@@ -451,3 +451,15 @@ Keep
 Undo
 DesktopLUT is now applying the colour table. If you do nothing, it is undone in {0} s.\nPanic key at any time: Ctrl+Alt+Shift+L.
 Well done. You can look back now.
+The night schedule follows sunset and sunrise. BlinkBuddy works them out for this place: your location in Windows when it's allowed, or your time zone's city.
+The night schedule's strength at night: {0}
+The green dot: the night schedule's strength at night
+Opacity while not hovered
+Focus round {0} done
+Breathe in...
+Hold...
+Breathe out...
+Next: focus for {0} min
+Stand up, stretch, and look far away
++5 min
+Skip rest

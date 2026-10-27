@@ -129,7 +129,7 @@ Pausar recordatorios en aplicaciones a pantalla completa
 Vista
 Sencilla
 Avanzada
-Sencilla muestra solo lo esencial, sin «Más opciones». Desactiva Invertir colores, el grano de película, más frío que la luz del día, las horas nocturnas personalizadas, los descansos forzados y mantener el PC despierto; el tono usa el motor Estándar de Suave a Fuerte. Los modos para apps se guardan pero quedan en pausa.
+Sencilla muestra solo lo esencial. Desactiva Invertir colores, el grano de película, más frío que la luz del día, las horas nocturnas personalizadas, los descansos forzados y mantener el PC despierto; el tono usa el motor Estándar de Suave a Fuerte. Los modos para apps se guardan pero quedan en pausa.
 Modo mini
 Plegar en el ojo
 Un pequeño ojo siempre visible. Pasa el ratón por encima para el brillo, el filtro de luz azul, la retroiluminación (si está activa) y los recordatorios de parpadeo; haz clic para volver aquí. Al alejarte, se atenúa al 65 %.
@@ -259,11 +259,11 @@ Filtro de luz azul por la noche
 ¿Cerrar BlinkBuddy?
 En la bandeja sigue recordándote parpadear y mirar lejos, y mantiene el filtro de pantalla. Salir detiene todo eso hasta que lo vuelvas a abrir.
 Recordar mi elección (puedes cambiarla en Opciones)
-Sincronizado con tu ubicación de Windows
-Sincronizado con la hora de {0}
-Sincronizando con tu ubicación...
-Hora de {0}, elegida por ti
-No se pudo sincronizar.
+Atardecer y amanecer para tu ubicación de Windows
+Atardecer y amanecer en {0}, según tu zona horaria
+Buscando tu ubicación para el atardecer y el amanecer...
+Atardecer y amanecer en {0}, la ciudad que elegiste
+No se encontró tu ubicación para el atardecer y el amanecer.
 Elige tu ciudad manualmente
 Automático
 Escribe tu ciudad
@@ -451,3 +451,15 @@ Mantener
 Deshacer
 DesktopLUT está aplicando la tabla de colores. Si no haces nada, se deshace en {0} s.\nTecla de emergencia en cualquier momento: Ctrl+Alt+Mayús+L.
 Bien hecho. Ya puedes volver a mirar.
+El horario nocturno sigue el atardecer y el amanecer. BlinkBuddy los calcula para este lugar: tu ubicación de Windows si está permitida, o la ciudad de tu zona horaria.
+Intensidad del horario nocturno por la noche: {0}
+El punto verde: la intensidad del horario nocturno por la noche
+Opacidad cuando el puntero no está encima
+Ronda de concentración {0} completada
+Inspira...
+Mantén...
+Espira...
+Siguiente: concentración durante {0} min
+Levántate, estírate y mira a lo lejos
++5 min
+Saltar descanso

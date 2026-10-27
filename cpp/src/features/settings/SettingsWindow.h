@@ -179,6 +179,7 @@ private:
     ui::Label *ruleStatus = nullptr, *hwStatus = nullptr, *nightStatus = nullptr, *syncStatus = nullptr,
               *breakStatus = nullptr, *longStatus = nullptr, *nightLightStatus = nullptr;
     ui::Icon* syncTick = nullptr;
+    ui::Label* nightLegend = nullptr;   // under the blue light filter: what its green dot is
     ui::Row* rulesRow = nullptr;
     ui::FocusRing* focusRing = nullptr;
     ui::DayBar* dayBar = nullptr;

@@ -143,8 +143,8 @@ private:
     bool dragging = false;
 };
 
-// A day from midnight to midnight: the night shaded in amber (as deep as the night is at each moment), a mark at the
-// time now, and the hours under it.
+// A day from midnight to midnight as a landscape: the sky darkens to night as deep as the night is at each moment
+// (with stars, the moon, the sun and hills), a mark at the time now, and the hours under it.
 class DayBar : public Control {
 public:
     std::function<std::vector<float>()> profile;   // how far into the night it is (0 day .. 1 full night), evenly

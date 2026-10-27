@@ -129,7 +129,7 @@ Sæt påmindelser på pause i fuldskærmsapps
 Visning
 Enkel
 Avanceret
-Enkel viser kun det vigtigste, uden "Flere indstillinger". Den slår Inverter farver, Filmkorn, koldere end dagslys, egne nattetimer, gennemtvungne pauser og at holde pc'en vågen fra; tonen bruger motoren Standard fra Mild til Stærk. Tilstande for apps gemmes, men sættes på pause.
+Enkel viser kun det vigtigste. Den slår Inverter farver, Filmkorn, koldere end dagslys, egne nattetimer, gennemtvungne pauser og at holde pc'en vågen fra; tonen bruger motoren Standard fra Mild til Stærk. Tilstande for apps gemmes, men sættes på pause.
 Minitilstand
 Fold sammen til øjet
 Et lille øje, der altid ligger øverst. Hold musen over det for lysstyrke, blåt lys-filter, baggrundslys (når det er slået til) og blinkpåmindelser; klik for at komme tilbage hertil. Når du går væk, falmer det til 65 %.
@@ -259,11 +259,11 @@ Blåt lys-filter om natten
 Luk BlinkBuddy?
 I systembakken bliver den ved med at minde dig om at blinke og kigge væk og holder skærmfilteret tændt. Afslut stopper alt dette, indtil du starter den igen.
 Husk mit valg (kan ændres under Indstillinger)
-Synkroniseret med din placering i Windows
-Synkroniseret med tiden i {0}
-Synkroniserer med din placering...
-Tiden i {0}, valgt af dig
-Kunne ikke synkronisere.
+Solnedgang og solopgang for din placering i Windows
+Solnedgang og solopgang i {0}, ud fra din tidszone
+Finder din placering til solnedgang og solopgang...
+Solnedgang og solopgang i {0}, byen du valgte
+Kunne ikke finde din placering til solnedgang og solopgang.
 Vælg din by manuelt
 Automatisk
 Skriv din by
@@ -451,3 +451,15 @@ Behold
 Fortryd
 DesktopLUT anvender nu farvetabellen. Hvis du ikke gør noget, fortrydes den om {0} s.\nNødtast når som helst: Ctrl+Alt+Skift+L.
 Godt gået. Nu kan du kigge tilbage.
+Natplanen følger solnedgang og solopgang. BlinkBuddy beregner dem for dette sted: din placering i Windows, når det er tilladt, ellers byen i din tidszone.
+Natplanens styrke om natten: {0}
+Den grønne prik: natplanens styrke om natten
+Uigennemsigtighed, når markøren ikke er over
+Fokusrunde {0} færdig
+Træk vejret ind...
+Hold...
+Pust ud...
+Næste: fokus i {0} min
+Rejs dig, stræk dig og kig langt væk
++5 min
+Spring pausen over

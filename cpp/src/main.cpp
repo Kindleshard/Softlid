@@ -3,6 +3,7 @@
 #include "app/App.h"
 #include "platform/MemJournal.h"
 #include "core/Lang.h"
+#include "features/breaks/FocusRest.h"
 #include "features/breaks/GuidedBreak.h"
 #include "features/breaks/StretchBreak.h"
 #include "features/tone/LutGuard.h"
@@ -15,13 +16,18 @@
 #include <cwchar>
 
 // Diagnostics: "--preview-break" shows a look-away break card with your settings, "--preview-exercises" the guided
-// eye exercises and "--preview-stretch" the stretch coach, then exits (no tray, and it runs beside a BlinkBuddy that is
-// already running).
-enum class Preview { Card, Exercises, Stretch };
+// eye exercises, "--preview-stretch" the stretch coach and "--preview-rest" the focus timer's rest, then exits (no
+// tray, and it runs beside a BlinkBuddy that is already running). "--settings <file>" uses those settings instead.
+enum class Preview { Card, Exercises, Stretch, Rest };
 
 static int PreviewBreak(Preview kind)
 {
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    if (int count = 0; LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &count)) {
+        for (int i = 1; i + 1 < count; i++)
+            if (std::wcscmp(args[i], L"--settings") == 0) bb::Settings::UseFile(args[i + 1]);
+        LocalFree(args);
+    }
     bb::Settings settings = bb::Settings::Load();
     bb::Lang::Use(settings.Language);
     bb::Theme::UseAccent(settings);
@@ -29,6 +35,7 @@ static int PreviewBreak(Preview kind)
     std::unique_ptr<bb::Window> shown;
     if (kind == Preview::Exercises) shown = std::make_unique<bb::GuidedBreak>(nullptr, settings, 0.0f);
     else if (kind == Preview::Stretch) shown = std::make_unique<bb::StretchBreak>(nullptr, settings);
+    else if (kind == Preview::Rest) shown = std::make_unique<bb::FocusRest>(nullptr, settings, 3);
     else shown = std::make_unique<bb::BreakCard>(nullptr, false, settings);
     MSG msg;
     while (GetMessageW(&msg, nullptr, 0, 0) > 0 && msg.message != bb::BreakCard::DoneMessage) {
@@ -101,6 +108,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
     if (std::wcsstr(commandLine, L"--preview-break")) return PreviewBreak(Preview::Card);
     if (std::wcsstr(commandLine, L"--preview-exercises")) return PreviewBreak(Preview::Exercises);
     if (std::wcsstr(commandLine, L"--preview-stretch")) return PreviewBreak(Preview::Stretch);
+    if (std::wcsstr(commandLine, L"--preview-rest")) return PreviewBreak(Preview::Rest);
     if (std::wcsstr(commandLine, L"--preview-blink")) return PreviewBlink();
     if (std::wcsstr(commandLine, L"--ui-gallery")) return UiGallery(std::wcsstr(commandLine, L"--offscreen") != nullptr);
 

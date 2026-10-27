@@ -3,6 +3,8 @@
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/Chime.h"
 #include "platform/Activity.h"
+#include "ui/DirectWindow.h"
+#include "ui/controls/Basic.h"
 #include <mmsystem.h>
 #include <algorithm>
 #include <cmath>
@@ -78,6 +80,43 @@ public:
     void SetOpacity(double k) { SetLayeredWindowAttributes(hwnd, 0, static_cast<BYTE>(std::clamp(k, 0.012, 1.0) * 255), LWA_ALPHA); }
 };
 
+// Skip and Snooze at the bottom right, as on the stand-up break: a small window of its own above the break (clicks
+// on it don't fall through to the break), fading in and out with it. Esc works here too once it has been clicked.
+class GuidedBreak::Buttons : public ui::DirectWindow {
+public:
+    Buttons(GuidedBreak& owner, const RECT& monitor, float scale, bool backdrop) : owner(owner)
+    {
+        auto& later = Root().Add<ui::Button>(L"Snooze 5 min");
+        later.SetBounds(0, 0, 128, 34);
+        later.onClick = [this] { this->owner.End(300); };
+        auto& skip = Root().Add<ui::Button>(L"Skip");
+        skip.SetBounds(140, 0, 88, 34);
+        skip.onClick = [this] { this->owner.End(0); };
+        Options opts;
+        opts.popup = true;
+        opts.edge = false;
+        opts.background = backdrop ? Palette::Argb(0, 0, 0) : Palette::Argb(12, 14, 18);
+        opts.owner = owner.Handle();
+        POINT at{monitor.right - static_cast<LONG>((28 + 228) * scale), monitor.bottom - static_cast<LONG>((28 + 34) * scale)};
+        Open(228, 34, &at, opts);
+        SetWindowLongPtrW(Handle(), GWL_EXSTYLE, GetWindowLongPtrW(Handle(), GWL_EXSTYLE) | WS_EX_LAYERED | WS_EX_TOPMOST);
+        SetOpacity(0);
+        Show(false);
+    }
+    void SetOpacity(double k) { SetLayeredWindowAttributes(Handle(), 0, static_cast<BYTE>(std::clamp(k, 0.0, 1.0) * 255), LWA_ALPHA); }
+
+protected:
+    bool Shortcut(UINT key) override
+    {
+        if (key != VK_ESCAPE) return false;
+        owner.End(0);
+        return true;
+    }
+
+private:
+    GuidedBreak& owner;
+};
+
 GuidedBreak::GuidedBreak(HWND owner, const Settings& s, float warmth)
     : owner(owner), sounds(s.Sounds), forced(s.ForceRest), backdrop(s.BreakBackdrop), liquid(Body + TrailMax), trailBorn(TrailMax, -100)
 {
@@ -117,6 +156,7 @@ GuidedBreak::GuidedBreak(HWND owner, const Settings& s, float warmth)
     // The liquid and the words float above, in windows of their own (owned, so always above this one).
     drop = std::make_unique<Layer>(bounds, hwnd, false);
     caption = std::make_unique<Layer>(bounds, hwnd, false);
+    if (!forced) buttons = std::make_unique<Buttons>(*this, bounds, scale, backdrop);
     timeBeginPeriod(1);   // even frame times for the length of the break
     if (sounds) Chime::Play(false);
     QueryPerformanceFrequency(&frequency);
@@ -128,6 +168,7 @@ GuidedBreak::~GuidedBreak()
 {
     if (hwnd) KillTimer(hwnd, FrameTimer);
     timeEndPeriod(1);
+    buttons.reset();
     drop.reset();
     caption.reset();
     shades.clear();
@@ -148,13 +189,18 @@ LRESULT GuidedBreak::OnMessage(UINT message, WPARAM w, LPARAM l)
         if (w == FrameTimer) Frame();
         return 0;
     case WM_KEYDOWN:
-        if (w == VK_ESCAPE && fadeAt < 0 && !forced) {
-            if (voice) voice->Stop();
-            fadeAt = Now();
-        }
+        if (w == VK_ESCAPE) End(0);
         return 0;
     }
     return Window::OnMessage(message, w, l);
+}
+
+void GuidedBreak::End(int snoozeSeconds)
+{
+    if (fadeAt >= 0 || forced) return;
+    snooze = snoozeSeconds;
+    if (voice) voice->Stop();
+    fadeAt = Now();
 }
 
 void GuidedBreak::Frame()
@@ -168,7 +214,8 @@ void GuidedBreak::Frame()
             finished = true;
             KillTimer(hwnd, FrameTimer);
             ShowWindow(hwnd, SW_HIDE);
-            PostMessageW(owner, BreakCard::DoneMessage, 0, 0);   // (the owner deletes this)
+            if (buttons) ShowWindow(buttons->Handle(), SW_HIDE);
+            PostMessageW(owner, BreakCard::DoneMessage, 0, snooze);   // (the owner deletes this)
             return;
         }
         SetFade(f);
@@ -222,6 +269,7 @@ void GuidedBreak::SetFade(double f)
     fadeK = eased;
     SetLayeredWindowAttributes(hwnd, 0, static_cast<BYTE>(std::clamp(backdrop ? eased : 0.012, 0.012, 1.0) * 255), LWA_ALPHA);
     for (auto& sh : shades) sh->SetOpacity(std::min(0.95, eased));
+    if (buttons) buttons->SetOpacity(eased);
     ShowCaption();
     if (liquidShown) liquid.Present(drop->Handle(), {bounds.left, bounds.top}, static_cast<BYTE>(255 * fadeK));
 }

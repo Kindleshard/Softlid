@@ -115,6 +115,7 @@ public:
     void FocusPause() override;
     void FocusStop() override;
     std::wstring FocusText() const override;
+    bool FocusResting(float& progress, int& secondsLeft) const override;
     float BreakProgress() const override;
 
     // Mini mode (AppExtras.cpp).

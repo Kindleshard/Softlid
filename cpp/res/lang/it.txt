@@ -129,7 +129,7 @@ Sospendi i promemoria nelle app a schermo intero
 Vista
 Semplice
 Avanzata
-Semplice mostra solo l'essenziale, senza "Altre opzioni". Disattiva Inverti colori, Grana pellicola, più freddo della luce diurna, orari notturni personalizzati, pause obbligatorie e PC sveglio; il tono usa il motore Standard da Delicato a Forte. Le modalità per app restano salvate ma in pausa.
+Semplice mostra solo l'essenziale. Disattiva Inverti colori, Grana pellicola, più freddo della luce diurna, orari notturni personalizzati, pause obbligatorie e PC sveglio; il tono usa il motore Standard da Delicato a Forte. Le modalità per app restano salvate ma in pausa.
 Modalità mini
 Riduci a occhio
 Un piccolo occhio sempre in primo piano. Passaci sopra per luminosità, filtro luce blu, retroilluminazione (se attiva) e promemoria battito; fai clic per tornare qui. Quando ti allontani, sbiadisce al 65%.
@@ -259,11 +259,11 @@ Filtro luce blu di notte
 Chiudere BlinkBuddy?
 Nell'area di notifica continua a ricordarti di sbattere le palpebre e guardare lontano, e tiene attivo il filtro schermo. Uscire ferma tutto finché non lo riavvii.
 Ricorda la mia scelta (modificabile nelle Opzioni)
-Sincronizzato con la tua posizione di Windows
-Sincronizzato con l'ora di {0}
-Sincronizzazione con la tua posizione...
-Ora di {0}, scelta da te
-Impossibile sincronizzare.
+Tramonto e alba per la tua posizione di Windows
+Tramonto e alba a {0}, dal tuo fuso orario
+Ricerca della tua posizione per tramonto e alba...
+Tramonto e alba a {0}, la città che hai scelto
+Impossibile trovare la tua posizione per tramonto e alba.
 Scegli la tua città manualmente
 Automatico
 Scrivi la tua città
@@ -451,3 +451,15 @@ Mantieni
 Annulla
 DesktopLUT sta applicando la tabella dei colori. Se non fai nulla, viene annullata tra {0} s.\nTasto di emergenza in qualsiasi momento: Ctrl+Alt+Maiusc+L.
 Ben fatto. Ora puoi tornare a guardare.
+Il programma notturno segue tramonto e alba. BlinkBuddy li calcola per questo luogo: la tua posizione in Windows quando è consentita, altrimenti la città del tuo fuso orario.
+Intensità del programma notturno di notte: {0}
+Il punto verde: l'intensità del programma notturno di notte
+Opacità quando il puntatore non è sopra
+Sessione di concentrazione {0} completata
+Inspira...
+Trattieni...
+Espira...
+Prossimo: concentrazione per {0} min
+Alzati, fai stretching e guarda lontano
++5 min
+Salta la pausa

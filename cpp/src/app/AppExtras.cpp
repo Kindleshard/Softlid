@@ -1,6 +1,7 @@
 // The app's extras: the focus timer, and mini mode (the settings folded into a small eye that stays on top).
 #include "app/App.h"
 #include "core/Lang.h"
+#include "features/breaks/FocusRest.h"
 #include <dwmapi.h>
 #include "platform/MemJournal.h"
 #include <algorithm>
@@ -14,13 +15,21 @@ void App::FocusPause() { focusTimer.Pause(); }
 void App::FocusStop() { focusTimer.Stop(); }
 std::wstring App::FocusText() const { return focusTimer.Text(); }
 
-// Once a second while no break shows: at the end of a work period, the rest card.
+bool App::FocusResting(float& progress, int& secondsLeft) const
+{
+    if (!restCard || !card) return false;
+    auto* rest = static_cast<const FocusRest*>(card.get());   // (the focus timer's rest is always one)
+    progress = rest->Progress();
+    secondsLeft = rest->SecondsLeft();
+    return true;
+}
+
+// Once a second while no break shows: at the end of a work period, the rest (a screen of its own).
 void App::FocusTick()
 {
     if (card || !focusTimer.Tick()) return;
     restCard = true;
-    card = std::make_unique<BreakCard>(window, true, settings, settings.FocusRest * 60, Lang::T(L"Time to rest"),
-                                       Lang::T(L"Stand up, look away, stretch. The next focus period starts after this."));
+    card = std::make_unique<FocusRest>(window, settings, focusTimer.Done());
 }
 
 float App::BreakProgress() const
