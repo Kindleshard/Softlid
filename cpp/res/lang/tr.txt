@@ -387,3 +387,67 @@ Bu bölümü daralt veya genişlet
 Diğer pencerelerin üstünde duran küçük bir simge.
 Başlık çubuğunun yanındaki düğmeyle ya da bu pencereyi simge durumuna küçülterek ona geçin. Hızlı ayarlar için üzerine gelin; buraya dönmek için tıklayın.
 Odak zamanlayıcıyı başlat
+Göz kapakları: ekranın üstünden ve altından iki koyu kapak kapanır, tıpkı sizin göz kırpmanız gibi
+Başlık çubuğunun yanındaki düğmeyle ona geçin. Hızlı ayarlar için üzerine gelin; buraya dönmek için tıklayın.
+Bu pencereyi simge durumuna küçültmek mini moda geçirir
+Pencereyi simgeye katlayarak küçült; nereye gittiğini görürsünüz
+BlinkBuddy'yi beğendiniz mi? Ücretsizdir; küçük bir bağış devam etmesini sağlar.
+Destek ol...
+Kaynak kullanımı
+BlinkBuddy'nin şu anda kendisinin kullandığı, Görev Yöneticisi'nin saydığı gibi.
+Son bir dakika: işlemci (vurgu rengi) ve ekran kartı (yeşil)
+Yalnızca bu sayfa açıkken ölçülür; bu yüzden pencerenin çizilmesi de burada gördüğünüze dahildir. Kapalıyken BlinkBuddy çoğunlukla bekler ve neredeyse hiçbir şey kullanmaz.
+İşlemci: tüm CPU'nun %{0}'ı
+Ekran kartı: Windows bunu burada bildirmiyor
+Ekran kartı: %{0} (en yoğun motoru)
+Bellek: RAM'de {0} MB
+Bellek: RAM'de {0} MB, ayrıca paylaştığı {1} MB Windows kitaplığı
+Toplam ayrılan (RAM'de veya sayfa dosyasında): {0} MB
+Pencere boyutu
+Bu penceredeki her şey, daha büyük ya da daha küçük
+Seçenekler'de ekleyin
+Panelde hiç özellik yok.
+Panelde değil: {0}
+Açık veya kapalı
+Yukarı veya aşağı taşımak için sürükleyin
+Açıldığında özellik panelde yer alır; kartının kendi düğmesi vardır. İstediğiniz sıraya sürükleyin.
+Mavi ışık filtresi yok
+{0} sn'de bir
+{0} dakikada bir, {1} sn
+rehberli göz egzersizleri
+{0} dakikada bir, {1} dk
+Windows Gece ışığını izliyor
+{0} - {1}
+%{0} karartılmış
+%{0} güç
+{0} dk çalışma, {1} dk dinlenme
+Henüz uygulama yok
+Modu olan uygulamalar: {0}
+Panele dön
+Özellikler
+Seçenekler: hangi özelliklerin açık olduğu ve BlinkBuddy'nin kendisinin nasıl davrandığı
+Seçenekler
+Windows Gece ışığıyla senkronize et
+Gece ışığı...
+Gece ışığı şu anda kapalı.
+Gece ışığı şu anda açık (elle açıldı).
+Gece ışığı şu anda açık.
+Bir zamanlaması yok, bu yüzden BlinkBuddy'nin kendi zamanlaması çalışır.
+BlinkBuddy onun saatlerini izler, {0} - {1}, güç {2}.
+BlinkBuddy onu gün batımından gün doğumuna kadar izler ({0} - {1}), güç {2}.
+Bugün: gece zamanlaması kehribar renginde, ve şu anki saat
+Windows Gece ışığı ekranı ısıtırken duraklatıldı
+Kapalı: mavi ışık filtresi ekran filtresinde ayarlandığı gibi kalır.
+DesktopLUT nerede?
+{0} indiriliyor: {1} / {2} MB
+indirme başarısız oldu ({0})
+indirilen dosya bir Windows programı değil
+BlinkBuddy.exe taşınamadı (hata {0})
+yeni BlinkBuddy.exe yerine konamadı (hata {0})
+Yeniden başlatılıyor...
+Windows bu ekranda eğriyi reddetti (HDR açık olabilir).
+Ekranınız doğru görünüyor mu?
+Koru
+Geri al
+DesktopLUT şimdi renk tablosunu uyguluyor. Hiçbir şey yapmazsanız {0} sn içinde geri alınır.\nAcil durum tuşu her zaman: Ctrl+Alt+Shift+L.
+Aferin. Artık ekrana dönebilirsiniz.

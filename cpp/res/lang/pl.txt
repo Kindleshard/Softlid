@@ -387,3 +387,67 @@ Zwiń lub rozwiń tę sekcję
 Mała ikona, która zostaje nad innymi oknami.
 Przełącz się na nią przyciskiem obok paska tytułu albo minimalizując to okno. Najedź na nią, aby mieć szybkie ustawienia; kliknij, aby tu wrócić.
 Uruchom minutnik skupienia
+Powieki: dwie ciemne powieki zamykają się od góry i od dołu ekranu, jak twoje własne mrugnięcie
+Przełącz się na nią przyciskiem obok paska tytułu. Najedź na nią, aby mieć szybkie ustawienia; kliknij, aby tu wrócić.
+Minimalizowanie tego okna przełącza w tryb mini
+Zwijaj to okno do ikony, żeby było widać, gdzie się podziało
+Podoba ci się BlinkBuddy? Jest darmowy; napiwek pomaga go rozwijać.
+Wesprzyj...
+Zużycie zasobów
+Ile sam BlinkBuddy używa teraz, tak jak liczy to Menedżer zadań.
+Ostatnia minuta: procesor (kolor akcentu) i karta graficzna (zielony)
+Mierzone tylko wtedy, gdy ta strona jest widoczna, więc rysowanie tego okna wlicza się do tego, co tu widać. Zamknięty BlinkBuddy głównie czeka i prawie nic nie zużywa.
+Procesor: {0}% całego CPU
+Karta graficzna: Windows tego tu nie podaje
+Karta graficzna: {0}% (najbardziej obciążony silnik)
+Pamięć: {0} MB w RAM
+Pamięć: {0} MB w RAM oraz {1} MB współdzielonych bibliotek Windows
+Łącznie zarezerwowane (w RAM lub pliku stronicowania): {0} MB
+Rozmiar okna
+Wszystko w tym oknie, większe lub mniejsze
+Dodaj je w Opcjach
+Na panelu nie ma żadnych funkcji.
+Poza panelem: {0}
+Włączone lub wyłączone
+Przeciągnij, aby przesunąć w górę lub w dół
+Włączona funkcja jest na panelu, jej karta ma własny przełącznik. Przeciągnij je w wybranej kolejności.
+Bez filtra światła niebieskiego
+Co {0} s
+Co {0} min przez {1} s
+ćwiczenia oczu z instrukcją
+Co {0} min przez {1} min
+Podąża za światłem nocnym Windows
+{0}–{1}
+{0}% przyciemnienia
+{0}% siły
+{0} min pracy, {1} min odpoczynku
+Brak aplikacji
+Aplikacje z trybem: {0}
+Wróć do panelu
+Funkcje
+Opcje: które funkcje są włączone i jak działa sam BlinkBuddy
+Opcje
+Synchronizuj ze światłem nocnym Windows
+Światło nocne...
+Światło nocne jest teraz wyłączone.
+Światło nocne jest teraz włączone (włączone ręcznie).
+Światło nocne jest teraz włączone.
+Nie ma harmonogramu, więc działa własny harmonogram BlinkBuddy.
+BlinkBuddy podąża za jego godzinami, {0}–{1}, z siłą {2}.
+BlinkBuddy podąża za nim od zachodu do wschodu słońca ({0}–{1}), z siłą {2}.
+Dziś: harmonogram nocny na bursztynowo i aktualna godzina
+Wstrzymano, gdy światło nocne Windows ociepla ekran
+Wyłączone: filtr światła niebieskiego zostaje tak, jak ustawiono w filtrze ekranu.
+Gdzie jest DesktopLUT?
+Pobieranie {0}: {1} z {2} MB
+pobieranie nie powiodło się ({0})
+pobrany plik nie jest programem Windows
+Nie można przenieść BlinkBuddy.exe (błąd {0})
+nie można umieścić nowego BlinkBuddy.exe (błąd {0})
+Ponowne uruchamianie...
+Windows odrzucił krzywą na tym ekranie (może być włączony HDR).
+Czy ekran wygląda dobrze?
+Zachowaj
+Cofnij
+DesktopLUT stosuje teraz tabelę kolorów. Jeśli nic nie zrobisz, zostanie cofnięta za {0} s.\nKlawisz awaryjny w każdej chwili: Ctrl+Alt+Shift+L.
+Dobra robota. Możesz już spojrzeć z powrotem.

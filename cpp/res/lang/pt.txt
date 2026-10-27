@@ -387,3 +387,67 @@ Recolher ou expandir esta seção
 Um ícone pequeno que fica por cima das outras janelas.
 Mude para ele com o botão ao lado da barra de título ou minimizando esta janela. Passe o mouse sobre ele para controles rápidos; clique para voltar aqui.
 Iniciar o timer de foco
+Pálpebras: duas pálpebras escuras se fecham de cima e de baixo da tela, como o seu próprio piscar
+Mude para ele com o botão ao lado da barra de título. Passe o mouse sobre ele para controles rápidos; clique para voltar aqui.
+Minimizar esta janela muda para o modo mini
+Dobrar esta janela no ícone, para você ver para onde ela foi
+Gostando do BlinkBuddy? Ele é gratuito; uma gorjeta ajuda a mantê-lo.
+Apoiar...
+Uso de recursos
+O que o próprio BlinkBuddy usa agora, como o Gerenciador de Tarefas conta.
+O último minuto: processador (cor de destaque) e placa de vídeo (verde)
+Medido só enquanto esta página aparece, então desenhar esta janela faz parte do que você vê aqui. Fechado, o BlinkBuddy quase só espera e usa quase nada.
+Processador: {0}% de toda a CPU
+Placa de vídeo: o Windows não informa isso aqui
+Placa de vídeo: {0}% (o motor mais ocupado)
+Memória: {0} MB na RAM
+Memória: {0} MB na RAM, mais {1} MB de bibliotecas do Windows compartilhadas
+Reservado no total (na RAM ou no arquivo de paginação): {0} MB
+Tamanho da janela
+Tudo nesta janela, maior ou menor
+Adicionar em Opções
+Nenhum recurso está no painel.
+Fora do painel: {0}
+Ligado ou desligado
+Arraste para movê-lo para cima ou para baixo
+Ligado, um recurso fica no painel, com seu cartão e um botão próprio. Arraste-os na ordem que preferir.
+Sem filtro de luz azul
+A cada {0} s
+A cada {0} min por {1} s
+exercícios guiados para os olhos
+A cada {0} min por {1} min
+Segue a Luz noturna do Windows
+{0} às {1}
+{0}% escurecido
+{0}% de intensidade
+{0} min de trabalho, {1} min de descanso
+Nenhum aplicativo ainda
+Aplicativos com um modo: {0}
+Voltar ao painel
+Recursos
+Opções: quais recursos estão ligados e como o próprio BlinkBuddy se comporta
+Opções
+Sincronizar com a Luz noturna do Windows
+Luz noturna...
+A Luz noturna está desligada agora.
+A Luz noturna está ligada agora (ligada manualmente).
+A Luz noturna está ligada agora.
+Ela não tem agenda, então a agenda do próprio BlinkBuddy é usada.
+O BlinkBuddy segue os horários dela, das {0} às {1}, com intensidade {2}.
+O BlinkBuddy a segue do pôr ao nascer do sol ({0} às {1}), com intensidade {2}.
+Hoje: a agenda noturna em âmbar e a hora atual
+Pausado enquanto a Luz noturna do Windows aquece a tela
+Desligado: o filtro de luz azul fica como está no filtro de tela.
+Onde está o DesktopLUT?
+Baixando {0}: {1} de {2} MB
+o download falhou ({0})
+o arquivo baixado não é um programa do Windows
+Não foi possível mover o BlinkBuddy.exe (erro {0})
+não foi possível colocar o novo BlinkBuddy.exe no lugar (erro {0})
+Reiniciando...
+O Windows recusou a curva nesta tela (o HDR pode estar ligado).
+Sua tela parece certa?
+Manter
+Desfazer
+O DesktopLUT está aplicando a tabela de cores. Se você não fizer nada, isso será desfeito em {0} s.\nTecla de emergência a qualquer momento: Ctrl+Alt+Shift+L.
+Muito bem. Você já pode olhar de volta.

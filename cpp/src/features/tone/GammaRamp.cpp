@@ -1,4 +1,5 @@
 #include "features/tone/GammaRamp.h"
+#include "core/Lang.h"
 #include "core/ToneCurve.h"
 #include "platform/Files.h"
 #include <algorithm>
@@ -72,7 +73,7 @@ void GammaRamp::SetCurve(const std::function<double(double)>& f)
     Restore();
     prescale = 1;
     refused = true;
-    status = L"Windows refused the curve on this display (HDR may be on).";
+    status = Lang::T(L"Windows refused the curve on this display (HDR may be on).");
 }
 
 void GammaRamp::Verify()

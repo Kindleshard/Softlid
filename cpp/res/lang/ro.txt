@@ -387,3 +387,67 @@ Restrânge sau extinde această secțiune
 O pictogramă mică ce rămâne deasupra celorlalte ferestre.
 Treci la ea cu butonul de lângă bara de titlu sau minimizând această fereastră. Treci cu mouse-ul peste ea pentru comenzi rapide; dă clic pe ea ca să revii aici.
 Pornește cronometrul de concentrare
+Pleoape: două pleoape întunecate se închid de sus și de jos pe ecran, ca propria ta clipire
+Treci la ea cu butonul de lângă bara de titlu. Treci cu mouse-ul peste ea pentru comenzi rapide; dă clic pe ea ca să revii aici.
+Minimizarea acestei ferestre trece în modul mini
+Pliază această fereastră în pictogramă, ca să vezi unde a ajuns
+Îți place BlinkBuddy? E gratuit; un bacșiș îl ajută să continue.
+Susține...
+Utilizarea resurselor
+Ce folosește BlinkBuddy acum, așa cum numără Managerul de activități.
+Ultimul minut: procesor (culoarea de accent) și placa video (verde)
+Se măsoară doar cât timp se vede această pagină, deci desenarea ferestrei face parte din ce vezi aici. Închis, BlinkBuddy mai mult așteaptă și nu folosește aproape nimic.
+Procesor: {0}% din întregul CPU
+Placa video: Windows nu raportează asta aici
+Placa video: {0}% (motorul cel mai ocupat)
+Memorie: {0} MB în RAM
+Memorie: {0} MB în RAM, plus {1} MB de biblioteci Windows partajate
+Rezervat în total (în RAM sau în fișierul de paginare): {0} MB
+Dimensiunea ferestrei
+Totul din această fereastră, mai mare sau mai mic
+Adaugă-le în Opțiuni
+Nicio funcție nu este pe panou.
+Nu sunt pe panou: {0}
+Pornit sau oprit
+Trage pentru a-l muta în sus sau în jos
+Pornită, o funcție apare pe panou, cu cardul ei și un comutator propriu. Trage-le în ordinea dorită.
+Fără filtru de lumină albastră
+La fiecare {0} s
+La fiecare {0} min, timp de {1} s
+exerciții ghidate pentru ochi
+La fiecare {0} min, timp de {1} min
+Urmează Lumina de noapte din Windows
+{0}–{1}
+{0}% estompat
+{0}% intensitate
+{0} min de lucru, {1} min de pauză
+Încă nicio aplicație
+Aplicații cu un mod: {0}
+Înapoi la panou
+Funcții
+Opțiuni: ce funcții sunt pornite și cum se comportă BlinkBuddy
+Opțiuni
+Sincronizează cu Lumina de noapte din Windows
+Lumină de noapte...
+Lumina de noapte este oprită acum.
+Lumina de noapte este pornită acum (pornită manual).
+Lumina de noapte este pornită acum.
+Nu are program, așa că rulează programul propriu al BlinkBuddy.
+BlinkBuddy urmează orele ei, {0}–{1}, cu intensitatea {2}.
+BlinkBuddy o urmează de la apus la răsărit ({0}–{1}), cu intensitatea {2}.
+Azi: programul de noapte în chihlimbariu și ora curentă
+În pauză cât timp Lumina de noapte din Windows încălzește ecranul
+Oprit: filtrul de lumină albastră rămâne cum e setat în filtrul de ecran.
+Unde este DesktopLUT?
+Se descarcă {0}: {1} din {2} MB
+descărcarea a eșuat ({0})
+fișierul descărcat nu este un program Windows
+BlinkBuddy.exe nu a putut fi mutat (eroare {0})
+noul BlinkBuddy.exe nu a putut fi pus la loc (eroare {0})
+Se repornește...
+Windows a refuzat curba pe acest ecran (poate HDR este pornit).
+Ecranul arată bine?
+Păstrează
+Anulează
+DesktopLUT aplică acum tabelul de culori. Dacă nu faci nimic, se anulează în {0} s.\nTastă de urgență oricând: Ctrl+Alt+Shift+L.
+Bravo. Acum poți privi din nou.

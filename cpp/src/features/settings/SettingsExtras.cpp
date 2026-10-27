@@ -30,11 +30,14 @@ void SettingsWindow::BuildStrip(Stack& st)
 {
     FeatureHead(st, FStrip, L"Dims everything but a clear area that follows your mouse.");
     // Its shape, each shown as a little screen with its clear area.
-    Row& shapeRow = st.Add(82);
+    std::vector<std::wstring> shapeNames(std::begin(ShapeNames), std::end(ShapeNames));
+    int lines = TilePicker::CaptionLines(shapeNames, 48 + 13);   // (a longer translation takes two)
+    float caption = TilePicker::CaptionHeight(lines);
+    Row& shapeRow = st.Add(64 + caption);
     AddLabel(shapeRow, L"Shape", Fonts::Body(), Theme::Fg, 24, 18, 124, 26);
     auto& shape = shapeRow.Add<TilePicker>(4, s.StripShape);
-    shape.SetBounds(150, 6, 4 * 48 + 3 * 13 + 2, 48 + 18);
-    shape.SetCaptions({std::begin(ShapeNames), std::end(ShapeNames)});
+    shape.SetBounds(150, 6, 4 * 48 + 3 * 13 + 2, 48 + caption);
+    shape.SetCaptions(shapeNames, lines);
     shape.painter = [this](Canvas& c, const D2D1_RECT_F& r, int i, float awake) { PaintShape(c, r, i, awake); };
     shape.onHover = [&shape](int i) { shape.tip = i >= 0 ? Lang::T(ShapeNames[i]) : L""; };
     SliderRow(st, L"Strip height", 40, 400, s.StripHeight, defaults.StripHeight, Px, [this](int v) { s.StripHeight = v; StripTouched(); },

@@ -387,3 +387,67 @@ Fold dette afsnit sammen eller ud
 Et lille ikon, der bliver liggende oven på andre vinduer.
 Skift til det med knappen ved siden af titellinjen eller ved at minimere dette vindue. Hold musen over det for hurtige indstillinger; klik på det for at komme tilbage hertil.
 Start fokustimeren
+Øjenlåg: to mørke øjenlåg lukker sig oppefra og nedefra over skærmen, ligesom dit eget blink
+Skift til det med knappen ved siden af titellinjen. Hold musen over det for hurtige indstillinger; klik på det for at komme tilbage hertil.
+Minimering af dette vindue skifter til minitilstand
+Fold vinduet sammen til ikonet, så du kan se, hvor det blev af
+Kan du lide BlinkBuddy? Det er gratis; drikkepenge holder det i gang.
+Støt...
+Ressourceforbrug
+Hvad BlinkBuddy selv bruger lige nu, sådan som Jobliste tæller det.
+Det seneste minut: processor (accentfarve) og grafikkort (grøn)
+Måles kun, mens denne side vises, så tegningen af vinduet er en del af det, du ser her. Lukket venter BlinkBuddy mest og bruger næsten ingenting.
+Processor: {0} % af hele CPU'en
+Grafikkort: Windows oplyser det ikke her
+Grafikkort: {0} % (dets travleste motor)
+Hukommelse: {0} MB i RAM
+Hukommelse: {0} MB i RAM plus {1} MB delte Windows-biblioteker
+Reserveret i alt (i RAM eller sidefilen): {0} MB
+Vinduesstørrelse
+Alt i dette vindue, større eller mindre
+Tilføj dem under Indstillinger
+Ingen funktioner er på panelet.
+Ikke på panelet: {0}
+Til eller fra
+Træk for at flytte op eller ned
+Slået til er en funktion på panelet med sit kort og sin egen kontakt. Træk dem i den rækkefølge, du vil.
+Intet blåt lys-filter
+Hver {0}. s
+Hvert {0}. min i {1} s
+guidede øjenøvelser
+Hvert {0}. min i {1} min
+Følger Windows' natlys
+{0}–{1}
+{0} % dæmpet
+{0} % styrke
+{0} min arbejde, {1} min hvile
+Ingen apps endnu
+Apps med en tilstand: {0}
+Tilbage til panelet
+Funktioner
+Indstillinger: hvilke funktioner der er slået til, og hvordan BlinkBuddy selv opfører sig
+Indstillinger
+Synkroniser med Windows' natlys
+Natlys...
+Natlys er slået fra lige nu.
+Natlys er slået til lige nu (slået til i hånden).
+Natlys er slået til lige nu.
+Det har ingen tidsplan, så BlinkBuddys egen plan kører.
+BlinkBuddy følger dets tider, {0}–{1}, med styrken {2}.
+BlinkBuddy følger det fra solnedgang til solopgang ({0}–{1}), med styrken {2}.
+I dag: natplanen i ravgult og klokken lige nu
+Sat på pause, mens Windows' natlys gør skærmen varmere
+Fra: blåt lys-filteret bliver, som det er indstillet i skærmfilteret.
+Hvor er DesktopLUT?
+Downloader {0}: {1} af {2} MB
+overførslen mislykkedes ({0})
+overførslen er ikke et Windows-program
+BlinkBuddy.exe kunne ikke flyttes (fejl {0})
+den nye BlinkBuddy.exe kunne ikke sættes på plads (fejl {0})
+Genstarter...
+Windows afviste kurven på denne skærm (HDR er måske slået til).
+Ser din skærm rigtig ud?
+Behold
+Fortryd
+DesktopLUT anvender nu farvetabellen. Hvis du ikke gør noget, fortrydes den om {0} s.\nNødtast når som helst: Ctrl+Alt+Skift+L.
+Godt gået. Nu kan du kigge tilbage.

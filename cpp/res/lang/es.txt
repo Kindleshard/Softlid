@@ -387,3 +387,67 @@ Contraer o expandir esta sección
 Un icono pequeño que se queda encima de las demás ventanas.
 Cambia a él con el botón junto a la barra de título o minimizando esta ventana. Pasa el ratón por encima para los controles rápidos; haz clic para volver aquí.
 Iniciar el temporizador de concentración
+Párpados: dos párpados oscuros se cierran desde arriba y abajo de la pantalla, como tu propio parpadeo
+Cambia a él con el botón junto a la barra de título. Pasa el ratón por encima para los controles rápidos; haz clic para volver aquí.
+Minimizar esta ventana cambia al modo mini
+Plegar esta ventana en el icono, para que veas adónde fue
+¿Te gusta BlinkBuddy? Es gratis; una propina ayuda a que siga.
+Apoyar...
+Uso de recursos
+Lo que usa BlinkBuddy ahora mismo, tal como lo cuenta el Administrador de tareas.
+El último minuto: procesador (color de énfasis) y tarjeta gráfica (verde)
+Solo se mide mientras se ve esta página, así que dibujar esta ventana forma parte de lo que ves aquí. Cerrado, BlinkBuddy casi siempre espera y apenas usa nada.
+Procesador: {0} % de toda la CPU
+Tarjeta gráfica: Windows no lo informa aquí
+Tarjeta gráfica: {0} % (su motor más ocupado)
+Memoria: {0} MB en RAM
+Memoria: {0} MB en RAM, más {1} MB de bibliotecas de Windows compartidas
+Reservado en total (en RAM o en el archivo de paginación): {0} MB
+Tamaño de la ventana
+Todo lo de esta ventana, más grande o más pequeño
+Añadirlos en Opciones
+No hay funciones en el panel.
+No están en el panel: {0}
+Activado o desactivado
+Arrastra para moverlo arriba o abajo
+Activada, una función está en el panel, con su tarjeta y su propio interruptor. Arrástralas al orden que quieras.
+Sin filtro de luz azul
+Cada {0} s
+Cada {0} min durante {1} s
+ejercicios oculares guiados
+Cada {0} min durante {1} min
+Sigue la Luz nocturna de Windows
+{0} a {1}
+{0} % oscurecido
+{0} % de intensidad
+{0} min de trabajo, {1} min de descanso
+Aún no hay aplicaciones
+Aplicaciones con un modo: {0}
+Volver al panel
+Funciones
+Opciones: qué funciones están activadas y cómo se comporta BlinkBuddy
+Opciones
+Sincronizar con la Luz nocturna de Windows
+Luz nocturna...
+La Luz nocturna está desactivada ahora.
+La Luz nocturna está activada ahora (encendida a mano).
+La Luz nocturna está activada ahora.
+No tiene horario, así que se usa el horario propio de BlinkBuddy.
+BlinkBuddy sigue su horario, de {0} a {1}, con intensidad {2}.
+BlinkBuddy la sigue del atardecer al amanecer ({0} a {1}), con intensidad {2}.
+Hoy: el horario nocturno en ámbar y la hora actual
+En pausa mientras la Luz nocturna de Windows calienta la pantalla
+Desactivado: el filtro de luz azul queda como está en el filtro de pantalla.
+¿Dónde está DesktopLUT?
+Descargando {0}: {1} de {2} MB
+la descarga falló ({0})
+la descarga no es un programa de Windows
+No se pudo mover BlinkBuddy.exe (error {0})
+no se pudo colocar el nuevo BlinkBuddy.exe (error {0})
+Reiniciando...
+Windows rechazó la curva en esta pantalla (puede que el HDR esté activado).
+¿Tu pantalla se ve bien?
+Mantener
+Deshacer
+DesktopLUT está aplicando la tabla de colores. Si no haces nada, se deshace en {0} s.\nTecla de emergencia en cualquier momento: Ctrl+Alt+Mayús+L.
+Bien hecho. Ya puedes volver a mirar.

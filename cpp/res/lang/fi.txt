@@ -387,3 +387,67 @@ Kutista tai laajenna tämä osio
 Pieni kuvake, joka pysyy muiden ikkunoiden päällä.
 Siirry siihen otsikkopalkin vieressä olevalla painikkeella tai pienentämällä tämän ikkunan. Vie osoitin sen päälle pika-asetuksia varten; napsauta sitä palataksesi tänne.
 Käynnistä keskittymisajastin
+Silmäluomet: kaksi tummaa luomea sulkeutuu näytön ylä- ja alareunasta, kuin oma räpäytyksesi
+Siirry siihen otsikkopalkin vieressä olevalla painikkeella. Vie osoitin sen päälle pika-asetuksia varten; napsauta sitä palataksesi tänne.
+Tämän ikkunan pienentäminen siirtää minitilaan
+Taita ikkuna kuvakkeeseen, niin näet minne se meni
+Pidätkö BlinkBuddysta? Se on ilmainen; pieni tippi auttaa jatkamaan.
+Tue...
+Resurssien käyttö
+Mitä BlinkBuddy itse käyttää juuri nyt, Tehtävienhallinnan laskemana.
+Viimeinen minuutti: suoritin (korostusväri) ja näytönohjain (vihreä)
+Mitataan vain tämän sivun ollessa näkyvissä, joten ikkunan piirtäminen kuuluu siihen, mitä tässä näet. Suljettuna BlinkBuddy enimmäkseen odottaa ja käyttää lähes ei mitään.
+Suoritin: {0} % koko suorittimesta
+Näytönohjain: Windows ei ilmoita sitä tässä
+Näytönohjain: {0} % (kuormitetuin moottori)
+Muisti: {0} Mt RAM-muistissa
+Muisti: {0} Mt RAM-muistissa sekä {1} Mt jaettuja Windows-kirjastoja
+Varattu yhteensä (RAM-muistissa tai sivutustiedostossa): {0} Mt
+Ikkunan koko
+Kaikki tässä ikkunassa, suurempana tai pienempänä
+Lisää ne asetuksista
+Paneelissa ei ole toimintoja.
+Ei paneelissa: {0}
+Päällä tai pois
+Vedä siirtääksesi ylös tai alas
+Päälle kytkettynä toiminto on paneelissa, ja sen kortilla on oma kytkin. Vedä ne haluamaasi järjestykseen.
+Ei sinisen valon suodatinta
+{0} s välein
+{0} min välein, {1} s
+ohjatut silmäharjoitukset
+{0} min välein, {1} min
+Seuraa Windowsin yövaloa
+{0}–{1}
+{0} % himmennetty
+{0} % voimakkuus
+{0} min työtä, {1} min lepoa
+Ei vielä sovelluksia
+Tilan saaneet sovellukset: {0}
+Takaisin paneeliin
+Toiminnot
+Asetukset: mitkä toiminnot ovat päällä ja miten BlinkBuddy itse toimii
+Asetukset
+Synkronoi Windowsin yövalon kanssa
+Yövalo...
+Yövalo on nyt pois päältä.
+Yövalo on nyt päällä (kytketty käsin).
+Yövalo on nyt päällä.
+Sillä ei ole ajastusta, joten BlinkBuddyn oma ajastus on käytössä.
+BlinkBuddy seuraa sen aikoja, {0}–{1}, voimakkuudella {2}.
+BlinkBuddy seuraa sitä auringonlaskusta auringonnousuun ({0}–{1}), voimakkuudella {2}.
+Tänään: yöajastus meripihkan värisenä ja kellonaika nyt
+Tauolla, kun Windowsin yövalo lämmittää näyttöä
+Pois: sinisen valon suodatin pysyy näyttösuodattimessa asetetun mukaisena.
+Missä DesktopLUT on?
+Ladataan {0}: {1} / {2} Mt
+lataus epäonnistui ({0})
+ladattu tiedosto ei ole Windows-ohjelma
+BlinkBuddy.exe-tiedostoa ei voitu siirtää (virhe {0})
+uutta BlinkBuddy.exe-tiedostoa ei voitu asettaa paikalleen (virhe {0})
+Käynnistetään uudelleen...
+Windows hylkäsi käyrän tällä näytöllä (HDR saattaa olla päällä).
+Näyttääkö näyttösi oikealta?
+Pidä
+Kumoa
+DesktopLUT ottaa nyt väritaulukon käyttöön. Jos et tee mitään, se perutaan {0} s:n kuluttua.\nHätänäppäin milloin tahansa: Ctrl+Alt+Vaihto+L.
+Hyvin tehty. Voit nyt katsoa takaisin.

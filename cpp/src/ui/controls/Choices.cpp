@@ -323,9 +323,17 @@ void TilePicker::Timer()
     if (!moving) StopTimer();
 }
 
-void TilePicker::SetCaptions(std::vector<std::wstring> englishNames)
+int TilePicker::CaptionLines(const std::vector<std::wstring>& englishNames, float room)
+{
+    for (const auto& name : englishNames)
+        if (TextWidth(Lang::T(name), Fonts::Small()) > room - 2) return 2;
+    return 1;
+}
+
+void TilePicker::SetCaptions(std::vector<std::wstring> englishNames, int lines)
 {
     captions = Translated(std::move(englishNames));
+    captionLines = std::max(1, lines);
     Invalidate();
 }
 
@@ -342,7 +350,7 @@ void TilePicker::Paint(Canvas& c)
         if (i < static_cast<int>(captions.size())) {   // its name, centred under it (it may reach into the gaps)
             float cx = r.left + s / 2, half = s / 2 + Gap() / 2;
             D2D1_RECT_F box{std::max(0.0f, cx - half), s + 1, std::min(W(), cx + half), H()};   // (kept within the picker)
-            c.Text(captions[i], Fonts::Small(), box, on ? Theme::Fg : Theme::Dim, HAlign::Center);
+            c.Text(captions[i], Fonts::Small(), box, on ? Theme::Fg : Theme::Dim, HAlign::Center, captionLines > 1, captionLines > 1);
         }
     }
     if (!Enabled()) c.Fill({0, 0, W(), H()}, Theme::Bg, 170 / 255.0f);   // greyed (e.g. effects the engine can't show)

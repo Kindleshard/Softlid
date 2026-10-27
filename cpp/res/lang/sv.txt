@@ -387,3 +387,67 @@ Fäll ihop eller ut det här avsnittet
 En liten ikon som ligger ovanpå andra fönster.
 Växla till den med knappen bredvid namnlisten eller genom att minimera det här fönstret. Hovra över den för snabbinställningar; klicka på den för att komma tillbaka hit.
 Starta fokustimern
+Ögonlock: två mörka ögonlock stängs uppifrån och nerifrån över skärmen, som din egen blinkning
+Växla till den med knappen bredvid namnlisten. Hovra över den för snabbinställningar; klicka på den för att komma tillbaka hit.
+Att minimera det här fönstret växlar till miniläge
+Vik ihop fönstret till ikonen så att du ser vart det tog vägen
+Gillar du BlinkBuddy? Den är gratis; dricks håller den igång.
+Stöd...
+Resursanvändning
+Vad BlinkBuddy själv använder just nu, så som Aktivitetshanteraren räknar det.
+Den senaste minuten: processor (accentfärg) och grafikkort (grönt)
+Mäts bara medan den här sidan visas, så att rita fönstret ingår i det du ser här. Stängt väntar BlinkBuddy mest och använder nästan ingenting.
+Processor: {0} % av hela processorn
+Grafikkort: Windows rapporterar det inte här
+Grafikkort: {0} % (dess mest belastade motor)
+Minne: {0} MB i RAM
+Minne: {0} MB i RAM, plus {1} MB delade Windows-bibliotek
+Reserverat totalt (i RAM eller växlingsfilen): {0} MB
+Fönsterstorlek
+Allt i det här fönstret, större eller mindre
+Lägg till dem i Alternativ
+Inga funktioner finns på panelen.
+Inte på panelen: {0}
+På eller av
+Dra för att flytta upp eller ner
+Påslagen finns en funktion på panelen, med ett kort med en egen brytare. Dra dem i den ordning du vill.
+Inget blåljusfilter
+Var {0}:e s
+Var {0}:e min i {1} s
+guidade ögonövningar
+Var {0}:e min i {1} min
+Följer Windows nattlampa
+{0}–{1}
+{0} % nedtonat
+{0} % styrka
+{0} min arbete, {1} min vila
+Inga appar än
+Appar med ett läge: {0}
+Tillbaka till panelen
+Funktioner
+Alternativ: vilka funktioner som är på och hur BlinkBuddy själv beter sig
+Alternativ
+Synka med Windows nattlampa
+Nattlampa...
+Nattlampan är av just nu.
+Nattlampan är på just nu (påslagen för hand).
+Nattlampan är på just nu.
+Den har inget schema, så BlinkBuddys eget schema körs.
+BlinkBuddy följer dess tider, {0}–{1}, med styrkan {2}.
+BlinkBuddy följer den från solnedgång till soluppgång ({0}–{1}), med styrkan {2}.
+I dag: nattschemat i bärnsten och tiden just nu
+Pausad medan Windows nattlampa värmer skärmen
+Av: blåljusfiltret förblir som det är inställt i skärmfiltret.
+Var finns DesktopLUT?
+Laddar ner {0}: {1} av {2} MB
+nedladdningen misslyckades ({0})
+nedladdningen är inte ett Windows-program
+BlinkBuddy.exe kunde inte flyttas (fel {0})
+den nya BlinkBuddy.exe kunde inte läggas på plats (fel {0})
+Startar om...
+Windows avvisade kurvan på den här skärmen (HDR kan vara på).
+Ser skärmen rätt ut?
+Behåll
+Ångra
+DesktopLUT tillämpar nu färgtabellen. Om du inte gör något ångras den om {0} s.\nNödtangent när som helst: Ctrl+Alt+Skift+L.
+Bra jobbat. Nu kan du titta tillbaka.

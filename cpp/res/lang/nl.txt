@@ -387,3 +387,67 @@ Deze sectie in- of uitvouwen
 Een klein pictogram dat boven andere vensters blijft.
 Schakel ernaar met de knop naast de titelbalk, of door dit venster te minimaliseren. Beweeg erover voor snelle bediening; klik erop om hier terug te komen.
 Focustimer starten
+Oogleden: twee donkere oogleden sluiten van boven en onder over het scherm, zoals je eigen knipperen
+Schakel ernaar met de knop naast de titelbalk. Beweeg erover voor snelle bediening; klik erop om hier terug te komen.
+Dit venster minimaliseren schakelt naar de minimodus
+Dit venster in het pictogram vouwen, zodat je ziet waar het heen gaat
+Bevalt BlinkBuddy je? Het is gratis; een fooi houdt het gaande.
+Steunen...
+Gebruik van bronnen
+Wat BlinkBuddy zelf nu gebruikt, zoals Taakbeheer het telt.
+De laatste minuut: processor (accentkleur) en videokaart (groen)
+Alleen gemeten terwijl deze pagina zichtbaar is, dus het tekenen van dit venster hoort bij wat je hier ziet. Gesloten wacht BlinkBuddy vooral en gebruikt bijna niets.
+Processor: {0}% van de hele CPU
+Videokaart: Windows meldt dit hier niet
+Videokaart: {0}% (de drukste engine)
+Geheugen: {0} MB in RAM
+Geheugen: {0} MB in RAM, plus {1} MB gedeelde Windows-bibliotheken
+In totaal gereserveerd (in RAM of het wisselbestand): {0} MB
+Venstergrootte
+Alles in dit venster, groter of kleiner
+Toevoegen in Opties
+Er staan geen functies op het paneel.
+Niet op het paneel: {0}
+Aan of uit
+Sleep om het omhoog of omlaag te verplaatsen
+Aangezet staat een functie op het paneel, met een kaart met een eigen schakelaar. Sleep ze in de volgorde die je wilt.
+Geen blauwlichtfilter
+Elke {0} s
+Elke {0} min, {1} s lang
+begeleide oogoefeningen
+Elke {0} min, {1} min lang
+Volgt het Windows-nachtlampje
+{0} tot {1}
+{0}% gedimd
+{0}% sterkte
+{0} min werken, {1} min rust
+Nog geen apps
+Apps met een modus: {0}
+Terug naar het paneel
+Functies
+Opties: welke functies aan staan en hoe BlinkBuddy zelf werkt
+Opties
+Synchroniseren met het Windows-nachtlampje
+Nachtlampje...
+Het nachtlampje staat nu uit.
+Het nachtlampje staat nu aan (met de hand aangezet).
+Het nachtlampje staat nu aan.
+Het heeft geen schema, dus het eigen schema van BlinkBuddy loopt.
+BlinkBuddy volgt de tijden ervan, {0} tot {1}, met sterkte {2}.
+BlinkBuddy volgt het van zonsondergang tot zonsopkomst ({0} tot {1}), met sterkte {2}.
+Vandaag: het nachtschema in amber en de huidige tijd
+Gepauzeerd terwijl het Windows-nachtlampje het scherm warmer maakt
+Uit: het blauwlichtfilter blijft zoals ingesteld in het schermfilter.
+Waar staat DesktopLUT?
+{0} downloaden: {1} van {2} MB
+de download is mislukt ({0})
+de download is geen Windows-programma
+BlinkBuddy.exe kon niet worden verplaatst (fout {0})
+de nieuwe BlinkBuddy.exe kon niet worden geplaatst (fout {0})
+Opnieuw starten...
+Windows weigerde de curve op dit scherm (HDR staat misschien aan).
+Ziet je scherm er goed uit?
+Behouden
+Ongedaan maken
+DesktopLUT past nu de kleurentabel toe. Als je niets doet, wordt het over {0} s ongedaan gemaakt.\nNoodtoets op elk moment: Ctrl+Alt+Shift+L.
+Goed gedaan. Je kunt nu weer kijken.

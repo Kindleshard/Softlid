@@ -387,3 +387,67 @@ Diesen Abschnitt ein- oder ausklappen
 Ein kleines Symbol, das über anderen Fenstern bleibt.
 Wechsle mit der Schaltfläche neben der Titelleiste oder durch Minimieren dieses Fensters dorthin. Zeige darauf für schnelle Einstellungen; klicke darauf, um hierher zurückzukehren.
 Fokus-Timer starten
+Augenlider: Zwei dunkle Lider schließen sich von oben und unten über den Bildschirm, wie dein eigenes Blinzeln
+Wechsle mit der Schaltfläche neben der Titelleiste dorthin. Zeige darauf für schnelle Einstellungen; klicke darauf, um hierher zurückzukehren.
+Minimieren dieses Fensters wechselt in den Mini-Modus
+Dieses Fenster ins Symbol falten, damit du siehst, wohin es geht
+Gefällt dir BlinkBuddy? Es ist kostenlos; ein Trinkgeld hält es am Laufen.
+Unterstützen...
+Ressourcennutzung
+Was BlinkBuddy selbst gerade nutzt, so wie der Task-Manager es zählt.
+Die letzte Minute: Prozessor (Akzentfarbe) und Grafikkarte (grün)
+Nur gemessen, während diese Seite zu sehen ist – das Zeichnen dieses Fensters gehört also mit dazu. Geschlossen wartet BlinkBuddy meist nur und braucht fast nichts.
+Prozessor: {0} % der gesamten CPU
+Grafikkarte: Windows meldet das hier nicht
+Grafikkarte: {0} % (ihre ausgelastetste Engine)
+Arbeitsspeicher: {0} MB im RAM
+Arbeitsspeicher: {0} MB im RAM, dazu {1} MB geteilte Windows-Bibliotheken
+Insgesamt reserviert (im RAM oder in der Auslagerungsdatei): {0} MB
+Fenstergröße
+Alles in diesem Fenster, größer oder kleiner
+In den Optionen hinzufügen
+Keine Funktionen auf der Übersicht.
+Nicht auf der Übersicht: {0}
+An oder aus
+Ziehen, um es nach oben oder unten zu verschieben
+Eingeschaltet ist eine Funktion auf der Übersicht, ihre Karte mit eigenem Schalter. Zieh sie in die Reihenfolge, die du magst.
+Kein Blaulichtfilter
+Alle {0} s
+Alle {0} Min. für {1} s
+geführte Augenübungen
+Alle {0} Min. für {1} Min.
+Folgt dem Windows-Nachtmodus
+{0} bis {1}
+{0} % abgedunkelt
+{0} % Stärke
+{0} Min. Arbeit, {1} Min. Pause
+Noch keine Apps
+Apps mit Modus: {0}
+Zurück zur Übersicht
+Funktionen
+Optionen: welche Funktionen an sind und wie sich BlinkBuddy selbst verhält
+Optionen
+Mit dem Windows-Nachtmodus synchronisieren
+Nachtmodus...
+Der Nachtmodus ist gerade aus.
+Der Nachtmodus ist gerade an (von Hand eingeschaltet).
+Der Nachtmodus ist gerade an.
+Er hat keinen Zeitplan, also läuft BlinkBuddys eigener Plan.
+BlinkBuddy folgt seinen Zeiten, {0} bis {1}, mit Stärke {2}.
+BlinkBuddy folgt ihm von Sonnenuntergang bis -aufgang ({0} bis {1}), mit Stärke {2}.
+Heute: der Nachtplan in Bernstein und die aktuelle Uhrzeit
+Pausiert, während der Windows-Nachtmodus den Bildschirm wärmt
+Aus: Der Blaulichtfilter bleibt so, wie er im Bildschirmfilter eingestellt ist.
+Wo ist DesktopLUT?
+{0} wird heruntergeladen: {1} von {2} MB
+der Download ist fehlgeschlagen ({0})
+der Download ist kein Windows-Programm
+BlinkBuddy.exe konnte nicht verschoben werden (Fehler {0})
+die neue BlinkBuddy.exe konnte nicht eingesetzt werden (Fehler {0})
+Wird neu gestartet...
+Windows hat die Kurve auf diesem Bildschirm abgelehnt (HDR ist vielleicht an).
+Sieht dein Bildschirm richtig aus?
+Behalten
+Rückgängig
+DesktopLUT wendet jetzt die Farbtabelle an. Wenn du nichts tust, wird es in {0} s rückgängig gemacht.\nNotfalltaste jederzeit: Strg+Alt+Umschalt+L.
+Gut gemacht. Du kannst jetzt wieder hinsehen.

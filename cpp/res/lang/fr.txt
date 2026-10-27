@@ -387,3 +387,67 @@ Replier ou déplier cette section
 Une petite icône qui reste au-dessus des autres fenêtres.
 Passez-y avec le bouton à côté de la barre de titre, ou en réduisant cette fenêtre. Survolez-la pour les réglages rapides ; cliquez dessus pour revenir ici.
 Démarrer le minuteur de concentration
+Paupières : deux paupières sombres se ferment depuis le haut et le bas de l'écran, comme votre propre clignement
+Passez-y avec le bouton à côté de la barre de titre. Survolez-la pour les réglages rapides ; cliquez dessus pour revenir ici.
+Réduire cette fenêtre passe en mode mini
+Replier cette fenêtre dans l'icône, pour voir où elle est allée
+Vous aimez BlinkBuddy ? Il est gratuit ; un pourboire l'aide à continuer.
+Soutenir...
+Utilisation des ressources
+Ce que BlinkBuddy utilise lui-même en ce moment, tel que le compte le Gestionnaire des tâches.
+La dernière minute : processeur (couleur d'accent) et carte graphique (vert)
+Mesuré uniquement quand cette page est affichée : dessiner cette fenêtre fait donc partie de ce que vous voyez ici. Fermé, BlinkBuddy attend surtout et n'utilise presque rien.
+Processeur : {0} % du processeur entier
+Carte graphique : Windows ne l'indique pas ici
+Carte graphique : {0} % (son moteur le plus occupé)
+Mémoire : {0} Mo en RAM
+Mémoire : {0} Mo en RAM, plus {1} Mo de bibliothèques Windows partagées
+Réservé au total (en RAM ou dans le fichier d'échange) : {0} Mo
+Taille de la fenêtre
+Tout dans cette fenêtre, en plus grand ou plus petit
+Les ajouter dans les options
+Aucune fonction n'est sur le panneau.
+Pas sur le panneau : {0}
+Activé ou désactivé
+Faites glisser pour le monter ou le descendre
+Activée, une fonction est sur le panneau, sa carte avec son propre interrupteur. Faites-les glisser dans l'ordre qui vous convient.
+Pas de filtre de lumière bleue
+Toutes les {0} s
+Toutes les {0} min pendant {1} s
+exercices des yeux guidés
+Toutes les {0} min pendant {1} min
+Suit l'éclairage nocturne de Windows
+{0} à {1}
+{0} % assombri
+{0} % d'intensité
+{0} min de travail, {1} min de repos
+Aucune application pour l'instant
+Applications avec un mode : {0}
+Retour au panneau
+Fonctions
+Options : quelles fonctions sont activées et comment BlinkBuddy se comporte
+Options
+Synchroniser avec l'éclairage nocturne de Windows
+Éclairage nocturne...
+L'éclairage nocturne est désactivé pour l'instant.
+L'éclairage nocturne est activé (allumé à la main).
+L'éclairage nocturne est activé.
+Il n'a pas d'horaire, donc c'est l'horaire de BlinkBuddy qui s'applique.
+BlinkBuddy suit ses horaires, de {0} à {1}, à l'intensité {2}.
+BlinkBuddy le suit du coucher au lever du soleil ({0} à {1}), à l'intensité {2}.
+Aujourd'hui : l'horaire de nuit en ambre et l'heure actuelle
+En pause pendant que l'éclairage nocturne de Windows réchauffe l'écran
+Désactivé : le filtre de lumière bleue reste tel qu'il est réglé dans le filtre d'écran.
+Où se trouve DesktopLUT ?
+Téléchargement de {0} : {1} sur {2} Mo
+le téléchargement a échoué ({0})
+le fichier téléchargé n'est pas un programme Windows
+BlinkBuddy.exe n'a pas pu être déplacé (erreur {0})
+le nouveau BlinkBuddy.exe n'a pas pu être mis en place (erreur {0})
+Redémarrage...
+Windows a refusé la courbe sur cet écran (le HDR est peut-être activé).
+Votre écran a-t-il l'air correct ?
+Garder
+Annuler
+DesktopLUT applique maintenant la table de couleurs. Si vous ne faites rien, c'est annulé dans {0} s.\nTouche d'urgence à tout moment : Ctrl+Alt+Maj+L.
+Bravo. Vous pouvez regarder à nouveau l'écran.

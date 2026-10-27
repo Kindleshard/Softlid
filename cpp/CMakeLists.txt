@@ -10,6 +10,9 @@ set(CMAKE_CXX_FLAGS_RELEASE "/O1 /Ob2 /DNDEBUG")
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(BlinkBuddy WIN32 ${SOURCES} res/app.rc)
+# The translations are built into the exe by app.rc, which a change to one of them must rebuild.
+file(GLOB LANGUAGE_FILES CONFIGURE_DEPENDS res/lang/*.txt)
+set_source_files_properties(res/app.rc PROPERTIES OBJECT_DEPENDS "${LANGUAGE_FILES}")
 
 target_include_directories(BlinkBuddy PRIVATE src res)
 target_compile_definitions(BlinkBuddy PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)

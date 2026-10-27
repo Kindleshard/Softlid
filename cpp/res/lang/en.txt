@@ -387,3 +387,67 @@ Fold or unfold this section
 A small icon that stays on top of other windows.
 Switch to it with the button next to the title bar, or by minimising this window. Hover over it for quick controls; click it to come back here.
 Start the focus timer
+Eyelids: two dark lids close from the top and bottom of the screen, like your own blink
+Switch to it with the button next to the title bar. Hover over it for quick controls; click it to come back here.
+Minimising this window switches to mini mode
+Fold this window into the icon, so you see where it went
+Enjoying BlinkBuddy? It's free; a tip keeps it going.
+Support...
+Resource use
+What BlinkBuddy itself uses right now, as Task Manager counts it.
+The last minute: processor (accent color) and graphics card (green)
+Measured only while this page shows, so drawing this window is part of what you see here. Closed, BlinkBuddy mostly waits and uses next to nothing.
+Processor: {0}% of the whole CPU
+Graphics card: Windows doesn't report it here
+Graphics card: {0}% (its busiest engine)
+Memory: {0} MB in RAM
+Memory: {0} MB in RAM, plus {1} MB of Windows libraries it shares
+Set aside in all (in RAM or the page file): {0} MB
+Window size
+Everything in this window, bigger or smaller
+Add them in Options
+No features are on the panel.
+Not on the panel: {0}
+On or off
+Drag to move it up or down
+Switched on, a feature is on the panel, its card with a switch of its own. Drag them into the order you like.
+No blue light filter
+Every {0} s
+Every {0} min for {1} s
+guided eye exercises
+Every {0} min for {1} min
+Follows Windows Night light
+{0} to {1}
+{0}% dimmed
+{0}% strength
+{0} min work, {1} min rest
+No apps yet
+Apps with a mode: {0}
+Back to the panel
+Features
+Options: which features are on, and how BlinkBuddy itself behaves
+Options
+Sync with Windows Night light
+Night light...
+Night light is off now.
+Night light is on now (turned on by hand).
+Night light is on now.
+It has no schedule, so BlinkBuddy's own schedule runs.
+BlinkBuddy follows its hours, {0} to {1}, at strength {2}.
+BlinkBuddy follows it from sunset to sunrise ({0} to {1}), at strength {2}.
+Today: the night schedule in amber, and the time now
+Paused while Windows Night light warms the screen
+Off: the blue light filter stays as set in the screen filter.
+Where is DesktopLUT?
+Downloading {0}: {1} of {2} MB
+the download failed ({0})
+the download isn't a Windows program
+BlinkBuddy.exe couldn't be moved (error {0})
+the new BlinkBuddy.exe couldn't be put in place (error {0})
+Restarting...
+Windows refused the curve on this display (HDR may be on).
+Does your screen look right?
+Keep
+Undo
+DesktopLUT is now applying the colour table. If you do nothing, it is undone in {0} s.\nPanic key at any time: Ctrl+Alt+Shift+L.
+Well done. You can look back now.

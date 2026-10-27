@@ -99,11 +99,14 @@ void SettingsWindow::BuildFilter(Stack& st)
 
 void SettingsWindow::BuildEffects(Stack& st)
 {
-    Row& row = st.Add(98);   // (with room above it, apart from the sliders)
+    std::vector<std::wstring> names(std::begin(EffectNames), std::end(EffectNames));
+    int lines = TilePicker::CaptionLines(names, 48 + 13);   // (a longer translation takes two)
+    float caption = TilePicker::CaptionHeight(lines);
+    Row& row = st.Add(80 + caption);   // (with room above it, apart from the sliders)
     AddLabel(row, L"Color effect", Fonts::Body(), Theme::Fg, 24, 34, 124, 26);
     effectPicker = &row.Add<TilePicker>(5, s.ColorEffect);
-    effectPicker->SetBounds(150, 22, 5 * 48 + 4 * 13 + 2, 48 + 18);
-    effectPicker->SetCaptions({std::begin(EffectNames), std::end(EffectNames)});
+    effectPicker->SetBounds(150, 22, 5 * 48 + 4 * 13 + 2, 48 + caption);
+    effectPicker->SetCaptions(names, lines);
     effectPicker->painter = [this](Canvas& c, const D2D1_RECT_F& r, int i, float awake) { PaintEffect(c, r, i, awake); };
     effectPicker->onChange = [this](int effect) {
         s.ColorEffect = effect;

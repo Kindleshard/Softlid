@@ -387,3 +387,67 @@ Szakasz összecsukása vagy kibontása
 Egy kis ikon, amely a többi ablak fölött marad.
 Válts rá a címsor melletti gombbal vagy az ablak kis méretre állításával. Vidd fölé az egeret a gyors beállításokhoz; kattints rá, hogy ide visszatérj.
 Fókuszidőzítő indítása
+Szemhéjak: két sötét szemhéj csukódik a képernyő tetejéről és aljáról, mint a saját pislogásod
+Válts rá a címsor melletti gombbal. Vidd fölé az egeret a gyors beállításokhoz; kattints rá, hogy ide visszatérj.
+Az ablak kis méretre állítása mini módra vált
+Az ablak összehajtása az ikonba, hogy lásd, hová tűnt
+Tetszik a BlinkBuddy? Ingyenes; egy kis borravaló segít a folytatásban.
+Támogatás...
+Erőforrás-használat
+Amit a BlinkBuddy most használ, ahogy a Feladatkezelő számolja.
+Az utolsó perc: processzor (kiemelőszín) és videokártya (zöld)
+Csak akkor mérjük, amíg ez az oldal látszik, így az ablak kirajzolása is benne van abban, amit itt látsz. Bezárva a BlinkBuddy többnyire csak vár, és szinte semmit sem használ.
+Processzor: a teljes CPU {0}%-a
+Videokártya: a Windows itt nem jelenti
+Videokártya: {0}% (a legterheltebb motorja)
+Memória: {0} MB a RAM-ban
+Memória: {0} MB a RAM-ban, plusz {1} MB megosztott Windows-könyvtár
+Összesen lefoglalva (RAM-ban vagy a lapozófájlban): {0} MB
+Ablakméret
+Minden ebben az ablakban, nagyobban vagy kisebben
+Hozzáadás a Beállításokban
+Nincs funkció a panelen.
+Nincs a panelen: {0}
+Be- vagy kikapcsolás
+Húzd a fel- vagy lefelé mozgatáshoz
+Bekapcsolva egy funkció a panelen van, a kártyáján saját kapcsolóval. Húzd őket a kívánt sorrendbe.
+Nincs kékfényszűrő
+{0} mp-enként
+{0} percenként {1} mp-re
+irányított szemtorna
+{0} percenként {1} percre
+A Windows éjszakai fényét követi
+{0}–{1}
+{0}% sötétítés
+{0}% erősség
+{0} perc munka, {1} perc pihenő
+Még nincs alkalmazás
+Móddal rendelkező alkalmazások: {0}
+Vissza a panelre
+Funkciók
+Beállítások: mely funkciók vannak bekapcsolva, és hogyan működik maga a BlinkBuddy
+Beállítások
+Szinkronizálás a Windows éjszakai fényével
+Éjszakai fény...
+Az éjszakai fény most ki van kapcsolva.
+Az éjszakai fény most be van kapcsolva (kézzel kapcsolták be).
+Az éjszakai fény most be van kapcsolva.
+Nincs ütemezése, így a BlinkBuddy saját ütemezése fut.
+A BlinkBuddy az időpontjait követi, {0}–{1}, {2} erősséggel.
+A BlinkBuddy napnyugtától napkeltéig követi ({0}–{1}), {2} erősséggel.
+Ma: az éjszakai ütemezés borostyánsárgán, és a mostani idő
+Szüneteltetve, amíg a Windows éjszakai fénye melegíti a képernyőt
+Kikapcsolva: a kékfényszűrő úgy marad, ahogy a képernyőszűrőben be van állítva.
+Hol van a DesktopLUT?
+{0} letöltése: {1} / {2} MB
+a letöltés nem sikerült ({0})
+a letöltött fájl nem Windows-program
+A BlinkBuddy.exe nem helyezhető át (hiba: {0})
+az új BlinkBuddy.exe nem tehető a helyére (hiba: {0})
+Újraindítás...
+A Windows elutasította a görbét ezen a kijelzőn (lehet, hogy be van kapcsolva a HDR).
+Rendben van a képernyő?
+Megtartás
+Visszavonás
+A DesktopLUT most alkalmazza a színtáblát. Ha nem teszel semmit, {0} mp múlva visszavonja.\nVészgomb bármikor: Ctrl+Alt+Shift+L.
+Szép munka. Most már visszanézhetsz.

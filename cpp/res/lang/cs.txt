@@ -387,3 +387,67 @@ Sbalit nebo rozbalit tuto část
 Malá ikona, která zůstává nad ostatními okny.
 Přepněte na ni tlačítkem vedle záhlaví nebo minimalizací tohoto okna. Najeďte na ni pro rychlé ovládání; kliknutím se sem vrátíte.
 Spustit časovač soustředění
+Víčka: dvě tmavá víčka se zavřou shora a zdola obrazovky, jako vaše vlastní mrknutí
+Přepněte na ni tlačítkem vedle záhlaví. Najeďte na ni pro rychlé ovládání; kliknutím se sem vrátíte.
+Minimalizace tohoto okna přepne do mini režimu
+Složit toto okno do ikony, abyste viděli, kam zmizelo
+Líbí se vám BlinkBuddy? Je zdarma; spropitné pomáhá v jeho dalším vývoji.
+Podpořit...
+Využití prostředků
+Co BlinkBuddy právě sám používá, jak to počítá Správce úloh.
+Poslední minuta: procesor (barva zvýraznění) a grafická karta (zelená)
+Měří se jen při zobrazení této stránky, takže kreslení okna je součástí toho, co tu vidíte. Zavřený BlinkBuddy většinou čeká a nespotřebuje skoro nic.
+Procesor: {0} % celého CPU
+Grafická karta: Windows to zde neuvádí
+Grafická karta: {0} % (nejvytíženější jádro)
+Paměť: {0} MB v RAM
+Paměť: {0} MB v RAM a navíc {1} MB sdílených knihoven Windows
+Celkem vyhrazeno (v RAM nebo stránkovacím souboru): {0} MB
+Velikost okna
+Vše v tomto okně, větší nebo menší
+Přidat v Možnostech
+Na panelu nejsou žádné funkce.
+Mimo panel: {0}
+Zapnuto nebo vypnuto
+Přetažením přesunete nahoru nebo dolů
+Zapnutá funkce je na panelu a její karta má vlastní přepínač. Přetáhněte je do pořadí, které vám vyhovuje.
+Bez filtru modrého světla
+Každých {0} s
+Každých {0} min na {1} s
+řízené cviky pro oči
+Každých {0} min na {1} min
+Řídí se nočním osvětlením Windows
+{0}–{1}
+{0} % ztmavení
+{0} % síla
+{0} min práce, {1} min odpočinku
+Zatím žádné aplikace
+Aplikace s režimem: {0}
+Zpět na panel
+Funkce
+Možnosti: které funkce jsou zapnuté a jak se chová samotný BlinkBuddy
+Možnosti
+Synchronizovat s nočním osvětlením Windows
+Noční osvětlení...
+Noční osvětlení je teď vypnuté.
+Noční osvětlení je teď zapnuté (zapnuto ručně).
+Noční osvětlení je teď zapnuté.
+Nemá plán, takže běží vlastní plán BlinkBuddy.
+BlinkBuddy se řídí jeho časy, {0}–{1}, se silou {2}.
+BlinkBuddy se jím řídí od západu do východu slunce ({0}–{1}), se silou {2}.
+Dnes: noční plán jantarově a aktuální čas
+Pozastaveno, dokud noční osvětlení Windows ohřívá obrazovku
+Vypnuto: filtr modrého světla zůstane, jak je nastaven ve filtru obrazovky.
+Kde je DesktopLUT?
+Stahování {0}: {1} z {2} MB
+stahování se nezdařilo ({0})
+stažený soubor není program pro Windows
+BlinkBuddy.exe nelze přesunout (chyba {0})
+nový BlinkBuddy.exe nelze umístit (chyba {0})
+Restartování...
+Windows křivku na tomto displeji odmítl (možná je zapnuté HDR).
+Vypadá vaše obrazovka správně?
+Ponechat
+Vrátit
+DesktopLUT nyní používá tabulku barev. Pokud nic neuděláte, za {0} s se vrátí zpět.\nNouzová klávesa kdykoli: Ctrl+Alt+Shift+L.
+Výborně. Teď se můžete zase podívat zpět.

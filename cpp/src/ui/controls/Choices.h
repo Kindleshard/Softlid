@@ -101,7 +101,12 @@ public:
     std::function<void(Canvas&, const D2D1_RECT_F&, int, float)> painter;
     std::function<void(int)> onHover;
     int Hovered() const { return hoverIndex; }
-    void SetCaptions(std::vector<std::wstring> englishNames);   // a name under each tile (the tiles shrink to make room)
+    // A name under each tile, on one line or two (the tiles shrink to make room: CaptionHeight(lines) less).
+    void SetCaptions(std::vector<std::wstring> englishNames, int lines = 1);
+    // How many lines the names need under tiles `room` wide (96-dpi units: a tile and a gap): 2 when one of them,
+    // translated, doesn't fit on one.
+    static int CaptionLines(const std::vector<std::wstring>& englishNames, float room);
+    static float CaptionHeight(int lines) { return lines * 16.0f + 2; }
 
     void Paint(Canvas& canvas) override;
     void MouseMove(D2D1_POINT_2F p, bool) override;
@@ -111,8 +116,7 @@ public:
     void EnabledChanged() override { Invalidate(); }
 
 private:
-    static constexpr float CaptionH = 18;
-    float Side() const { return captions.empty() ? H() : H() - CaptionH; }   // a tile's side
+    float Side() const { return captions.empty() ? H() : H() - CaptionHeight(captionLines); }   // a tile's side
     float Gap() const { return Side() * 0.28f; }
     float Target(int i) const { return i == hoverIndex ? 1.0f : i == selected ? 0.75f : 0.45f; }
     int IndexAt(float x) const;
@@ -121,6 +125,7 @@ private:
     int count, hoverIndex = -1;
     std::vector<float> awake;
     std::vector<std::wstring> captions;
+    int captionLines = 1;
     ULONGLONG last = 0;
 };
 
