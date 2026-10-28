@@ -67,7 +67,7 @@ void SettingsWindow::BuildFilter(Stack& st)
     brightSlider->shade = true;
     // What the green dot on its track is: the night schedule's strength (while the schedule is on).
     Row& legendRow = st.Add(24, [this] { return app.Scheduled().ScheduleEnabled; });
-    legendRow.Add<Icon>(L'', 7.0f, Theme::Good).SetBounds(24, 0, 14, 20);   // a dot
+    legendRow.Add<Icon>(L'\uEA3B', 7.0f, Theme::Good).SetBounds(24, 0, 14, 20);   // a dot
     nightLegend = &AddLabel(legendRow, L"", Fonts::Small(), Theme::Dim, 42, 0, Edge - 42, 20);
     NightMarker();
     // A colour effect and the blue light filter take turns: while an effect is on, the slider is greyed and says so
@@ -120,7 +120,7 @@ void SettingsWindow::BuildEffects(Stack& st)
     AddLabel(line, L"Color effect", Fonts::Body(), Theme::Fg, 24, 14, 200, 26);
     Label& chosen = AddLabel(line, L"", Fonts::Body(), Theme::Dim, 200, 14, Edge - 200 - 26, 26);
     chosen.align = HAlign::Right;
-    Icon& chevron = line.Add<Icon>(L'', 8.0f, Theme::Dim);
+    Icon& chevron = line.Add<Icon>(L'\uE76C', 8.0f, Theme::Dim);
     chevron.SetBounds(Edge - 20, 16, 20, 22);
     auto& area = line.Add<HotArea>();
     area.SetBounds(20, 8, Edge - 20, 38);
@@ -130,7 +130,7 @@ void SettingsWindow::BuildEffects(Stack& st)
     };
     updaters.push_back([this, &chosen, &chevron, open] {
         chosen.SetPlainText(Lang::T(EffectNames[std::clamp(s.ColorEffect, 0, 4)]));
-        chevron.Set(open() ? L'' : L'', Theme::Dim);   // down when open, right when folded
+        chevron.Set(open() ? L'\uE70D' : L'\uE76C', Theme::Dim);   // down when open, right when folded
     });
     Row& row = st.Add(60 + caption, open);
     int center = static_cast<int>((24 + Edge) / 2);

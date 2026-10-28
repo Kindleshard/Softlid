@@ -112,7 +112,7 @@ BB_SETTING(int, MiniY, -1)
 BB_SETTING(int, MiniFadeDelay, 500)             // ms
 BB_SETTING(int, MiniFadeTime, 150)              // ms
 BB_SETTING(int, MiniOpacity, 65)               // %: how much of the icon shows while the pointer is away
-BB_SETTING(int, MiniSize, 100)                  // %: the mini icon's size (90 to 150)
+BB_SETTING(int, MiniScale, 100)                 // %: the mini icon's size (90 to 150; replaced MiniSize, 1.3 times as big)
 BB_SETTING(int, MiniFocusColor, 0)              // ARGB of the mini icon's focus timer circle (0 = green)
 BB_SETTING(bool, MiniEnabled, true)
 BB_SETTING(bool, MiniFold, true)                // the settings window folds into the icon, animated

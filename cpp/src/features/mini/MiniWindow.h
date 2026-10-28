@@ -62,7 +62,7 @@ private:
     std::unique_ptr<Panel> panel;
     class Resizer;
     std::unique_ptr<Resizer> resizer;
-    static constexpr float BaseSize = 56;   // 96-dpi units, at 100%
+    static constexpr float BaseSize = 56 * 1.3f;   // 96-dpi units, at 100% (what was 130% before MiniScale)
     LayeredCanvas canvas;
     gfx::ComPtr<IDWriteTextFormat> clockFont, clockFontBig;
     float scale = 1, size = 56, gap = 10;   // size and gap in 96-dpi units

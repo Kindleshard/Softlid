@@ -2,6 +2,7 @@
 #include "platform/Files.h"
 #include "platform/Text.h"
 #include <algorithm>
+#include <cmath>
 #include <cwchar>
 #include <set>
 
@@ -54,6 +55,7 @@ Settings Settings::FromText(std::wstring_view file)
 {
     Settings s;
     std::set<text> seen;
+    text oldMiniSize;
     for (const text& line : SplitLines(file)) {
         size_t eq = line.find(L'=');
         if (eq == text::npos || eq == 0) continue;
@@ -63,6 +65,7 @@ Settings Settings::FromText(std::wstring_view file)
 #include "core/SettingsFields.h"
 #undef BB_SETTING
         if (known) seen.insert(key);
+        if (key == L"MiniSize") oldMiniSize = value;   // (an older file: see below)
     }
 
     // Before the schedule had a strength of its own it brought the blue light filter in only at night; keep it that
@@ -73,6 +76,13 @@ Settings Settings::FromText(std::wstring_view file)
     }
     // Before there was an edge choice, the soft edge and the outline could both be on (0 meaning off).
     if (!seen.count(L"StripEdge")) s.StripEdge = s.StripBorder > 0 ? 2 : s.StripFeather > 0 ? 1 : 0;
+    // MiniSize was against a smaller icon: 130% of it is the new 100%, so a size that was chosen stays as it was (one
+    // left at the old 100% takes the new, bigger one).
+    if (!seen.count(L"MiniScale") && !oldMiniSize.empty()) {
+        int old = 100;
+        Parse(oldMiniSize, old);
+        if (old != 100) s.MiniScale = static_cast<int>(std::lround(old / 1.3));
+    }
 
     s.Clamp();
     return s;
@@ -150,7 +160,7 @@ void Settings::Clamp()
     MiniFadeDelay = Fit(MiniFadeDelay, 10, 1000);
     MiniFadeTime = Fit(MiniFadeTime, 0, 200);
     MiniOpacity = Fit(MiniOpacity, 10, 100);
-    MiniSize = Fit(MiniSize, 90, 150);
+    MiniScale = Fit(MiniScale, 90, 150);
     NightBlue = Fit(NightBlue, 0, 100);
     MiniIcon = Fit(MiniIcon, 0, 3);
     MiniOrbitSeconds = Fit(MiniOrbitSeconds, 0, 200);

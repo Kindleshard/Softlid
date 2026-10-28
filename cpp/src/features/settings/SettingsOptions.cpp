@@ -61,7 +61,7 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
     language.onChange = [this, codes](int i) { app.SetLanguage(codes[static_cast<size_t>(i)]); };
     // Closing this window: ask each time, keep BlinkBuddy running in the tray, or exit.
     Row& closeRow = st.Add(50);
-    RowIcon(closeRow, L'', 11);
+    RowIcon(closeRow, L'\uE8BB', 11);
     AddLabel(closeRow, L"When closed", Fonts::Body(), Theme::Fg, RowText, 10, Control - RowText - 6, 26).tip =
         Lang::T(L"When this window is closed");
     auto& close = closeRow.Add<DropDown>(std::vector<std::wstring>{L"Ask me", L"Keep running in the tray", L"Exit BlinkBuddy"});
@@ -72,9 +72,9 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
 
     // ---- Appearance: the view, the window's size and the accent colour ----
     Divider(st);
-    CardHead(st, L'', L"Appearance", L"How much this window shows, its size and its color.");
+    CardHead(st, L'\uE771', L"Appearance", L"How much this window shows, its size and its color.");
     Row& viewRow = st.Add(50);
-    RowIcon(viewRow, L'', 13);
+    RowIcon(viewRow, L'\uE8A9', 13);
     AddLabel(viewRow, L"View", Fonts::Body(), Theme::Fg, RowText, 12, Control - RowText - 6, 26);
     auto& view = viewRow.Add<Segmented>(std::vector<std::wstring>{L"Simple", L"Advanced"});
     view.SetBounds(Control, 8, Edge - Control, 34);
@@ -94,7 +94,7 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
 
     // The window's own size, on top of the display's scaling: it is built again at the new size, where it is.
     Row& sizeRow = st.Add(50);
-    RowIcon(sizeRow, L'', 13);
+    RowIcon(sizeRow, L'\uE71E', 13);
     AddLabel(sizeRow, L"Window size", Fonts::Body(), Theme::Fg, RowText, 12, Control - RowText - 6, 26);
     static const int Zooms[] = {80, 90, 100, 110, 120};
     auto& size = sizeRow.Add<Segmented>(std::vector<std::wstring>{L"80%", L"90%", L"100%", L"110%", L"120%"});
@@ -111,7 +111,7 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
     // The accent colour: Windows' own, or one picked here (its swatch opens the colour wheel). The window is built
     // again in the new colour once the wheel closes.
     Row& accentRow = st.Add(46);
-    RowIcon(accentRow, L'', 11);
+    RowIcon(accentRow, L'\uE790', 11);
     AddLabel(accentRow, L"Accent color", Fonts::Body(), Theme::Fg, RowText, 10, Control - RowText - 6, 26);
     auto& accentFrom = accentRow.Add<Segmented>(std::vector<std::wstring>{L"Match Windows", L"Custom"});
     accentFrom.SetBounds(Control, 6, Edge - Control - (s.AccentFromWindows ? 0 : 46), 34);
@@ -131,17 +131,17 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
 
     // ---- System: starting with Windows, full-screen apps, sleep and shortcuts ----
     Divider(st);
-    CardHead(st, L'', L"System", L"How BlinkBuddy fits in with Windows.");
-    ToggleRow(st, L"Start with Windows", app.RunAtStartup(), [this](bool v) { app.SetRunAtStartup(v); }, nullptr, L'');
+    CardHead(st, L'\uE770', L"System", L"How BlinkBuddy fits in with Windows.");
+    ToggleRow(st, L"Start with Windows", app.RunAtStartup(), [this](bool v) { app.SetRunAtStartup(v); }, nullptr, L'\uE7E8');
     ToggleRow(st, L"Pause reminders in full-screen apps", s.PauseInFullscreen, [this](bool v) { s.PauseInFullscreen = v; app.Changed(); },
-              nullptr, L'');
+              nullptr, L'\uE740');
     // Keeping the PC awake (the tray menu has it too, for an hour or two).
-    awakeToggle = &ToggleRow(st, L"Keep PC awake", app.KeepingAwake(), [this](bool v) { app.SetKeepAwake(v); }, advanced, L'');
+    awakeToggle = &ToggleRow(st, L"Keep PC awake", app.KeepingAwake(), [this](bool v) { app.SetKeepAwake(v); }, advanced, L'\uE945');
     Note(st, L"Windows won't go to sleep or turn the screen off. The tray menu can also keep it awake for 1 or 2 hours.", 2,
          advanced, RowText);
     // Keyboard shortcuts: each one changeable, in a window of its own.
     Row& keysRow = st.Add(46, advanced);
-    RowIcon(keysRow, L'', 11);
+    RowIcon(keysRow, L'\uE765', 11);
     AddLabel(keysRow, L"Keyboard shortcuts", Fonts::Body(), Theme::Fg, RowText, 10, Edge - 176 - 8 - RowText, 26);
     AddButton(keysRow, L"Change...", Edge - 176, 6, 176, 34).onClick = [this] { ShortcutsDialog::Open(app, Handle(), !unfoldAll); };
     st.Add(6);
@@ -152,7 +152,7 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
 
     // ---- Reset ----
     Divider(st);
-    Row& resetHead = CardHead(st, L'', L"Reset", L"Every setting back to how it started", nullptr, 176 + 12);
+    Row& resetHead = CardHead(st, L'\uE72C', L"Reset", L"Every setting back to how it started", nullptr, 176 + 12);
     AddButton(resetHead, L"Reset all settings", Edge - 176, 14, 176, 34).onClick = [this] { app.ResetAll(); };
     st.Add(16);   // room below the last row
 }
@@ -176,15 +176,15 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
         s.MiniOnMinimize = v;
         app.Changed();
         UpdateRows();   // (the note above says how to get there)
-    }, on, L'');
+    }, on, L'\uE921');
     ToggleRow(st, L"Fold this window into the icon, so you see where it went", s.MiniFold,
-              [this](bool v) { s.MiniFold = v; app.Changed(); }, on, L'');
+              [this](bool v) { s.MiniFold = v; app.Changed(); }, on, L'\uE73F');
     // The icons as previews (each named in its tip), drawn with the screen's current brightness and warmth.
     std::vector<std::wstring> iconNames{L"Eye", L"Lamp", L"Sun", L"Laptop"};
     int lines = TilePicker::CaptionLines(iconNames, 48 + 13);   // (a longer translation takes two)
     float caption = TilePicker::CaptionHeight(lines);
     Row& iconRow = st.Add(64 + caption, on);
-    RowIcon(iconRow, L'', 19);
+    RowIcon(iconRow, L'\uE8B9', 19);
     AddLabel(iconRow, L"Icon", Fonts::Body(), Theme::Fg, RowText, 18, 110, 26);
     auto& icon = iconRow.Add<TilePicker>(4, s.MiniIcon);
     icon.SetBounds(170, 6, 4 * 48 + 3 * 13 + 2, 48 + caption);
@@ -204,10 +204,10 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
     Note(st, L"Eye: opens when you come near. Lamp: as bright as the screen. Sun: glows when you come near. Laptop: shows "
              L"the screen's brightness and the blue light filter.", 2, on, RowText);
     ToggleRow(st, L"Show the time to the next break on the icon's rim", s.MiniCountdown,
-              [this](bool v) { s.MiniCountdown = v; app.Changed(); }, on, L'');
+              [this](bool v) { s.MiniCountdown = v; app.Changed(); }, on, L'\uE909');
     // The focus timer's circle round the icon while it runs: green unless another colour is chosen.
     Row& focusRow = st.Add(46, on);
-    RowIcon(focusRow, L'', 11);
+    RowIcon(focusRow, L'\uE916', 11);
     AddLabel(focusRow, L"Focus timer circle", Fonts::Body(), Theme::Fg, RowText, 10, Edge - 44 - RowText, 26);
     auto& focusColor = focusRow.Add<ColorButton>();
     focusColor.SetBounds(Edge - 36, 6, 34, 34);
@@ -221,22 +221,22 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
     };
     // How much of it shows while the pointer is away (hovered, it is always solid).
     SliderRow(st, L"Opacity while not hovered", 10, 100, s.MiniOpacity, defaults.MiniOpacity, [](int v) { return std::to_wstring(v) + L"%"; },
-              [this](int v) { s.MiniOpacity = v; app.Changed(); }, on, L'');
+              [this](int v) { s.MiniOpacity = v; app.Changed(); }, on, L'\uE7B3');
     // Its size (also from its right-click menu: Resize).
-    SliderRow(st, L"Size", 90, 150, s.MiniSize, defaults.MiniSize, [](int v) { return std::to_wstring(v) + L"%"; },
-              [this](int v) { s.MiniSize = v; app.Changed(); }, on, L'');
+    SliderRow(st, L"Size", 90, 150, s.MiniScale, defaults.MiniScale, [](int v) { return std::to_wstring(v) + L"%"; },
+              [this](int v) { s.MiniScale = v; app.Changed(); }, on, L'\uE71E');
     Shown more = More(st, L"mini", on), glow = And(more, [this] { return s.MiniOrbit; });
     SliderRow(st, L"Fade-out delay after hovering", 10, 1000, s.MiniFadeDelay, 500, Ms,
-              [this](int v) { s.MiniFadeDelay = v; app.Changed(); }, more, L'');
+              [this](int v) { s.MiniFadeDelay = v; app.Changed(); }, more, L'\uE823');
     SliderRow(st, L"Fade-out speed", 0, 200, s.MiniFadeTime, 150, [](int v) { return v == 0 ? std::wstring(L"Instant") : Ms(v); },
-              [this](int v) { s.MiniFadeTime = v; app.Changed(); }, more, L'');
+              [this](int v) { s.MiniFadeTime = v; app.Changed(); }, more, L'\uE9E9');
     ToggleRow(st, L"The icon breathes with a soft glow now and then", s.MiniOrbit,
-              [this](bool v) { s.MiniOrbit = v; app.Changed(); UpdateRows(); }, more, L'');
+              [this](bool v) { s.MiniOrbit = v; app.Changed(); UpdateRows(); }, more, L'\uE734');
     SliderRow(st, L"Every", 0, 200, s.MiniOrbitSeconds, 60,
               [](int v) { return v == 0 ? Lang::T(L"Continuous") : Lang::F(L"{0} s", {std::to_wstring(v)}); },
-              [this](int v) { s.MiniOrbitSeconds = v; app.Changed(); }, glow, L'');
+              [this](int v) { s.MiniOrbitSeconds = v; app.Changed(); }, glow, L'\uE72C');
     Row& colorRow = st.Add(46, glow);
-    RowIcon(colorRow, L'', 11);
+    RowIcon(colorRow, L'\uE790', 11);
     AddLabel(colorRow, L"Color", Fonts::Body(), Theme::Fg, RowText, 10, 200, 26);
     auto& color = colorRow.Add<ColorButton>();
     color.SetBounds(Edge - 36, 6, 34, 34);
@@ -255,9 +255,9 @@ void SettingsWindow::BuildMiniOptions(Stack& st)
 void SettingsWindow::BuildUpdates(Stack& st)
 {
     Divider(st);
-    CardHead(st, L'', L"Updates", L"This version, and newer ones when they come out.");
+    CardHead(st, L'\uE895', L"Updates", L"This version, and newer ones when they come out.");
     Row& row = st.Add(46);
-    RowIcon(row, L'', 11);
+    RowIcon(row, L'\uE946', 11);
     AddLabel(row, L"", Fonts::Body(), Theme::Fg, RowText, 10, 200, 26).SetPlainText(Lang::F(L"Version {0}", {Version}));
     updateButton = &AddButton(row, L"Check for updates", Edge - 176, 6, 176, 34);
     updateButton->onClick = [this] {
@@ -275,7 +275,7 @@ void SettingsWindow::BuildUpdates(Stack& st)
     updateProgress = &progressRow.Add<ProgressLine>();
     updateProgress->SetBounds(RowText, 5, Edge - RowText, 6);
     ToggleRow(st, L"Check for updates automatically (weekly)", s.UpdateCheck, [this](bool v) { s.UpdateCheck = v; app.Changed(); },
-              nullptr, L'');
+              nullptr, L'\uE787');
     if (Updater::Available() && app.Update().text.empty()) app.CheckForUpdates();
     shownDownloading = app.Update().downloading;   // (the rows are placed once the page is built)
     RefreshUpdates();

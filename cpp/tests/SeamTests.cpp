@@ -46,6 +46,11 @@ TEST(SettingsReadOldAndOddFiles)
     CHECK_EQ(s.Brightness, 20);  // held to its range
     CHECK(!s.FilterEnabled);
     CHECK_EQ(Settings::FromText(L"Brightness=abc").Brightness, Settings{}.Brightness);   // unreadable: the default
+    // The mini icon's old size against its new, 1.3 times bigger 100%: a chosen size stays as big as it was.
+    CHECK_EQ(Settings::FromText(L"MiniSize=130").MiniScale, 100);
+    CHECK_EQ(Settings::FromText(L"MiniSize=150").MiniScale, 115);
+    CHECK_EQ(Settings::FromText(L"MiniSize=100").MiniScale, 100);   // left as it was: the new size
+    CHECK_EQ(Settings::FromText(L"MiniSize=130\r\nMiniScale=120").MiniScale, 120);   // (a newer file says so itself)
 }
 
 TEST(KeysParseAndDescribe)

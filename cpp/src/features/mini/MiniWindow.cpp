@@ -229,11 +229,11 @@ public:
         value = &Root().Add<Label>(L"", Fonts::Body(), Theme::Dim);
         value->align = HAlign::Right;
         value->SetBounds(W - 84, 6, 70, 24);
-        value->SetPlainText(std::to_wstring(s.MiniSize) + L"%");
-        auto& slider = Root().Add<Slider>(90, 150, s.MiniSize);
+        value->SetPlainText(std::to_wstring(s.MiniScale) + L"%");
+        auto& slider = Root().Add<Slider>(90, 150, s.MiniScale);
         slider.SetBounds(8, 30, W - 16, 28);
         slider.onChange = [this](int v) {
-            this->icon.app.S().MiniSize = v;
+            this->icon.app.S().MiniScale = v;
             this->icon.app.Changed();
             this->icon.Resize();
             value->SetPlainText(std::to_wstring(v) + L"%");
@@ -285,7 +285,7 @@ void MiniWindow::ShowResizer()
 // To the size set (in Options, or with Resize), round its middle, so it grows and shrinks where it is.
 void MiniWindow::Resize()
 {
-    float want = BaseSize * std::clamp(app.S().MiniSize, 90, 150) / 100.0f;
+    float want = BaseSize * std::clamp(app.S().MiniScale, 90, 150) / 100.0f;
     if (std::abs(want - size) < 0.01f) return;
     POINT middle{pos.x + px / 2, pos.y + px / 2};
     size = want;
@@ -308,7 +308,7 @@ MiniWindow::MiniWindow(MiniHost& app, bool hidden) : app(app), panel(std::make_u
     POINT cursor;
     GetCursorPos(&cursor);
     scale = ScaleAt(cursor);
-    size = BaseSize * std::clamp(app.S().MiniSize, 90, 150) / 100.0f;
+    size = BaseSize * std::clamp(app.S().MiniScale, 90, 150) / 100.0f;
     px = static_cast<int>(std::lround(size * scale));
     pos = StartingPoint();
     Create(L"BlinkBuddy.Mini", WS_POPUP, PopupExStyle | WS_EX_LAYERED, {pos.x, pos.y, pos.x + px, pos.y + px});
@@ -662,7 +662,7 @@ void MiniWindow::CheckHover()
     const Settings& s = app.S();
     ULONGLONG now = GetTickCount64();
     // Its size, changed in Options.
-    if (std::abs(BaseSize * std::clamp(s.MiniSize, 90, 150) / 100.0f - size) > 0.01f) Resize();
+    if (std::abs(BaseSize * std::clamp(s.MiniScale, 90, 150) / 100.0f - size) > 0.01f) Resize();
     // The breath, when it is due.
     if (s.MiniOrbit && !FocusOn() && RestDone() < 0 && now >= nextBreath) {
         nextBreath = now + static_cast<ULONGLONG>((s.MiniOrbitSeconds == 0 ? BreathSeconds : s.MiniOrbitSeconds) * 1000);   // 0: right on
