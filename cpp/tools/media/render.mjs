@@ -62,6 +62,7 @@ await send('Page.navigate', { url: pathToFileURL(join(here, 'loops', `${name}.ht
 await loaded;
 const loop = await evaluate('document.fonts.ready.then(() => window.LOOP)');
 await send('Emulation.setDeviceMetricsOverride', { width: loop.width, height: loop.height, deviceScaleFactor: loop.scale ?? (clean ? 0.75 : 1), mobile: false });
+await send('Emulation.setDefaultBackgroundColorOverride', { color: { r: 0, g: 0, b: 0, a: 0 } });   // (a transparent page stays so: the banner's corners)
 
 // The footage it uses, unpacked once from the recordings into 60 fps frames, 1280 px wide unless the loop asks for
 // more (to zoom in close); the loop picks the frames it needs.
