@@ -7,6 +7,7 @@
 #include "features/settings/ShortcutsDialog.h"
 #include "features/update/Updater.h"
 #include "platform/ProgramInfo.h"
+#include "ui/Graphics.h"
 #include "ui/MiniArt.h"
 #include "ui/Theme.h"
 #include <shellapi.h>
@@ -18,6 +19,26 @@ namespace {
 using namespace ui;
 
 std::wstring Ms(int v) { return v >= 1000 ? L"1 s" : std::to_wstring(v) + L" ms"; }
+
+// Ko-fi's cup: a white mug with its handle on the right and a red heart on it.
+void KoFiCup(Canvas& c, const D2D1_RECT_F& box)
+{
+    float s = Width(box), x = box.left, y = box.top;
+    constexpr int White = Palette::Argb(255, 255, 255), Heart = Palette::Argb(255, 94, 91);
+    c.OutlineRound({x + s * 0.6f, y + s * 0.36f, x + s * 0.94f, y + s * 0.7f}, s * 0.15f, White, s * 0.11f);
+    c.FillRound({x + s * 0.04f, y + s * 0.26f, x + s * 0.74f, y + s * 0.92f}, s * 0.14f, White);
+    float hx = x + s * 0.39f, hy = y + s * 0.6f, h = s * 0.44f;
+    gfx::ComPtr<ID2D1PathGeometry> heart;
+    gfx::ComPtr<ID2D1GeometrySink> sink;
+    gfx::D2D()->CreatePathGeometry(heart.GetAddressOf());
+    heart->Open(sink.GetAddressOf());
+    sink->BeginFigure({hx, hy + h * 0.38f}, D2D1_FIGURE_BEGIN_FILLED);
+    sink->AddBezier({{hx - h * 0.62f, hy - h * 0.02f}, {hx - h * 0.36f, hy - h * 0.56f}, {hx, hy - h * 0.2f}});
+    sink->AddBezier({{hx + h * 0.36f, hy - h * 0.56f}, {hx + h * 0.62f, hy - h * 0.02f}, {hx, hy + h * 0.38f}});
+    sink->EndFigure(D2D1_FIGURE_END_CLOSED);
+    sink->Close();
+    c.Target()->FillGeometry(heart.Get(), c.Brush(Heart));
+}
 
 } // namespace
 
@@ -290,14 +311,14 @@ void SettingsWindow::BuildSupport(Stack& st)
     Divider(st);
     CardHead(st, L'\uE897', L"Help and support", L"Tell us what went wrong, or keep BlinkBuddy going.");
     // A row of words and a button: the words take a second line when they need it (never cut short).
-    auto row = [this, &st](wchar_t icon, std::wstring_view words, std::wstring_view button) -> Button& {
-        float w = Edge - 176 - 12 - RowText;
+    auto row = [this, &st](wchar_t icon, std::wstring_view words, std::wstring_view button, float bw = 176) -> Button& {
+        float w = Edge - bw - 12 - RowText;
         bool two = LinesFor(Lang::T(words), Fonts::Body(), w) > 1;
         Row& r = st.Add(two ? 62.0f : 46.0f);
         RowIcon(r, icon, two ? 19.0f : 11.0f);
         Label& l = AddLabel(r, words, Fonts::Body(), Theme::Fg, RowText, two ? 6.0f : 10.0f, w, two ? 50.0f : 26.0f);
         l.wrap = two;
-        return AddButton(r, button, Edge - 176, two ? 14.0f : 6.0f, 176, 34);
+        return AddButton(r, button, Edge - bw, two ? 14.0f : 6.0f, bw, 34);
     };
     row(L'\uE7BE', L"Show the tour again", L"Start tour").onClick = [this] { app.ShowTour(); };
     if (ReleaseRepo[0]) {
@@ -308,8 +329,13 @@ void SettingsWindow::BuildSupport(Stack& st)
         };
     }
     if (DonateUrl[0]) {
-        Button& kofi = row(L'\uEC32', L"BlinkBuddy is free. A coffee keeps it going.", L"Support on Ko-fi");
-        kofi.SetTint(Palette::KoFi);
+        // Like Ko-fi's own button: its blue, the cup and white words, as wide as they need.
+        constexpr float cup = 20;
+        float bw = std::max(176.0f, TextWidth(Lang::T(L"Support on Ko-fi"), Fonts::Get(10, gfx::Weight::Semibold)) + cup + 34 / 4.0f + 36);
+        Button& kofi = row(L'\uEC32', L"BlinkBuddy is free. A coffee keeps it going.", L"Support on Ko-fi", bw);
+        kofi.SetSolid(Palette::KoFi);
+        kofi.iconSize = cup;
+        kofi.icon = KoFiCup;
         kofi.onClick = [] { ShellExecuteW(nullptr, L"open", DonateUrl, nullptr, nullptr, SW_SHOWNORMAL); };
     }
 }

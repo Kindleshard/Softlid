@@ -38,6 +38,7 @@ public:
     std::function<bool()> shown = [] { return true; };
     int block = -1, group = -1;                  // (the block it belongs to, and the card: see Stack)
     bool card = false, cardTop = false, cardBottom = false;
+    bool spacer = false;                         // only room on its card: hidden when nothing else on the card shows
     void Paint(Canvas& canvas) override;
 };
 

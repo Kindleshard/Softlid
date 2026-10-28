@@ -320,7 +320,7 @@ void SettingsWindow::Divider(Stack& st, Shown shown)
 {
     st.EndSection();
     if (st.CurrentGroup() >= 0) {
-        st.Add(6);   // (the card's own bottom margin)
+        st.Add(6).spacer = true;   // (the card's own bottom margin, gone with a hidden card)
         st.Group(st.CurrentGroup() + 1);
         return;
     }

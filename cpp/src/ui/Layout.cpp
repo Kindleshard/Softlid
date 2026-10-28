@@ -152,8 +152,11 @@ void Stack::Layout()
 
     // Placed top to bottom; each card (a block, or a group of rows) gap apart from what is around it.
     std::vector<Row*> shown;
+    std::vector<int> filled;   // the cards with more than room on them
+    for (Row* r : laid)
+        if (!r->spacer && r->group >= 0 && r->shown()) filled.push_back(r->group);
     for (Row* r : laid) {
-        bool show = r->shown();
+        bool show = r->shown() && (!r->spacer || std::find(filled.begin(), filled.end(), r->group) != filled.end());
         r->SetVisible(show);
         if (show) shown.push_back(r);
     }

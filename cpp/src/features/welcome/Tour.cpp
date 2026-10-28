@@ -4,9 +4,13 @@
 #include "platform/Voice.h"
 #include "ui/Access.h"
 #include "ui/DirectWindow.h"
+#include "ui/MiniArt.h"
 #include "ui/Theme.h"
 #include "ui/controls/Basic.h"
 #include "ui/controls/Pickers.h"
+#include "resource.h"
+#include <commctrl.h>
+#include <cmath>
 #include <cwchar>
 #include <memory>
 
@@ -50,9 +54,22 @@ public:
     AccessInfo Access() const override { return {Role::Text, Lang::F(L"Step {0} of {1}", {std::to_wstring(step + 1), std::to_wstring(Steps)})}; }
 };
 
-// The tray by the clock with BlinkBuddy's icon, an arrow, and mini mode's round icon with its focus circle.
+// BlinkBuddy's own icon (the one in the tray and the taskbar), `size` units square at the window's scale.
+IconImage& AppIcon(DirectWindow& window, Container& parent, float size)
+{
+    int px = static_cast<int>(std::lround(size * window.Scale()));
+    HICON icon = nullptr;
+    LoadIconWithScaleDown(GetModuleHandleW(nullptr), MAKEINTRESOURCEW(IDI_APP), px, px, &icon);
+    return parent.Add<IconImage>(icon);
+}
+
+// The tray by the clock (BlinkBuddy's icon itself is laid over it, at TrayIcon), an arrow, and mini mode's round icon
+// as it looks with the pointer over it.
 class TrayPicture : public Control {
 public:
+    explicit TrayPicture(int miniIcon) : miniIcon(miniIcon) {}
+    D2D1_POINT_2F TrayIcon() const { return {W() / 2 - 76, H() / 2}; }
+
     void Paint(Canvas& c) override
     {
         c.FillRound({0, 0, W(), H()}, 8, Palette::Argb(21, 21, 21));
@@ -62,16 +79,19 @@ public:
         IDWriteTextFormat* glyphs = Fonts::Glyphs(11);
         c.Glyph(L'\uE701', glyphs, {bar.left + 8, cy - 12, bar.left + 32, cy + 12}, Theme::Dim);   // wi-fi
         c.Glyph(L'\uE767', glyphs, {bar.left + 34, cy - 12, bar.left + 58, cy + 12}, Theme::Dim);  // volume
-        float ix = bar.left + 74;
-        c.OutlineCircle(ix, cy, 11, Theme::Accent(), 2);
-        c.Glyph(L'\uE890', Fonts::Glyphs(8), {ix - 9, cy - 9, ix + 9, cy + 9}, Theme::Accent());
-        c.Text(L"14:05", Fonts::Small(), {ix + 18, cy - 10, bar.right - 4, cy + 10}, Theme::Dim);
+        float ix = TrayIcon().x;
+        c.OutlineCircle(ix, cy, 13, Theme::Accent(), 2);
+        c.Text(L"14:05", Fonts::Small(), {ix + 20, cy - 10, bar.right - 4, cy + 10}, Theme::Dim);
         c.Glyph(L'\uE72A', glyphs, {bar.right + 10, cy - 12, bar.right + 40, cy + 12}, Palette::Argb(110, 110, 110));   // arrow
-        float mx = bar.right + 80;
-        c.FillCircle(mx, cy, 24, Theme::Card);
-        c.OutlineCircle(mx, cy, 24, Palette::Argb(95, 208, 138), 3);
-        c.Glyph(L'\uE890', Fonts::Glyphs(12), {mx - 14, cy - 14, mx + 14, cy + 14}, Theme::Fg);
+        // Mini mode's disc, rim and icon, as it draws them.
+        float mx = bar.right + 80, r = 24, box = r * 2 * 0.62f;
+        c.FillCircle(mx, cy, r, Palette::Argb(34, 36, 42));
+        c.OutlineCircle(mx, cy, r, Theme::Accent(), 2);
+        MiniArt::DrawIcon(c.Target(), {mx - box / 2, cy - box / 2, mx + box / 2, cy + box / 2}, miniIcon, 1, 1, 0);
     }
+
+private:
+    int miniIcon;
 };
 
 class TourWindow : public DirectWindow {
@@ -167,8 +187,7 @@ private:
 
     void Welcome()
     {
-        auto& eye = Root().Add<Icon>(L'\uE890', 20.0f, Theme::Accent());
-        eye.SetBounds(Pad - 4, 20, 40, 40);
+        AppIcon(*this, Root(), 32).SetBounds(Pad - 4, 20, 40, 40);
         auto& sound = Root().Add<Button>(L"Read aloud");
         float sw = TextWidth(Lang::T(L"Read aloud"), Fonts::Body()) + 58;
         sound.SetBounds(W - Pad - sw, 22, sw, 34);
@@ -253,8 +272,10 @@ private:
     {
         Title(L"Where BlinkBuddy lives", 22);
         Para(Lang::T(L"It waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing."), 56, 66);
-        auto& picture = Root().Add<TrayPicture>();
+        auto& picture = Root().Add<TrayPicture>(app.S().MiniIcon);
         picture.SetBounds(Pad, 132, W - 2 * Pad, 110);
+        D2D1_POINT_2F spot = picture.TrayIcon();
+        AppIcon(*this, Root(), 16).SetBounds(Pad + spot.x - 12, 132 + spot.y - 12, 24, 24);   // (tray icons are 16 units)
         auto& note = Text(L"Mini mode: a small icon that stays on top and shows the next break.", Fonts::Small(), Theme::Dim, Pad, 254, W - 2 * Pad, 40);
         note.wrap = note.top = true;
         Footer(L"Back", L"Next");

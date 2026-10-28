@@ -79,6 +79,8 @@ public:
     void SetText(std::wstring_view english);
     void SetGlyph(wchar_t glyph, float points = 10);
     void SetTint(int argb);   // 0: none; otherwise a dark wash of the colour with its edge and text (e.g. an update)
+    void SetSolid(int argb);  // 0: none; otherwise filled with the colour, its words white and bold (e.g. a brand's button)
+    float ContentWidth() const;   // the picture and words, without the room round them
 
     std::function<void()> onClick;
     std::function<void(Canvas&, const D2D1_RECT_F&)> icon;   // a picture before the text
@@ -95,8 +97,9 @@ private:
     std::wstring text;
     wchar_t glyph = 0;
     float glyphPoints = 10;
-    int tint = 0;
+    int tint = 0, solid = 0;
     bool down = false;
+    IDWriteTextFormat* Font() const;
 };
 
 // An on/off switch.

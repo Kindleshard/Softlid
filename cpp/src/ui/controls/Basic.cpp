@@ -133,6 +133,20 @@ void Button::SetTint(int argb)
     Invalidate();
 }
 
+void Button::SetSolid(int argb)
+{
+    solid = argb;
+    Invalidate();
+}
+
+IDWriteTextFormat* Button::Font() const { return solid ? Fonts::Get(10, gfx::Weight::Semibold) : Fonts::Body(); }
+
+float Button::ContentWidth() const
+{
+    float tw = text.empty() ? 0 : TextWidth(text, Font());
+    return icon ? iconSize + (text.empty() ? 0 : H() / 4) + tw : tw;
+}
+
 void Button::Paint(Canvas& c)
 {
     D2D1_RECT_F r{0.5f, 0.5f, W() - 1, H() - 1};
@@ -143,6 +157,12 @@ void Button::Paint(Canvas& c)
         fill = Mix(fill, tint, (down ? 40 : hover ? 70 : 52) / 255.0f);
         edge = ink = tint;
     }
+    if (solid) {
+        // Filled (e.g. Ko-fi's blue): lighter under the pointer, darker pressed; white words.
+        fill = down ? Mix(solid, Palette::Argb(0, 0, 0), 0.18f) : hover ? Mix(solid, Palette::Argb(255, 255, 255), 0.14f) : solid;
+        edge = Focused() ? Theme::Fg : fill;
+        ink = Palette::Argb(255, 255, 255);
+    }
     float radius = Height(r) / 2;
     c.FillRound(r, radius, fill);
     c.OutlineRound(r, radius, edge);
@@ -151,14 +171,13 @@ void Button::Paint(Canvas& c)
         return;
     }
     if (!icon) {
-        c.Text(text, Fonts::Body(), {0, 0, W(), H()}, ink, HAlign::Center);
+        c.Text(text, Font(), {0, 0, W(), H()}, ink, HAlign::Center);
         return;
     }
     // A picture and words, centred together.
-    float tw = text.empty() ? 0 : TextWidth(text, Fonts::Body()), space = text.empty() ? 0 : H() / 4;
-    float x = (W() - iconSize - space - tw) / 2;
+    float x = (W() - ContentWidth()) / 2;
     icon(c, Rect(x, (H() - iconSize) / 2, iconSize, iconSize));
-    if (!text.empty()) c.Text(text, Fonts::Body(), {x + iconSize + space, 0, W(), H()}, ink);
+    if (!text.empty()) c.Text(text, Font(), {x + iconSize + H() / 4, 0, W(), H()}, ink);
 }
 
 void Button::MouseDown(D2D1_POINT_2F)
