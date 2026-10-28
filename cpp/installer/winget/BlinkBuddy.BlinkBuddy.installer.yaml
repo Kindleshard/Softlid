@@ -1,7 +1,7 @@
 # winget: how to install BlinkBuddy (the NSIS installers from the GitHub release). For a new version: the version
 # numbers, the URLs and each installer's SHA-256 (release.ps1 prints them); check it with
 # winget validate --manifest cpp\installer\winget
-# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.12.0.schema.json
 PackageIdentifier: BlinkBuddy.BlinkBuddy
 PackageVersion: 1.0.0
 InstallerType: nullsoft
@@ -29,4 +29,4 @@ Installers:
     InstallerUrl: https://github.com/Kindleshard/BlinkBuddy/releases/download/v1.0.0/BlinkBuddy-1.0.0-arm64-setup.exe
     InstallerSha256: BE57B6FC9B8AF6F62E2BC0C5615CBF2DCCB4A6DD52A96B5A954568FB15F2C782
 ManifestType: installer
-ManifestVersion: 1.6.0
+ManifestVersion: 1.12.0
