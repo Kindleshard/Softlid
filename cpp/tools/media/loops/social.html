@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- The picture GitHub shows when the repository is shared (Settings > Social preview, 1280x640): one still, rendered
+     with node render.mjs social --at 0 and copied to docs\media\social-preview.png. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../loop.css">
+<script src="../motion.js"></script>
+<style>
+  html, body { width: 1280px; height: 640px; }
+  .brand { left: 72px; top: 92px; font-size: 64px; font-weight: 700; gap: 22px; letter-spacing: -0.5px; }
+  .brand img { width: 96px; height: 96px; }
+  .tag { position: absolute; left: 76px; top: 230px; width: 560px; font: 600 30px/1.3 "Segoe UI Variable Display", "Segoe UI", sans-serif; color: #e9eef9; }
+  .chips { position: absolute; left: 76px; top: 336px; width: 560px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .chips span { padding: 9px 16px; border-radius: 20px; font: 600 18px "Segoe UI", sans-serif; color: #dff3ff;
+    background: rgba(76, 194, 255, .14); border: 1px solid rgba(76, 194, 255, .45); }
+  .meta { position: absolute; left: 76px; top: 498px; font: 500 20px "Segoe UI", sans-serif; color: var(--dim); }
+  .stage { left: 690px; top: 128px; width: 540px; height: 338px; }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="glow" style="background:#2b6cff; left:760px; top:-220px; opacity:.38"></div>
+<div class="glow" style="background:#40d6c4; left:-260px; top:340px; opacity:.2"></div>
+<div class="brand"><img src="../icon.png" alt="">BlinkBuddy</div>
+<div class="tag">Gentle eye care that lives in your Windows tray.</div>
+<div class="chips"><span>Blink reminders</span><span>Guided eye breaks</span><span>Stretch coach</span><span>Screen filter</span><span>Reading strip</span><span>Focus timer</span></div>
+<div class="meta">Free and open source · 21 languages · about 3 MB of memory</div>
+<div class="stage"><div class="screen"><div class="view" id="view"><div class="sheen"></div></div></div></div>
+<script>
+window.LOOP = { width: 1280, height: 640, seconds: 0.1, footage: [{ name: 'exercises', to: 17.5 }] };
+const footage = new Footage(document.getElementById('view'));
+// The liquid eye midway round its circle, its trail behind it.
+window.seek = async () => footage.show(0, [{ name: 'exercises', from: 15.2, to: 15.2, at: 0, until: 1, zoom: 1.12 }]);
+</script>
+</body>
+</html>

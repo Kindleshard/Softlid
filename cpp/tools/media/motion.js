@@ -76,3 +76,8 @@ class Words {
         });
     }
 }
+
+// ?clean (render.mjs --clean): the loop without its words (see loop.css).
+document.addEventListener('DOMContentLoaded', () => {
+    if (new URLSearchParams(location.search).has('clean')) document.body.classList.add('clean');
+});

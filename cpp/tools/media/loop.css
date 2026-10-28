@@ -27,3 +27,7 @@ body { font-family: "Segoe UI Variable Display", "Segoe UI", sans-serif; color: 
 .dots { position: absolute; left: 44px; bottom: 40px; display: flex; gap: 8px; }
 .dots i { width: 26px; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .15); overflow: hidden; position: relative; }
 .dots i b { position: absolute; inset: 0; background: var(--accent); transform-origin: left; }
+/* Clean (render.mjs --clean): just the app on its screen, for the README's grid, where the words sit beside it. */
+body.clean .caption, body.clean .brand, body.clean .dots { display: none; }
+body.clean .stage { left: 70px; top: 42px; width: 820px; height: 513px; }
+body.clean .screen { transform: rotateY(-7deg) rotateX(3deg); }

@@ -1,157 +1,134 @@
-<p align="center"><img src="docs/media/icon.png" width="88" alt=""></p>
+<p align="center"><img src="docs/media/icon.png" width="96" alt=""></p>
 
 <h1 align="center">BlinkBuddy</h1>
 
 <p align="center"><b>Gentle eye care that lives in your Windows tray.</b><br>
-Blink reminders, breaks your eyes can follow, a warmer and dimmer screen at night, and a strip to read by.<br>
-Free, in 21 languages, and light: about 3 MB of memory while it waits.</p>
+Blink reminders, breaks your eyes can follow, a warmer screen at night and a strip to read by.</p>
 
-<p align="center"><img src="docs/media/breaks.webp" width="760" alt="A break: the screen dims, a liquid blue eye leads the eyes side to side and round in a circle, then a glowing stick figure reaches both arms up."></p>
+<p align="center">
+  <a href="https://github.com/Kindleshard/BlinkBuddy/releases/latest"><img src="https://img.shields.io/github/v/release/Kindleshard/BlinkBuddy?label=version&color=4cc2ff" alt="Latest version"></a>
+  <a href="https://github.com/Kindleshard/BlinkBuddy/releases"><img src="https://img.shields.io/github/downloads/Kindleshard/BlinkBuddy/total?color=40d6c4" alt="Downloads"></a>
+  <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078d4" alt="Windows 10 and 11">
+  <img src="https://img.shields.io/badge/languages-21-b096ff" alt="21 languages">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/Kindleshard/BlinkBuddy?color=f0c846" alt="MIT license"></a>
+</p>
 
-## A closer look
+<p align="center">
+  <a href="https://github.com/Kindleshard/BlinkBuddy/releases/latest"><img src="https://img.shields.io/badge/Download_for_Windows-free-4cc2ff?style=for-the-badge" alt="Download for Windows"></a>
+</p>
 
-**Blink reminders.** A little eye peeks out of the corner and blinks with you, or two soft eyelids sweep over the
-screen once.
+<p align="center"><img src="docs/media/breaks.webp" width="820" alt="A break: the screen dims, a liquid blue eye leads the eyes side to side and round in a circle, then a glowing stick figure reaches both arms up."></p>
 
-<img src="docs/media/blink.webp" width="760" alt="A small eye icon appears in the corner of the screen and blinks; then soft eyelids close over the whole screen and open again.">
+## Features
 
-**Screen filter.** Warmer light after sunset, brightness below what your display allows, and colour effects.
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/media/blink.webp" width="100%" alt="A small eye in the corner of the screen blinks; then soft eyelids close over the whole screen and open again.">
+      <h3>Blink reminders</h3>
+      A little eye peeks out of the corner and blinks with you, or two soft eyelids sweep over the screen once.
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/media/filter.webp" width="100%" alt="A desktop turns warm, then dimmer, then grayscale, sepia, e-ink and red night, beside BlinkBuddy's Screen filter settings.">
+      <h3>Screen filter</h3>
+      Warmer light after sunset, wherever you are. Dimmer than your display goes. Grayscale, sepia, e-ink and red night.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/media/strip.webp" width="100%" alt="A bright band across a page of text moves down line by line while the rest of the screen is dimmed.">
+      <h3>Reading strip</h3>
+      Everything but the line you're reading dims softly, and the strip follows you down the page.
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/media/mini.webp" width="100%" alt="A small eye over a picture opens a panel with brightness, blue light and the next break; then it counts down a focus session.">
+      <h3>Mini mode and focus timer</h3>
+      A small eye floats over your work: point at it for the essentials, or let it count down your focus time.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/media/settings.webp" width="100%" alt="BlinkBuddy's settings window switching between languages, then opening extra options in the Advanced view.">
+      <h3>21 languages, Simple or Advanced</h3>
+      Picked up from Windows, with every spoken step in your language. Calm by default, every detail when you want it.
+    </td>
+    <td width="50%" valign="top">
+      <h3>And also</h3>
+      <ul>
+        <li><b>Guided breaks</b> every 20 minutes and a <b>stretch coach</b> every hour, read aloud if you like</li>
+        <li><b>Tone</b> that calms bright areas and keeps dark details readable</li>
+        <li><b>Modes</b> for reading, movies or editing, and a mode per app that switches by itself</li>
+        <li>The display's <b>real backlight</b>, film grain, keyboard shortcuts, keeping the PC awake</li>
+        <li><b>Keyboard and Narrator</b> friendly, with dark title bars and menus</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-<img src="docs/media/filter.webp" width="760" alt="A desktop turns warm, then dimmer, then grayscale, sepia, e-ink and red night, beside BlinkBuddy's Screen filter settings.">
+## Light by design
 
-**Reading strip.** Everything but the line you're reading dims, and the strip follows you down the page.
+- **About 3 MB of memory** while it waits in the tray, and a 1.4 MB program.
+- **No administrator rights** to install or run, and **nothing else to install**: no .NET, no runtime.
+- **Works offline.** No account, no ads, no analytics. See [privacy](PRIVACY.md).
+- **Native on Arm PCs** too (Snapdragon laptops), with an ARM64 build of every download.
 
-<img src="docs/media/strip.webp" width="760" alt="A bright band across a page of text moves down line by line while the rest of the screen is dimmed.">
+## Install
 
-**Mini mode and the focus timer.** A small eye floats over your work: point at it for the essentials, or let it count
-down your focus time.
+1. Download **`BlinkBuddy-<version>-setup.exe`** from the [latest release](https://github.com/Kindleshard/BlinkBuddy/releases/latest)
+   (on an Arm PC, the `-arm64-setup.exe`).
+2. Run it, and choose whether the spoken steps come in just your language (about 2 MB installed in all) or all 21.
+3. BlinkBuddy starts in the tray, by the clock, with a short tour the first time.
 
-<img src="docs/media/mini.webp" width="760" alt="A small eye icon over a picture opens a panel with brightness, blue light and the next break; then it shows a focus timer counting down.">
+Prefer no installer? The `-portable.zip` runs from any folder. BlinkBuddy needs Windows 10 or 11, 64-bit.
 
-**Your language, your level of detail.** 21 languages, and a Simple view that grows into an Advanced one.
+> **"Windows protected your PC"?** BlinkBuddy isn't code-signed yet, so Windows SmartScreen doesn't know it. Click
+> **More info**, then **Run anyway**. Each release lists the checksums of its files.
 
-<img src="docs/media/settings.webp" width="760" alt="BlinkBuddy's settings window switching between languages, then opening extra options in the Advanced view.">
+## FAQ
 
-The loops are made from the real app by the scripts in [cpp/tools/media](cpp/tools/media).
+<details>
+<summary><b>Is it really free?</b></summary>
 
-## Everything it does
+Yes, and open source under the MIT license. If it helps you, you can
+[buy it a coffee on Ko-fi](https://ko-fi.com/P2Z229LS9G).
+</details>
 
-- **Blink reminders**: a small eye that blinks with you, or soft eyelids across the screen.
-- **Breaks**: look-away breaks every 20 minutes and stand-up breaks every hour. A break can be a simple card, guided
-  eye exercises with a liquid eye to follow, or a stretch coach. The steps can be spoken.
-- **Screen filter**: brightness below what the display allows, a blue light filter that follows sunset and sunrise
-  where you are, colour effects (grayscale, sepia, e-ink, red night), invert, and the display's real backlight over
-  DDC/CI.
-- **Tone**: calms bright areas and deepens darks. The Standard engine works everywhere; the experimental engines are
-  Smart (GPU), Smart layer and DesktopLUT. A visibility guard keeps dark details readable, and a test lab compares
-  them all.
-- **Modes and app rules**: one-click modes (Reading, Movie, Editing, ...), and a mode per app that switches when that
-  app comes to the front.
-- **Extras**: a reading strip that dims everything but the line you read, a focus timer, film grain, mini mode (a
-  small icon that stays on top), keyboard shortcuts, and keeping the PC awake.
-- **21 languages**, a Simple and an Advanced view, and dark title bars and menus.
+<details>
+<summary><b>Does it work with Windows Night light?</b></summary>
 
-Settings are kept in `%AppData%\BlinkBuddy\settings.ini`.
+Yes. BlinkBuddy can follow Night light's schedule (**Sync with Windows Night light**), or keep its own: sunset to
+sunrise where you are, or hours you choose.
+</details>
 
-## Getting it
+<details>
+<summary><b>Will it slow my PC down?</b></summary>
 
-Download it from the [latest release](https://github.com/Kindleshard/BlinkBuddy/releases/latest), or build it
-yourself (below).
+No. Waiting in the tray it uses about 3 MB of memory and next to no processor time, and Options > Resource use shows
+exactly what it uses right now.
+</details>
 
-- **Installer** (`BlinkBuddy-<version>-setup.exe`): installs for your user only, with no administrator rights, into
-  `%LocalAppData%\Programs\BlinkBuddy`. It asks whether the spoken steps should come in just your language (about
-  2 MB installed in all) or all 21, adds a Start menu entry and can start BlinkBuddy when you sign in. Unattended,
-  `/S /VOICES=all` or `/S /VOICES=tr` chooses. Uninstalling keeps your settings.
-- **Portable** (`BlinkBuddy-<version>-portable.zip`): unzip anywhere and run `BlinkBuddy.exe`. The `voice` folder
-  next to it holds the spoken break steps; without it, Windows' own voice reads them.
+<details>
+<summary><b>How do I update or uninstall it?</b></summary>
 
-It needs Windows 10 or 11, 64-bit. There is nothing else to install: the C runtime is built into the exe. For ARM64
-PCs (Snapdragon and other Arm laptops) each download has an `-arm64` twin, built for them; the regular one runs there
-too, through Windows' emulation.
+Options > Updates checks for new versions and installs them in place. To uninstall, use Windows Settings > Apps >
+Installed apps > BlinkBuddy. Your settings stay in `%AppData%\BlinkBuddy`, in case you come back.
+</details>
 
-## Building
+<details>
+<summary><b>Something isn't working</b></summary>
 
-BlinkBuddy is written in C++ and Direct2D, in `cpp/`. (It began in C#, .NET Framework 4.8; that version, which the
-rewrite was checked against, is in the history up to commit acdbee3.)
+Options > Help and support > **Report a bug** opens a form here with your version and Windows filled in. Or
+[open an issue](https://github.com/Kindleshard/BlinkBuddy/issues/new/choose) directly.
+</details>
 
-You need Visual Studio 2022 or its Build Tools, with the "Desktop development with C++" workload.
+## Support
 
-```bash
-powershell -ExecutionPolicy Bypass -File cpp/build.ps1
-```
+<a href="https://ko-fi.com/P2Z229LS9G"><img src="https://img.shields.io/badge/Support_on_Ko--fi-29abe0?style=for-the-badge" alt="Support on Ko-fi"></a>
 
-`build.ps1` puts `BlinkBuddy.exe` and its `voice` folder in `cpp/bin/`. It also builds and runs the tests (`cpp/tests`: the core logic, the tone pipeline's decisions, settings, shortcuts and the Night light reader); a failing test stops the build. `build.ps1 -Arch arm64` builds for ARM64 PCs into `cpp/bin-arm64/` (with Visual Studio's ARM64 tools, "MSVC ARM64 build tools"; on an x64 PC its tests are built but can't run).
-
-To check that a change leaves the settings window looking exactly as before, `cpp/tools/ui-check.ps1 -Update` saves a
-baseline of every view (each tab, scrolled through to its end) and `cpp/tools/ui-check.ps1` compares against it, pixel by
-pixel. It runs a diagnostic copy (`--offscreen --settings <file>`) beside a running BlinkBuddy, with settings of its
-own, so nothing of yours is touched.
-
-```bash
-powershell -ExecutionPolicy Bypass -File cpp/release.ps1
-```
-
-`release.ps1` makes a release in `cpp/dist/`, for x64 and (with the ARM64 tools) ARM64: the exe on its own, the portable zip and, if
-[NSIS 3](https://nsis.sourceforge.io) is installed (or unzipped into `C:\Tools\nsis`), the installer from
-`cpp/installer/BlinkBuddy.nsi`. Nothing is uploaded.
-
-The version number lives in `cpp/res/BuildVersion.h`. Two constants in `cpp/src/core/Version.h` turn on the parts
-that need somewhere to point:
-
-- `ReleaseRepo` (`owner/name` on GitHub): **Options > Check for updates** and the weekly check look at that repo's
-  latest release. A newer `BlinkBuddy.exe` attached to it is downloaded, swapped in and restarted. Until it is set,
-  the Options page says there is no release channel.
-- `DonateUrl`: shows a **Support...** button on the Options page.
-
-Diagnostics:
-
-- `--offscreen` opens the settings off the screen, for screenshots; with `--no-screen` that copy leaves the screen
-  filter and tone off the screen, and with `--tray` it starts quietly (mini mode shows, if it's on).
-- `--ui-gallery` shows every control (debug builds only: `build.ps1 -Debug`).
-- `--preview-break`, `--preview-exercises`, `--preview-stretch` and `--preview-blink` show those once; `--settings
-  <file>` gives them settings of their own.
-
-The README's loops are made in `cpp/tools/media` (Chrome and ffmpeg needed): `record.ps1` films BlinkBuddy over a
-staged desktop, `shot.ps1` captures its settings window off the screen, and `node render.mjs <loop>` renders a loop
-from `loops/<loop>.html` into `docs/media/<loop>.webp`.
-
-## What it connects to
-
-- GitHub, only for the update check: while automatic checks are on, once a week and when you open Options; or
-  when you click Check for updates.
-- GitHub, to download DesktopLUT, only when you choose "Download and set up".
-- Windows location, only for the sunset-to-sunrise schedule, a few times a day.
-
-Nothing else leaves the PC. The details are in [PRIVACY.md](PRIVACY.md).
-
-## Memory
-
-Measured on Windows 11 at 150% scaling. Private memory is what the app itself uses.
-
-| | Tray, idle | Settings open |
-|---|---|---|
-| C# version | 24.6 MB | — |
-| C++ version 1.0.0 | 2.9 MB | 10.2 MB |
-| C++, one shared drawing device | 1.9 MB | 13.1 MB |
-
-The last row is measured with the window on the monitor; the rows above it measured a window kept off the screen,
-which Windows hardly paints, so their "Settings open" figures are too low (the same build measured on the monitor:
-16.5 MB). Left alone for a few seconds, the open settings window gives its pages back to Windows: about 0.6 MB of
-its own in RAM; mini mode does the same once its icon is still (0.4 MB). When the settings close, the working set
-drops back to about 1 MB. Details for every step of the rewrite are in [cpp/docs/MEMORY.md](cpp/docs/MEMORY.md).
-
-## DesktopLUT
-
-The DesktopLUT tone engine uses [DesktopLUT](https://github.com/sup3rflyer/DesktopLUT), a separate free program
-that applies a colour table inside Windows. BlinkBuddy only starts, watches and stops it, with a small helper that
-runs as administrator. Every safeguard stops DesktopLUT and puts BlinkBuddy's own filter back:
-
-- a 15-second check after switching on (and after each Windows update)
-- a watchdog for crashes
-- the panic key **Ctrl+Alt+Shift+L**
+Found a bug or have an idea? [Open an issue](https://github.com/Kindleshard/BlinkBuddy/issues). Building it yourself,
+or curious how it works: [cpp/docs/BUILDING.md](cpp/docs/BUILDING.md).
 
 ## License
 
-BlinkBuddy is free and open source, under the [MIT License](LICENSE). The spoken steps were made with Chatterbox
-Multilingual (MIT) and, for Czech, Hungarian, Romanian and Ukrainian, Piper voices under their own licences: see
-[cpp/res/voice/CREDITS.txt](cpp/res/voice/CREDITS.txt).
+[MIT](LICENSE). The spoken steps were made with Chatterbox Multilingual (MIT) and, for Czech, Hungarian, Romanian and
+Ukrainian, Piper voices under their own licenses; see [credits](cpp/res/voice/CREDITS.txt).

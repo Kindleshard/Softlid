@@ -11,6 +11,7 @@
   .desk { position: absolute; left: 0; top: 0; width: 1707px; height: 1067px; border: 0; transform-origin: 0 0;
     filter: url(#screenFilter); }
   .caption { width: 318px; }
+  body.clean .card { left: 104px; top: 298px; }
   .card { position: absolute; left: 404px; top: 336px; width: 262px; height: 240px; border-radius: 12px; overflow: hidden;
     box-shadow: 0 24px 60px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .08); background: #272729; z-index: 10; }
   .card img { position: absolute; left: 0; top: 0; width: 100%; }
@@ -120,7 +121,6 @@ function nearest(a, b, k) {
 }
 
 const desk = document.getElementById('desk');
-desk.style.transform = `scale(${534 / 1707})`;
 const matrix = document.getElementById('matrix');
 const cardA = document.getElementById('cardA'), cardB = document.getElementById('cardB'), ring = document.getElementById('ring');
 const cardSrc = name => `../../../build/media/ui/${name}.png`;
@@ -141,6 +141,7 @@ function caption(lines, t, a, b) {
 }
 
 window.seek = async t => {
+    desk.style.transform = `scale(${desk.parentElement.clientWidth / 1707})`;   // (the staged desktop fills the screen, either size)
     caption(captions[0], t, 0.15, 3.8);
     caption(captions[1], t, 3.95, 6.6);
     caption(captions[2], t, 6.75, 10.3);

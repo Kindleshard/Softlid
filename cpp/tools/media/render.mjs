@@ -1,5 +1,7 @@
 // Renders a loop (loops\<name>.html) frame by frame in headless Chrome and makes the README's animated WebP:
 //   node render.mjs breaks            -> docs\media\breaks.webp   (and a preview MP4 in cpp\build\media)
+//   node render.mjs breaks --at 2,7.5 -> just those moments, as cpp\build\media\peek\breaks-<t>.png
+//   node render.mjs blink --clean     -> without its words, at 720x450 (for the README's grid)
 // The page gives window.LOOP = {width, height, seconds} and window.seek(t), which draws the moment t (a promise).
 // Chrome is driven through its DevTools protocol over Node's own WebSocket: nothing to install.
 import { spawn, spawnSync } from 'node:child_process';
@@ -10,6 +12,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const cpp = resolve(here, '..', '..');
 const name = process.argv[2];
+const clean = process.argv.includes('--clean');
 if (!name) { console.error('node render.mjs <loop name>'); process.exit(2); }
 const fps = 30;
 const ffmpeg = process.env.FFMPEG || 'C:\\Tools\\ffmpeg\\ffmpeg.exe';
@@ -53,10 +56,10 @@ const evaluate = async expression => {
 
 await send('Page.enable');
 const loaded = new Promise(ok => { const old = socket.onmessage; socket.onmessage = e => { old(e); if (JSON.parse(e.data).method === 'Page.loadEventFired') ok(); }; });
-await send('Page.navigate', { url: pathToFileURL(join(here, 'loops', `${name}.html`)).href });
+await send('Page.navigate', { url: pathToFileURL(join(here, 'loops', `${name}.html`)).href + (clean ? '?clean' : '') });
 await loaded;
 const loop = await evaluate('document.fonts.ready.then(() => window.LOOP)');
-await send('Emulation.setDeviceMetricsOverride', { width: loop.width, height: loop.height, deviceScaleFactor: 1, mobile: false });
+await send('Emulation.setDeviceMetricsOverride', { width: loop.width, height: loop.height, deviceScaleFactor: clean ? 0.75 : 1, mobile: false });
 
 // The footage it uses, unpacked once from the recordings into 60 fps frames, 1280 px wide unless the loop asks for
 // more (to zoom in close); the loop picks the frames it needs.
