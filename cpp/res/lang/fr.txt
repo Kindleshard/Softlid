@@ -464,3 +464,15 @@ Levez-vous, étirez-vous et regardez au loin
 +5 min
 Passer la pause
 Redimensionner...
+Général
+La langue, et ce que fait la fermeture de cette fenêtre.
+À la fermeture
+Apparence
+Ce que montre cette fenêtre, sa taille et sa couleur.
+Système
+Comment BlinkBuddy s'intègre à Windows.
+Cercle du minuteur de concentration
+Mises à jour
+Cette version, et les plus récentes quand elles sortent.
+Réinitialiser
+Réduire

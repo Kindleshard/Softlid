@@ -464,3 +464,15 @@ Steh auf, streck dich und schau in die Ferne
 +5 Min.
 Pause überspringen
 Größe ändern...
+Allgemein
+Sprache, und was beim Schließen dieses Fensters passiert.
+Beim Schließen
+Darstellung
+Wie viel dieses Fenster zeigt, seine Größe und Farbe.
+System
+Wie sich BlinkBuddy in Windows einfügt.
+Kreis des Fokus-Timers
+Updates
+Diese Version und neuere, sobald es sie gibt.
+Zurücksetzen
+Minimieren

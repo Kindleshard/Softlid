@@ -464,3 +464,15 @@ Stand up, stretch, and look far away
 +5 min
 Skip rest
 Resize...
+General
+Language, and what closing this window does.
+When closed
+Appearance
+How much this window shows, its size and its color.
+System
+How BlinkBuddy fits in with Windows.
+Focus timer circle
+Updates
+This version, and newer ones when they come out.
+Reset
+Minimize

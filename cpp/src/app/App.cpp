@@ -20,6 +20,7 @@
 #include <commctrl.h>
 #include <wtsapi32.h>
 #include <memory>
+#include <utility>
 
 #pragma comment(lib, "wtsapi32.lib")
 
@@ -31,7 +32,7 @@ constexpr wchar_t WindowClass[] = L"BlinkBuddy.App";
 
 // Menu commands.
 enum : UINT {
-    CmdSettings = 1, CmdBreakNow, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit, CmdMiniResize,
+    CmdSettings = 1, CmdBreakNow, CmdPause30, CmdPause60, CmdPauseUntilResumed, CmdResume, CmdExit, CmdMiniResize, CmdMiniHide,
     CmdFilter, CmdStrip, CmdAwakeOff, CmdAwake1h, CmdAwake2h, CmdAwakeOn,
     CmdMode,   // CmdMode + mode, for each screen mode
 };
@@ -165,9 +166,9 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     case ProbedMessage:
         Probed(LOWORD(w), HIWORD(w), static_cast<int>(l));
         return 0;
-    case LeaveMiniMessage:
+    case LeaveMiniMessage:   // (wParam 1: minimized to the tray, so no settings window)
         mini.reset();
-        ShowSettings();
+        if (w == 0) ShowSettings();
         return 0;
     case ToneFailedMessage:   // (the engine says why in its status)
         ApplyScreen();
@@ -250,12 +251,19 @@ void App::OnTick()
         hourTick = 0;
         WeeklyUpdateCheck();
     }
-    if (card || Paused()) return;
+    if (Paused()) return;
+    // Breaks by priority: the focus timer's rest, then a stand-up break, then a look-away break. Time runs on under a
+    // lower one, so a higher one falling due takes over from it; nothing else comes during the rest.
     FocusTick();
-    if (card) return;
+    if (showing == Showing::FocusRest) return;
     bool fullscreen = settings.PauseInFullscreen && FullscreenAppRunning();
     // While the focus timer runs, it decides when to rest instead of the stand-up reminder; look-away breaks still come.
-    switch (reminders.Tick(IdleSeconds(), fullscreen, focusTimer.State() == Focus::Off)) {
+    Reminders::Due due = reminders.Tick(IdleSeconds(), fullscreen, focusTimer.State() == Focus::Off);
+    if (card) {
+        if (due == Reminders::Due::StandUp && showing == Showing::LookAway) StartBreak(true);
+        return;   // (anything else waits for the break to end)
+    }
+    switch (due) {
     case Reminders::Due::Blink: Blink(false); break;
     case Reminders::Due::LookAway: StartBreak(false); break;
     case Reminders::Due::StandUp: StartBreak(true); break;
@@ -277,7 +285,10 @@ void App::Blink(bool instant)
 
 void App::StartBreak(bool standUp)
 {
-    if (card) return;
+    Showing kind = standUp ? Showing::StandUp : Showing::LookAway;
+    if (card && showing >= kind) return;   // (one as important or more shows already)
+    card.reset();                          // (a look-away break gives way to a stand-up break, which covers it)
+    showing = kind;
     MemJournal::Note(standUp ? L"stand-up break" : L"look-away break");
     // Eye exercises and the stretch coach take the whole screen; otherwise a small card counts down.
     if (!standUp && settings.Exercises) card = std::make_unique<GuidedBreak>(window, settings, WarmthNow());
@@ -288,10 +299,10 @@ void App::StartBreak(bool standUp)
 void App::BreakDone(bool standUp, int snoozeSeconds)
 {
     card.reset();
-    if (restCard) {
-        // The focus timer's rest is over (or snoozed): the next work period.
-        restCard = false;
+    if (std::exchange(showing, Showing::None) == Showing::FocusRest) {
+        // The focus timer's rest is over (or snoozed): the next work period. The rest was a look-away break too.
         focusTimer.RestOver(snoozeSeconds);
+        reminders.BreakFinished(false, 0);
     } else {
         reminders.BreakFinished(standUp, snoozeSeconds);
     }
@@ -377,6 +388,7 @@ void App::ShowMenu(bool fromMini)
     }
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
     if (fromMini && mini) AppendMenuW(menu, MF_STRING, CmdMiniResize, Lang::T(L"Resize...").c_str());   // (its size, on a slider)
+    if (fromMini && mini) AppendMenuW(menu, MF_STRING, CmdMiniHide, Lang::T(L"Minimize").c_str());   // (to the tray)
     AppendMenuW(menu, MF_STRING, CmdExit, Lang::T(L"Exit").c_str());
 
     // The window must be in front for the menu to close when you click elsewhere.
@@ -397,6 +409,9 @@ void App::ShowMenu(bool fromMini)
     case CmdExit: Exit(L"Exit in the tray menu"); break;
     case CmdMiniResize:
         if (mini) mini->ShowResizer();
+        break;
+    case CmdMiniHide:
+        if (mini) HideMini();
         break;
     case CmdFilter: ToggleFilter(); break;
     case CmdStrip: OnHotkey(Hotkeys::Strip); break;

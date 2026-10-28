@@ -24,5 +24,11 @@ inline constexpr int Glows[] = {
     0, Argb(64, 214, 196), Argb(150, 226, 120), Argb(255, 190, 90), Argb(255, 128, 170), Argb(232, 232, 240),
 };
 
+// Each screen mode's own soft colour (Pause, Health, Game, Movie, Office, Editing, Reading, Custom), for its icon.
+inline constexpr int ModeTints[] = {
+    Argb(170, 176, 190), Argb(244, 143, 177), Argb(179, 157, 250), Argb(255, 171, 145),
+    Argb(129, 199, 245), Argb(128, 222, 190), Argb(255, 213, 128), Argb(190, 196, 214),
+};
+
 } // namespace Palette
 } // namespace bb

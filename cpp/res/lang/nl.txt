@@ -464,3 +464,15 @@ Sta op, rek je uit en kijk in de verte
 +5 min
 Rust overslaan
 Formaat wijzigen...
+Algemeen
+De taal, en wat het sluiten van dit venster doet.
+Bij sluiten
+Uiterlijk
+Hoeveel dit venster laat zien, de grootte en de kleur.
+Systeem
+Hoe BlinkBuddy in Windows past.
+Cirkel van de focustimer
+Updates
+Deze versie, en nieuwere zodra ze uitkomen.
+Opnieuw instellen
+Minimaliseren

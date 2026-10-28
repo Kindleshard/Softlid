@@ -464,3 +464,15 @@ Következik: {0} perc fókusz
 +5 perc
 Pihenő kihagyása
 Átméretezés...
+Általános
+A nyelv, és hogy mi történik az ablak bezárásakor.
+Bezáráskor
+Megjelenés
+Mennyit mutat ez az ablak, a mérete és a színe.
+Rendszer
+Hogyan illeszkedik a BlinkBuddy a Windowsba.
+Fókuszidőzítő köre
+Frissítések
+Ez a verzió, és az újabbak, amikor megjelennek.
+Visszaállítás
+Kis méret

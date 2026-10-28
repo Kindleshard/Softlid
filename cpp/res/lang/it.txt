@@ -464,3 +464,15 @@ Alzati, fai stretching e guarda lontano
 +5 min
 Salta la pausa
 Ridimensiona...
+Generale
+La lingua e cosa fa la chiusura di questa finestra.
+Alla chiusura
+Aspetto
+Quanto mostra questa finestra, le sue dimensioni e il suo colore.
+Sistema
+Come BlinkBuddy si integra con Windows.
+Cerchio del timer di concentrazione
+Aggiornamenti
+Questa versione e quelle più nuove quando escono.
+Ripristina
+Riduci a icona

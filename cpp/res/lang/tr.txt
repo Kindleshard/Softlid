@@ -464,3 +464,15 @@ Kalkın, esneyin ve uzaklara bakın
 +5 dk
 Molayı atla
 Yeniden boyutlandır...
+Genel
+Dil ve bu pencere kapatıldığında ne olacağı.
+Kapatıldığında
+Arayüz
+Bu pencerenin ne kadarını gösterdiği, boyutu ve rengi.
+Sistem
+BlinkBuddy'nin Windows ile nasıl çalıştığı.
+Odak zamanlayıcı halkası
+Güncellemeler
+Bu sürüm ve çıktıklarında daha yenileri.
+Sıfırla
+Küçült

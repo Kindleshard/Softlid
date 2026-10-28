@@ -22,17 +22,22 @@ std::wstring Percent(int v) { return std::to_wstring(v) + L"%"; }
 void SettingsWindow::BuildFilter(Stack& st)
 {
     FeatureHead(st, FFilter, L"Ctrl+Alt+Shift with F: on/off · ↑ ↓: brightness · ← →: warmth");
-    // One-click modes, as a row of round icons; moving a slider makes it your own (Custom) again. Not Pause: the
-    // card's switch does that (the icons are modes 1 on, so icon i is mode i + 1).
-    Row& modeRow = st.Add(70);
+    // One-click modes, as one bar of segments (each its icon in its own soft colour, over its name); moving a slider
+    // makes it your own (Custom) again. Not Pause: the card's switch does that (the segments are modes 1 on, so
+    // segment i is mode i + 1).
     std::vector<std::wstring> glyphs, names;
+    std::vector<int> tints;
     for (int i = Modes::Health; i < Modes::Count; i++) {
         glyphs.push_back(Modes::Glyphs[i]);
         names.push_back(Modes::Names[i]);
+        tints.push_back(Palette::ModeTints[i]);
     }
+    float barH = ModeGrid::BarHeight();
+    Row& modeRow = st.Add(barH + 14);
     modeGrid = &modeRow.Add<ModeGrid>(glyphs, names);
-    modeGrid->iconsOnly = true;   // (a quiet row of icons; the chosen one's name under it)
-    modeGrid->SetBounds(24, 6, Edge - 24, 60);
+    modeGrid->bar = true;
+    modeGrid->tints = tints;
+    modeGrid->SetBounds(24, 6, Edge - 24, barH);
     modeGrid->SetSelected(std::max(-1, s.Mode - 1));
     modeGrid->onChange = [this](int chip) {
         app.ChooseMode(chip + 1);

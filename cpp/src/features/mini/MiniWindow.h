@@ -15,7 +15,7 @@ class MiniHost;
 // its circle is smooth on any background. Left alone, it fades to the opacity set in Options (after the delay and
 // over the time set there). Its rim fills as the next break comes closer; while the focus timer runs, the time left
 // takes the icon's place and the disc steps in for a second circle round it: one focus round, the work period then the
-// rest in green, with a highlight running along the work part.
+// rest paler, in the colour set in Options (green unless set), with a highlight running along the work part.
 class MiniWindow : public Window {
 public:
     // hidden: made, but not shown until Reveal (while the settings window folds into it: see MiniMorph)
@@ -33,8 +33,12 @@ private:
     void DrawLap(ID2D1RenderTarget* t, float cx, float cy, float r, float ring, float work, float rest);
     void DrawFlow(ID2D1RenderTarget* t, float cx, float cy, float r, float ring, float progress);
     void DrawBreath(ID2D1RenderTarget* t, float cx, float cy, float r, float ring);
+    void DrawMinimize(ID2D1RenderTarget* t, float k);       // the small Minimize button, as hovered (k: 0..1)
+    D2D1_ELLIPSE MinimizeSpot() const;                       // where it is (96-dpi units)
+    bool OnMinimize(LPARAM point) const;                     // a mouse message's point is on it (while it shows)
     float Progress() const;     // the rim's arc: the wait for the next look-away break (when shown), or -1
     float FocusDone() const;    // how far into the focus timer's work period while it runs, or -1
+    int FocusColor() const;     // the focus timer circle's colour (as set in Options; green unless set)
     bool FocusOn() const;
     bool Flowing() const;
     float RestDone() const;     // the focus timer's rest, while it shows: how far into it (0..1), or -1
@@ -65,6 +69,7 @@ private:
     int px = 84;                            // the window's side in pixels
     POINT pos{};
     bool lit = false, pressed = false, dragged = false, animating = false, fading = false;
+    bool minimizeHot = false, minimizePressed = false;   // the pointer on the Minimize button; pressed on it
     POINT grab{};
     ULONGLONG idleSince = 0, lastAnim = 0, nextBreath = 0, breathStart = 0;
     double shown = 255, awake = 0;

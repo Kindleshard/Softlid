@@ -80,9 +80,12 @@ private:
 class ModeGrid : public Choice {
 public:
     ModeGrid(std::vector<std::wstring> glyphs, std::vector<std::wstring> englishNames);
-    // Round icons in one row instead of named chips, with the name of the chosen one (or the one under the pointer)
-    // under it.
-    bool iconsOnly = false;
+    // One bar split into segments instead of chips, each an icon over its name with roomy padding (a segment as wide
+    // as its name needs, the room left shared out). tints: a soft colour for each icon (the chosen one's segment is
+    // washed in it), or none for the accent.
+    bool bar = false;
+    std::vector<int> tints;
+    static float BarHeight();   // the bar's height
     void Paint(Canvas& canvas) override;
     void MouseMove(D2D1_POINT_2F p, bool) override;
     void MouseLeave() override;

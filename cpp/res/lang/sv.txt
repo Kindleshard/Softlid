@@ -464,3 +464,15 @@ Res dig, sträck på dig och titta långt bort
 +5 min
 Hoppa över vilan
 Ändra storlek...
+Allmänt
+Språket, och vad som händer när du stänger fönstret.
+Vid stängning
+Utseende
+Hur mycket fönstret visar, dess storlek och färg.
+System
+Hur BlinkBuddy passar in i Windows.
+Fokustimerns cirkel
+Uppdateringar
+Den här versionen, och nyare när de kommer.
+Återställ
+Minimera

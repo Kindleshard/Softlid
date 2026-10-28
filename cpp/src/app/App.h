@@ -122,6 +122,7 @@ public:
     // Mini mode (AppExtras.cpp).
     void EnterMiniMode() override;
     void LeaveMiniMode() override;
+    void HideMini() override;
     void SaveMiniPosition(POINT at) override;
     void ShowMenu(bool fromMini) override;   // (also the tray icon's right-click)
 
@@ -205,7 +206,9 @@ private:
     // The focus timer.
     void FocusTick();
     FocusTimer focusTimer{settings};
-    bool restCard = false;             // the break card showing is the focus timer's rest
+    // The break showing, by priority: a higher one takes over from a lower one (which it covers); a lower one waits.
+    enum class Showing { None, LookAway, StandUp, FocusRest };
+    Showing showing = Showing::None;
 
     // The reading strip and mini mode.
     std::unique_ptr<ReadingStrip> strip;

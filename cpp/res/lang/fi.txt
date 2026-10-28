@@ -464,3 +464,15 @@ Nouse ylös, venyttele ja katso kauas
 +5 min
 Ohita lepo
 Muuta kokoa...
+Yleiset
+Kieli ja se, mitä tämän ikkunan sulkeminen tekee.
+Suljettaessa
+Ulkoasu
+Kuinka paljon ikkuna näyttää, sen koko ja väri.
+Järjestelmä
+Miten BlinkBuddy sopii Windowsiin.
+Keskittymisajastimen ympyrä
+Päivitykset
+Tämä versio ja uudemmat, kun niitä tulee.
+Palauta
+Pienennä

@@ -464,3 +464,15 @@ Levante-se, alongue-se e olhe para longe
 +5 min
 Pular descanso
 Redimensionar...
+Geral
+O idioma e o que fechar esta janela faz.
+Ao fechar
+Aparência
+Quanto esta janela mostra, seu tamanho e sua cor.
+Sistema
+Como o BlinkBuddy se integra ao Windows.
+Círculo do timer de foco
+Atualizações
+Esta versão e as mais novas quando saírem.
+Redefinir
+Minimizar

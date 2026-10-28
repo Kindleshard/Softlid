@@ -464,3 +464,15 @@ Rejs dig, stræk dig og kig langt væk
 +5 min
 Spring pausen over
 Tilpas størrelse...
+Generelt
+Sproget, og hvad der sker, når vinduet lukkes.
+Ved lukning
+Udseende
+Hvor meget vinduet viser, dets størrelse og farve.
+System
+Hvordan BlinkBuddy passer ind i Windows.
+Fokustimerens cirkel
+Opdateringer
+Denne version, og nyere når de kommer.
+Nulstil
+Minimer

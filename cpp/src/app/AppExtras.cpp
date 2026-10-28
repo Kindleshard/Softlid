@@ -17,18 +17,20 @@ std::wstring App::FocusText() const { return focusTimer.Text(); }
 
 bool App::FocusResting(float& progress, int& secondsLeft) const
 {
-    if (!restCard || !card) return false;
+    if (showing != Showing::FocusRest || !card) return false;
     auto* rest = static_cast<const FocusRest*>(card.get());   // (the focus timer's rest is always one)
     progress = rest->Progress();
     secondsLeft = rest->SecondsLeft();
     return true;
 }
 
-// Once a second while no break shows: at the end of a work period, the rest (a screen of its own).
+// Once a second (also while a look-away or stand-up break shows): at the end of a work period, the rest - a screen of
+// its own, before any other break.
 void App::FocusTick()
 {
-    if (card || !focusTimer.Tick()) return;
-    restCard = true;
+    if (showing == Showing::FocusRest || !focusTimer.Tick()) return;
+    card.reset();   // (a look-away or stand-up break showing gives way: the rest covers it)
+    showing = Showing::FocusRest;
     card = std::make_unique<FocusRest>(window, settings, focusTimer.Done());
 }
 
@@ -83,6 +85,15 @@ void App::LeaveMiniMode()
     settings.MiniMode = false;
     Changed();
     PostMessageW(window, LeaveMiniMessage, 0, 0);   // (not from inside the eye's own click: it goes away)
+}
+
+// Minimize (its hover button or its menu): the icon goes and BlinkBuddy carries on in the tray, whose icon opens the
+// settings again.
+void App::HideMini()
+{
+    settings.MiniMode = false;
+    Changed();
+    PostMessageW(window, LeaveMiniMessage, 1, 0);   // (1: no settings window after it)
 }
 
 void App::SaveMiniPosition(POINT at)

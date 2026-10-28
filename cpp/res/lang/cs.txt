@@ -464,3 +464,15 @@ Vstaňte, protáhněte se a podívejte se do dálky
 +5 min
 Přeskočit odpočinek
 Změnit velikost...
+Obecné
+Jazyk a co se stane po zavření tohoto okna.
+Při zavření
+Vzhled
+Kolik toto okno ukazuje, jeho velikost a barva.
+Systém
+Jak BlinkBuddy zapadá do Windows.
+Kruh časovače soustředění
+Aktualizace
+Tato verze a novější, až vyjdou.
+Obnovit
+Minimalizovat

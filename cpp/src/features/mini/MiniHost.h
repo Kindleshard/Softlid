@@ -29,6 +29,7 @@ public:
     virtual float LookAwayProgress() const = 0;       // the wait for the next look-away break alone (0..1); -1: none
 
     virtual void LeaveMiniMode() = 0;                 // and the settings open
+    virtual void HideMini() = 0;                      // Minimize: the icon goes, BlinkBuddy stays in the tray
     virtual void SaveMiniPosition(POINT at) = 0;
     // The tray icon's menu, at the pointer (Settings, pauses, Exit...); fromMini: with Resize, for the icon.
     virtual void ShowMenu(bool fromMini) = 0;

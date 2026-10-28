@@ -464,3 +464,15 @@ Wstań, rozciągnij się i popatrz w dal
 +5 min
 Pomiń odpoczynek
 Zmień rozmiar...
+Ogólne
+Język i to, co robi zamknięcie tego okna.
+Po zamknięciu
+Wygląd
+Ile pokazuje to okno, jego rozmiar i kolor.
+System
+Jak BlinkBuddy współpracuje z Windows.
+Okrąg minutnika skupienia
+Aktualizacje
+Ta wersja i nowsze, gdy się pojawią.
+Resetuj
+Minimalizuj

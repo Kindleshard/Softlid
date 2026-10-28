@@ -10,10 +10,12 @@
 #include "ui/Theme.h"
 #include "ui/controls/Basic.h"
 #include <shellapi.h>
+#include <windowsx.h>
 #include <algorithm>
 #include <cwchar>
 #include <cmath>
 #include <numbers>
+#include <utility>
 
 namespace bb {
 namespace {
@@ -25,7 +27,7 @@ constexpr UINT TrimDelay = 4000;   // still this long: its drawing memory goes b
 constexpr ULONGLONG NotIdle = ~0ull;
 constexpr double BreathSeconds = 3.6;  // one breath of the glow
 constexpr double FlowSeconds = 1.7;    // one run of the focus timer's highlight, splash included
-constexpr int RestGreen = Palette::Argb(95, 208, 138);   // the focus timer's rest, as on its own screen
+constexpr int FocusGreen = Palette::Argb(95, 208, 138);   // the focus timer's circle unless set otherwise (as its rest screen)
 
 // Diagnostics ("--offscreen ... --mini-shot <file>"): each frame of the icon is also saved to the file, for screenshots.
 const wchar_t* ShotFile()
@@ -355,6 +357,7 @@ bool MiniWindow::FocusOn() const { return app.FocusState() == Focus::Working || 
 bool MiniWindow::Flowing() const { return app.FocusState() == Focus::Working; }
 float MiniWindow::Progress() const { return app.S().MiniCountdown ? app.LookAwayProgress() : -1; }
 float MiniWindow::FocusDone() const { return FocusOn() ? app.BreakProgress() : -1; }   // (the work period, while it runs)
+int MiniWindow::FocusColor() const { return app.S().MiniFocusColor ? app.S().MiniFocusColor | 0xFF000000 : FocusGreen; }
 
 float MiniWindow::RestDone() const
 {
@@ -407,28 +410,59 @@ void MiniWindow::Draw()
     }
     if (lap) DrawLap(t, cx, cy, outer, ring, resting ? 1.0f : std::max(0.0f, drawnFocus), std::max(0.0f, drawnRest));
     else DrawBreath(t, cx, cy, r, ring);   // (the focus timer's flow takes the breath's place)
+    if (k > 0.01f) DrawMinimize(t, k);
     canvas.End();
     if (const wchar_t* shot = ShotFile()) canvas.Save(shot);   // (diagnostics)
     canvas.Present(hwnd, pos, static_cast<BYTE>(std::lround(shown)));
 }
 
-// The focus timer's round as a circle outside the disc: the work period, then the rest in green, one round to a lap.
-// Both show faintly; what has passed is bright (grey while paused), with the highlight running along the work part.
+// Minimize: a small round button at the top right, over the rim, fading in with the hover; a short line in it.
+D2D1_ELLIPSE MiniWindow::MinimizeSpot() const
+{
+    float br = size * 0.125f;
+    return {{size - br - 1, br + 1}, br, br};
+}
+
+void MiniWindow::DrawMinimize(ID2D1RenderTarget* t, float k)
+{
+    D2D1_ELLIPSE e = MinimizeSpot();
+    gfx::ComPtr<ID2D1SolidColorBrush> b;
+    t->CreateSolidColorBrush(gfx::Color(minimizeHot ? Palette::Argb(72, 76, 88) : Palette::Argb(46, 49, 56), k), b.GetAddressOf());
+    t->FillEllipse(e, b.Get());
+    b->SetColor(gfx::Color(Palette::Argb(110, 116, 128), 0.9f * k));
+    t->DrawEllipse(e, b.Get(), std::max(0.8f, size / 70));
+    b->SetColor(gfx::Color(minimizeHot ? Theme::Fg : Theme::Dim, k));
+    float w = e.radiusX * 0.42f;
+    t->DrawLine({e.point.x - w, e.point.y}, {e.point.x + w, e.point.y}, b.Get(), std::max(1.2f, size / 40), gfx::RoundCaps().Get());
+}
+
+bool MiniWindow::OnMinimize(LPARAM point) const
+{
+    if (awake < 0.3) return false;   // (not there until it has faded in)
+    D2D1_ELLIPSE e = MinimizeSpot();
+    float x = GET_X_LPARAM(point) / scale - e.point.x, y = GET_Y_LPARAM(point) / scale - e.point.y;
+    return x * x + y * y <= (e.radiusX + 2) * (e.radiusX + 2);
+}
+
+// The focus timer's round as a circle outside the disc: the work period, then the rest (paler), one round to a lap,
+// in the colour set in Options (green unless set). Both show faintly; what has passed is bright (grey while paused),
+// with the highlight running along the work part.
 void MiniWindow::DrawLap(ID2D1RenderTarget* t, float cx, float cy, float r, float ring, float work, float rest)
 {
     const Settings& s = app.S();
+    int color = FocusColor(), restColor = Mix(color, Palette::Argb(255, 255, 255), 0.55f);   // (the rest: paler)
     float lap = 360.0f * s.FocusWork / std::max(1, s.FocusWork + s.FocusRest), gapDeg = 4, width = ring * 1.15f;
     auto round = gfx::RoundCaps();
     gfx::ComPtr<ID2D1SolidColorBrush> b;
-    t->CreateSolidColorBrush(gfx::Color(Theme::Accent(), 0.28f), b.GetAddressOf());
+    t->CreateSolidColorBrush(gfx::Color(color, 0.28f), b.GetAddressOf());
     gfx::Arc(t, cx, cy, r, -90 + gapDeg / 2, lap - gapDeg, b.Get(), width, round.Get());
-    b->SetColor(gfx::Color(RestGreen, 0.28f));
+    b->SetColor(gfx::Color(restColor, 0.28f));
     gfx::Arc(t, cx, cy, r, -90 + lap + gapDeg / 2, 360 - lap - gapDeg, b.Get(), width, round.Get());
     bool paused = app.FocusState() == Focus::Paused;
-    b->SetColor(gfx::Color(paused ? Palette::Argb(107, 116, 128) : Theme::Accent(), 230 / 255.0f));
+    b->SetColor(gfx::Color(paused ? Palette::Argb(107, 116, 128) : color, 230 / 255.0f));
     gfx::Arc(t, cx, cy, r, -90 + gapDeg / 2, (lap - gapDeg) * work, b.Get(), width, round.Get());
     if (rest > 0) {
-        b->SetColor(gfx::Color(RestGreen, 230 / 255.0f));
+        b->SetColor(gfx::Color(restColor, 230 / 255.0f));
         gfx::Arc(t, cx, cy, r, -90 + lap + gapDeg / 2, (360 - lap - gapDeg) * rest, b.Get(), width, round.Get());
     }
     if (Flowing() && work > 0.002f) DrawFlow(t, cx, cy, r, ring, lap / 360 * work);
@@ -458,7 +492,7 @@ void MiniWindow::DrawFlow(ID2D1RenderTarget* t, float cx, float cy, float r, flo
     double now = GetTickCount64() / 1000.0;
     double phase = std::fmod(now, FlowSeconds) / FlowSeconds;
     float sweep = 360 * progress;
-    int glint = Mix(Theme::Accent(), Palette::Argb(255, 255, 255), 2 / 3.0f);
+    int glint = Mix(FocusColor(), Palette::Argb(255, 255, 255), 2 / 3.0f);
     auto round = gfx::RoundCaps();
     gfx::ComPtr<ID2D1SolidColorBrush> b;
     t->CreateSolidColorBrush(gfx::Color(glint), b.GetAddressOf());
@@ -703,8 +737,13 @@ LRESULT MiniWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
     case WM_MOUSEMOVE:
         if (!pressed) {
             Wake();
+            if (OnMinimize(l) != minimizeHot) {
+                minimizeHot = !minimizeHot;
+                Draw();
+            }
             return 0;
         }
+        if (minimizePressed) return 0;   // (a press on Minimize doesn't drag)
         {
             POINT now;
             GetCursorPos(&now);
@@ -723,6 +762,7 @@ LRESULT MiniWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
     case WM_LBUTTONDOWN:
         pressed = true;
         dragged = false;
+        minimizePressed = OnMinimize(l);
         GetCursorPos(&grab);
         SetCapture(hwnd);
         return 0;
@@ -730,8 +770,13 @@ LRESULT MiniWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
         if (!pressed) return 0;
         pressed = false;
         ReleaseCapture();
-        if (dragged) app.SaveMiniPosition(pos);
-        else app.LeaveMiniMode();   // a plain click on the icon opens the full settings
+        if (std::exchange(minimizePressed, false)) {
+            if (OnMinimize(l)) app.HideMini();   // Minimize: to the tray
+        } else if (dragged) {
+            app.SaveMiniPosition(pos);
+        } else {
+            app.LeaveMiniMode();   // a plain click on the icon opens the full settings
+        }
         return 0;
     case WM_CAPTURECHANGED:
         pressed = false;

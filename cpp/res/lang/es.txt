@@ -464,3 +464,15 @@ Levántate, estírate y mira a lo lejos
 +5 min
 Saltar descanso
 Cambiar tamaño...
+General
+El idioma y lo que hace cerrar esta ventana.
+Al cerrar
+Apariencia
+Cuánto muestra esta ventana, su tamaño y su color.
+Sistema
+Cómo encaja BlinkBuddy con Windows.
+Círculo del temporizador de concentración
+Actualizaciones
+Esta versión y las más nuevas cuando salgan.
+Restablecer
+Minimizar

@@ -23,6 +23,25 @@ int Blend(int a, int b, float k)
     return Palette::Argb(ch(16), ch(8), ch(0));
 }
 
+// The mode bar: its padding, the gap between segments, the room either side of a name, and its parts' heights.
+constexpr float BarPad = 4, BarGap = 3, NamePad = 8, IconTop = 10, IconH = 20, NameGap = 5, NameLine = 15, Bottom = 10;
+constexpr int BarFill = Palette::Argb(38, 40, 46), BarEdge = Palette::Argb(56, 59, 67);
+
+// Each segment as wide as its name with its padding (and never narrower than its icon needs), the room left over
+// shared out evenly, so a long name (a translation) takes some width from the short ones instead of being cut. When
+// even that can't fit them, all are equal and a name too long is cut short (its tip shows it whole).
+std::vector<float> SegmentWidths(const std::vector<std::wstring>& names, float width)
+{
+    float room = width - 2 * BarPad - (names.size() - 1) * BarGap, need = 0;
+    std::vector<float> widths;
+    for (const auto& n : names) {
+        widths.push_back(std::max(44.0f, TextWidth(n, Fonts::Small()) + 2 * NamePad));
+        need += widths.back();
+    }
+    for (float& w : widths) w = need <= room ? w + (room - need) / names.size() : room / names.size();
+    return widths;
+}
+
 } // namespace
 
 // ---- Choice ----
@@ -214,11 +233,11 @@ ModeGrid::ModeGrid(std::vector<std::wstring> glyphs, std::vector<std::wstring> e
 // height (a chip at most 34 high).
 D2D1_RECT_F ModeGrid::Tile(int i) const
 {
-    if (iconsOnly) {   // a group close together, centred with room either side; the names' line under them
-        float d = std::min(38.0f, H() - 22), gap = 12, n = static_cast<float>(names.size());
-        float left = std::max(0.0f, (W() - n * d - (n - 1) * gap) / 2);
-        float x = left + i * (d + gap);
-        return {x, 0, x + d, d};
+    if (bar) {   // equal segments inside the bar's padding
+        std::vector<float> widths = SegmentWidths(names, W());
+        float x = BarPad;
+        for (int k = 0; k < i; k++) x += widths[k] + BarGap;
+        return {x, BarPad, x + widths[i], H() - BarPad};
     }
     constexpr float gap = 8, pad = 12, space = 7;
     IDWriteTextFormat* glyphFont = Fonts::Glyphs(11);
@@ -250,22 +269,29 @@ int ModeGrid::IndexAt(D2D1_POINT_2F p) const
 
 void ModeGrid::Paint(Canvas& c)
 {
-    if (iconsOnly) {
-        IDWriteTextFormat* big = Fonts::Glyphs(12);
+    if (bar) {
+        // The bar, then each segment: its icon in its own soft colour (muted until chosen or pointed at), its name
+        // under it with room either side; the chosen one washed in its colour and edged with it.
+        D2D1_RECT_F all{0.5f, 0.5f, W() - 0.5f, H() - 0.5f};
+        c.FillRound(all, 10, BarFill);
+        c.OutlineRound(all, 10, BarEdge, 1);
+        IDWriteTextFormat* glyphFont = Fonts::Glyphs(13);
         for (int i = 0; i < static_cast<int>(names.size()); i++) {
             D2D1_RECT_F r = Tile(i);
-            bool on = i == selected;
-            float cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2;
-            c.FillCircle(cx, cy, Width(r) / 2, on ? Theme::Accent() : i == hoverIndex ? ChipHover : ChipFill);
-            c.Glyph(glyphs[i][0], big, r, on ? Palette::Argb(13, 42, 58) : i == hoverIndex ? Theme::Fg : Theme::Dim);
+            bool on = i == selected, over = i == hoverIndex;
+            int tint = i < static_cast<int>(tints.size()) ? tints[i] : Theme::Accent();
+            if (on) {
+                c.FillRound(r, 7, tint, 0.16f);
+                c.FillRound({r.left, r.top, r.right, r.top + Height(r) * 0.45f}, 7, tint, 0.08f);   // a soft light from above
+                c.OutlineRound(Inset(r, 0.5f, 0.5f), 7, tint, 1, 0.6f);
+            } else if (over) {
+                c.FillRound(r, 7, Palette::Argb(52, 55, 62));
+            }
+            float top = r.top + IconTop;
+            c.Glyph(glyphs[i][0], glyphFont, {r.left, top, r.right, top + IconH}, on || over ? tint : Blend(BarFill, tint, 0.72f));
+            D2D1_RECT_F name{r.left + NamePad, top + IconH + NameGap, r.right - NamePad, r.bottom - Bottom + 4};
+            c.Text(names[i], Fonts::Small(), name, on ? Theme::Fg : Theme::Dim, HAlign::Center, false, true);
         }
-        // The name: of the one under the pointer while it is there (dim, unless it is the chosen one), else the chosen.
-        int named = hoverIndex >= 0 ? hoverIndex : selected;
-        if (named < 0) return;
-        D2D1_RECT_F r = Tile(named);
-        float cx = (r.left + r.right) / 2, w = TextWidth(names[named], Fonts::Small()) + 4;
-        float x = std::clamp(cx - w / 2, 0.0f, std::max(0.0f, W() - w));
-        c.Text(names[named], Fonts::Small(), {x, r.bottom + 2, x + w, H()}, named == selected ? Theme::Accent() : Theme::Dim);
         return;
     }
     IDWriteTextFormat* glyphFont = Fonts::Glyphs(11);
@@ -286,11 +312,14 @@ void ModeGrid::Paint(Canvas& c)
 
 }
 
+float ModeGrid::BarHeight() { return 2 * BarPad + IconTop + IconH + NameGap + NameLine + Bottom; }
+
 void ModeGrid::MouseMove(D2D1_POINT_2F p, bool)
 {
     int i = IndexAt(p);
     if (i == hoverIndex) return;
     hoverIndex = i;
+    if (bar) tip = i >= 0 ? names[i] : L"";   // (the whole name, should a translation still be cut short)
     Invalidate();
 }
 

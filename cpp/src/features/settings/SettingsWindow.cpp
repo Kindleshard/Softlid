@@ -327,19 +327,40 @@ void SettingsWindow::Divider(Stack& st, Shown shown)
     st.Add(21, std::move(shown)).Add<ui::Divider>().SetBounds(24, 10, Edge - 24, 1);
 }
 
-void SettingsWindow::Note(Stack& st, std::wstring_view text, int lines, Shown shown)
+void SettingsWindow::Note(Stack& st, std::wstring_view text, int lines, Shown shown, float left)
 {
-    lines = std::max(lines, LinesFor(text, Fonts::Small(), Edge - 24));   // as many as the translation needs
+    lines = std::max(lines, LinesFor(text, Fonts::Small(), Edge - left));   // as many as the translation needs
     Row& r = st.Add(lines * 18.0f + 8, std::move(shown));
-    Label& l = AddLabel(r, text, Fonts::Small(), Theme::Dim, 24, 2, Edge - 24, lines * 18.0f + 4);
+    Label& l = AddLabel(r, text, Fonts::Small(), Theme::Dim, left, 2, Edge - left, lines * 18.0f + 4);
     l.wrap = true;
     l.top = true;
 }
 
-Toggle& SettingsWindow::ToggleRow(Stack& st, std::wstring_view text, bool value, std::function<void(bool)> changed, Shown shown)
+// A card's heading on the Options page: its icon (in the accent) and title, and a line about it (two when a
+// translation needs them).
+Row& SettingsWindow::CardHead(Stack& st, wchar_t icon, std::wstring_view title, std::wstring_view hint, Shown shown, float room)
+{
+    float w = Edge - 56 - room;
+    bool two = LinesFor(hint, Fonts::Small(), w) > 1;
+    Row& r = st.Add(two ? 80.0f : 62.0f, std::move(shown));
+    Title(r, icon, title);
+    Label& h = AddLabel(r, hint, Fonts::Small(), Theme::Dim, 56, 38, w, two ? 38.0f : 20.0f);
+    h.wrap = h.top = two;
+    return r;
+}
+
+void SettingsWindow::RowIcon(Container& row, wchar_t icon, float y)
+{
+    row.Add<Icon>(icon, 11.0f, Theme::Dim).SetBounds(22, y, 24, 24);
+}
+
+Toggle& SettingsWindow::ToggleRow(Stack& st, std::wstring_view text, bool value, std::function<void(bool)> changed, Shown shown,
+                                  wchar_t icon)
 {
     Row& r = st.Add(34, std::move(shown));
-    AddLabel(r, text, Fonts::Body(), Theme::Fg, 24, 4, 360, 26);
+    if (icon) RowIcon(r, icon, 5);
+    float x = icon ? RowText : 24;
+    AddLabel(r, text, Fonts::Body(), Theme::Fg, x, 4, Edge - 52 - x, 26);
     return AddToggle(r, Edge - 44, 6, value, [this, changed = std::move(changed)](bool v) {
         changed(v);
         RefreshSummaries();
@@ -355,10 +376,12 @@ Toggle& SettingsWindow::AddToggle(Container& parent, float x, float y, bool valu
 }
 
 Slider& SettingsWindow::SliderRow(Stack& st, std::wstring_view text, int min, int max, int value, int def,
-                                  std::function<std::wstring(int)> format, std::function<void(int)> changed, Shown shown)
+                                  std::function<std::wstring(int)> format, std::function<void(int)> changed, Shown shown,
+                                  wchar_t icon)
 {
     Row& r = st.Add(62, std::move(shown));
-    AddLabel(r, text, Fonts::Body(), Theme::Fg, 24, 4, 240, 22);
+    if (icon) RowIcon(r, icon, 3);
+    AddLabel(r, text, Fonts::Body(), Theme::Fg, icon ? RowText : 24, 4, icon ? 210.0f : 240.0f, 22);
     Label& shownValue = AddLabel(r, L"", Fonts::Body(), Theme::Dim, 264, 4, 140, 22);
     shownValue.SetText(format(value));
     shownValue.align = HAlign::Right;

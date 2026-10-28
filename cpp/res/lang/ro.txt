@@ -464,3 +464,15 @@ Ridică-te, întinde-te și privește în depărtare
 +5 min
 Sari peste pauză
 Redimensionează...
+General
+Limba și ce face închiderea acestei ferestre.
+La închidere
+Aspect
+Cât arată această fereastră, dimensiunea și culoarea ei.
+Sistem
+Cum se potrivește BlinkBuddy cu Windows.
+Cercul cronometrului de concentrare
+Actualizări
+Această versiune și cele mai noi când apar.
+Resetare
+Minimizează

@@ -58,11 +58,17 @@ private:
     void Title(ui::Container& row, wchar_t icon, std::wstring_view title, float indent = 0);
     Shown More(ui::Stack& st, const std::wstring& key, Shown shown = nullptr);
     void Divider(ui::Stack& st, Shown shown = nullptr);
-    void Note(ui::Stack& st, std::wstring_view text, int lines, Shown shown = nullptr);
-    ui::Toggle& ToggleRow(ui::Stack& st, std::wstring_view text, bool value, std::function<void(bool)> changed, Shown shown = nullptr);
+    void Note(ui::Stack& st, std::wstring_view text, int lines, Shown shown = nullptr, float left = 24);   // left: RowText under icons
+    // icon: a small one in front of the words (a row of Options), or none
+    ui::Toggle& ToggleRow(ui::Stack& st, std::wstring_view text, bool value, std::function<void(bool)> changed, Shown shown = nullptr,
+                          wchar_t icon = 0);
     ui::Toggle& AddToggle(ui::Container& parent, float x, float y, bool value, std::function<void(bool)> changed);
     ui::Slider& SliderRow(ui::Stack& st, std::wstring_view text, int min, int max, int value, int def,
-                          std::function<std::wstring(int)> format, std::function<void(int)> changed, Shown shown = nullptr);
+                          std::function<std::wstring(int)> format, std::function<void(int)> changed, Shown shown = nullptr, wchar_t icon = 0);
+    ui::Row& CardHead(ui::Stack& st, wchar_t icon, std::wstring_view title, std::wstring_view hint, Shown shown = nullptr,
+                      float room = 0);   // room: kept free at the right (for a button)
+    void RowIcon(ui::Container& row, wchar_t icon, float y);   // a row's small icon, in front of its words (at RowText)
+    static constexpr float RowText = 54;                         // where a row's words start after its icon
     ui::Button& AddButton(ui::Container& parent, std::wstring_view text, float x, float y, float w, float h);
     static Shown And(Shown a, Shown b) { return [a, b] { return a() && b(); }; }
     bool IsFolded(const std::wstring& key) const;
