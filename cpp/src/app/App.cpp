@@ -71,6 +71,7 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
             [this] { if (settingsWindow) settingsWindow->RefreshStatus(); },
         });
     if (!offscreen) screen->ClearLeftover();   // (a diagnostic copy beside the real one must not undo its curve)
+    if (offscreen && std::wcsstr(GetCommandLineW(), L"--no-screen")) screen->LeaveAlone();   // (diagnostics: see main.cpp)
     ApplyScreen();
     if (settings.HardwareBrightness) {
         probing = Probe::Refresh;

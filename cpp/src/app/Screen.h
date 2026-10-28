@@ -43,6 +43,7 @@ public:
     void Reset();          // after a display change or unlocking: everything set up again on the next Apply
     void Stop();           // every engine off, the screen plain
     void ClearLeftover() { tone.ClearLeftover(); }   // at start: a gamma curve a crash left behind (not in a diagnostic copy)
+    void LeaveAlone() { alone = true; }              // diagnostics (--no-screen): settings shown, nothing put on the screen
     void Tick();           // each second
     const Settings& Shown() const { return shown; }   // what the screen shows: the settings, or a rule's mode
 
@@ -120,6 +121,7 @@ private:
     std::wstring toneKey = L"off", lutKey;
     float colourGain = 1;              // overall dimming the colour filter applies right now
     bool effectShown = false;          // a colour effect is taking the blue light filter's place
+    bool alone = false;                // LeaveAlone
     int verifyTick = 0;
     std::optional<Settings> labSaved;
     bool labCompare = false;

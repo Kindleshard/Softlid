@@ -37,7 +37,7 @@ void Screen::Apply()
 {
     shown = Effective();   // your settings, or (while an app with a rule is in front) a copy with its mode applied
     const Settings& v = shown;
-    if (ScreenPlan::WantsLut(v, labCompare)) StartLut(v);
+    if (!alone && ScreenPlan::WantsLut(v, labCompare)) StartLut(v);
     ScreenPlan::Engines e = ScreenPlan::Choose(v, {labCompare, smart.Failed(), smartLayer.Failed(), lut.Failed(), filter.CanShowEffects()});
     if (!e.lut) lut.Stop();
     effectShown = e.effectShown;
@@ -46,11 +46,11 @@ void Screen::Apply()
     double white = comfort.White();
     VisibilityGuard::Result guard = ScreenPlan::Guard(v, e, white, labCompare);
     guardNote = ScreenPlan::GuardNote(guard, v.Brightness);
+    night = NightShown();
+    if (alone) return;
     ScreenPlan::Ramp ramp = ScreenPlan::RampFor(v, e, guard);
     ApplyRamp(ramp);
     ScreenPlan::Gains gains = ScreenPlan::FilterGains(e, ramp, tone.Prescale(), tone.Refused(), white);
-
-    night = NightShown();
     ApplyEngines(v, e, gains, ramp.bright);
 }
 

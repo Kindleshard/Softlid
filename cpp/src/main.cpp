@@ -22,14 +22,20 @@
 // tray, and it runs beside a BlinkBuddy that is already running). "--settings <file>" uses those settings instead.
 enum class Preview { Card, Exercises, Stretch, Rest };
 
-static int PreviewBreak(Preview kind)
+// "--settings <file>": the settings to use instead of the real ones (the previews, and the --offscreen copy).
+static void UseSettingsFromCommandLine()
 {
-    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     if (int count = 0; LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &count)) {
         for (int i = 1; i + 1 < count; i++)
             if (std::wcscmp(args[i], L"--settings") == 0) bb::Settings::UseFile(args[i + 1]);
         LocalFree(args);
     }
+}
+
+static int PreviewBreak(Preview kind)
+{
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    UseSettingsFromCommandLine();
     bb::Settings settings = bb::Settings::Load();
     bb::Lang::Use(settings.Language);
     bb::Theme::UseAccent(settings);
@@ -52,6 +58,7 @@ static int PreviewBreak(Preview kind)
 static int PreviewBlink()
 {
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    UseSettingsFromCommandLine();
     bb::Settings settings = bb::Settings::Load();
     bb::Theme::UseAccent(settings);
     bb::EyePopup eye;
@@ -123,7 +130,8 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
 
     // Diagnostics: "--offscreen" runs a copy beside the real one, for screenshots (tools/ui-check.ps1): no single-copy
     // lock, no tray icon, no shortcuts, and with "--settings <file>" a settings file of its own. Its Resource use section
-    // shows dashes, so screenshots stay the same; "--measure" makes it measure. "--memlog <file>" writes a line to the file
+    // shows dashes, so screenshots stay the same; "--measure" makes it measure; "--no-screen" keeps its screen filter and tone
+    // off the screen (the settings show them, the screen stays as the real copy has it). "--memlog <file>" writes a line to the file
     // whenever memory, threads or loaded libraries change (see MemJournal).
     bool offscreen = std::wcsstr(commandLine, L"--offscreen") != nullptr;
     std::wstring memlog;
