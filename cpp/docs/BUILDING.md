@@ -1,7 +1,7 @@
 # Building BlinkBuddy
 
 BlinkBuddy is written in C++ and Direct2D, in `cpp/`. (It began in C#, .NET Framework 4.8; that version, which the
-rewrite was checked against, is in the history up to commit acdbee3.)
+rewrite was checked against, is in the history up to commit b301d42.)
 
 ## Build
 
