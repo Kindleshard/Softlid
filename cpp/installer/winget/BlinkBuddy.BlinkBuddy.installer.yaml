@@ -9,10 +9,18 @@ Scope: user
 InstallModes:
   - interactive
   - silent
-InstallerSwitches:
-  Custom: /VOICES=all
+# (Unattended, the installer gives the spoken steps in the Windows language, the smallest install; an update keeps
+# whatever was chosen before.)
 UpgradeBehavior: install
 MinimumOSVersion: 10.0.17763.0
+# The uninstall entry the installer writes (HKCU\...\Uninstall\BlinkBuddy), so winget knows what's installed.
+ProductCode: BlinkBuddy
+AppsAndFeaturesEntries:
+  - DisplayName: BlinkBuddy
+    Publisher: BlinkBuddy
+    DisplayVersion: 1.0.0
+    ProductCode: BlinkBuddy
+ReleaseDate: 2026-10-28
 Installers:
   - Architecture: x64
     InstallerUrl: https://github.com/Kindleshard/BlinkBuddy/releases/download/v1.0.0/BlinkBuddy-1.0.0-setup.exe
