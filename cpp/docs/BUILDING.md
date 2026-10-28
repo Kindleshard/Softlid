@@ -32,6 +32,11 @@ portable zip and, if [NSIS 3](https://nsis.sourceforge.io) is installed (or unzi
 installer from `cpp/installer/BlinkBuddy.nsi`. It prints each installer's SHA-256 for the winget manifest in
 `cpp/installer/winget`. Nothing is uploaded.
 
+Official releases are built by GitHub Actions (`.github/workflows/release.yml`) with the same script, so the
+downloads can be traced to this source: pushing a tag such as `v1.0.1` builds everything on GitHub's Windows machines
+and makes a draft release with the files, to check and publish by hand. Actions > Release > Run workflow builds
+without releasing.
+
 The installer installs for the current user only, with no administrator rights, into
 `%LocalAppData%\Programs\BlinkBuddy`. It asks whether the spoken steps should come in just one language or all 21;
 unattended, `/S /VOICES=all` or `/S /VOICES=<code>` chooses, and an update keeps what was chosen before.

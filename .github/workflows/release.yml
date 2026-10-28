@@ -1,0 +1,50 @@
+# Builds BlinkBuddy from this repository on GitHub's own Windows machines, with cpp/release.ps1: x64 and ARM64, the
+# tests, the installers and the portable zips. So anyone can see that the downloads come from this source.
+#   Actions > Release > Run workflow   build only; the files are kept as the run's "BlinkBuddy" download
+#   git push origin v1.0.1             the same, then a draft release with the files, to check and publish by hand
+# Signing (SignPath Foundation) is added here once the project is approved: the files then go to SignPath, each
+# request is approved by hand there, and the signed files are what the release gets.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write   # (to make the draft release)
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: NSIS (for the installers)
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\NSIS\makensis.exe")) { choco install nsis --no-progress -y }
+
+      - name: Build, test and package (x64 and ARM64)
+        shell: pwsh
+        run: ./cpp/release.ps1
+
+      - name: Keep the files
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlinkBuddy
+          path: |
+            cpp/dist/*.exe
+            cpp/dist/*.zip
+          if-no-files-found: error
+
+      - name: Draft release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $files = Get-ChildItem cpp/dist -File | Where-Object { $_.Extension -in '.exe', '.zip' } | ForEach-Object FullName
+          $version = $env:GITHUB_REF_NAME.TrimStart('v')
+          gh release create $env:GITHUB_REF_NAME --draft --title "BlinkBuddy $version" @files `
+              --notes "Built by GitHub Actions from $env:GITHUB_SHA. Add the notes (CHANGELOG.md), check the files, then publish."
