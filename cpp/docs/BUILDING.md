@@ -56,7 +56,7 @@ that need somewhere to point:
 
 The loops and the link preview are made in `cpp/tools/media` (Chrome and ffmpeg needed): `record.ps1` films BlinkBuddy
 over a staged desktop, `shot.ps1` captures its settings window off the screen, and `node render.mjs <loop>` renders
-`loops/<loop>.html` into `docs/media/<loop>.webp` (`--clean` without its words, for the grid). The spoken steps are
+`loops/<loop>.html` into `docs/media/<loop>.avif` (`--clean` without its words, for the grid). The spoken steps are
 made by `cpp/tools/make-voices.py` (see its header).
 
 ## Memory

@@ -1,5 +1,5 @@
-// Renders a loop (loops\<name>.html) frame by frame in headless Chrome and makes the README's animated WebP:
-//   node render.mjs breaks            -> docs\media\breaks.webp   (and a preview MP4 in cpp\build\media)
+// Renders a loop (loops\<name>.html) frame by frame in headless Chrome and makes the README's animated AVIF:
+//   node render.mjs breaks            -> docs\media\breaks.avif   (and a preview MP4 in cpp\build\media)
 //   node render.mjs breaks --at 2,7.5 -> just those moments, as cpp\build\media\peek\breaks-<t>.png
 //   node render.mjs blink --clean     -> without its words, at 720x450 (for the README's grid)
 // The page gives window.LOOP = {width, height, seconds} and window.seek(t), which draws the moment t (a promise).
@@ -98,13 +98,15 @@ process.stdout.write(`\r${name}: ${count}/${count} frames\n`);
 socket.close();
 browser.kill();
 
-// The loop for the README (animated WebP), and an MP4 to look at it frame by frame.
+// The loop for the README, as an animated AVIF (AV1, 10-bit): a real video codec, so dark gradients stay smooth and
+// nothing of an earlier frame lingers (animated WebP left blocks and ghosts in the dark), at a sixth of the size.
+// And an MP4 to look at it frame by frame.
 const docs = join(cpp, '..', 'docs', 'media');
 mkdirSync(docs, { recursive: true });
 const input = ['-v', 'error', '-y', '-framerate', String(fps), '-i', join(frames, '%05d.png')];
-const webp = join(docs, `${name}.webp`);
-spawnSync(ffmpeg, [...input, '-c:v', 'libwebp_anim', '-lossless', '0', '-quality', String(loop.quality ?? 72),
-    '-compression_level', '6', '-loop', '0', webp], { stdio: 'inherit' });
+const avif = join(docs, `${name}.avif`);
+spawnSync(ffmpeg, [...input, '-c:v', 'libaom-av1', '-crf', String(loop.crf ?? 30), '-b:v', '0', '-cpu-used', '4', '-row-mt', '1',
+    '-pix_fmt', 'yuv420p10le', '-g', '150', '-loop', '0', avif], { stdio: 'inherit' });
 spawnSync(ffmpeg, [...input, '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p', join(work, `${name}.mp4`)], { stdio: 'inherit' });
-const { size } = await import('node:fs').then(fs => fs.statSync(webp));
-console.log(`${webp}  ${Math.round(size / 1024)} KB`);
+const { size } = await import('node:fs').then(fs => fs.statSync(avif));
+console.log(`${avif}  ${Math.round(size / 1024)} KB`);

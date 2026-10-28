@@ -17,38 +17,38 @@ Blink reminders, breaks your eyes can follow, a warmer screen at night and a str
   <a href="https://github.com/Kindleshard/BlinkBuddy/releases/latest"><img src="https://img.shields.io/badge/Download_for_Windows-free-4cc2ff?style=for-the-badge" alt="Download for Windows"></a>
 </p>
 
-<p align="center"><img src="docs/media/breaks.webp" width="820" alt="A break: the screen dims, a liquid blue eye leads the eyes side to side and round in a circle, then a glowing stick figure reaches both arms up."></p>
+<p align="center"><img src="docs/media/breaks.avif" width="820" alt="A break: the screen dims, a liquid blue eye leads the eyes side to side and round in a circle, then a glowing stick figure reaches both arms up."></p>
 
 ## Features
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <img src="docs/media/blink.webp" width="100%" alt="A small eye in the corner of the screen blinks; then soft eyelids close over the whole screen and open again.">
+      <img src="docs/media/blink.avif" width="100%" alt="A small eye in the corner of the screen blinks; then soft eyelids close over the whole screen and open again.">
       <h3>Blink reminders</h3>
       A little eye peeks out of the corner and blinks with you, or two soft eyelids sweep over the screen once.
     </td>
     <td width="50%" valign="top">
-      <img src="docs/media/filter.webp" width="100%" alt="A desktop turns warm, then dimmer, then grayscale, sepia, e-ink and red night, beside BlinkBuddy's Screen filter settings.">
+      <img src="docs/media/filter.avif" width="100%" alt="A desktop turns warm, then dimmer, then grayscale, sepia, e-ink and red night, beside BlinkBuddy's Screen filter settings.">
       <h3>Screen filter</h3>
       Warmer light after sunset, wherever you are. Dimmer than your display goes. Grayscale, sepia, e-ink and red night.
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <img src="docs/media/strip.webp" width="100%" alt="A bright band across a page of text moves down line by line while the rest of the screen is dimmed.">
+      <img src="docs/media/strip.avif" width="100%" alt="A bright band across a page of text moves down line by line while the rest of the screen is dimmed.">
       <h3>Reading strip</h3>
       Everything but the line you're reading dims softly, and the strip follows you down the page.
     </td>
     <td width="50%" valign="top">
-      <img src="docs/media/mini.webp" width="100%" alt="A small eye over a picture opens a panel with brightness, blue light and the next break; then it counts down a focus session.">
+      <img src="docs/media/mini.avif" width="100%" alt="A small eye over a picture opens a panel with brightness, blue light and the next break; then it counts down a focus session.">
       <h3>Mini mode and focus timer</h3>
       A small eye floats over your work: point at it for the essentials, or let it count down your focus time.
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <img src="docs/media/settings.webp" width="100%" alt="BlinkBuddy's settings window switching between languages, then opening extra options in the Advanced view.">
+      <img src="docs/media/settings.avif" width="100%" alt="BlinkBuddy's settings window switching between languages, then opening extra options in the Advanced view.">
       <h3>21 languages, Simple or Advanced</h3>
       Picked up from Windows, with every spoken step in your language. Calm by default, every detail when you want it.
     </td>
