@@ -55,7 +55,8 @@ Settings are kept in `%AppData%\BlinkBuddy\settings.ini`.
 
 ## Getting it
 
-Nothing is published yet. To get BlinkBuddy, build it yourself (below).
+Download it from the [latest release](https://github.com/Kindleshard/BlinkBuddy/releases/latest), or build it
+yourself (below).
 
 - **Installer** (`BlinkBuddy-<version>-setup.exe`): installs for your user only, with no administrator rights, into
   `%LocalAppData%\Programs\BlinkBuddy`. It asks whether the spoken steps should come in just your language (about
