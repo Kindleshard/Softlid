@@ -15,6 +15,13 @@
 namespace bb::Updater {
 namespace {
 
+// The release's download for this copy: each kind of processor has its own exe.
+#if defined(_M_ARM64)
+constexpr std::string_view Asset = "/BlinkBuddy-arm64.exe";
+#else
+constexpr std::string_view Asset = "/BlinkBuddy.exe";
+#endif
+
 void Post(HWND window, UINT message, Result r) { PostOwned(window, message, 0, std::move(r)); }
 
 Result Note(Result::Kind kind, std::wstring text)
@@ -121,7 +128,7 @@ void CheckNow(HWND window, UINT message)
     if (!Newer(latest, VersionParts)) return Post(window, message, Note(Result::Kind::UpToDate, Lang::T(L"You're up to date.")));
     Result r{Result::Kind::Newer};
     r.release.tag = FromUtf8(tag);
-    std::string exe = JsonFirst(text, "browser_download_url", [](std::string_view u) { return u.size() > 15 && u.ends_with("/BlinkBuddy.exe"); });
+    std::string exe = JsonFirst(text, "browser_download_url", [](std::string_view u) { return u.size() > Asset.size() && u.ends_with(Asset); });
     if (!exe.empty()) r.release.download = FromUtf8(exe);
     std::string page = JsonFirst(text, "html_url", [](std::string_view u) {
         size_t at = u.find("/releases/");

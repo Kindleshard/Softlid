@@ -18,11 +18,17 @@ target_compile_definitions(BlinkBuddy PRIVATE $<$<CONFIG:Debug>:BB_GALLERY>)
 # The translations are built into the exe compressed (a third of their size): LangPack packs them and writes lang.rc,
 # which app.rc includes, and a change to one of them must make both again.
 file(GLOB LANGUAGE_FILES CONFIGURE_DEPENDS res/lang/*.txt)
-add_executable(LangPack tools/LangPack.cpp)
+# (Built for ARM64 on an x64 PC, LangPack couldn't run here: build.ps1 passes the x64 build's copy as LANGPACK.)
+if(LANGPACK)
+    set(LANGPACK_RUN ${LANGPACK})
+else()
+    add_executable(LangPack tools/LangPack.cpp)
+    set(LANGPACK_RUN LangPack)
+endif()
 set(PACKED ${CMAKE_BINARY_DIR}/lang)
 add_custom_command(OUTPUT ${PACKED}/lang.rc
-    COMMAND LangPack ${CMAKE_SOURCE_DIR}/res/lang ${PACKED}
-    DEPENDS LangPack ${LANGUAGE_FILES})
+    COMMAND ${LANGPACK_RUN} ${CMAKE_SOURCE_DIR}/res/lang ${PACKED}
+    DEPENDS ${LANGPACK_RUN} ${LANGUAGE_FILES})
 add_custom_target(PackedLanguages DEPENDS ${PACKED}/lang.rc)
 add_dependencies(BlinkBuddy PackedLanguages)
 set_source_files_properties(res/app.rc PROPERTIES OBJECT_DEPENDS ${PACKED}/lang.rc)

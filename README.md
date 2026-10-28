@@ -64,7 +64,9 @@ Nothing is published yet. To get BlinkBuddy, build it yourself (below).
 - **Portable** (`BlinkBuddy-<version>-portable.zip`): unzip anywhere and run `BlinkBuddy.exe`. The `voice` folder
   next to it holds the spoken break steps; without it, Windows' own voice reads them.
 
-It needs Windows 10 or 11, 64-bit. There is nothing else to install: the C runtime is built into the exe.
+It needs Windows 10 or 11, 64-bit. There is nothing else to install: the C runtime is built into the exe. For ARM64
+PCs (Snapdragon and other Arm laptops) each download has an `-arm64` twin, built for them; the regular one runs there
+too, through Windows' emulation.
 
 ## Building
 
@@ -77,7 +79,7 @@ You need Visual Studio 2022 or its Build Tools, with the "Desktop development wi
 powershell -ExecutionPolicy Bypass -File cpp/build.ps1
 ```
 
-`build.ps1` puts `BlinkBuddy.exe` and its `voice` folder in `cpp/bin/`. It also builds and runs the tests (`cpp/tests`: the core logic, the tone pipeline's decisions, settings, shortcuts and the Night light reader); a failing test stops the build.
+`build.ps1` puts `BlinkBuddy.exe` and its `voice` folder in `cpp/bin/`. It also builds and runs the tests (`cpp/tests`: the core logic, the tone pipeline's decisions, settings, shortcuts and the Night light reader); a failing test stops the build. `build.ps1 -Arch arm64` builds for ARM64 PCs into `cpp/bin-arm64/` (with Visual Studio's ARM64 tools, "MSVC ARM64 build tools"; on an x64 PC its tests are built but can't run).
 
 To check that a change leaves the settings window looking exactly as before, `cpp/tools/ui-check.ps1 -Update` saves a
 baseline of every view (each tab, scrolled through to its end) and `cpp/tools/ui-check.ps1` compares against it, pixel by
@@ -88,7 +90,7 @@ own, so nothing of yours is touched.
 powershell -ExecutionPolicy Bypass -File cpp/release.ps1
 ```
 
-`release.ps1` makes a release in `cpp/dist/`: the exe on its own, the portable zip and, if
+`release.ps1` makes a release in `cpp/dist/`, for x64 and (with the ARM64 tools) ARM64: the exe on its own, the portable zip and, if
 [NSIS 3](https://nsis.sourceforge.io) is installed (or unzipped into `C:\Tools\nsis`), the installer from
 `cpp/installer/BlinkBuddy.nsi`. Nothing is uploaded.
 

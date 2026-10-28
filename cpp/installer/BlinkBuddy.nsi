@@ -1,6 +1,7 @@
 ; The BlinkBuddy installer (NSIS 3, chosen over Inno Setup for its size: its own part of the setup and the uninstaller
-; are each about 100 KB rather than megabytes). Built by release.ps1, which passes the version and the size of each
-; language's voice: /DVERSION=1.0.0 /DKB_en=310 /DKB_tr=330 ...
+; are each about 100 KB rather than megabytes). Built by release.ps1, which passes the version, the processor (x64, or
+; arm64 for the ARM64 build from bin-arm64) and the size of each language's voice:
+; /DVERSION=1.0.0 /DARCH=x64 /DKB_en=310 /DKB_tr=330 ...
 ; Installs for the current user only (no administrator rights), into %LocalAppData%\Programs\BlinkBuddy, which also
 ; lets the built-in updater replace the exe in place. Settings in %AppData%\BlinkBuddy are kept on uninstall.
 ; The voice comes in just one language (the Windows one, unless another is picked) or in all of them; unattended (/S),
@@ -15,11 +16,19 @@ SetCompressorDictSize 8
 !ifndef VERSION
   !define VERSION 0.0.0
 !endif
+!ifndef ARCH
+  !define ARCH x64
+!endif
+!if "${ARCH}" == "arm64"
+  !define SUFFIX "-arm64"
+!else
+  !define SUFFIX ""
+!endif
 !define UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\BlinkBuddy"
 !define RUN "Software\Microsoft\Windows\CurrentVersion\Run"
 
 Name "BlinkBuddy"
-OutFile "..\dist\BlinkBuddy-${VERSION}-setup.exe"
+OutFile "..\dist\BlinkBuddy-${VERSION}${SUFFIX}-setup.exe"
 InstallDir "$LOCALAPPDATA\Programs\BlinkBuddy"
 InstallDirRegKey HKCU "${UNINSTALL}" "InstallLocation"
 BrandingText " "
@@ -34,6 +43,7 @@ VIAddVersionKey "LegalCopyright" "MIT licence"
 !include MUI2.nsh
 !include nsDialogs.nsh
 !include LogicLib.nsh
+!include x64.nsh
 !include FileFunc.nsh
 !include WinMessages.nsh
 
@@ -128,6 +138,13 @@ FunctionEnd
 !macroend
 
 Function .onInit
+  !if "${ARCH}" == "arm64"
+    ; (The ARM64 build runs only on ARM64 Windows; the x64 one runs everywhere, ARM64 PCs included.)
+    ${IfNot} ${IsNativeARM64}
+      MessageBox MB_OK|MB_ICONSTOP "This is BlinkBuddy for ARM64 PCs. For this PC, use BlinkBuddy-${VERSION}-setup.exe." /SD IDOK
+      Quit
+    ${EndIf}
+  !endif
   Call CloseFirst
   Call RememberSize
   ; What was asked for (/VOICES=), else what was chosen last time, else the Windows language, else English.
@@ -242,7 +259,7 @@ FunctionEnd
 
 Section "-BlinkBuddy" SecMain   ; (always, so not listed)
   SetOutPath "$INSTDIR"
-  File "..\bin\BlinkBuddy.exe"
+  File "..\bin${SUFFIX}\BlinkBuddy.exe"
   Delete "$INSTDIR\voice\*.mp3"   ; (clips from before each language had a folder of its own)
   SetOutPath "$INSTDIR\voice"
   File "..\res\voice\CREDITS.txt"
