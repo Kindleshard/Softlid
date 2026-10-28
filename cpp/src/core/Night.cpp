@@ -66,10 +66,27 @@ double Mod(double a, double m) { return std::fmod(std::fmod(a, m) + m, m); }
 // "41.01, 28.98" (or "41.01 28.98"): coordinates, as Windows location writes them.
 bool ParseCoordinates(const std::wstring& text, double& lat, double& lon)
 {
-    wchar_t rest[2] = {};
-    std::wstring t = text;
-    for (wchar_t& c : t) if (c == L',' || c == L';') c = L' ';
-    return swscanf_s(t.c_str(), L"%lf %lf %1ls", &lat, &lon, rest, 2) == 2;
+    // Two plain decimals ("-23.55") and nothing after them, read by hand: the C runtime's readers (swscanf, wcstod)
+    // would add tens of KB to the exe for this one line.
+    const wchar_t* at = text.c_str();
+    auto skip = [&] { while (*at == L' ' || *at == L',' || *at == L';' || *at == L'\t') at++; };
+    for (double* v : {&lat, &lon}) {
+        skip();
+        double sign = *at == L'-' ? -1 : 1;
+        if (*at == L'-' || *at == L'+') at++;
+        double value = 0, scale = 1;
+        bool digits = false, point = false;
+        for (; (*at >= L'0' && *at <= L'9') || (*at == L'.' && !point); at++) {
+            if (*at == L'.') { point = true; continue; }
+            if (point) scale /= 10;
+            value = value * 10 + (*at - L'0');
+            digits = true;
+        }
+        if (!digits) return false;
+        *v = sign * value * scale;
+    }
+    skip();
+    return *at == 0;
 }
 
 const City* CityOfTimeZone(const std::wstring& zone)

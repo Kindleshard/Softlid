@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdio>
+#include <cwchar>
 #include <string>
 
 namespace bb {
@@ -32,7 +33,16 @@ inline std::wstring IsoDate(const LocalTime& t)
 }
 inline bool ParseIsoDate(const std::wstring& text, int& year, int& month, int& day)
 {
-    if (swscanf_s(text.c_str(), L"%d-%d-%d", &year, &month, &day) != 3 || month < 1 || month > 12 || day < 1) return false;
+    // (by hand rather than swscanf, which would bring the C runtime's whole reading engine into the exe)
+    const wchar_t* at = text.c_str();
+    wchar_t* end = nullptr;
+    int* parts[] = {&year, &month, &day};
+    for (int i = 0; i < 3; i++) {
+        *parts[i] = static_cast<int>(std::wcstol(at, &end, 10));
+        if (end == at || (i < 2 && *end != L'-')) return false;
+        at = end + 1;
+    }
+    if (month < 1 || month > 12 || day < 1) return false;
     long long daysInMonth = DayNumber(month == 12 ? year + 1 : year, month == 12 ? 1 : month + 1, 1) - DayNumber(year, month, 1);
     return day <= daysInMonth;   // (not 31 February)
 }

@@ -1,5 +1,6 @@
 #include "platform/Language.h"
 #include <windows.h>
+#include <compressapi.h>
 #include <cwctype>
 
 namespace bb {
@@ -10,9 +11,17 @@ std::string LanguageText(std::wstring_view code)
     for (wchar_t c : code) name += static_cast<wchar_t>(towupper(c));
     HRSRC res = FindResourceW(nullptr, name.c_str(), RT_RCDATA);
     if (!res) return {};
-    HGLOBAL data = LoadResource(nullptr, res);
-    auto bytes = static_cast<const char*>(LockResource(data));
-    return bytes ? std::string(bytes, SizeofResource(nullptr, res)) : std::string{};
+    auto packed = static_cast<const char*>(LockResource(LoadResource(nullptr, res)));
+    DWORD size = SizeofResource(nullptr, res);
+    // Packed by LangPack at build time (MSZIP): its header gives the size it unpacks to.
+    DECOMPRESSOR_HANDLE unpacker = nullptr;
+    if (!packed || !CreateDecompressor(COMPRESS_ALGORITHM_MSZIP, nullptr, &unpacker)) return {};
+    SIZE_T length = 0;
+    Decompress(unpacker, packed, size, nullptr, 0, &length);
+    std::string text(length, '\0');
+    if (!Decompress(unpacker, packed, size, text.data(), length, &length)) text.clear();
+    CloseDecompressor(unpacker);
+    return text;
 }
 
 std::wstring SystemLanguage()

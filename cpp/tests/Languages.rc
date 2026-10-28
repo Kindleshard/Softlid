@@ -1,0 +1,2 @@
+// The packed translations, as the exe has them (see LanguageTests.cpp).
+#include "lang.rc"

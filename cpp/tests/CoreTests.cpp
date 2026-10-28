@@ -170,6 +170,11 @@ TEST(NightStatusText)
     // own time are 19:39 and 04:32 here.
     CHECK_EQ(Night::Status(s, TestTime(2026, 6, 21, 12, 0)),
              std::wstring(L"Sunset 19:39, sunrise 04:32 in your location (from Windows).\nResting until 19:39."));
+    for (const wchar_t* same : {L"41.01 28.98", L" 41.01;28.98 ", L"+41.010, 28.980"}) {
+        Settings t = s;
+        t.City = same;
+        CHECK_EQ(Night::Status(t, TestTime(2026, 6, 21, 12, 0)), Night::Status(s, TestTime(2026, 6, 21, 12, 0)));
+    }
     s.ScheduleMode = 1;
     CHECK_EQ(Night::Status(s, TestTime(2026, 6, 21, 12, 0)), std::wstring(L"On from 21:00 to 07:00.\nResting until 21:00."));
     CHECK_EQ(Night::Hm(21 * 60 + 5), std::wstring(L"21:05"));

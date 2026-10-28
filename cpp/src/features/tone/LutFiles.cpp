@@ -1,11 +1,11 @@
 #include "features/tone/LutFiles.h"
+#include "core/Json.h"
 #include "core/ToneCurve.h"
 #include "platform/Files.h"
 #include "platform/Text.h"
 #include "platform/Window.h"
 #include <shlobj.h>
 #include <urlmon.h>
-#include <regex>
 #include <string>
 #include <thread>
 
@@ -44,12 +44,13 @@ void InstallNow(HWND window, UINT message)
     if (FAILED(URLDownloadToFileW(nullptr, Releases, json.c_str(), 0, nullptr)))
         return fail(L"Couldn't reach GitHub. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
     std::string text = ReadAllBytes(json).value_or("");
-    std::smatch url, tag;
-    if (!std::regex_search(text, url, std::regex("\"browser_download_url\"\\s*:\\s*\"([^\"]+\\.zip)\"")))
+    std::string url = JsonFirst(text, "browser_download_url", [](std::string_view u) { return u.size() > 4 && u.ends_with(".zip"); });
+    if (url.empty())
         return fail(L"The latest release has no download BlinkBuddy recognises. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
-    std::wstring version = std::regex_search(text, tag, std::regex("\"tag_name\"\\s*:\\s*\"([^\"]+)\"")) ? FromUtf8(tag[1].str()) : L"latest";
+    std::string tag = JsonFirst(text, "tag_name", [](std::string_view t) { return !t.empty(); });
+    std::wstring version = tag.empty() ? L"latest" : FromUtf8(tag);
     PostOwned<std::wstring>(window, message, 0, L"Downloading DesktopLUT " + version + L"...");
-    if (FAILED(URLDownloadToFileW(nullptr, FromUtf8(url[1].str()).c_str(), zip.c_str(), 0, nullptr)))
+    if (FAILED(URLDownloadToFileW(nullptr, FromUtf8(url).c_str(), zip.c_str(), 0, nullptr)))
         return fail(L"The download didn't finish. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
 
     // Unpacking: only the program itself, with the tar that comes with Windows (it reads zip files).

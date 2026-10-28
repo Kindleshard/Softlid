@@ -1,4 +1,5 @@
 #include "features/update/Updater.h"
+#include "core/Json.h"
 #include "core/Lang.h"
 #include "core/Version.h"
 #include "platform/Files.h"
@@ -6,7 +7,6 @@
 #include "platform/Window.h"
 #include <urlmon.h>
 #include <cstdio>
-#include <regex>
 #include <thread>
 #include <vector>
 
@@ -109,18 +109,25 @@ void CheckNow(HWND window, UINT message)
         swprintf_s(code, L"0x%08X", static_cast<unsigned>(hr));
         return Post(window, message, Note(Result::Kind::Note, Lang::F(L"Couldn't check for updates: {0}", {code})));
     }
-    std::smatch tag, exe, page;
+    // The version (a tag like "v1.2.0" or "1.2.0"), the exe among the downloads, and the release's own page.
+    std::string tag = JsonFirst(text, "tag_name", [](std::string_view t) {
+        if (t.starts_with('v')) t.remove_prefix(1);
+        return !t.empty() && t[0] >= '0' && t[0] <= '9';
+    });
+    if (tag.starts_with('v')) tag.erase(0, 1);
     int latest[3];
-    if (!std::regex_search(text, tag, std::regex("\"tag_name\"\\s*:\\s*\"v?([0-9][^\"]*)\"")) || !ParseVersion(FromUtf8(tag[1].str()), latest))
+    if (tag.empty() || !ParseVersion(FromUtf8(tag), latest))
         return Post(window, message, Note(Result::Kind::Note, Lang::T(L"Couldn't read the latest release's version.")));
     if (!Newer(latest, VersionParts)) return Post(window, message, Note(Result::Kind::UpToDate, Lang::T(L"You're up to date.")));
     Result r{Result::Kind::Newer};
-    r.release.tag = FromUtf8(tag[1].str());
-    if (std::regex_search(text, exe, std::regex("\"browser_download_url\"\\s*:\\s*\"([^\"]+/BlinkBuddy\\.exe)\"")))
-        r.release.download = FromUtf8(exe[1].str());
-    r.release.page = std::regex_search(text, page, std::regex("\"html_url\"\\s*:\\s*\"([^\"]+/releases/[^\"]+)\""))
-                         ? FromUtf8(page[1].str())
-                         : L"https://github.com/" + std::wstring(ReleaseRepo) + L"/releases/latest";
+    r.release.tag = FromUtf8(tag);
+    std::string exe = JsonFirst(text, "browser_download_url", [](std::string_view u) { return u.size() > 15 && u.ends_with("/BlinkBuddy.exe"); });
+    if (!exe.empty()) r.release.download = FromUtf8(exe);
+    std::string page = JsonFirst(text, "html_url", [](std::string_view u) {
+        size_t at = u.find("/releases/");
+        return at != std::string_view::npos && at > 0 && at + 10 < u.size();
+    });
+    r.release.page = !page.empty() ? FromUtf8(page) : L"https://github.com/" + std::wstring(ReleaseRepo) + L"/releases/latest";
     r.text = Lang::F(L"Version {0} is available (you have {1}).", {r.release.tag, Version});
     Post(window, message, std::move(r));
 }

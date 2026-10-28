@@ -8,7 +8,9 @@
 #include "features/breaks/StretchBreak.h"
 #include "features/tone/LutGuard.h"
 #include "features/update/Updater.h"
+#ifdef BB_GALLERY
 #include "tools/ControlGallery.h"
+#endif
 #include "ui/Theme.h"
 #include <windows.h>
 #include <objbase.h>
@@ -70,7 +72,8 @@ static int PreviewBlink()
     return 0;
 }
 
-// Diagnostics: "--ui-gallery" shows every control of the interface toolkit (see tools/ControlGallery).
+#ifdef BB_GALLERY
+// Diagnostics: "--ui-gallery" shows every control of the interface toolkit (see tools/ControlGallery; debug builds).
 static int UiGallery(bool offscreen)
 {
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
@@ -81,6 +84,7 @@ static int UiGallery(bool offscreen)
     CoUninitialize();
     return code;
 }
+#endif
 
 // The DesktopLUT guard: BlinkBuddy starts this copy as administrator (see features/tone/LutGuard), with
 // --lut-guard "<DesktopLUT.exe>" <trial 0/1> <BlinkBuddy pid> "<colour table>".
@@ -110,7 +114,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
     if (std::wcsstr(commandLine, L"--preview-stretch")) return PreviewBreak(Preview::Stretch);
     if (std::wcsstr(commandLine, L"--preview-rest")) return PreviewBreak(Preview::Rest);
     if (std::wcsstr(commandLine, L"--preview-blink")) return PreviewBlink();
+#ifdef BB_GALLERY
     if (std::wcsstr(commandLine, L"--ui-gallery")) return UiGallery(std::wcsstr(commandLine, L"--offscreen") != nullptr);
+#endif
 
     // Just updated: the old copy is still quitting (it holds the single-copy lock until then).
     bb::Updater::AfterUpdate(commandLine);

@@ -71,7 +71,7 @@ that need somewhere to point:
 Diagnostics:
 
 - `--offscreen` opens the settings off the screen, for screenshots.
-- `--ui-gallery` shows every control.
+- `--ui-gallery` shows every control (debug builds only: `build.ps1 -Debug`).
 - `--preview-break`, `--preview-exercises`, `--preview-stretch` and `--preview-blink` show those once.
 
 ## What it connects to
