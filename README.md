@@ -71,7 +71,7 @@ too, through Windows' emulation.
 ## Building
 
 BlinkBuddy is written in C++ and Direct2D, in `cpp/`. (It began in C#, .NET Framework 4.8; that version, which the
-rewrite was checked against, is in the history up to commit 06cbb8a.)
+rewrite was checked against, is in the history up to commit acdbee3.)
 
 You need Visual Studio 2022 or its Build Tools, with the "Desktop development with C++" workload.
 
