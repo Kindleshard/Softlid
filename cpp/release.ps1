@@ -53,3 +53,6 @@ if ($makensis) {
 
 ''
 Get-ChildItem -LiteralPath $dist | ForEach-Object { '{0,-40} {1,8:0} KB' -f $_.Name, ($_.Length / 1KB) }
+# (The installer's SHA-256 goes in installer\winget\BlinkBuddy.BlinkBuddy.installer.yaml.)
+$setup = Join-Path $dist "BlinkBuddy-$version-setup.exe"
+if (Test-Path -LiteralPath $setup) { 'Installer SHA-256: ' + (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash }

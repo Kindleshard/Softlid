@@ -1,6 +1,6 @@
 # BlinkBuddy in C++ — the plan
 
-The C# version (in `../csharp`) is the reference: same features, same look, same settings file. The C++
+The C# version (in the history up to commit 06cbb8a) was the reference: same features, same look, same settings file. The C++
 version exists to be small and light — a few MB of memory instead of ~15 — while staying easy to read.
 
 ## Goals

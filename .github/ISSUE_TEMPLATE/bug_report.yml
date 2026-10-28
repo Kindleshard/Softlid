@@ -1,0 +1,49 @@
+# The form BlinkBuddy's "Report a bug" opens (Options > Help and support). The app fills in version, windows and
+# language through the link (see cpp/src/features/settings/SettingsOptions.cpp); the rest is up to the reporter.
+name: Bug report
+description: Something in BlinkBuddy doesn't work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. Nothing is sent until you press **Submit**, and everything here is public.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+      placeholder: "I turned on the reading strip, and..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to make it happen again
+      description: If you know. Step by step is best.
+      placeholder: |
+        1. Open the settings
+        2. ...
+  - type: input
+    id: version
+    attributes:
+      label: BlinkBuddy version
+      description: In Options, under Updates; filled in for you by "Report a bug".
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2 (26100)"
+  - type: input
+    id: language
+    attributes:
+      label: BlinkBuddy's language
+      placeholder: "en"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Screenshots, your display setup (how many monitors, scaling), other apps that might be involved.

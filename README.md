@@ -68,8 +68,8 @@ It needs Windows 10 or 11, 64-bit. There is nothing else to install: the C runti
 
 ## Building
 
-- `cpp/`: the current version, in C++ and Direct2D. This is what gets built and shipped.
-- `csharp/`: the original version (C#, .NET Framework 4.8), kept as the reference the rewrite was checked against.
+BlinkBuddy is written in C++ and Direct2D, in `cpp/`. (It began in C#, .NET Framework 4.8; that version, which the
+rewrite was checked against, is in the history up to commit 06cbb8a.)
 
 You need Visual Studio 2022 or its Build Tools, with the "Desktop development with C++" workload.
 
@@ -119,7 +119,7 @@ from `loops/<loop>.html` into `docs/media/<loop>.webp`.
 - GitHub, to download DesktopLUT, only when you choose "Download and set up".
 - Windows location, only for the sunset-to-sunrise schedule, a few times a day.
 
-Nothing else leaves the PC.
+Nothing else leaves the PC. The details are in [PRIVACY.md](PRIVACY.md).
 
 ## Memory
 
@@ -146,3 +146,9 @@ runs as administrator. Every safeguard stops DesktopLUT and puts BlinkBuddy's ow
 - a 15-second check after switching on (and after each Windows update)
 - a watchdog for crashes
 - the panic key **Ctrl+Alt+Shift+L**
+
+## License
+
+BlinkBuddy is free and open source, under the [MIT License](LICENSE). The spoken steps were made with Chatterbox
+Multilingual (MIT) and, for Czech, Hungarian, Romanian and Ukrainian, Piper voices under their own licences: see
+[cpp/res/voice/CREDITS.txt](cpp/res/voice/CREDITS.txt).
