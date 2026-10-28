@@ -32,11 +32,12 @@
 <script>
 window.LOOP = { width: 960, height: 600, seconds: 9.6, quality: 70, footage: [{ name: 'strip', to: 9.4 }] };
 
-// The strip comes on and moves down the notes a line or two at a time; then off, where the loop begins again.
+// The strip comes on and moves down the notes a line or two at a time; then off, where the loop begins again. (The
+// view holds still: a slow push-in would change every pixel of every frame and double the file.)
 const notes = [0.3, 0.38];
 const shots = [
-    { name: 'strip', from: 0.2, to: 9.0, at: 0, until: 8.8, zoom: [1.25, 1.45], focus: notes },
-    { name: 'strip', from: 0.2, to: 0.2, at: 8.8, until: 9.6, fade: 0.7, zoom: 1.25, focus: notes },
+    { name: 'strip', from: 0.2, to: 9.0, at: 0, until: 8.8, zoom: 1.35, focus: notes },
+    { name: 'strip', from: 0.2, to: 0.2, at: 8.8, until: 9.6, fade: 0.7, zoom: 1.35, focus: notes },
 ];
 const footage = new Footage(document.getElementById('view'));
 const c1 = ['#c1 .kicker', '#c1 .headline', '#c1 .body'].map(s => new Words(document.querySelector(s)));
