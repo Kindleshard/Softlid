@@ -1,7 +1,8 @@
 # Makes a release in dist\ - nothing is uploaded or published:
 #   BlinkBuddy.exe                      the program on its own (what the updater downloads)
 #   BlinkBuddy-<version>-portable.zip   the program with its voice clips: unzip anywhere and run
-#   BlinkBuddy-<version>-setup.exe      the installer (only when Inno Setup 6 is installed; see installer\BlinkBuddy.iss)
+#   BlinkBuddy-<version>-setup.exe      the installer, with the voice in one language or all (only when NSIS 3 is
+#                                       here; see installer\BlinkBuddy.nsi)
 # The version comes from res\BuildVersion.h.
 $ErrorActionPreference = 'Stop'
 
@@ -36,14 +37,18 @@ try {
 } finally { $archive.Dispose() }
 Remove-Item -LiteralPath $stage -Recurse -Force
 
-# The installer, if Inno Setup 6 is here.
-$iscc = @("${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe", "$env:ProgramFiles\Inno Setup 6\ISCC.exe",
-          "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe") | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-if ($iscc) {
-    & $iscc /Q "/DAppVersion=$version" (Join-Path $PSScriptRoot 'installer\BlinkBuddy.iss')
-    if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed ($LASTEXITCODE)." }
+# The installer, if NSIS 3 is here (installed, or unzipped into C:\Tools\nsis).
+$makensis = @("${env:ProgramFiles(x86)}\NSIS\makensis.exe", "$env:ProgramFiles\NSIS\makensis.exe", 'C:\Tools\nsis\makensis.exe') |
+    Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+if ($makensis) {
+    # Each language's voice in KB, for the installer to show beside the choice.
+    $sizes = Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'res\voice') -Directory | ForEach-Object {
+        '/DKB_{0}={1}' -f $_.Name, [math]::Ceiling((Get-ChildItem -LiteralPath $_.FullName -File | Measure-Object Length -Sum).Sum / 1KB)
+    }
+    & $makensis /V2 "/DVERSION=$version" @sizes (Join-Path $PSScriptRoot 'installer\BlinkBuddy.nsi')
+    if ($LASTEXITCODE -ne 0) { throw "NSIS failed ($LASTEXITCODE)." }
 } else {
-    'Inno Setup 6 not found: the installer was skipped (install it from https://jrsoftware.org/isinfo.php, then run this again).'
+    'NSIS not found: the installer was skipped (install it from https://nsis.sourceforge.io, then run this again).'
 }
 
 ''

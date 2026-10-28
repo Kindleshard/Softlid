@@ -48,7 +48,7 @@ Each chunk builds and runs on its own, ends in a commit, and leaves the app usab
 | 6 | **Extras:** mini mode, focus timer, reading strip, keyboard shortcuts, the app-rules dialog — **done** (the reading strip follows the mouse with raw input rather than a mouse hook) | Feature parity for these |
 | 7 | **Guided breaks:** liquid eye animation, eyelids, stretch coach, voice — **done** (`--preview-exercises`, `--preview-stretch` and `--preview-blink` show them; the eyelids are made for each blink and freed after it) | Breaks look and sound like the C# version |
 | 8 | **Tone engines:** standard curve, Smart (GPU), Smart layer, DesktopLUT with its guard, tone lab, grain — **done** (the Tone section of the settings too; the guard only starts, watches and stops DesktopLUT) | Tone matches |
-| 9 | **Release:** updater, installer + portable exe, donate link, README, memory numbers — **done** (not published yet: the release repo and donate link are empty constants in core/Version.h; `release.ps1` makes `dist`, and the installer when Inno Setup 6 is installed) | Ready to share |
+| 9 | **Release:** updater, installer + portable exe, donate link, README, memory numbers — **done** (not published yet: the release repo and donate link are empty constants in core/Version.h; `release.ps1` makes `dist`, and the NSIS installer, with the voice in one language or all, when NSIS 3 is here) | Ready to share |
 
 ## Measuring "light"
 
