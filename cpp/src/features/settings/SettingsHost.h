@@ -26,6 +26,7 @@ public:
     virtual void SetRunAtStartup(bool on) = 0;
     virtual void SetMiniEnabled(bool on) = 0;
     virtual void EnterMiniMode() = 0;
+    virtual void ShowTour() = 0;                       // the first-run tour, again
 
     // Reminders.
     virtual void Blink(bool instant) = 0;

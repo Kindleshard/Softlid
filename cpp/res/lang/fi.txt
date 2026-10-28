@@ -209,7 +209,7 @@ Aika nousta tauolle
 Nouse ylös, venyttele, kävele vähän, ehkä täytä vesilasi.
 Torkku 5 min
 Ohita
-Katso pois näytöltä, johonkin kaukana olevaan, ja anna silmien pehmentyä.
+Katso pois näytöltä, johonkin kaukana olevaan, ja anna silmien levätä.
 Katso hitaasti vasemmalle ja oikealle päätä liikuttamatta.
 Katso nyt hitaasti ylös ja alas.
 Pyöritä silmiä hitaassa, leveässä ympyrässä.
@@ -391,8 +391,6 @@ Silmäluomet: kaksi tummaa luomea sulkeutuu näytön ylä- ja alareunasta, kuin 
 Siirry siihen otsikkopalkin vieressä olevalla painikkeella. Vie osoitin sen päälle pika-asetuksia varten; napsauta sitä palataksesi tänne.
 Tämän ikkunan pienentäminen siirtää minitilaan
 Taita ikkuna kuvakkeeseen, niin näet minne se meni
-Pidätkö BlinkBuddysta? Se on ilmainen; pieni tippi auttaa jatkamaan.
-Tue...
 Resurssien käyttö
 Mitä BlinkBuddy itse käyttää juuri nyt, Tehtävienhallinnan laskemana.
 Viimeinen minuutti: suoritin (korostusväri) ja näytönohjain (vihreä)
@@ -476,3 +474,48 @@ Päivitykset
 Tämä versio ja uudemmat, kun niitä tulee.
 Palauta
 Pienennä
+Ohje ja tuki
+Kerro, mikä meni vikaan, tai auta BlinkBuddya jatkamaan.
+Eikö jokin toimi? Ilmoita siitä GitHubissa.
+Ilmoita viasta...
+BlinkBuddy on ilmainen. Kahvi pitää sen käynnissä.
+Tue Ko-fissa
+Vasen yläkulma
+Oikea yläkulma
+Vasen alakulma
+Oikea alakulma
+Keskellä
+Vaihe {0}/{1}
+Lue ääneen
+Päällä: jokainen vaihe luetaan ääneen
+Pois: mitään ei lueta ääneen
+Tervetuloa BlinkBuddyyn
+Lempeitä taukoja ja rauhallisempi näyttö työn lomassa. Tämä vie noin minuutin.
+Jokainen vaihe luetaan ääneen. Yllä oleva painike mykistää sen.
+Ohita esittely
+Valitse, mikä auttaa sinua
+Voit muuttaa kaiken myöhemmin.
+Kaukaa katsomisen tauot
+{0} s {1} min välein, silmäjumpan kanssa
+Lämpimämpi näyttö iltaisin
+Auringonlaskusta auringonnousuun siellä, missä olet
+Ylösnousutauot
+Muutama venytys {0} min välein
+Pieni silmä räpyttelee kanssasi
+Takaisin
+Seuraava
+Missä BlinkBuddy asuu
+Se odottaa ilmaisinalueella kellon vieressä. Napsauta asetuksia varten, napsauta hiiren kakkospainikkeella pikatoimintoja, kuten taukoa, varten.
+Minitila: pieni kuvake, joka pysyy päällimmäisenä ja näyttää seuraavan tauon.
+Kaikki valmista
+Ensimmäinen tauko tulee {0} min kuluttua. Haluatko nähdä, miltä se näyttää?
+Haluatko nähdä, miltä tauko näyttää?
+Kokeile taukoa nyt
+Voit katsoa esittelyn uudelleen Asetuksista kohdasta Ohje ja tuki.
+Valmis
+Näytä esittely uudelleen
+Aloita esittely
+Tervetuloa BlinkBuddyyn. Lempeitä taukoja ja rauhallisempi näyttö työn lomassa. Tämä vie noin minuutin.
+Valitse, mikä auttaa sinua. Voit muuttaa kaiken myöhemmin.
+BlinkBuddy odottaa ilmaisinalueella kellon vieressä. Napsauta asetuksia varten, napsauta hiiren kakkospainikkeella pikatoimintoja, kuten taukoa, varten.
+Kaikki valmista. Haluatko nähdä, miltä tauko näyttää? Kokeile yhtä nyt tai lopeta esittely.

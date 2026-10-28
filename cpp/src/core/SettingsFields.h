@@ -132,3 +132,4 @@ BB_SETTING(int, SettingsZoom, 100)              // %: the settings window's size
 BB_SETTING(text, Language, L"")                 // "" = the Windows language (if translated)
 BB_SETTING(bool, UpdateCheck, true)
 BB_SETTING(text, LastUpdateCheck, L"")          // yyyy-MM-dd
+BB_SETTING(bool, TourDone, false)               // the first-run tour was seen (or skipped)

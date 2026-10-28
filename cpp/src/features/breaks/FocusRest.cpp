@@ -3,6 +3,7 @@
 #include "core/Lang.h"
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/Chime.h"
+#include "ui/Access.h"
 #include "ui/Theme.h"
 #include <mmsystem.h>
 #include <shellscalingapi.h>
@@ -121,6 +122,8 @@ FocusRest::FocusRest(HWND owner, const Settings& s, int round)
     SetLayeredWindowAttributes(Handle(), 0, 0, LWA_ALPHA);
     SetWindowPos(Handle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     Show(!CloakedCopy());   // (a cloaked diagnostic copy never takes the keyboard)
+    Access::Announce(Handle(), Lang::F(L"Focus round {0} done", {std::to_wstring(round)}) + L". " +
+                                   Lang::T(L"Stand up, stretch, and look far away"));
     timeBeginPeriod(1);
     if (sounds) Chime::Play(false);
     QueryPerformanceFrequency(&frequency);

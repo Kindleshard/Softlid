@@ -73,6 +73,7 @@ public:
         Root().Add<Label>(L"Mode", Fonts::Heading()).SetBounds(20, 356, 400, 28);
         std::vector<std::wstring> glyphs(Modes::Glyphs, Modes::Glyphs + Modes::Custom), names(Modes::Names, Modes::Names + Modes::Custom);
         modes = &Root().Add<ModeGrid>(glyphs, names);   // every mode but Custom (your own settings: the same as no rule)
+        modes->tip = Lang::T(L"Mode");
         modes->SetBounds(20, 388, 400, 88);
         modes->onChange = [this](int) { Check(); };
 

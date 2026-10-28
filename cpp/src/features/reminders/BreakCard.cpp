@@ -3,6 +3,7 @@
 #include "features/reminders/Chime.h"
 #include "platform/Activity.h"
 #include "platform/DarkMode.h"
+#include "ui/Access.h"
 #include "ui/EyeArt.h"
 #include "ui/Theme.h"
 #include <algorithm>
@@ -35,6 +36,7 @@ BreakCard::BreakCard(HWND owner, bool standUp, const Settings& s, int seconds, s
     Create(L"BlinkBuddy.BreakCard", WS_POPUP, PopupExStyle | WS_EX_LAYERED, {at.x, at.y, at.x + w, at.y + h});
     Render();
     ShowOnTop(hwnd);
+    ui::Access::Announce(hwnd, title + L". " + hint);
     if (sounds) Chime::Play(false);
     SetTimer(hwnd, StepTimer, 1000, nullptr);
 }

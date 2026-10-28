@@ -30,5 +30,8 @@ inline constexpr int ModeTints[] = {
     Argb(129, 199, 245), Argb(128, 222, 190), Argb(255, 213, 128), Argb(190, 196, 214),
 };
 
+// Ko-fi's own blue, for its button.
+inline constexpr int KoFi = Argb(41, 171, 224);
+
 } // namespace Palette
 } // namespace bb

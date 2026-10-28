@@ -7,6 +7,8 @@
 
 namespace bb::ui {
 
+class AccessRoot;
+
 // A window drawn with Direct2D (in software: no graphics-card device, so it stays light), holding controls. It
 // follows each monitor's scaling (per-monitor DPI): controls are laid out in 96-dpi units and drawn sharp at any
 // scale. It routes the mouse, the keyboard (Tab moves between controls), the wheel, timers and tooltips to them.
@@ -45,7 +47,8 @@ public:
     void Invalidate(const D2D1_RECT_F& windowRect);
     void InvalidateAll();
     Control* Focused() const { return focused; }
-    void SetFocus(Control* control);
+    // The control that takes the keyboard. takeKeyboard false: only noted (a native text box already has it).
+    void SetFocus(Control* control, bool takeKeyboard = true);
     void Placed();                        // after controls move: native child windows follow
     void Relayout();                      // Layout() then Placed() and a fresh paint
 
@@ -64,6 +67,9 @@ private:
     D2D1_POINT_2F ToDips(LPARAM l) const;
     void Paint();
     void MoveFocus(bool back);
+    void ShowInView(Control* control);          // a scrolling page brings it into sight
+    D2D1_RECT_F RingAround(const Control* control) const;
+    void PaintFocusRing(Canvas& painter);
     void SetHover(Control* control);
     void UpdateTip();
     void ReleaseGraphics();
@@ -96,6 +102,8 @@ private:
     HWND tooltip = nullptr;
     HBRUSH editBrush = nullptr;
     bool tracking = false, dying = false;
+    bool keyboardCue = false;
+    AccessRoot* access = nullptr;   // screen readers' view of the controls (made when one first asks)   // the keyboard moved the focus last (not the mouse): a ring shows where it is
     float fixedWidth = 0;   // pixels, for a resizable window
 };
 

@@ -156,6 +156,7 @@ private:
     void BuildOptionsPage(ui::Stack& st);
     void BuildMiniOptions(ui::Stack& st);
     void BuildUpdates(ui::Stack& st);
+    void BuildSupport(ui::Stack& st);
     void RefreshUpdates();
     void BuildResourceUse(ui::Stack& st);
     void RefreshUsage();

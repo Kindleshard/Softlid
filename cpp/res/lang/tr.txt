@@ -215,13 +215,13 @@ Başınızı sabit tutarak yavaşça sola ve sağa bakın.
 Gözlerinizi yavaş ve geniş bir daire çizerek döndürün.
 Gözlerinizi nazikçe kapatın, sonra birkaç kez yavaşça kırpın.
 Ayağa kalkma zamanı
-Ayağa kalkma zamanı. Birkaç kolay esnemeyle eşlik edin.
+Ayağa kalkma zamanı. Birkaç kolay esneme hareketini birlikte yapalım.
 Yukarı uzanma
-İki kolunuzu da yukarı uzatın ve boyunuzu uzatın.
+İki kolunuzu da yukarı uzatın ve iyice gerinin.
 Omuz çevirme
 Omuzlarınızı yavaşça geriye doğru çevirin.
 Boyun esnetme
-Başınızı nazikçe her iki omza doğru eğin.
+Başınızı nazikçe sırayla iki omzunuza doğru eğin.
 Gövde döndürme
 Üst gövdenizi yavaşça bir yandan diğerine döndürün.
 Göğüs açma
@@ -232,8 +232,8 @@ Parmak ucunda yükselme
 Parmak uçlarınızda yükselin, sonra yavaşça inin.
 Öne eğilme
 Dizlerinizi hafifçe bükün ve sırtınızı esnetmek için öne sarkın.
-Harika iş!
-Harika iş. Biraz su için ve işinize dönün.
+Harika!
+Harika. Biraz su için ve işinize dönün.
 {0} sn
 Bana sor
 Sistem tepsisinde çalışmaya devam et
@@ -282,7 +282,7 @@ Bilgisayarı uyanık tut
 2 saatliğine
 Ben kapatana kadar
 Dinlenme zamanı
-Ayağa kalk, uzağa bak, esne. Bir sonraki odak süresi bundan sonra başlar.
+Ayağa kalkın, uzağa bakın, esneyin. Bir sonraki odak süresi bundan sonra başlar.
 Dinleniyor
 Odak zamanlayıcı: {0}
 {0} modu, öndeki uygulama için
@@ -327,7 +327,7 @@ Windows uykuya geçmez ve ekranı kapatmaz.
 Tepsi menüsü de onu 1 veya 2 saat uyanık tutabilir.
 Molaları zorunlu kıl (Atla, Ertele veya Esc yok)
 Odak zamanlayıcı
-Çalış, sonra dinlen, tekrar tekrar.
+Çalışın, sonra dinlenin; tekrar tekrar.
 Başlat
 Devam et
 Durdur
@@ -390,11 +390,9 @@ Odak zamanlayıcıyı başlat
 Göz kapakları: ekranın üstünden ve altından iki koyu kapak kapanır, tıpkı sizin göz kırpmanız gibi
 Başlık çubuğunun yanındaki düğmeyle ona geçin. Hızlı ayarlar için üzerine gelin; buraya dönmek için tıklayın.
 Bu pencereyi simge durumuna küçültmek mini moda geçirir
-Pencereyi simgeye katlayarak küçült; nereye gittiğini görürsünüz
-BlinkBuddy'yi beğendiniz mi? Ücretsizdir; küçük bir bağış devam etmesini sağlar.
-Destek ol...
+Pencere simgeye katlanarak küçülsün, böylece nereye gittiğini görürsünüz
 Kaynak kullanımı
-BlinkBuddy'nin şu anda kendisinin kullandığı, Görev Yöneticisi'nin saydığı gibi.
+BlinkBuddy'nin şu anda kullandığı kaynaklar, Görev Yöneticisi'nin hesapladığı şekilde.
 Son bir dakika: işlemci (vurgu rengi) ve ekran kartı (yeşil)
 Yalnızca bu sayfa açıkken ölçülür; bu yüzden pencerenin çizilmesi de burada gördüğünüze dahildir. Kapalıyken BlinkBuddy çoğunlukla bekler ve neredeyse hiçbir şey kullanmaz.
 İşlemci: tüm CPU'nun %{0}'ı
@@ -435,7 +433,7 @@ Gece ışığı şu anda açık.
 Bir zamanlaması yok, bu yüzden BlinkBuddy'nin kendi zamanlaması çalışır.
 BlinkBuddy onun saatlerini izler, {0} - {1}, güç {2}.
 BlinkBuddy onu gün batımından gün doğumuna kadar izler ({0} - {1}), güç {2}.
-Bugün: gece zamanlaması kehribar renginde, ve şu anki saat
+Bugün: kehribar renginde gece zamanlaması ve şu anki saat
 Windows Gece ışığı ekranı ısıtırken duraklatıldı
 Kapalı: mavi ışık filtresi ekran filtresinde ayarlandığı gibi kalır.
 DesktopLUT nerede?
@@ -450,7 +448,7 @@ Ekranınız doğru görünüyor mu?
 Koru
 Geri al
 DesktopLUT şimdi renk tablosunu uyguluyor. Hiçbir şey yapmazsanız {0} sn içinde geri alınır.\nAcil durum tuşu her zaman: Ctrl+Alt+Shift+L.
-Aferin. Artık ekrana dönebilirsiniz.
+Çok güzel. Artık ekrana dönebilirsiniz.
 Gece zamanlaması gün batımını ve gün doğumunu izler. BlinkBuddy bunları bu yer için hesaplar: izin verildiğinde Windows'taki konumunuz, aksi halde saat diliminizin şehri.
 Gece zamanlamasının gece gücü: {0}
 Yeşil nokta: gece zamanlamasının gece gücü
@@ -476,3 +474,48 @@ Güncellemeler
 Bu sürüm ve çıktıklarında daha yenileri.
 Sıfırla
 Küçült
+Yardım ve destek
+Neyin ters gittiğini bize bildirin ya da BlinkBuddy'nin sürmesine destek olun.
+Bir şey çalışmıyor mu? GitHub'da bildirin.
+Hata bildir...
+BlinkBuddy ücretsizdir. Bir kahve, sürmesini sağlar.
+Ko-fi'de destek olun
+Sol üst
+Sağ üst
+Sol alt
+Sağ alt
+Orta
+Adım {0} / {1}
+Sesli oku
+Açık: her adım sesli okunur
+Kapalı: hiçbir şey sesli okunmaz
+BlinkBuddy'ye hoş geldiniz
+Çalışırken nazik molalar ve daha sakin bir ekran. Bu yaklaşık bir dakika sürer.
+Her adım sesli okunur. Yukarıdaki düğme sesi kapatır.
+Turu atla
+Size yardımcı olanları seçin
+Bunların hepsini daha sonra değiştirebilirsiniz.
+Uzağa bakma molaları
+{1} dakikada bir {0} sn, göz egzersizleriyle
+Geceleri daha sıcak ekran
+Bulunduğunuz yerde gün batımından gün doğumuna
+Ayağa kalkma molaları
+{0} dakikada bir birkaç esneme
+Küçük bir göz sizinle birlikte kırpar
+Geri
+İleri
+BlinkBuddy nerede durur
+Saatin yanındaki bildirim alanında bekler. Ayarlar için tıklayın, duraklatma gibi hızlı işlemler için sağ tıklayın.
+Mini mod: her zaman üstte kalan ve sıradaki molayı gösteren küçük bir simge.
+Her şey hazır
+İlk molanız {0} dakika sonra. Nasıl göründüğünü görmek ister misiniz?
+Bir molanın nasıl göründüğünü görmek ister misiniz?
+Şimdi bir mola deneyin
+Bu turu Seçenekler'de, Yardım ve destek altında yeniden açabilirsiniz.
+Bitir
+Turu yeniden göster
+Turu başlat
+BlinkBuddy'ye hoş geldiniz. Çalışırken nazik molalar ve daha sakin bir ekran. Bu yaklaşık bir dakika sürer.
+Size yardımcı olanları seçin. Bunların hepsini daha sonra değiştirebilirsiniz.
+BlinkBuddy, saatin yanındaki bildirim alanında bekler. Ayarlar için tıklayın, duraklatma gibi hızlı işlemler için sağ tıklayın.
+Her şey hazır. Bir molanın nasıl göründüğünü görmek ister misiniz? Şimdi bir tane deneyin ya da turu bitirin.

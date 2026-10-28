@@ -37,7 +37,11 @@ Name: "desktopicon"; Description: "Create a desktop shortcut"; Flags: unchecked
 
 [Files]
 Source: "..\bin\BlinkBuddy.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\res\voice\*"; DestDir: "{app}\voice"; Flags: ignoreversion
+Source: "..\res\voice\*"; DestDir: "{app}\voice"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[InstallDelete]
+; Clips from before each language had a folder of its own.
+Type: files; Name: "{app}\voice\*.mp3"
 
 [Icons]
 Name: "{autoprograms}\BlinkBuddy"; Filename: "{app}\BlinkBuddy.exe"

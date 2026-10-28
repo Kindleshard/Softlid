@@ -2,6 +2,7 @@
 #include "core/Lang.h"
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/Chime.h"
+#include "ui/Access.h"
 #include "ui/Theme.h"
 #include "ui/controls/Basic.h"
 #include <mmsystem.h>
@@ -307,11 +308,11 @@ private:
 
 StretchBreak::StretchBreak(HWND owner, const Settings& s) : owner(owner), sounds(s.Sounds), forced(s.ForceRest)
 {
-    if (s.StretchVoice) voice = std::make_unique<Voice>();
+    if (s.StretchVoice) voice = std::make_unique<Voice>(Lang::Code());
     double total = s.LongBreakDuration * 60.0;
     lead = sounds ? 1.0 : 0.3;
-    double introLen = std::max(4.0, Voice::Length(Intro.key) + Voice::Pause + 1.0);
-    outroLen = std::max(3.0, Voice::Length(Outro.key) + 0.8);
+    double introLen = std::max(4.0, Voice::Length(Lang::Code(), Intro.key) + Voice::Pause + 1.0);
+    outroLen = std::max(3.0, Voice::Length(Lang::Code(), Outro.key) + 0.8);
     int count = std::clamp(static_cast<int>(std::lround(total / 38)), 2, 16);
     double seg = std::max(15.0, (total - lead - introLen - outroLen) / count);
     plan.push_back(Intro);
@@ -454,6 +455,7 @@ void StretchBreak::Frame()
         hasFrom = true;
         blendStart = t;
         InvalidateAll();   // the titles change
+        if (!voice) Access::Announce(Handle(), Lang::T(plan[now].text));
     }
     if (voice && spoken != now && (now > 0 || t >= lead)) {
         spoken = now;

@@ -28,8 +28,10 @@ $exe = Join-Path $bin 'BlinkBuddy.exe'
 # A running copy can't be overwritten, but it can be renamed out of the way.
 if (Test-Path $exe) { Move-Item -Force $exe "$exe.old" -ErrorAction SilentlyContinue }
 Copy-Item (Join-Path $build 'BlinkBuddy.exe') $exe
-# The spoken steps of the guided breaks sit next to the exe (without them, Windows' own voice reads the steps).
+# The spoken steps of the guided breaks sit next to the exe, a folder per language (without them, a Windows voice for
+# the language reads the steps). Clips from before the folders (voice\*.mp3) are cleared away.
 $voice = Join-Path $bin 'voice'
 New-Item -ItemType Directory -Force -Path $voice | Out-Null
-Copy-Item (Join-Path $PSScriptRoot 'res\voice\*') $voice -Force
+Get-ChildItem -LiteralPath $voice -File -Filter *.mp3 | Remove-Item -Force
+Copy-Item (Join-Path $PSScriptRoot 'res\voice\*') $voice -Recurse -Force
 "Built $exe ({0:0} KB)" -f ((Get-Item $exe).Length / 1KB)

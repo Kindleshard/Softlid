@@ -391,8 +391,6 @@ Powieki: dwie ciemne powieki zamykają się od góry i od dołu ekranu, jak twoj
 Przełącz się na nią przyciskiem obok paska tytułu. Najedź na nią, aby mieć szybkie ustawienia; kliknij, aby tu wrócić.
 Minimalizowanie tego okna przełącza w tryb mini
 Zwijaj to okno do ikony, żeby było widać, gdzie się podziało
-Podoba ci się BlinkBuddy? Jest darmowy; napiwek pomaga go rozwijać.
-Wesprzyj...
 Zużycie zasobów
 Ile sam BlinkBuddy używa teraz, tak jak liczy to Menedżer zadań.
 Ostatnia minuta: procesor (kolor akcentu) i karta graficzna (zielony)
@@ -476,3 +474,48 @@ Aktualizacje
 Ta wersja i nowsze, gdy się pojawią.
 Resetuj
 Minimalizuj
+Pomoc i wsparcie
+Napisz, co poszło nie tak, albo pomóż BlinkBuddy działać dalej.
+Coś nie działa? Zgłoś to na GitHubie.
+Zgłoś błąd...
+BlinkBuddy jest darmowy. Kawa pomaga mu działać dalej.
+Wesprzyj na Ko-fi
+Lewy górny
+Prawy górny
+Lewy dolny
+Prawy dolny
+Środek
+Krok {0} z {1}
+Czytaj na głos
+Wł.: każdy krok jest czytany na głos
+Wył.: nic nie jest czytane na głos
+Witaj w BlinkBuddy
+Łagodne przerwy i spokojniejszy ekran podczas pracy. To zajmie około minuty.
+Każdy krok jest czytany na głos. Przycisk powyżej go wycisza.
+Pomiń przewodnik
+Wybierz, co ci pomaga
+Wszystko możesz później zmienić.
+Przerwy na patrzenie w dal
+{0} s co {1} min, z ćwiczeniami oczu
+Cieplejszy ekran wieczorem
+Od zachodu do wschodu słońca tam, gdzie jesteś
+Przerwy na wstanie
+Kilka rozciągnięć co {0} min
+Małe oko mruga razem z tobą
+Wstecz
+Dalej
+Gdzie mieszka BlinkBuddy
+Czeka w zasobniku obok zegara. Kliknij, aby otworzyć ustawienia, kliknij prawym przyciskiem, aby wykonać szybkie akcje, np. wstrzymać.
+Tryb mini: mała ikona, która zostaje na wierzchu i pokazuje następną przerwę.
+Wszystko gotowe
+Pierwsza przerwa za {0} min. Chcesz zobaczyć, jak wygląda?
+Chcesz zobaczyć, jak wygląda przerwa?
+Wypróbuj przerwę teraz
+Ten przewodnik możesz powtórzyć w Opcjach, w sekcji Pomoc i wsparcie.
+Zakończ
+Pokaż przewodnik ponownie
+Uruchom przewodnik
+Witaj w BlinkBuddy. Łagodne przerwy i spokojniejszy ekran podczas pracy. To zajmie około minuty.
+Wybierz, co ci pomaga. Wszystko możesz później zmienić.
+BlinkBuddy czeka w zasobniku obok zegara. Kliknij, aby otworzyć ustawienia, kliknij prawym przyciskiem, aby wykonać szybkie akcje, np. wstrzymać.
+Wszystko gotowe. Chcesz zobaczyć, jak wygląda przerwa? Wypróbuj ją teraz albo zakończ przewodnik.

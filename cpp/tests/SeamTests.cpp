@@ -51,6 +51,10 @@ TEST(SettingsReadOldAndOddFiles)
     CHECK_EQ(Settings::FromText(L"MiniSize=150").MiniScale, 115);
     CHECK_EQ(Settings::FromText(L"MiniSize=100").MiniScale, 100);   // left as it was: the new size
     CHECK_EQ(Settings::FromText(L"MiniSize=130\r\nMiniScale=120").MiniScale, 120);   // (a newer file says so itself)
+    // A file from before the first-run tour: BlinkBuddy was already in use, so no tour. A first start has no file.
+    CHECK(Settings::FromText(L"Brightness=80").TourDone);
+    CHECK(!Settings::FromText(L"TourDone=False").TourDone);
+    CHECK(!Settings{}.TourDone);
 }
 
 TEST(KeysParseAndDescribe)

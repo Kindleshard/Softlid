@@ -391,8 +391,6 @@ Párpados: dos párpados oscuros se cierran desde arriba y abajo de la pantalla,
 Cambia a él con el botón junto a la barra de título. Pasa el ratón por encima para los controles rápidos; haz clic para volver aquí.
 Minimizar esta ventana cambia al modo mini
 Plegar esta ventana en el icono, para que veas adónde fue
-¿Te gusta BlinkBuddy? Es gratis; una propina ayuda a que siga.
-Apoyar...
 Uso de recursos
 Lo que usa BlinkBuddy ahora mismo, tal como lo cuenta el Administrador de tareas.
 El último minuto: procesador (color de énfasis) y tarjeta gráfica (verde)
@@ -476,3 +474,48 @@ Actualizaciones
 Esta versión y las más nuevas cuando salgan.
 Restablecer
 Minimizar
+Ayuda y apoyo
+Cuéntanos qué salió mal o ayuda a que BlinkBuddy siga adelante.
+¿Algo no funciona? Infórmalo en GitHub.
+Informar de un error...
+BlinkBuddy es gratis. Un café lo mantiene en marcha.
+Apoyar en Ko-fi
+Arriba a la izquierda
+Arriba a la derecha
+Abajo a la izquierda
+Abajo a la derecha
+Centro
+Paso {0} de {1}
+Leer en voz alta
+Activado: cada paso se lee en voz alta
+Desactivado: no se lee nada en voz alta
+Te damos la bienvenida a BlinkBuddy
+Pausas suaves y una pantalla más tranquila mientras trabajas. Esto lleva un minuto, más o menos.
+Cada paso se lee en voz alta. El botón de arriba lo silencia.
+Saltar el recorrido
+Elige lo que te ayude
+Puedes cambiarlo todo más tarde.
+Pausas para mirar lejos
+{0} s cada {1} min, con ejercicios para los ojos
+Pantalla más cálida de noche
+Del atardecer al amanecer donde estés
+Pausas para levantarte
+Unos estiramientos cada {0} min
+Un ojito parpadea contigo
+Atrás
+Siguiente
+Dónde vive BlinkBuddy
+Espera en la bandeja, junto al reloj. Haz clic para los ajustes y clic derecho para acciones rápidas como pausar.
+Modo mini: un icono pequeño que se queda encima y muestra la próxima pausa.
+Todo listo
+Tu primera pausa llega en {0} min. ¿Quieres ver cómo es?
+¿Quieres ver cómo es una pausa?
+Probar una pausa ahora
+Puedes repetir este recorrido desde Opciones, en Ayuda y apoyo.
+Terminar
+Ver el recorrido otra vez
+Empezar el recorrido
+Te damos la bienvenida a BlinkBuddy. Pausas suaves y una pantalla más tranquila mientras trabajas. Esto lleva un minuto, más o menos.
+Elige lo que te ayude. Puedes cambiarlo todo más tarde.
+BlinkBuddy espera en la bandeja, junto al reloj. Haz clic para los ajustes y clic derecho para acciones rápidas como pausar.
+Todo listo. ¿Quieres ver cómo es una pausa? Prueba una ahora o termina el recorrido.

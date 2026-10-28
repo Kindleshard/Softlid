@@ -121,6 +121,7 @@ public:
 
     // Mini mode (AppExtras.cpp).
     void EnterMiniMode() override;
+    void ShowTour() override;
     void LeaveMiniMode() override;
     void HideMini() override;
     void SaveMiniPosition(POINT at) override;

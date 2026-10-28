@@ -391,8 +391,6 @@ Paupières : deux paupières sombres se ferment depuis le haut et le bas de l'é
 Passez-y avec le bouton à côté de la barre de titre. Survolez-la pour les réglages rapides ; cliquez dessus pour revenir ici.
 Réduire cette fenêtre passe en mode mini
 Replier cette fenêtre dans l'icône, pour voir où elle est allée
-Vous aimez BlinkBuddy ? Il est gratuit ; un pourboire l'aide à continuer.
-Soutenir...
 Utilisation des ressources
 Ce que BlinkBuddy utilise lui-même en ce moment, tel que le compte le Gestionnaire des tâches.
 La dernière minute : processeur (couleur d'accent) et carte graphique (vert)
@@ -476,3 +474,48 @@ Mises à jour
 Cette version, et les plus récentes quand elles sortent.
 Réinitialiser
 Réduire
+Aide et soutien
+Dites-nous ce qui n'a pas marché, ou aidez BlinkBuddy à continuer.
+Quelque chose ne fonctionne pas ? Signalez-le sur GitHub.
+Signaler un bug...
+BlinkBuddy est gratuit. Un café l'aide à continuer.
+Soutenir sur Ko-fi
+En haut à gauche
+En haut à droite
+En bas à gauche
+En bas à droite
+Centre
+Étape {0} sur {1}
+Lecture à voix haute
+Activée : chaque étape est lue à voix haute
+Désactivée : rien n'est lu à voix haute
+Bienvenue dans BlinkBuddy
+Des pauses douces et un écran plus reposant pendant que vous travaillez. Cela prend environ une minute.
+Chaque étape est lue à voix haute. Le bouton ci-dessus coupe le son.
+Passer la visite
+Choisissez ce qui vous aide
+Vous pourrez tout modifier plus tard.
+Pauses pour regarder au loin
+{0} s toutes les {1} min, avec des exercices pour les yeux
+Écran plus chaud le soir
+Du coucher au lever du soleil, là où vous êtes
+Pauses pour se lever
+Quelques étirements toutes les {0} min
+Un petit œil cligne avec vous
+Retour
+Suivant
+Où se trouve BlinkBuddy
+Il attend dans la zone de notification, près de l'horloge. Cliquez pour les paramètres, clic droit pour les actions rapides comme la pause.
+Mode mini : une petite icône qui reste au premier plan et indique la prochaine pause.
+Tout est prêt
+Votre première pause arrive dans {0} min. Voulez-vous voir à quoi elle ressemble ?
+Voulez-vous voir à quoi ressemble une pause ?
+Essayer une pause maintenant
+Vous pourrez refaire cette visite depuis Options, dans Aide et soutien.
+Terminer
+Revoir la visite
+Lancer la visite
+Bienvenue dans BlinkBuddy. Des pauses douces et un écran plus reposant pendant que vous travaillez. Cela prend environ une minute.
+Choisissez ce qui vous aide. Vous pourrez tout modifier plus tard.
+BlinkBuddy attend dans la zone de notification, près de l'horloge. Cliquez pour les paramètres, clic droit pour les actions rapides comme la pause.
+Tout est prêt. Voulez-vous voir à quoi ressemble une pause ? Essayez-en une maintenant, ou terminez la visite.

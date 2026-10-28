@@ -12,6 +12,17 @@ class DirectWindow;
 
 enum class Cursor { Arrow, Hand, Cross };
 
+// What a screen reader is told about a control (ui/Access.h passes it on to Windows).
+enum class Role { None, Text, Button, Link, Switch, Slider, Spinner, Choice, Radio };
+struct AccessInfo {
+    Role role = Role::None;   // None: screen readers skip it
+    std::wstring name;        // empty: the first label in its row names it
+    std::wstring value;       // what it is set to, in words (a choice's item, a colour)
+    bool on = false;          // a switch that is on, a radio row that is chosen
+    int expanded = -1;        // a button that folds something: 1 open, 0 folded (-1: not that kind)
+    double now = 0, min = 0, max = 0, step = 1;   // a slider or stepper
+};
+
 // Something drawn inside a DirectWindow, with no window of its own: it paints itself with Direct2D and gets the mouse
 // and keyboard from the window. Geometry is in 96-dpi units, relative to the parent; everything a control is told
 // (mouse positions, painting) is in its own coordinates, (0, 0) being its top left.
@@ -65,6 +76,9 @@ public:
     virtual void Timer() {}
     virtual void Placed() {}                          // its place on screen may have changed (native children follow)
     virtual void Notify(WORD) {}                      // from its native child window (a text box: EN_CHANGE, ...)
+    virtual AccessInfo Access() const { return {}; }  // what a screen reader is told about it
+    virtual void AccessDo() { Click(); }              // pressed, turned or chosen by a screen reader
+    virtual void AccessSet(double) {}                 // a slider or stepper set by a screen reader
 
     // The control under a point (in the parent's coordinates), or null.
     virtual Control* HitTest(D2D1_POINT_2F p);

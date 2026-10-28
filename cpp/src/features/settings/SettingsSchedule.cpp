@@ -168,6 +168,7 @@ void SettingsWindow::BuildCityPicker(Stack& st)
     auto& link = linkRow.Add<Label>(L"Select your city manually", Fonts::Small(), Theme::Accent());
     link.SetBounds(46, 0, Edge - 46, 22);
     auto& linkArea = linkRow.Add<HotArea>();
+    linkArea.focusable = true;
     linkArea.SetBounds(46, 0, TextWidth(link.Text(), Fonts::Small()) + 4, 22);
     linkArea.onClick = [this] {
         pickerOpen = true;

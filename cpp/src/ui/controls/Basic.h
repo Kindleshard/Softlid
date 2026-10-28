@@ -20,6 +20,7 @@ public:
     bool wrap = false;
     bool top = false;   // text from the top (a note), not centred
     void Paint(Canvas& canvas) override;
+    AccessInfo Access() const override;
 
 private:
     std::wstring text;
@@ -58,8 +59,16 @@ public:
     HotArea() { cursor = Cursor::Hand; }
     std::function<void()> onClick;
     void Click() override { if (onClick) onClick(); }
+    // (Made focusable where nothing else does the same: then Space or Enter clicks it.)
+    bool Key(UINT key) override
+    {
+        if (key != VK_SPACE && key != VK_RETURN) return false;
+        Click();
+        return true;
+    }
     void MouseEnter() override {}
     void MouseLeave() override {}
+    AccessInfo Access() const override { return {focusable ? Role::Link : Role::None}; }
 };
 
 // A fully rounded button: a circle when it is square (an icon alone), a pill otherwise. Its text can be words, or a
@@ -80,6 +89,7 @@ public:
     void MouseUp(D2D1_POINT_2F) override;
     void Click() override;
     bool Key(UINT key) override;
+    AccessInfo Access() const override;
 
 private:
     std::wstring text;
@@ -100,6 +110,7 @@ public:
     void Paint(Canvas& canvas) override;
     void Click() override;
     bool Key(UINT key) override;
+    AccessInfo Access() const override;
 
 private:
     bool on;
@@ -124,6 +135,8 @@ public:
     void MouseUp(D2D1_POINT_2F) override;
     bool Wheel(int delta) override;
     bool Key(UINT key) override;
+    AccessInfo Access() const override;
+    void AccessSet(double v) override;
 
 private:
     void Change(int v);
@@ -150,6 +163,8 @@ public:
     void MouseMove(D2D1_POINT_2F p, bool down) override;
     void MouseUp(D2D1_POINT_2F) override;
     bool Key(UINT key) override;
+    AccessInfo Access() const override;
+    void AccessSet(double v) override;
 
 private:
     void Change(int i);

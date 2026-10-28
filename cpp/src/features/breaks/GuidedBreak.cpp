@@ -3,6 +3,7 @@
 #include "features/reminders/BreakCard.h"
 #include "features/reminders/Chime.h"
 #include "platform/Activity.h"
+#include "ui/Access.h"
 #include "ui/DirectWindow.h"
 #include "ui/controls/Basic.h"
 #include <mmsystem.h>
@@ -122,12 +123,12 @@ GuidedBreak::GuidedBreak(HWND owner, const Settings& s, float warmth)
 {
     liquid.warm = warmth;
     std::vector<std::wstring> keys = Keys();
-    int needed = Voice::MinimumSeconds(Voice::LookAwayKeys());
+    int needed = Voice::MinimumSeconds(Lang::Code(), Voice::LookAwayKeys());
     // Voice only when every line fits; otherwise a line would have to be cut.
     bool voiced = s.ExerciseVoice && (needed == 0 || s.BreakDuration >= needed);
-    if (voiced) voice = std::make_unique<Voice>();
+    if (voiced) voice = std::make_unique<Voice>(Lang::Code());
     plan.emplace(keys, DoneKey, s.BreakDuration, 2.5, sounds ? 1.0 : 0.3, voiced && needed > 0, StepWeight,
-                 [](const std::wstring& k) { return Voice::Length(k); }, Voice::Pause);
+                 [](const std::wstring& k) { return Voice::Length(Lang::Code(), k); }, Voice::Pause);
 
     POINT cursor;
     GetCursorPos(&cursor);
@@ -234,7 +235,7 @@ void GuidedBreak::Frame()
         }
         Animate(StepCount, t - outroAt, 1, dt, t);
         Redraw();
-        double wait = voice ? std::max(0.9, Voice::Length(DoneKey) + 0.25) : 0.9;
+        double wait = voice ? std::max(0.9, Voice::Length(Lang::Code(), DoneKey) + 0.25) : 0.9;
         if (t - outroAt >= wait) {
             if (sounds) Chime::Play(true);
             fadeAt = t;
@@ -247,6 +248,7 @@ void GuidedBreak::Frame()
     if (now != step) {
         step = now;
         UpdateCaption();
+        if (!voice && step >= 0) ui::Access::Announce(hwnd, Lang::T(Steps[step].text));   // (spoken anyway with the voice)
     }
     if (voice && step >= 0 && spoken != step && (step > 0 || u >= plan->lead)) {
         spoken = step;

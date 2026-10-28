@@ -2,6 +2,7 @@
 // for (language, accent, view, starting with Windows, resetting everything, updates).
 #include "app/App.h"
 #include "core/Lang.h"
+#include "features/welcome/Tour.h"
 #include "platform/Clock.h"
 #include "platform/Files.h"
 #include "platform/Memory.h"
@@ -60,6 +61,8 @@ void App::Quit()
     if (settingsWindow) ShowWindow(settingsWindow->Handle(), SW_HIDE);
     PostMessageW(window, QuitMessage, 0, 0);   // (not from inside the window's own click)
 }
+
+void App::ShowTour() { Tour::Open(*this); }
 
 void App::SetLanguage(const std::wstring& code)
 {

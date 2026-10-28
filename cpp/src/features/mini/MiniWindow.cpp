@@ -27,6 +27,7 @@ constexpr UINT TrimDelay = 4000;   // still this long: its drawing memory goes b
 constexpr ULONGLONG NotIdle = ~0ull;
 constexpr double BreathSeconds = 3.6;  // one breath of the glow
 constexpr double FlowSeconds = 1.7;    // one run of the focus timer's highlight, splash included
+constexpr ULONGLONG FlowEvery = 20000; // ms between runs while the icon rests (each frame costs: it is drawn on the CPU)
 constexpr int FocusGreen = Palette::Argb(95, 208, 138);   // the focus timer's circle unless set otherwise (as its rest screen)
 
 // Diagnostics ("--offscreen ... --mini-shot <file>"): each frame of the icon is also saved to the file, for screenshots.
@@ -354,7 +355,13 @@ RECT MiniWindow::Bounds() const { return {pos.x, pos.y, pos.x + px, pos.y + px};
 // What the lamp and the laptop show: the screen's brightness (0 at its lowest, 1 at full).
 float MiniWindow::Bright() const { return app.S().FilterEnabled ? (app.S().Brightness - 20) / 80.0f : 1.0f; }
 bool MiniWindow::FocusOn() const { return app.FocusState() == Focus::Working || app.FocusState() == Focus::Paused; }
-bool MiniWindow::Flowing() const { return app.FocusState() == Focus::Working; }
+// While the focus timer works, the highlight runs on and on under the pointer, and otherwise once every 20 s: a
+// continuous run would redraw the icon 30 times a second for the whole work period.
+bool MiniWindow::Flowing() const
+{
+    if (app.FocusState() != Focus::Working) return false;
+    return lit || (flowStart && GetTickCount64() - flowStart < static_cast<ULONGLONG>(FlowSeconds * 1000));
+}
 float MiniWindow::Progress() const { return app.S().MiniCountdown ? app.LookAwayProgress() : -1; }
 float MiniWindow::FocusDone() const { return FocusOn() ? app.BreakProgress() : -1; }   // (the work period, while it runs)
 int MiniWindow::FocusColor() const { return app.S().MiniFocusColor ? app.S().MiniFocusColor | 0xFF000000 : FocusGreen; }
@@ -489,7 +496,7 @@ void MiniWindow::DrawClock(ID2D1RenderTarget* t, const std::wstring& time, bool 
 // top, runs faster and faster (stretching as it goes) to the arc's end, splashes against it, and starts again.
 void MiniWindow::DrawFlow(ID2D1RenderTarget* t, float cx, float cy, float r, float ring, float progress)
 {
-    double now = GetTickCount64() / 1000.0;
+    double now = (GetTickCount64() - flowStart) / 1000.0;   // (from the start of this run)
     double phase = std::fmod(now, FlowSeconds) / FlowSeconds;
     float sweep = 360 * progress;
     int glint = Mix(FocusColor(), Palette::Argb(255, 255, 255), 2 / 3.0f);
@@ -669,8 +676,12 @@ void MiniWindow::CheckHover()
         breathStart = now;
         StartAnim();
     }
-    // The focus timer's flow keeps the animation going while it runs.
-    if (Flowing() && !animating) StartAnim();
+    // The focus timer's flow, when a run is due.
+    if (app.FocusState() == Focus::Working && now >= nextFlow) {
+        nextFlow = now + FlowEvery;
+        if (!lit) flowStart = now;
+        StartAnim();
+    }
     // Brightness, the filter or the chosen icon changed (shortcuts, the panel, the schedule): show it.
     if (!animating && (std::abs(Bright() - drawnBright) > 0.005f || std::abs(app.WarmthNow() - drawnWarm) > 0.005f ||
                        s.MiniIcon != drawnIcon || std::abs(Progress() - drawnProgress) > 0.004f ||

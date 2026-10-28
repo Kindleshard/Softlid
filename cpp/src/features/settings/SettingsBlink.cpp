@@ -4,6 +4,7 @@
 #include "core/Lang.h"
 #include "platform/Voice.h"
 #include "ui/Theme.h"
+#include <algorithm>
 
 namespace bb {
 namespace {
@@ -61,17 +62,10 @@ void SettingsWindow::BuildLookAway(Stack& st)
 {
     FeatureHead(st, FLookAway, L"The 20-20-20 rule: every 20 min, look 20 ft (6 m) away for 20 s.");
     SliderRow(st, L"Every", 5, 60, s.BreakInterval, defaults.BreakInterval, Minutes, [this](int v) { s.BreakInterval = v; app.Changed(); });
-    // The spoken lines set a floor: below their total length the voice is switched off rather than cut short.
-    int voiceNeeds = Voice::MinimumSeconds(Voice::LookAwayKeys());
-    int breakDefault = voiceNeeds > 0 ? voiceNeeds : defaults.BreakDuration;
-    Toggle* voiceToggle = nullptr;
-    Label* voiceHint = nullptr;
-    auto voiceFits = [this, voiceNeeds, &voiceToggle, &voiceHint] {
-        bool fits = voiceNeeds == 0 || s.BreakDuration >= voiceNeeds;
-        voiceToggle->SetEnabled(fits);
-        voiceHint->SetPlainText(fits ? Lang::T(L"reads each exercise aloud")
-                                     : Lang::F(L"needs breaks of {0} s or longer", {std::to_wstring(voiceNeeds)}));
-    };
+    // The spoken lines set a floor: below their total length the voice stays quiet rather than be cut short, and
+    // turning the voice on makes the break that long.
+    int voiceNeeds = Voice::MinimumSeconds(Lang::Code(), Voice::LookAwayKeys());
+    int breakDefault = s.ExerciseVoice ? std::max(voiceNeeds, defaults.BreakDuration) : defaults.BreakDuration;
     Slider& duration = SliderRow(st, L"Look away for", 10, 120, s.BreakDuration, breakDefault, Seconds, [this](int v) {
         s.BreakDuration = v;
         app.Changed();
@@ -85,17 +79,28 @@ void SettingsWindow::BuildLookAway(Stack& st)
               breakMore);
     Row& voiceRow = st.Add(34, [this, breakMore] { return breakMore() && s.Exercises; });
     AddLabel(voiceRow, L"Voice", Fonts::Body(), Theme::Fg, 48, 4, 56, 26);
-    voiceHint = &AddLabel(voiceRow, L"reads each exercise aloud", Fonts::Small(), Theme::Dim, 108, 8, 260, 20);
-    voiceToggle = &AddToggle(voiceRow, Edge - 44, 6, s.ExerciseVoice, [this](bool v) { s.ExerciseVoice = v; app.Changed(); });
-    voiceFits();
-    // (The slider's own handler shows the new value; this one also checks the voice still fits.)
-    auto shown = duration.onChange;
-    duration.onChange = [shown, toggle = voiceToggle, hint = voiceHint, this, voiceNeeds](int v) {
-        shown(v);
-        bool fits = voiceNeeds == 0 || v >= voiceNeeds;
-        toggle->SetEnabled(fits);
-        hint->SetPlainText(fits ? Lang::T(L"reads each exercise aloud") : Lang::F(L"needs breaks of {0} s or longer", {std::to_wstring(voiceNeeds)}));
+    Label& voiceHint = AddLabel(voiceRow, L"", Fonts::Small(), Theme::Dim, 108, 8, 260, 20);
+    auto hint = [this, &voiceHint, voiceNeeds](int seconds) {
+        bool fits = voiceNeeds == 0 || seconds >= voiceNeeds || !s.ExerciseVoice;
+        voiceHint.SetPlainText(fits ? Lang::T(L"reads each exercise aloud")
+                                    : Lang::F(L"needs breaks of {0} s or longer", {std::to_wstring(voiceNeeds)}));
     };
+    hint(s.BreakDuration);
+    // (The slider's own handler shows the new value; this one also says whether the voice still fits.)
+    auto shown = duration.onChange;
+    duration.onChange = [shown, hint](int v) {
+        shown(v);
+        hint(v);
+    };
+    AddToggle(voiceRow, Edge - 44, 6, s.ExerciseVoice, [this, &duration, voiceNeeds, hint](bool v) {
+        s.ExerciseVoice = v;
+        if (v && s.BreakDuration < voiceNeeds) {   // long enough for every line
+            duration.SetValue(voiceNeeds);
+            duration.onChange(voiceNeeds);
+        }
+        app.Changed();
+        hint(s.BreakDuration);
+    });
     ToggleRow(st, L"Dark background behind the break", s.BreakBackdrop, [this](bool v) { s.BreakBackdrop = v; app.Changed(); }, breakMore);
     Note(st, L"Off: the eye exercises move over your screen instead of a black background.", 1, breakMore);
     ToggleRow(st, L"Chime when a break starts and ends", s.Sounds, [this](bool v) { s.Sounds = v; app.Changed(); }, breakMore);

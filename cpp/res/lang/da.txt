@@ -209,7 +209,7 @@ Tid til en stå-op-pause
 Rejs dig, stræk ud, gå lidt rundt, fyld måske vand på.
 Udsæt 5 min
 Spring over
-Kig væk fra skærmen, på noget langt væk, og lad øjnene blive bløde.
+Kig væk fra skærmen, på noget langt væk, og lad øjnene slappe af.
 Kig langsomt til venstre og højre, uden at bevæge hovedet.
 Kig nu langsomt op og ned.
 Rul øjnene i en langsom, bred cirkel.
@@ -391,8 +391,6 @@ Start fokustimeren
 Skift til det med knappen ved siden af titellinjen. Hold musen over det for hurtige indstillinger; klik på det for at komme tilbage hertil.
 Minimering af dette vindue skifter til minitilstand
 Fold vinduet sammen til ikonet, så du kan se, hvor det blev af
-Kan du lide BlinkBuddy? Det er gratis; drikkepenge holder det i gang.
-Støt...
 Ressourceforbrug
 Hvad BlinkBuddy selv bruger lige nu, sådan som Jobliste tæller det.
 Det seneste minut: processor (accentfarve) og grafikkort (grøn)
@@ -476,3 +474,48 @@ Opdateringer
 Denne version, og nyere når de kommer.
 Nulstil
 Minimer
+Hjælp og støtte
+Fortæl os, hvad der gik galt, eller hjælp BlinkBuddy med at fortsætte.
+Virker noget ikke? Rapportér det på GitHub.
+Rapportér en fejl...
+BlinkBuddy er gratis. En kop kaffe holder det i gang.
+Støt på Ko-fi
+Øverst til venstre
+Øverst til højre
+Nederst til venstre
+Nederst til højre
+Midten
+Trin {0} af {1}
+Læs højt
+Til: hvert trin læses højt
+Fra: intet læses højt
+Velkommen til BlinkBuddy
+Blide pauser og en roligere skærm, mens du arbejder. Det tager cirka et minut.
+Hvert trin læses højt. Knappen ovenfor slår lyden fra.
+Spring rundvisningen over
+Vælg det, der hjælper dig
+Du kan ændre det hele senere.
+Kig væk-pauser
+{0} s hvert {1}. min, med øjenøvelser
+Varmere skærm om aftenen
+Fra solnedgang til solopgang, hvor du er
+Rejs dig-pauser
+Et par strækøvelser hvert {0}. min
+Et lille øje blinker med dig
+Tilbage
+Næste
+Hvor BlinkBuddy bor
+Den venter i meddelelsesområdet ved uret. Klik for indstillinger, højreklik for hurtige handlinger som pause.
+Minitilstand: et lille ikon, der bliver øverst og viser den næste pause.
+Alt er klar
+Din første pause kommer om {0} min. Vil du se, hvordan en ser ud?
+Vil du se, hvordan en pause ser ud?
+Prøv en pause nu
+Du kan tage rundvisningen igen fra Indstillinger under Hjælp og støtte.
+Afslut
+Vis rundvisningen igen
+Start rundvisningen
+Velkommen til BlinkBuddy. Blide pauser og en roligere skærm, mens du arbejder. Det tager cirka et minut.
+Vælg det, der hjælper dig. Du kan ændre det hele senere.
+BlinkBuddy venter i meddelelsesområdet ved uret. Klik for indstillinger, højreklik for hurtige handlinger som pause.
+Alt er klar. Vil du se, hvordan en pause ser ud? Prøv en nu, eller afslut rundvisningen.

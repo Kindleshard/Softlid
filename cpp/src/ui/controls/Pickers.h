@@ -17,6 +17,10 @@ public:
     void Click() override;
     bool Key(UINT key) override;
 
+protected:
+    int Count() const override { return static_cast<int>(items.size()); }
+    std::wstring ItemName(int i) const override { return items[i]; }
+
 private:
     void Open();
     std::vector<std::wstring> items;
@@ -32,6 +36,7 @@ public:
     void Paint(Canvas& canvas) override;
     void Click() override;
     bool Key(UINT key) override;
+    AccessInfo Access() const override;
 
 private:
     bool open;
@@ -47,6 +52,8 @@ public:
 
     void Paint(Canvas& canvas) override;
     void Click() override;
+    bool Key(UINT key) override;   // Space or Enter
+    AccessInfo Access() const override;   // (named by its section's title)
 
 private:
     bool open;
@@ -66,6 +73,9 @@ public:
     void MouseDown(D2D1_POINT_2F p) override;
     void MouseUp(D2D1_POINT_2F) override;
     void Timer() override;
+    bool Key(UINT key) override;   // Left or Down one step less, Right or Up one more
+    AccessInfo Access() const override;
+    void AccessSet(double v) override;
 
 private:
     float LabelHeight() const { return H() * 0.36f; }
@@ -95,6 +105,7 @@ public:
     void Placed() override;
     void Notify(WORD code) override;
     void MouseDown(D2D1_POINT_2F) override;
+    void FocusChanged() override;   // reached with Tab: the caret goes in
 
 private:
     static LRESULT CALLBACK EditProc(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);

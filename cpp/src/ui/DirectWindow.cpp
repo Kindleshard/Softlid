@@ -1,4 +1,6 @@
 #include "ui/DirectWindow.h"
+#include "ui/Access.h"
+#include "ui/Layout.h"
 #include "platform/DarkMode.h"
 #include "ui/Theme.h"
 #include <commctrl.h>
@@ -25,7 +27,7 @@ bool IsWithin(const Control* c, const Control* ancestor)
 void CollectFocusable(Control* c, std::vector<Control*>& out)
 {
     if (!c->Visible() || !c->Enabled()) return;
-    if (c->focusable && c->VisibleRect().right > 0) out.push_back(c);
+    if (c->focusable && c->W() > 0 && c->H() > 0) out.push_back(c);   // (scrolled out of sight too: it scrolls in)
     if (auto box = dynamic_cast<Container*>(c))
         for (auto& child : box->Children()) CollectFocusable(child.get(), out);
 }
@@ -159,15 +161,52 @@ void DirectWindow::InvalidateAll()
     if (hwnd) InvalidateRect(hwnd, nullptr, FALSE);
 }
 
-void DirectWindow::SetFocus(Control* control)
+void DirectWindow::SetFocus(Control* control, bool takeKeyboard)
 {
     if (control == focused) return;
     Control* old = focused;
     focused = control;
-    if (old) old->FocusChanged();
+    if (old) {
+        if (keyboardCue) Invalidate(RingAround(old));
+        old->FocusChanged();
+    }
     if (control) {
-        if (GetFocus() != hwnd) ::SetFocus(hwnd);
+        if (takeKeyboard && GetFocus() != hwnd) ::SetFocus(hwnd);
+        if (keyboardCue) Invalidate(RingAround(control));
         control->FocusChanged();
+        Access::FocusMoved(access, control);
+    }
+}
+
+// Around a control, a little outside it: where the keyboard's focus ring is drawn.
+D2D1_RECT_F DirectWindow::RingAround(const Control* c) const
+{
+    D2D1_RECT_F r = c->VisibleRect();
+    return {r.left - 4, r.top - 4, r.right + 4, r.bottom + 4};
+}
+
+void DirectWindow::PaintFocusRing(Canvas& painter)
+{
+    HWND keys = GetFocus();
+    if (!keyboardCue || !focused || !focused->Visible() || (keys != hwnd && !IsChild(hwnd, keys))) return;
+    D2D1_RECT_F r = RingAround(focused);
+    if (r.right - r.left <= 8 || r.bottom - r.top <= 8) return;   // scrolled away
+    float w = r.right - r.left, h = r.bottom - r.top, radius = std::min(std::min(w, h) / 2, 12.0f);
+    r = {r.left + 1, r.top + 1, r.right - 1, r.bottom - 1};
+    painter.OutlineRound(r, radius, Theme::Accent(), 2.0f);
+}
+
+// In a scrolling page, the control is scrolled into sight (with a little room around it).
+void DirectWindow::ShowInView(Control* control)
+{
+    for (Container* p = control->Parent(); p; p = p->Parent()) {
+        auto page = dynamic_cast<ScrollPage*>(p);
+        if (!page) continue;
+        float top = control->Origin().y - page->Origin().y + page->ScrollOffset().y, bottom = top + control->H();
+        float offset = page->ScrollOffset().y, room = 24;
+        if (top < offset + room) page->ScrollTo(top - room);
+        else if (bottom > offset + page->H() - room) page->ScrollTo(bottom - page->H() + room);
+        return;
     }
 }
 
@@ -203,7 +242,10 @@ void DirectWindow::Forget(Control* control, bool timersToo)
         ReleaseCapture();
     }
     if (IsWithin(focused, control)) focused = nullptr;
-    if (timersToo) StopTimer(control);
+    if (timersToo) {   // (going away, not only hiding)
+        StopTimer(control);
+        Access::Gone(access, control);
+    }
 }
 
 HBRUSH DirectWindow::EditBrush()
@@ -240,6 +282,7 @@ void DirectWindow::Paint()
         target->Clear(gfx::Color(options.background ? options.background : options.popup ? Palette::Argb(43, 43, 43) : Theme::Bg));
         Canvas painter(target);
         root.PaintTree(painter, clip);
+        PaintFocusRing(painter);
         if (options.popup && options.edge) {
             D2D1_SIZE_F size = ClientSize();
             float px = 1 / s;   // one pixel
@@ -260,6 +303,7 @@ void DirectWindow::MoveFocus(bool back)
     size_t i = at == list.end() ? (back ? list.size() - 1 : 0)
              : back ? (at - list.begin() + list.size() - 1) % list.size() : (at - list.begin() + 1) % list.size();
     SetFocus(list[i]);
+    ShowInView(list[i]);
 }
 
 void DirectWindow::SetHover(Control* control)
@@ -332,6 +376,7 @@ LRESULT DirectWindow::OnMessage(UINT message, WPARAM w, LPARAM l)
     case WM_COMMAND: OnCommand(w, l); return 0;
     case WM_CTLCOLOREDIT: return OnEditColors(reinterpret_cast<HDC>(w));
     case WM_CLOSE: DestroyWindow(hwnd); return 0;
+    case WM_GETOBJECT: return Access::Answer(*this, access, w, l);
     case WM_DESTROY: OnDestroy(); return 0;
     case WM_NCDESTROY: return OnFinalDestroy(w, l);
     }
@@ -390,6 +435,10 @@ void DirectWindow::OnLeftDown(D2D1_POINT_2F p)
 {
     Control* hit = root.HitTest(p);
     SetHover(hit);
+    if (keyboardCue) {
+        keyboardCue = false;   // the mouse again: no ring until the keyboard moves the focus
+        if (focused) Invalidate(RingAround(focused));
+    }
     if (!hit || !hit->Enabled()) return;
     if (hit->focusable) SetFocus(hit);
     else if (GetFocus() != hwnd) ::SetFocus(hwnd);
@@ -409,6 +458,7 @@ void DirectWindow::OnLeftUp(D2D1_POINT_2F p)
     // (The control may have been removed by its MouseUp: only click it if it is still under the pointer.)
     if (Contains({0, 0, c->W(), c->H()}, local) && root.HitTest(p) == c) c->Click();
     SetHover(root.HitTest(p));
+    Access::Changed(access, focused);   // (the control clicked, if it takes the keyboard: it is still there then)
 }
 
 void DirectWindow::OnCaptureChanged(HWND newOwner)
@@ -441,10 +491,25 @@ void DirectWindow::SetPointer()
 void DirectWindow::OnKeyDown(UINT key)
 {
     if (key == VK_TAB) {
+        keyboardCue = true;
         MoveFocus(GetKeyState(VK_SHIFT) < 0);
         return;
     }
-    if (focused && focused->Enabled() && focused->Key(key)) return;
+    if (focused && focused->Enabled() && focused->Key(key)) {
+        // (The key may have rebuilt the page: then the control is gone, and focused with it.)
+        Access::Changed(access, focused);
+        if (!keyboardCue) {
+            keyboardCue = true;
+            if (focused) Invalidate(RingAround(focused));
+        }
+        return;
+    }
+    if ((key == VK_PRIOR || key == VK_NEXT) && focused)   // Page Up and Page Down scroll the focused control's page
+        for (Container* p = focused->Parent(); p; p = p->Parent())
+            if (auto page = dynamic_cast<ScrollPage*>(p)) {
+                page->ScrollBy((key == VK_NEXT ? 0.85f : -0.85f) * page->H());
+                return;
+            }
     Shortcut(key);
 }
 
@@ -469,6 +534,7 @@ LRESULT DirectWindow::OnEditColors(HDC dc)
 
 void DirectWindow::OnDestroy()
 {
+    Access::WindowGone(access);
     for (Control* c : timers) KillTimer(hwnd, reinterpret_cast<UINT_PTR>(c));
     timers.clear();
     ReleaseGraphics();

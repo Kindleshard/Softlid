@@ -10,4 +10,7 @@ std::wstring Name(const std::wstring& app, const std::wstring& path);
 // A program's icon at a size in pixels (the caller destroys it), or null.
 HICON Icon(const std::wstring& path, int size);
 
+// This Windows' build, as "26100.1234".
+std::wstring WindowsBuild();
+
 } // namespace bb::ProgramInfo

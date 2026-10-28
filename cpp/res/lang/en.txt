@@ -391,8 +391,6 @@ Eyelids: two dark lids close from the top and bottom of the screen, like your ow
 Switch to it with the button next to the title bar. Hover over it for quick controls; click it to come back here.
 Minimising this window switches to mini mode
 Fold this window into the icon, so you see where it went
-Enjoying BlinkBuddy? It's free; a tip keeps it going.
-Support...
 Resource use
 What BlinkBuddy itself uses right now, as Task Manager counts it.
 The last minute: processor (accent color) and graphics card (green)
@@ -476,3 +474,48 @@ Updates
 This version, and newer ones when they come out.
 Reset
 Minimize
+Help and support
+Tell us what went wrong, or keep BlinkBuddy going.
+Something not working? Report it on GitHub.
+Report a bug...
+BlinkBuddy is free. A coffee keeps it going.
+Support on Ko-fi
+Top left
+Top right
+Bottom left
+Bottom right
+Center
+Step {0} of {1}
+Read aloud
+On: each step is read aloud
+Off: nothing is read aloud
+Welcome to BlinkBuddy
+Gentle breaks and a calmer screen while you work. This takes about a minute.
+Each step is read aloud. The button above mutes it.
+Skip tour
+Pick what helps you
+You can change all of it later.
+Look-away breaks
+{0} s every {1} min, with eye exercises
+Warmer screen at night
+From sunset to sunrise where you are
+Stand-up breaks
+A few stretches every {0} min
+A small eye blinks with you
+Back
+Next
+Where BlinkBuddy lives
+It waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing.
+Mini mode: a small icon that stays on top and shows the next break.
+You're all set
+Your first break comes in {0} min. Want to see what one looks like?
+Want to see what a break looks like?
+Try a break now
+You can take this tour again from Options, under Help and support.
+Finish
+Show the tour again
+Start tour
+Welcome to BlinkBuddy. Gentle breaks and a calmer screen while you work. This takes about a minute.
+Pick what helps you. You can change all of it later.
+BlinkBuddy waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing.
+You're all set. Want to see what a break looks like? Try one now, or finish the tour.

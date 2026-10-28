@@ -1,11 +1,12 @@
 // Options (the cog): the features' switches, then a card each for General, Appearance, System, mini mode, updates,
-// resource use and reset - every row with a small icon in front of its words.
+// help and support, resource use and reset - every row with a small icon in front of its words.
 #include "features/settings/SettingsWindow.h"
 #include "features/settings/SettingsHost.h"
 #include "core/Lang.h"
 #include "core/Version.h"
 #include "features/settings/ShortcutsDialog.h"
 #include "features/update/Updater.h"
+#include "platform/ProgramInfo.h"
 #include "ui/MiniArt.h"
 #include "ui/Theme.h"
 #include <shellapi.h>
@@ -148,6 +149,7 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
 
     BuildMiniOptions(st);
     BuildUpdates(st);
+    BuildSupport(st);
     BuildResourceUse(st);
 
     // ---- Reset ----
@@ -279,15 +281,36 @@ void SettingsWindow::BuildUpdates(Stack& st)
     if (Updater::Available() && app.Update().text.empty()) app.CheckForUpdates();
     shownDownloading = app.Update().downloading;   // (the rows are placed once the page is built)
     RefreshUpdates();
+}
 
-    // Supporting BlinkBuddy (only once there is somewhere to send people).
-    if (DonateUrl[0]) {
-        Divider(st);
-        Row& support = st.Add(46);
-        AddLabel(support, L"Enjoying BlinkBuddy? It's free; a tip keeps it going.", Fonts::Body(), Theme::Fg, 24, 10, Edge - 140 - 32, 26);
-        AddButton(support, L"Support...", Edge - 140, 6, 140, 34).onClick = [] {
-            ShellExecuteW(nullptr, L"open", DonateUrl, nullptr, nullptr, SW_SHOWNORMAL);
+// Help and support: the first-run tour again, reporting a bug (a GitHub issue, filled in with this version, Windows'
+// build and the language; nothing is sent until the person submits it there) and a tip on Ko-fi.
+void SettingsWindow::BuildSupport(Stack& st)
+{
+    Divider(st);
+    CardHead(st, L'\uE897', L"Help and support", L"Tell us what went wrong, or keep BlinkBuddy going.");
+    // A row of words and a button: the words take a second line when they need it (never cut short).
+    auto row = [this, &st](wchar_t icon, std::wstring_view words, std::wstring_view button) -> Button& {
+        float w = Edge - 176 - 12 - RowText;
+        bool two = LinesFor(Lang::T(words), Fonts::Body(), w) > 1;
+        Row& r = st.Add(two ? 62.0f : 46.0f);
+        RowIcon(r, icon, two ? 19.0f : 11.0f);
+        Label& l = AddLabel(r, words, Fonts::Body(), Theme::Fg, RowText, two ? 6.0f : 10.0f, w, two ? 50.0f : 26.0f);
+        l.wrap = two;
+        return AddButton(r, button, Edge - 176, two ? 14.0f : 6.0f, 176, 34);
+    };
+    row(L'\uE7BE', L"Show the tour again", L"Start tour").onClick = [this] { app.ShowTour(); };
+    if (ReleaseRepo[0]) {
+        row(L'\uEBE8', L"Something not working? Report it on GitHub.", L"Report a bug...").onClick = [] {
+            std::wstring url = L"https://github.com/" + std::wstring(ReleaseRepo) + L"/issues/new?template=bug_report.yml&version=" +
+                               Version + L"&windows=" + ProgramInfo::WindowsBuild() + L"&language=" + Lang::Code();
+            ShellExecuteW(nullptr, L"open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
         };
+    }
+    if (DonateUrl[0]) {
+        Button& kofi = row(L'\uEC32', L"BlinkBuddy is free. A coffee keeps it going.", L"Support on Ko-fi");
+        kofi.SetTint(Palette::KoFi);
+        kofi.onClick = [] { ShellExecuteW(nullptr, L"open", DonateUrl, nullptr, nullptr, SW_SHOWNORMAL); };
     }
 }
 

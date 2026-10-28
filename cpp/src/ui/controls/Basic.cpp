@@ -40,6 +40,12 @@ Label::Label(std::wstring_view english, IDWriteTextFormat* font, int color)
 
 void Label::SetText(std::wstring_view english) { SetPlainText(Lang::T(english)); }
 
+AccessInfo Label::Access() const
+{
+    if (text.empty()) return {};
+    return {Role::Text, text};
+}
+
 void Label::SetPlainText(std::wstring t)
 {
     if (t == text) return;
@@ -172,6 +178,8 @@ void Button::Click()
     if (onClick) onClick();
 }
 
+AccessInfo Button::Access() const { return {Role::Button, text.empty() ? tip : text}; }
+
 bool Button::Key(UINT key)
 {
     if (key != VK_SPACE && key != VK_RETURN) return false;
@@ -211,6 +219,13 @@ void Toggle::Click()
 {
     SetOn(!on);
     if (onChange) onChange(on);
+}
+
+AccessInfo Toggle::Access() const
+{
+    AccessInfo info{Role::Switch};
+    info.on = on;
+    return info;
 }
 
 bool Toggle::Key(UINT key)
@@ -257,6 +272,17 @@ void Slider::SetMuted(bool on)
     muted = on;
     Invalidate();
 }
+
+AccessInfo Slider::Access() const
+{
+    AccessInfo info{Role::Slider};
+    info.now = value;
+    info.min = min;
+    info.max = max;
+    return info;
+}
+
+void Slider::AccessSet(double v) { Change(static_cast<int>(std::lround(v))); }
 
 void Slider::Change(int v)
 {
@@ -374,6 +400,17 @@ void StepSlider::SetSteps(std::vector<std::wstring> englishLabels)
     if (selected >= static_cast<int>(labels.size())) selected = static_cast<int>(labels.size()) - 1;
     Invalidate();
 }
+
+AccessInfo StepSlider::Access() const
+{
+    AccessInfo info{Role::Slider};
+    info.now = selected;
+    info.max = static_cast<double>(labels.size()) - 1;
+    if (selected >= 0 && selected < static_cast<int>(labels.size())) info.value = labels[selected];
+    return info;
+}
+
+void StepSlider::AccessSet(double v) { Change(std::clamp(static_cast<int>(std::lround(v)), 0, static_cast<int>(labels.size()) - 1)); }
 
 void StepSlider::Change(int i)
 {

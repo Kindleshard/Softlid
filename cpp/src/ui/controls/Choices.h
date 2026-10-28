@@ -10,14 +10,21 @@ namespace bb::ui {
 // it from code with SetSelected doesn't). Item texts are given in English and shown translated.
 
 // The base: an index, a list of item texts, and the notification.
+// The keyboard: the arrow keys step through the items, Home and End go to the first and last.
 class Choice : public Control {
 public:
+    Choice() { focusable = true; }
     int Selected() const { return selected; }
     void SetSelected(int i);
     std::function<void(int)> onChange;
+    bool Key(UINT key) override;
+    AccessInfo Access() const override;   // a screen reader hears the chosen item's name
 
 protected:
     void Pick(int i);   // chosen with the mouse or keyboard
+    virtual std::wstring ItemName(int) const { return L""; }
+    virtual int Count() const { return 0; }        // how many items (0: the keys do nothing here)
+    virtual void KeyPick(int i) { Pick(i); }       // an item reached with the keyboard
     int selected = 0;
 };
 
@@ -27,6 +34,10 @@ public:
     explicit Segmented(std::vector<std::wstring> englishItems);
     void Paint(Canvas& canvas) override;
     void MouseDown(D2D1_POINT_2F p) override;
+
+protected:
+    int Count() const override { return static_cast<int>(items.size()); }
+    std::wstring ItemName(int i) const override { return items[i]; }
 
 private:
     std::vector<std::wstring> items;
@@ -38,6 +49,10 @@ public:
     explicit TabStrip(std::vector<std::wstring> englishItems);
     void Paint(Canvas& canvas) override;
     void MouseDown(D2D1_POINT_2F p) override;
+
+protected:
+    int Count() const override { return static_cast<int>(items.size()); }
+    std::wstring ItemName(int i) const override;
 
 private:
     std::vector<D2D1_RECT_F> ItemBounds() const;
@@ -56,6 +71,9 @@ public:
 
     void Paint(Canvas& canvas) override;
     void MouseDown(D2D1_POINT_2F) override;
+    bool Key(UINT key) override;   // Space or Enter chooses it
+    AccessInfo Access() const override;
+    void AccessDo() override { if (onChosen) onChosen(); }
 
 private:
     std::wstring title, note, tag;
@@ -69,6 +87,10 @@ public:
     explicit CornerPicker(int selected);
     void Paint(Canvas& canvas) override;
     void MouseDown(D2D1_POINT_2F p) override;
+
+protected:
+    int Count() const override { return 5; }
+    std::wstring ItemName(int i) const override;
 
 private:
     D2D1_RECT_F Frame() const;
@@ -90,6 +112,12 @@ public:
     void MouseMove(D2D1_POINT_2F p, bool) override;
     void MouseLeave() override;
     void MouseDown(D2D1_POINT_2F p) override;
+    bool Key(UINT key) override;   // and Space or Enter puts the chosen mode's values back
+
+protected:
+    int Count() const override { return static_cast<int>(names.size()); }
+    std::wstring ItemName(int i) const override { return names[i]; }
+    void KeyPick(int i) override;
 
 private:
     D2D1_RECT_F Tile(int i) const;
@@ -120,6 +148,11 @@ public:
     void MouseDown(D2D1_POINT_2F p) override;
     void Timer() override;
     void EnabledChanged() override { Invalidate(); }
+
+protected:
+    int Count() const override { return count; }
+    std::wstring ItemName(int i) const override;   // its caption, or its number
+    void KeyPick(int i) override;
 
 private:
     float Side() const { return captions.empty() ? H() : H() - CaptionHeight(captionLines); }   // a tile's side

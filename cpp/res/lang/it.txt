@@ -391,8 +391,6 @@ Palpebre: due palpebre scure si chiudono dall'alto e dal basso dello schermo, co
 Passa a essa con il pulsante accanto alla barra del titolo. Passaci sopra per i controlli rapidi; cliccala per tornare qui.
 Ridurre a icona questa finestra passa alla modalità mini
 Ripiega questa finestra nell'icona, così vedi dove è andata
-Ti piace BlinkBuddy? È gratuito; una mancia lo aiuta ad andare avanti.
-Sostieni...
 Uso delle risorse
 Ciò che BlinkBuddy usa in questo momento, come lo conta Gestione attività.
 L'ultimo minuto: processore (colore principale) e scheda grafica (verde)
@@ -476,3 +474,48 @@ Aggiornamenti
 Questa versione e quelle più nuove quando escono.
 Ripristina
 Riduci a icona
+Aiuto e supporto
+Dicci cosa è andato storto, o aiuta BlinkBuddy ad andare avanti.
+Qualcosa non funziona? Segnalalo su GitHub.
+Segnala un bug...
+BlinkBuddy è gratuito. Un caffè lo fa andare avanti.
+Sostieni su Ko-fi
+In alto a sinistra
+In alto a destra
+In basso a sinistra
+In basso a destra
+Centro
+Passo {0} di {1}
+Leggi ad alta voce
+Attivo: ogni passo viene letto ad alta voce
+Disattivo: non viene letto niente
+Benvenuto in BlinkBuddy
+Pause delicate e uno schermo più riposante mentre lavori. Ci vuole circa un minuto.
+Ogni passo viene letto ad alta voce. Il pulsante in alto lo silenzia.
+Salta il tour
+Scegli ciò che ti aiuta
+Puoi cambiare tutto più tardi.
+Pause per guardare lontano
+{0} s ogni {1} min, con esercizi per gli occhi
+Schermo più caldo di sera
+Dal tramonto all'alba, dove ti trovi
+Pause per alzarti
+Qualche allungamento ogni {0} min
+Un piccolo occhio sbatte le palpebre con te
+Indietro
+Avanti
+Dove si trova BlinkBuddy
+Aspetta nell'area di notifica, vicino all'orologio. Fai clic per le impostazioni, clic destro per azioni rapide come la pausa.
+Modalità mini: una piccola icona che resta in primo piano e mostra la prossima pausa.
+Tutto pronto
+La tua prima pausa arriva tra {0} min. Vuoi vedere com'è?
+Vuoi vedere com'è una pausa?
+Prova subito una pausa
+Puoi rifare questo tour da Opzioni, in Aiuto e supporto.
+Fine
+Mostra di nuovo il tour
+Avvia il tour
+Benvenuto in BlinkBuddy. Pause delicate e uno schermo più riposante mentre lavori. Ci vuole circa un minuto.
+Scegli ciò che ti aiuta. Puoi cambiare tutto più tardi.
+BlinkBuddy aspetta nell'area di notifica, vicino all'orologio. Fai clic per le impostazioni, clic destro per azioni rapide come la pausa.
+Tutto pronto. Vuoi vedere com'è una pausa? Provane una adesso, oppure termina il tour.

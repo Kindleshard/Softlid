@@ -209,7 +209,7 @@ Dags för en stå-upp-paus
 Res dig, stretcha, gå runt lite, kanske fyll på vattnet.
 Skjut upp 5 min
 Hoppa över
-Titta bort från skärmen, på något långt bort, och låt ögonen mjukna.
+Titta bort från skärmen, på något långt bort, och låt ögonen vila.
 Titta långsamt åt vänster och höger, utan att röra huvudet.
 Titta nu långsamt upp och ner.
 Rulla ögonen i en långsam, vid cirkel.
@@ -233,7 +233,7 @@ Res dig upp på tårna och sänk dig sedan långsamt.
 Framåtböjning
 Böj knäna lite och häng framåt för att stretcha ryggen.
 Bra jobbat!
-Bra jobbat. Ta en klunk vatten, och tillbaka till det.
+Bra jobbat. Ta en klunk vatten, och sedan tillbaka till jobbet.
 {0} s
 Fråga mig
 Fortsätt köra i aktivitetsfältet
@@ -391,8 +391,6 @@ Starta fokustimern
 Växla till den med knappen bredvid namnlisten. Hovra över den för snabbinställningar; klicka på den för att komma tillbaka hit.
 Att minimera det här fönstret växlar till miniläge
 Vik ihop fönstret till ikonen så att du ser vart det tog vägen
-Gillar du BlinkBuddy? Den är gratis; dricks håller den igång.
-Stöd...
 Resursanvändning
 Vad BlinkBuddy själv använder just nu, så som Aktivitetshanteraren räknar det.
 Den senaste minuten: processor (accentfärg) och grafikkort (grönt)
@@ -476,3 +474,48 @@ Uppdateringar
 Den här versionen, och nyare när de kommer.
 Återställ
 Minimera
+Hjälp och stöd
+Berätta vad som gick fel, eller hjälp BlinkBuddy att fortsätta.
+Fungerar något inte? Rapportera det på GitHub.
+Rapportera ett fel...
+BlinkBuddy är gratis. En kaffe håller det igång.
+Stöd på Ko-fi
+Övre vänstra
+Övre högra
+Nedre vänstra
+Nedre högra
+Mitten
+Steg {0} av {1}
+Läs upp
+På: varje steg läses upp
+Av: ingenting läses upp
+Välkommen till BlinkBuddy
+Mjuka pauser och en lugnare skärm medan du arbetar. Det tar ungefär en minut.
+Varje steg läses upp. Knappen ovan stänger av ljudet.
+Hoppa över rundturen
+Välj det som hjälper dig
+Du kan ändra allt senare.
+Titta bort-pauser
+{0} s var {1}:e min, med ögonövningar
+Varmare skärm på kvällen
+Från solnedgång till soluppgång där du är
+Stå upp-pauser
+Några stretchövningar var {0}:e min
+Ett litet öga blinkar med dig
+Tillbaka
+Nästa
+Var BlinkBuddy bor
+Den väntar i meddelandefältet vid klockan. Klicka för inställningar, högerklicka för snabbval som att pausa.
+Miniläge: en liten ikon som stannar överst och visar nästa paus.
+Allt är klart
+Din första paus kommer om {0} min. Vill du se hur en ser ut?
+Vill du se hur en paus ser ut?
+Prova en paus nu
+Du kan ta rundturen igen från Alternativ, under Hjälp och stöd.
+Slutför
+Visa rundturen igen
+Starta rundturen
+Välkommen till BlinkBuddy. Mjuka pauser och en lugnare skärm medan du arbetar. Det tar ungefär en minut.
+Välj det som hjälper dig. Du kan ändra allt senare.
+BlinkBuddy väntar i meddelandefältet vid klockan. Klicka för inställningar, högerklicka för snabbval som att pausa.
+Allt är klart. Vill du se hur en paus ser ut? Prova en nu, eller avsluta rundturen.

@@ -209,7 +209,7 @@ Zeit für eine Aufsteh-Pause
 Steh auf, dehn dich, geh ein paar Schritte, vielleicht Wasser nachfüllen.
 5 Min. später
 Überspringen
-Schau vom Bildschirm weg, auf etwas weit Entferntes, und lass die Augen weich werden.
+Schau vom Bildschirm weg, auf etwas weit Entferntes, und entspann die Augen.
 Schau langsam nach links und rechts, ohne den Kopf zu bewegen.
 Schau jetzt langsam nach oben und unten.
 Roll die Augen in einem langsamen, weiten Kreis.
@@ -391,8 +391,6 @@ Augenlider: Zwei dunkle Lider schließen sich von oben und unten über den Bilds
 Wechsle mit der Schaltfläche neben der Titelleiste dorthin. Zeige darauf für schnelle Einstellungen; klicke darauf, um hierher zurückzukehren.
 Minimieren dieses Fensters wechselt in den Mini-Modus
 Dieses Fenster ins Symbol falten, damit du siehst, wohin es geht
-Gefällt dir BlinkBuddy? Es ist kostenlos; ein Trinkgeld hält es am Laufen.
-Unterstützen...
 Ressourcennutzung
 Was BlinkBuddy selbst gerade nutzt, so wie der Task-Manager es zählt.
 Die letzte Minute: Prozessor (Akzentfarbe) und Grafikkarte (grün)
@@ -476,3 +474,48 @@ Updates
 Diese Version und neuere, sobald es sie gibt.
 Zurücksetzen
 Minimieren
+Hilfe und Unterstützung
+Sag uns, was schiefging, oder hilf, BlinkBuddy am Laufen zu halten.
+Funktioniert etwas nicht? Melde es auf GitHub.
+Fehler melden...
+BlinkBuddy ist kostenlos. Ein Kaffee hält es am Laufen.
+Auf Ko-fi unterstützen
+Oben links
+Oben rechts
+Unten links
+Unten rechts
+Mitte
+Schritt {0} von {1}
+Vorlesen
+An: Jeder Schritt wird vorgelesen
+Aus: Nichts wird vorgelesen
+Willkommen bei BlinkBuddy
+Sanfte Pausen und ein ruhigerer Bildschirm, während du arbeitest. Das dauert etwa eine Minute.
+Jeder Schritt wird vorgelesen. Die Taste oben schaltet das stumm.
+Tour überspringen
+Wähle, was dir hilft
+Du kannst alles später ändern.
+Wegschau-Pausen
+{0} s alle {1} min, mit Augenübungen
+Wärmerer Bildschirm am Abend
+Von Sonnenuntergang bis Sonnenaufgang, wo du bist
+Aufsteh-Pausen
+Ein paar Dehnübungen alle {0} min
+Ein kleines Auge blinzelt mit dir
+Zurück
+Weiter
+Wo BlinkBuddy wohnt
+Es wartet im Infobereich neben der Uhr. Klicke für die Einstellungen, rechtsklicke für schnelle Aktionen wie Pausieren.
+Minimodus: ein kleines Symbol, das immer oben bleibt und die nächste Pause zeigt.
+Alles bereit
+Deine erste Pause kommt in {0} min. Möchtest du sehen, wie eine aussieht?
+Möchtest du sehen, wie eine Pause aussieht?
+Jetzt eine Pause ausprobieren
+Du kannst diese Tour in den Optionen unter Hilfe und Unterstützung wiederholen.
+Fertig
+Tour noch einmal zeigen
+Tour starten
+Willkommen bei BlinkBuddy. Sanfte Pausen und ein ruhigerer Bildschirm, während du arbeitest. Das dauert etwa eine Minute.
+Wähle, was dir hilft. Du kannst alles später ändern.
+BlinkBuddy wartet im Infobereich neben der Uhr. Klicke für die Einstellungen, rechtsklicke für schnelle Aktionen wie Pausieren.
+Alles bereit. Möchtest du sehen, wie eine Pause aussieht? Probier jetzt eine aus, oder beende die Tour.

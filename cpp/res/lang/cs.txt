@@ -209,7 +209,7 @@ Najděte něco aspoň 6 m daleko a nechte oči odpočinout.
 Vstaňte, protáhněte se, projděte se, třeba si dolijte vodu.
 Odložit o 5 min
 Přeskočit
-Odvraťte zrak od obrazovky na něco daleko a nechte oči změknout.
+Odvraťte zrak od obrazovky na něco daleko a uvolněte oči.
 Pomalu se dívejte doleva a doprava, hlavou nehýbejte.
 Teď se pomalu dívejte nahoru a dolů.
 Kružte očima pomalu a široce.
@@ -391,8 +391,6 @@ Víčka: dvě tmavá víčka se zavřou shora a zdola obrazovky, jako vaše vlas
 Přepněte na ni tlačítkem vedle záhlaví. Najeďte na ni pro rychlé ovládání; kliknutím se sem vrátíte.
 Minimalizace tohoto okna přepne do mini režimu
 Složit toto okno do ikony, abyste viděli, kam zmizelo
-Líbí se vám BlinkBuddy? Je zdarma; spropitné pomáhá v jeho dalším vývoji.
-Podpořit...
 Využití prostředků
 Co BlinkBuddy právě sám používá, jak to počítá Správce úloh.
 Poslední minuta: procesor (barva zvýraznění) a grafická karta (zelená)
@@ -476,3 +474,48 @@ Aktualizace
 Tato verze a novější, až vyjdou.
 Obnovit
 Minimalizovat
+Nápověda a podpora
+Napište nám, co se pokazilo, nebo pomozte BlinkBuddy v dalším vývoji.
+Něco nefunguje? Nahlaste to na GitHubu.
+Nahlásit chybu...
+BlinkBuddy je zdarma. Káva mu pomáhá pokračovat.
+Podpořit na Ko-fi
+Vlevo nahoře
+Vpravo nahoře
+Vlevo dole
+Vpravo dole
+Uprostřed
+Krok {0} z {1}
+Číst nahlas
+Zapnuto: každý krok se čte nahlas
+Vypnuto: nic se nečte nahlas
+Vítejte v BlinkBuddy
+Jemné přestávky a klidnější obrazovka, zatímco pracujete. Zabere to asi minutu.
+Každý krok se čte nahlas. Tlačítko nahoře zvuk vypne.
+Přeskočit prohlídku
+Vyberte, co vám pomáhá
+Vše můžete později změnit.
+Přestávky na pohled do dálky
+{0} s každých {1} min, s cviky pro oči
+Teplejší obrazovka večer
+Od západu do východu slunce tam, kde jste
+Přestávky na protažení
+Pár protažení každých {0} min
+Malé oko mrká s vámi
+Zpět
+Další
+Kde BlinkBuddy bydlí
+Čeká v oznamovací oblasti u hodin. Klepnutím otevřete nastavení, pravým tlačítkem rychlé akce, například pozastavení.
+Mini režim: malá ikona, která zůstává navrchu a ukazuje další přestávku.
+Vše je připraveno
+Vaše první přestávka přijde za {0} min. Chcete vidět, jak vypadá?
+Chcete vidět, jak vypadá přestávka?
+Vyzkoušet přestávku hned
+Tuto prohlídku můžete zopakovat v Možnostech, v části Nápověda a podpora.
+Dokončit
+Znovu zobrazit prohlídku
+Spustit prohlídku
+Vítejte v BlinkBuddy. Jemné přestávky a klidnější obrazovka, zatímco pracujete. Zabere to asi minutu.
+Vyberte, co vám pomáhá. Vše můžete později změnit.
+BlinkBuddy čeká v oznamovací oblasti u hodin. Klepnutím otevřete nastavení, pravým tlačítkem rychlé akce, například pozastavení.
+Vše je připraveno. Chcete vidět, jak vypadá přestávka? Vyzkoušejte ji hned, nebo prohlídku dokončete.

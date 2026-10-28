@@ -83,55 +83,72 @@ const std::vector<std::wstring>& Voice::LookAwayKeys()
     return keys;
 }
 
-std::wstring Voice::Clip(const std::wstring& key)
+std::wstring Voice::Clip(const std::wstring& language, const std::wstring& key)
 {
-    for (const wchar_t* ext : {L".wav", L".mp3"}) {
-        std::wstring path = ExeFolder() + L"\\voice\\" + key + ext;
+    for (const wchar_t* ext : {L".mp3", L".wav"}) {
+        std::wstring path = ExeFolder() + L"\\voice\\" + language + L"\\" + key + ext;
         if (GetFileAttributesW(path.c_str()) != INVALID_FILE_ATTRIBUTES) return path;
     }
     return L"";
 }
 
-double Voice::Length(const std::wstring& key)
+double Voice::Length(const std::wstring& language, const std::wstring& key)
 {
-    static std::map<std::wstring, double> lengths;
-    if (auto found = lengths.find(key); found != lengths.end()) return found->second;
-    double s = 0;
-    std::wstring clip = Clip(key);
-    if (!clip.empty()) {
-        std::string bytes = ReadAllBytes(clip).value_or("");
-        s = clip.ends_with(L".wav") ? WavSeconds(bytes) : Mp3Seconds(bytes);
-    }
-    lengths[key] = s;
-    return s;
+    static std::map<std::wstring, double> lengths;   // by file
+    std::wstring clip = Clip(language, key);
+    if (clip.empty()) return 0;
+    if (auto found = lengths.find(clip); found != lengths.end()) return found->second;
+    std::string bytes = ReadAllBytes(clip).value_or("");
+    return lengths[clip] = clip.ends_with(L".wav") ? WavSeconds(bytes) : Mp3Seconds(bytes);
 }
 
-int Voice::MinimumSeconds(const std::vector<std::wstring>& keys)
+int Voice::MinimumSeconds(const std::wstring& language, const std::vector<std::wstring>& keys)
 {
     double total = 0;
     for (const auto& k : keys) {
-        double l = Length(k);
+        double l = Length(language, k);
         if (l <= 0) return 0;
         total += l;
     }
     return static_cast<int>(std::ceil(total + Pause * (keys.size() - 1)));
 }
 
+// A Windows voice that speaks this language (made once; false when there is none).
+bool Voice::Speaker()
+{
+    if (speaker || noSpeaker) return speaker != nullptr;
+    noSpeaker = true;
+    LCID lcid = LocaleNameToLCID(language.c_str(), 0);
+    if (!lcid) return false;
+    Microsoft::WRL::ComPtr<ISpObjectTokenCategory> voices;
+    Microsoft::WRL::ComPtr<IEnumSpObjectTokens> found;
+    Microsoft::WRL::ComPtr<ISpObjectToken> token;
+    wchar_t wanted[32];
+    swprintf_s(wanted, L"Language=%X", LANGIDFROMLCID(lcid));
+    if (FAILED(CoCreateInstance(CLSID_SpObjectTokenCategory, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&voices))) ||
+        FAILED(voices->SetId(SPCAT_VOICES, FALSE)) || FAILED(voices->EnumTokens(wanted, nullptr, &found)) ||
+        found->Next(1, &token, nullptr) != S_OK)
+        return false;
+    if (FAILED(CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&speaker))) || FAILED(speaker->SetVoice(token.Get()))) {
+        speaker.Reset();
+        return false;
+    }
+    speaker->SetRate(-1);
+    noSpeaker = false;
+    return true;
+}
+
 void Voice::Say(const std::wstring& key, const std::wstring& text)
 {
     MemJournal::Note(L"voice");
     Stop();
-    std::wstring clip = Clip(key);
+    std::wstring clip = Clip(language, key);
     if (!clip.empty() && Mci(L"open \"" + clip + L"\" type mpegvideo alias " + Alias) == 0) {
         open = true;
         Mci(std::wstring(L"play ") + Alias);
         return;
     }
-    if (!speaker) {
-        if (FAILED(CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&speaker)))) return;   // no voices: the screen still shows the steps
-        speaker->SetRate(-1);
-    }
-    speaker->Speak(text.c_str(), SPF_ASYNC | SPF_PURGEBEFORESPEAK | SPF_IS_NOT_XML, nullptr);
+    if (Speaker()) speaker->Speak(text.c_str(), SPF_ASYNC | SPF_PURGEBEFORESPEAK | SPF_IS_NOT_XML, nullptr);
 }
 
 void Voice::Stop()

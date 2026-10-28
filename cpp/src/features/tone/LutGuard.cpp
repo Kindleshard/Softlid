@@ -2,6 +2,7 @@
 #include "features/tone/LutFiles.h"
 #include "core/Lang.h"
 #include "platform/Files.h"
+#include "platform/ProgramInfo.h"
 #include "platform/Text.h"
 #include "platform/Window.h"
 #include "ui/DirectWindow.h"
@@ -203,7 +204,7 @@ public:
             dialog = std::make_unique<TrialDialog>();
             dialog->answered = [this](bool kept, bool timedOut) {
                 if (done) return;
-                if (kept) Write(L"confirmed", L"DesktopLUT is running, watched by BlinkBuddy (confirmed on this Windows build).", LutGuard::WindowsBuild());
+                if (kept) Write(L"confirmed", L"DesktopLUT is running, watched by BlinkBuddy (confirmed on this Windows build).", ProgramInfo::WindowsBuild());
                 else Finish(L"failed", timedOut ? L"No confirmation within 15 seconds, so DesktopLUT was stopped and BlinkBuddy's own filter took over."
                                                 : L"Undone. DesktopLUT was stopped and BlinkBuddy's own filter took over.");
             };
@@ -371,16 +372,6 @@ LutGuard::~LutGuard()
     if (wakeEvent) CloseHandle(wakeEvent);
 }
 
-std::wstring LutGuard::WindowsBuild()
-{
-    wchar_t build[32] = {};
-    DWORD size = sizeof build, ubr = 0, ubrSize = sizeof ubr;
-    constexpr wchar_t key[] = L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion";
-    RegGetValueW(HKEY_LOCAL_MACHINE, key, L"CurrentBuild", RRF_RT_REG_SZ, nullptr, build, &size);
-    RegGetValueW(HKEY_LOCAL_MACHINE, key, L"UBR", RRF_RT_REG_DWORD, nullptr, &ubr, &ubrSize);
-    return std::wstring(build) + L"." + std::to_wstring(ubr);
-}
-
 bool LutGuard::Running() const { return helper && WaitForSingleObject(helper, 0) == WAIT_TIMEOUT; }
 
 void LutGuard::Ensure(const Settings& s, bool forceTrial)
@@ -392,7 +383,7 @@ void LutGuard::Ensure(const Settings& s, bool forceTrial)
     }
     lutName = s.LutPath.substr(s.LutPath.find_last_of(L'\\') + 1);
     if (lutName.size() > 4) lutName.resize(lutName.size() - 4);
-    bool trial = forceTrial || s.LutConfirmedBuild != WindowsBuild();
+    bool trial = forceTrial || s.LutConfirmedBuild != ProgramInfo::WindowsBuild();
     if (!stopEvent) stopEvent = CreateEventW(nullptr, TRUE, FALSE, StopEventName);
     ResetEvent(stopEvent);
     if (!wakeEvent) wakeEvent = CreateEventW(nullptr, FALSE, FALSE, WakeEventName);

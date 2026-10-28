@@ -98,4 +98,20 @@ What stays: Direct2D's heap keeps its high-water mark (set aside) while a window
 can be emptied, but the heap keeps the pages reserved; RAM is what the trims give back. A breathing icon redraws 30
 times a second, so it keeps about 4 MB in RAM and a few percent of one core while it breathes.
 
+**Before the first release (keyboard and screen readers, the first-run tour, voices in 19 languages).** Cloaked diagnostic copies, this
+PC's settings, after 8 seconds, then CPU over 30 seconds:
+
+| State | Private | Working set | Threads | CPU (of one core) |
+|---|---|---|---|---|
+| Tray only | 2.0 MB | 11.9 MB | 1 | 0.00% |
+| Mini mode, the countdown ring | 5.4 MB | 2.1 MB | 4 | 0.16% |
+| Mini mode, the focus timer working | 5.5 MB | 5.3 MB | 4 | 0.26% (was 2.81%: its highlight ran 30 times a second for the whole work period; now one run every 20 s, or on and on under the pointer) |
+| Settings open | 11.2 MB | 2.8 MB | 7 | 0.00% |
+| Settings open, the night bar's waving line showing | 11.7 MB | 2.8 MB | 7 | 0.16% |
+| The first-run tour open | 8.2 MB | 27.9 MB | 7 | 0.00% |
+
+Screen readers cost nothing until one asks: UI Automation (uiautomationcore.dll) is delay-loaded, and its objects are
+made on the first question. The voice clips are 22 kHz mono MP3s at 32 kbit/s, about 16 KB a line, 7 MB for 19
+languages on disk; one plays at a time and none is in memory otherwise.
+
 Updated after each chunk.

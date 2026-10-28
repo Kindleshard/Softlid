@@ -61,6 +61,29 @@ void Choice::Pick(int i)
     if (onChange) onChange(i);
 }
 
+AccessInfo Choice::Access() const
+{
+    AccessInfo info{Role::Choice};
+    if (selected >= 0 && selected < Count()) info.value = ItemName(selected);
+    return info;
+}
+
+bool Choice::Key(UINT key)
+{
+    int n = Count();
+    if (n <= 0) return false;
+    int i = selected;
+    switch (key) {
+    case VK_LEFT: case VK_UP: i = i < 0 ? 0 : std::max(0, i - 1); break;
+    case VK_RIGHT: case VK_DOWN: i = i < 0 ? 0 : std::min(n - 1, i + 1); break;
+    case VK_HOME: i = 0; break;
+    case VK_END: i = n - 1; break;
+    default: return false;
+    }
+    if (i != selected) KeyPick(i);
+    return true;
+}
+
 // ---- Segmented ----
 
 Segmented::Segmented(std::vector<std::wstring> englishItems) : items(Translated(std::move(englishItems)))
@@ -123,6 +146,8 @@ void TabStrip::Paint(Canvas& c)
     }
 }
 
+std::wstring TabStrip::ItemName(int i) const { return IsGlyph(items[i]) ? Lang::T(L"Options") : items[i]; }
+
 void TabStrip::MouseDown(D2D1_POINT_2F p)
 {
     auto rects = ItemBounds();
@@ -135,6 +160,7 @@ void TabStrip::MouseDown(D2D1_POINT_2F p)
 ChoiceRow::ChoiceRow(std::wstring_view title, std::wstring_view note, std::wstring_view tag)
     : title(Lang::T(title)), note(Lang::T(note)), tag(tag.empty() ? L"" : Lang::T(tag))
 {
+    focusable = true;
     cursor = Cursor::Hand;
 }
 
@@ -176,6 +202,20 @@ void ChoiceRow::MouseDown(D2D1_POINT_2F)
     if (onChosen) onChosen();
 }
 
+AccessInfo ChoiceRow::Access() const
+{
+    AccessInfo info{Role::Radio, tag.empty() ? title : title + L" (" + tag + L")"};
+    info.on = checked;
+    return info;
+}
+
+bool ChoiceRow::Key(UINT key)
+{
+    if (key != VK_SPACE && key != VK_RETURN) return false;
+    if (onChosen) onChosen();
+    return true;
+}
+
 // ---- CornerPicker ----
 
 CornerPicker::CornerPicker(int sel)
@@ -203,6 +243,12 @@ void CornerPicker::Paint(Canvas& c)
         bool on = i == selected;
         c.FillCircle(s.x, s.y, H() * (on ? 0.11f : 0.065f), on ? Theme::Accent() : Theme::Track);
     }
+}
+
+std::wstring CornerPicker::ItemName(int i) const
+{
+    static const wchar_t* names[] = {L"Top left", L"Top right", L"Bottom left", L"Bottom right", L"Center"};
+    return Lang::T(names[std::clamp(i, 0, 4)]);
 }
 
 void CornerPicker::MouseDown(D2D1_POINT_2F p)
@@ -333,10 +379,24 @@ void ModeGrid::MouseDown(D2D1_POINT_2F p)
 {
     int i = IndexAt(p);
     if (i < 0) return;
-    // (Picked again even when it is the one already chosen: choosing a mode puts its values back.)
+    KeyPick(i);
+}
+
+// (Picked again even when it is the one already chosen: choosing a mode puts its values back.)
+void ModeGrid::KeyPick(int i)
+{
     selected = i;
     Invalidate();
     if (onChange) onChange(i);
+}
+
+bool ModeGrid::Key(UINT key)
+{
+    if ((key == VK_SPACE || key == VK_RETURN) && selected >= 0) {
+        KeyPick(selected);
+        return true;
+    }
+    return Choice::Key(key);
 }
 
 // ---- TilePicker ----
@@ -424,6 +484,16 @@ void TilePicker::MouseDown(D2D1_POINT_2F p)
 {
     int i = IndexAt(p.x);
     if (i < 0 || i == selected) return;
+    KeyPick(i);
+}
+
+std::wstring TilePicker::ItemName(int i) const
+{
+    return i < static_cast<int>(captions.size()) ? captions[i] : std::to_wstring(i + 1) + L" / " + std::to_wstring(count);
+}
+
+void TilePicker::KeyPick(int i)
+{
     Pick(i);
     Animate();
 }

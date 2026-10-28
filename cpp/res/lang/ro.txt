@@ -391,8 +391,6 @@ Pleoape: două pleoape întunecate se închid de sus și de jos pe ecran, ca pro
 Treci la ea cu butonul de lângă bara de titlu. Treci cu mouse-ul peste ea pentru comenzi rapide; dă clic pe ea ca să revii aici.
 Minimizarea acestei ferestre trece în modul mini
 Pliază această fereastră în pictogramă, ca să vezi unde a ajuns
-Îți place BlinkBuddy? E gratuit; un bacșiș îl ajută să continue.
-Susține...
 Utilizarea resurselor
 Ce folosește BlinkBuddy acum, așa cum numără Managerul de activități.
 Ultimul minut: procesor (culoarea de accent) și placa video (verde)
@@ -476,3 +474,48 @@ Actualizări
 Această versiune și cele mai noi când apar.
 Resetare
 Minimizează
+Ajutor și sprijin
+Spune-ne ce n-a mers sau ajută BlinkBuddy să continue.
+Ceva nu funcționează? Raportează pe GitHub.
+Raportează o eroare...
+BlinkBuddy este gratuit. O cafea îl ține în viață.
+Susține pe Ko-fi
+Stânga sus
+Dreapta sus
+Stânga jos
+Dreapta jos
+Centru
+Pasul {0} din {1}
+Citește cu voce tare
+Pornit: fiecare pas este citit cu voce tare
+Oprit: nu se citește nimic
+Bun venit în BlinkBuddy
+Pauze blânde și un ecran mai liniștit cât lucrezi. Durează cam un minut.
+Fiecare pas este citit cu voce tare. Butonul de sus îl oprește.
+Sari peste tur
+Alege ce te ajută
+Poți schimba totul mai târziu.
+Pauze pentru privit în depărtare
+{0} s la fiecare {1} min, cu exerciții pentru ochi
+Ecran mai cald seara
+De la apus la răsărit, acolo unde ești
+Pauze pentru ridicat
+Câteva întinderi la fiecare {0} min
+Un ochi mic clipește odată cu tine
+Înapoi
+Înainte
+Unde stă BlinkBuddy
+Așteaptă în zona de notificare, lângă ceas. Fă clic pentru setări, clic dreapta pentru acțiuni rapide, cum ar fi pauza.
+Mod mini: o pictogramă mică ce rămâne deasupra și arată următoarea pauză.
+Totul e gata
+Prima pauză vine în {0} min. Vrei să vezi cum arată?
+Vrei să vezi cum arată o pauză?
+Încearcă o pauză acum
+Poți relua turul din Opțiuni, la Ajutor și sprijin.
+Gata
+Arată turul din nou
+Pornește turul
+Bun venit în BlinkBuddy. Pauze blânde și un ecran mai liniștit cât lucrezi. Durează cam un minut.
+Alege ce te ajută. Poți schimba totul mai târziu.
+BlinkBuddy așteaptă în zona de notificare, lângă ceas. Fă clic pentru setări, clic dreapta pentru acțiuni rapide, cum ar fi pauza.
+Totul e gata. Vrei să vezi cum arată o pauză? Încearcă una acum sau încheie turul.

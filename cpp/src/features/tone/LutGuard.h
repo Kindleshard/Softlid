@@ -21,7 +21,6 @@ public:
     LutGuard(const LutGuard&) = delete;
     LutGuard& operator=(const LutGuard&) = delete;
 
-    static std::wstring WindowsBuild();   // "26100.1234": a new one means a new trial
 
     void Ensure(const Settings& s, bool forceTrial);   // starts it if it isn't running (may fail at once)
     void Poll();                                       // once a second

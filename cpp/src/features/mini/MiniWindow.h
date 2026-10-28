@@ -72,6 +72,7 @@ private:
     bool minimizeHot = false, minimizePressed = false;   // the pointer on the Minimize button; pressed on it
     POINT grab{};
     ULONGLONG idleSince = 0, lastAnim = 0, nextBreath = 0, breathStart = 0;
+    ULONGLONG nextFlow = 0, flowStart = 0;   // the focus timer's highlight: one run now and then (see Flowing)
     double shown = 255, awake = 0;
     float drawnBright = -1, drawnWarm = -1, drawnProgress = -2, drawnRest = -2, drawnFocus = -2;
     int drawnIcon = -1, tick = 0;

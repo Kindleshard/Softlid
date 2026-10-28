@@ -391,8 +391,6 @@ Szemhéjak: két sötét szemhéj csukódik a képernyő tetejéről és aljár�
 Válts rá a címsor melletti gombbal. Vidd fölé az egeret a gyors beállításokhoz; kattints rá, hogy ide visszatérj.
 Az ablak kis méretre állítása mini módra vált
 Az ablak összehajtása az ikonba, hogy lásd, hová tűnt
-Tetszik a BlinkBuddy? Ingyenes; egy kis borravaló segít a folytatásban.
-Támogatás...
 Erőforrás-használat
 Amit a BlinkBuddy most használ, ahogy a Feladatkezelő számolja.
 Az utolsó perc: processzor (kiemelőszín) és videokártya (zöld)
@@ -476,3 +474,48 @@ Frissítések
 Ez a verzió, és az újabbak, amikor megjelennek.
 Visszaállítás
 Kis méret
+Súgó és támogatás
+Írd meg, mi romlott el, vagy segíts, hogy a BlinkBuddy folytatódhasson.
+Valami nem működik? Jelentsd a GitHubon.
+Hiba jelentése...
+A BlinkBuddy ingyenes. Egy kávé segít, hogy folytatódjon.
+Támogatás a Ko-fin
+Bal felső
+Jobb felső
+Bal alsó
+Jobb alsó
+Közép
+{0}. lépés / {1}
+Felolvasás
+Be: minden lépést felolvas
+Ki: semmit nem olvas fel
+Üdv a BlinkBuddyban
+Kíméletes szünetek és nyugodtabb képernyő munka közben. Körülbelül egy percig tart.
+Minden lépést felolvas. A fenti gomb elnémítja.
+Bemutató kihagyása
+Válaszd ki, mi segít
+Később bármit megváltoztathatsz.
+Távolba nézős szünetek
+{0} mp {1} percenként, szemgyakorlatokkal
+Melegebb képernyő este
+Napnyugtától napkeltéig ott, ahol vagy
+Felállós szünetek
+Néhány nyújtás {0} percenként
+Egy kis szem pislog veled
+Vissza
+Tovább
+Hol lakik a BlinkBuddy
+A tálcán, az óra mellett vár. Kattints a beállításokért, jobb kattintás a gyors műveletekért, például a szüneteltetésért.
+Mini mód: kis ikon, amely mindig felül marad, és mutatja a következő szünetet.
+Minden kész
+Az első szünet {0} perc múlva jön. Megnézed, milyen?
+Megnézed, milyen egy szünet?
+Próbálj ki most egy szünetet
+Ezt a bemutatót a Beállításokban, a Súgó és támogatás alatt újra megnézheted.
+Befejezés
+Bemutató újra
+Bemutató indítása
+Üdv a BlinkBuddyban. Kíméletes szünetek és nyugodtabb képernyő munka közben. Körülbelül egy percig tart.
+Válaszd ki, mi segít. Később bármit megváltoztathatsz.
+A BlinkBuddy a tálcán, az óra mellett vár. Kattints a beállításokért, jobb kattintás a gyors műveletekért, például a szüneteltetésért.
+Minden kész. Megnézed, milyen egy szünet? Próbálj ki egyet most, vagy fejezd be a bemutatót.

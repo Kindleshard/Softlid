@@ -209,7 +209,7 @@ Tijd om even op te staan
 Sta op, rek je uit, loop wat rond, vul misschien je water bij.
 5 min uitstellen
 Overslaan
-Kijk weg van het scherm, naar iets ver weg, en laat je ogen zacht worden.
+Kijk weg van het scherm, naar iets ver weg, en laat je ogen ontspannen.
 Kijk langzaam naar links en rechts, zonder je hoofd te bewegen.
 Kijk nu langzaam omhoog en omlaag.
 Rol je ogen in een langzame, wijde cirkel.
@@ -391,8 +391,6 @@ Oogleden: twee donkere oogleden sluiten van boven en onder over het scherm, zoal
 Schakel ernaar met de knop naast de titelbalk. Beweeg erover voor snelle bediening; klik erop om hier terug te komen.
 Dit venster minimaliseren schakelt naar de minimodus
 Dit venster in het pictogram vouwen, zodat je ziet waar het heen gaat
-Bevalt BlinkBuddy je? Het is gratis; een fooi houdt het gaande.
-Steunen...
 Gebruik van bronnen
 Wat BlinkBuddy zelf nu gebruikt, zoals Taakbeheer het telt.
 De laatste minuut: processor (accentkleur) en videokaart (groen)
@@ -476,3 +474,48 @@ Updates
 Deze versie, en nieuwere zodra ze uitkomen.
 Opnieuw instellen
 Minimaliseren
+Hulp en ondersteuning
+Vertel ons wat er misging, of help BlinkBuddy draaiende te houden.
+Werkt er iets niet? Meld het op GitHub.
+Een fout melden...
+BlinkBuddy is gratis. Een koffie houdt het draaiende.
+Steunen op Ko-fi
+Linksboven
+Rechtsboven
+Linksonder
+Rechtsonder
+Midden
+Stap {0} van {1}
+Voorlezen
+Aan: elke stap wordt voorgelezen
+Uit: er wordt niets voorgelezen
+Welkom bij BlinkBuddy
+Rustige pauzes en een kalmer scherm terwijl je werkt. Dit duurt ongeveer een minuut.
+Elke stap wordt voorgelezen. De knop hierboven zet het geluid uit.
+Rondleiding overslaan
+Kies wat je helpt
+Je kunt alles later nog wijzigen.
+Wegkijkpauzes
+{0} s elke {1} min, met oogoefeningen
+Warmer scherm in de avond
+Van zonsondergang tot zonsopkomst waar je bent
+Opstapauzes
+Een paar rekoefeningen elke {0} min
+Een klein oog knippert met je mee
+Terug
+Volgende
+Waar BlinkBuddy woont
+Het wacht in het systeemvak bij de klok. Klik voor de instellingen, rechtsklik voor snelle acties zoals pauzeren.
+Minimodus: een klein pictogram dat bovenop blijft en de volgende pauze toont.
+Klaar
+Je eerste pauze komt over {0} min. Wil je zien hoe die eruitziet?
+Wil je zien hoe een pauze eruitziet?
+Probeer nu een pauze
+Je kunt deze rondleiding opnieuw doen via Opties, onder Hulp en ondersteuning.
+Voltooien
+Rondleiding opnieuw tonen
+Rondleiding starten
+Welkom bij BlinkBuddy. Rustige pauzes en een kalmer scherm terwijl je werkt. Dit duurt ongeveer een minuut.
+Kies wat je helpt. Je kunt alles later nog wijzigen.
+BlinkBuddy wacht in het systeemvak bij de klok. Klik voor de instellingen, rechtsklik voor snelle acties zoals pauzeren.
+Klaar. Wil je zien hoe een pauze eruitziet? Probeer er nu een, of rond de rondleiding af.

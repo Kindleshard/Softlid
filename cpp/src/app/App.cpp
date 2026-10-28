@@ -19,6 +19,7 @@
 #include "resource.h"
 #include <commctrl.h>
 #include <wtsapi32.h>
+#include <cwchar>
 #include <memory>
 #include <utility>
 
@@ -81,7 +82,9 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
     if (!offscreen) RunLog::Write(openSettings ? L"started" : L"started quietly in the tray (as at sign-in)");
     WeeklyUpdateCheck();
     if (offscreen && std::wcsstr(GetCommandLineW(), L"--focus")) focusTimer.Start();   // (diagnostics: the focus timer running)
-    if (openSettings) ShowSettings();
+    // A first start: the tour (the settings can wait). A diagnostic copy shows it only when asked to (--tour).
+    if (offscreen ? std::wcsstr(GetCommandLineW(), L"--tour") != nullptr : !settings.TourDone) ShowTour();
+    else if (openSettings) ShowSettings();
     else if (settings.MiniMode && settings.MiniEnabled) ShowMini();
 }
 

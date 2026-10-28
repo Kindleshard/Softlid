@@ -40,4 +40,14 @@ HICON Icon(const std::wstring& path, int size)
     return icon;
 }
 
+std::wstring WindowsBuild()
+{
+    wchar_t build[32] = {};
+    DWORD size = sizeof build, ubr = 0, ubrSize = sizeof ubr;
+    constexpr wchar_t key[] = L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion";
+    RegGetValueW(HKEY_LOCAL_MACHINE, key, L"CurrentBuild", RRF_RT_REG_SZ, nullptr, build, &size);
+    RegGetValueW(HKEY_LOCAL_MACHINE, key, L"UBR", RRF_RT_REG_DWORD, nullptr, &ubr, &ubrSize);
+    return std::wstring(build) + L"." + std::to_wstring(ubr);
+}
+
 } // namespace bb::ProgramInfo

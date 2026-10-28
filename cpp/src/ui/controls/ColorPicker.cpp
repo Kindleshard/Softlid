@@ -310,6 +310,13 @@ void ColorButton::Paint(Canvas& c)
     c.OutlineCircle(cx, cy, inner, Palette::Argb(255, 255, 255), 1, 70 / 255.0f);   // so a dark colour still shows
 }
 
+AccessInfo ColorButton::Access() const
+{
+    wchar_t hex[16];
+    swprintf_s(hex, L"#%06X", value & 0xFFFFFF);
+    return {Role::Button, L"", hex};
+}
+
 bool ColorButton::Key(UINT key)
 {
     if (key != VK_SPACE && key != VK_RETURN) return false;

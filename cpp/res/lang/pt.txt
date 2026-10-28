@@ -391,8 +391,6 @@ Pálpebras: duas pálpebras escuras se fecham de cima e de baixo da tela, como o
 Mude para ele com o botão ao lado da barra de título. Passe o mouse sobre ele para controles rápidos; clique para voltar aqui.
 Minimizar esta janela muda para o modo mini
 Dobrar esta janela no ícone, para você ver para onde ela foi
-Gostando do BlinkBuddy? Ele é gratuito; uma gorjeta ajuda a mantê-lo.
-Apoiar...
 Uso de recursos
 O que o próprio BlinkBuddy usa agora, como o Gerenciador de Tarefas conta.
 O último minuto: processador (cor de destaque) e placa de vídeo (verde)
@@ -476,3 +474,48 @@ Atualizações
 Esta versão e as mais novas quando saírem.
 Redefinir
 Minimizar
+Ajuda e apoio
+Conte o que deu errado ou ajude o BlinkBuddy a continuar.
+Algo não está funcionando? Informe no GitHub.
+Relatar um erro...
+O BlinkBuddy é gratuito. Um café o mantém vivo.
+Apoiar no Ko-fi
+Superior esquerdo
+Superior direito
+Inferior esquerdo
+Inferior direito
+Centro
+Etapa {0} de {1}
+Ler em voz alta
+Ativado: cada etapa é lida em voz alta
+Desativado: nada é lido em voz alta
+Boas-vindas ao BlinkBuddy
+Pausas suaves e uma tela mais tranquila enquanto você trabalha. Isso leva cerca de um minuto.
+Cada etapa é lida em voz alta. O botão acima silencia.
+Pular o tour
+Escolha o que ajuda você
+Você pode mudar tudo depois.
+Pausas para olhar longe
+{0} s a cada {1} min, com exercícios para os olhos
+Tela mais quente à noite
+Do pôr do sol ao nascer do sol onde você está
+Pausas para levantar
+Alguns alongamentos a cada {0} min
+Um olhinho pisca com você
+Voltar
+Avançar
+Onde o BlinkBuddy fica
+Ele espera na bandeja, perto do relógio. Clique para as configurações e clique com o botão direito para ações rápidas como pausar.
+Modo mini: um ícone pequeno que fica sempre por cima e mostra a próxima pausa.
+Tudo pronto
+Sua primeira pausa vem em {0} min. Quer ver como ela é?
+Quer ver como é uma pausa?
+Experimentar uma pausa agora
+Você pode refazer este tour em Opções, em Ajuda e apoio.
+Concluir
+Mostrar o tour de novo
+Iniciar o tour
+Boas-vindas ao BlinkBuddy. Pausas suaves e uma tela mais tranquila enquanto você trabalha. Isso leva cerca de um minuto.
+Escolha o que ajuda você. Você pode mudar tudo depois.
+O BlinkBuddy espera na bandeja, perto do relógio. Clique para as configurações e clique com o botão direito para ações rápidas como pausar.
+Tudo pronto. Quer ver como é uma pausa? Experimente uma agora ou conclua o tour.

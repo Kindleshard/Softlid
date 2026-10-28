@@ -1,0 +1,27 @@
+BlinkBuddy's spoken steps were made with Piper (https://github.com/OHF-Voice/piper1-gpl), an open-source text to
+speech engine, from these voices (https://huggingface.co/rhasspy/piper-voices). Each folder is one language.
+
+Folder  Voice                       Licence of the voice
+cs      cs_CZ-kasandra-medium       CC BY 4.0 (voice by Ondřej Šimek)
+da      da_DK-talesyntese-medium    CC0
+de      de_DE-thorsten-high         CC0 (Thorsten-Voice, Thorsten Müller)
+el      el_GR-rapunzelina-medium    CC0
+en      en_US-ljspeech-high         Public domain (LJ Speech)
+es      es_ES-davefx-medium         CC0
+fi      fi_FI-harri-medium          CC0
+fr      fr_FR-siwis-medium          CC BY 4.0 (SIWIS French Speech Synthesis Database)
+hu      hu_HU-anna-medium           CC0
+it      it_IT-serena-high           CC BY 4.0
+nl      nl_NL-pim-medium            CC0
+pl      pl_PL-gosia-medium          CC0
+pt      pt_BR-faber-medium          CC0
+ro      ro_RO-mihai-medium          CC0
+ru      ru_RU-dmitri-medium         CC0
+sv      sv_SE-alma-medium           CC BY 4.0 (NST Swedish TTS data)
+tr      tr_TR-dfki-medium           CC BY-NC-SA 4.0 (DFKI MARY TTS data): these clips may be shared only for
+                                    non-commercial use, under the same licence
+uk      uk_UA-tetiana-high          Apache 2.0
+zh      zh_CN-chaowen-medium        CC0
+
+Languages without a folder here (Japanese, Korean) are read by a Windows voice for the language, if one is
+installed.

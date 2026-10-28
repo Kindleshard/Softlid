@@ -33,6 +33,7 @@ public:
     void Paint(Canvas& canvas) override;
     void Click() override;
     bool Key(UINT key) override;
+    AccessInfo Access() const override;   // a button, with the colour as #RRGGBB
 
 private:
     int value = 0xFF000000;

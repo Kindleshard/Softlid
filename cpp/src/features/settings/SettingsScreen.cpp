@@ -35,6 +35,7 @@ void SettingsWindow::BuildFilter(Stack& st)
     float barH = ModeGrid::BarHeight();
     Row& modeRow = st.Add(barH + 14);
     modeGrid = &modeRow.Add<ModeGrid>(glyphs, names);
+    modeGrid->tip = Lang::T(L"Screen mode");
     modeGrid->bar = true;
     modeGrid->tints = tints;
     modeGrid->SetBounds(24, 6, Edge - 24, barH);
@@ -123,6 +124,7 @@ void SettingsWindow::BuildEffects(Stack& st)
     Icon& chevron = line.Add<Icon>(L'\uE76C', 8.0f, Theme::Dim);
     chevron.SetBounds(Edge - 20, 16, 20, 22);
     auto& area = line.Add<HotArea>();
+    area.focusable = true;
     area.SetBounds(20, 8, Edge - 20, 38);
     area.onClick = [this] {
         effectsOpen = !effectsOpen;
@@ -135,6 +137,7 @@ void SettingsWindow::BuildEffects(Stack& st)
     Row& row = st.Add(60 + caption, open);
     int center = static_cast<int>((24 + Edge) / 2);
     effectPicker = &row.Add<TilePicker>(5, s.ColorEffect);
+    effectPicker->tip = Lang::T(L"Color effect");
     effectPicker->SetBounds(center - (5 * 48 + 4 * 13 + 2) / 2.0f, 2, 5 * 48 + 4 * 13 + 2, 48 + caption);
     effectPicker->SetCaptions(names, lines);
     effectPicker->painter = [this](Canvas& c, const D2D1_RECT_F& r, int i, float awake) { PaintEffect(c, r, i, awake); };

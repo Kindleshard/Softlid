@@ -88,6 +88,13 @@ void Disclosure::Paint(Canvas& c)
     c.Text(Lang::T(open ? L"Fewer options" : L"More options"), Fonts::Small(), {H(), 0, W(), H()}, ink);
 }
 
+AccessInfo Disclosure::Access() const
+{
+    AccessInfo info{Role::Button, Lang::T(L"More options")};
+    info.expanded = open ? 1 : 0;
+    return info;
+}
+
 void Disclosure::Click()
 {
     open = !open;
@@ -104,7 +111,11 @@ bool Disclosure::Key(UINT key)
 
 // ---- FoldButton ----
 
-FoldButton::FoldButton(bool open) : open(open) { cursor = Cursor::Hand; }
+FoldButton::FoldButton(bool open) : open(open)
+{
+    focusable = true;
+    cursor = Cursor::Hand;
+}
 
 void FoldButton::SetOpen(bool on)
 {
@@ -124,12 +135,54 @@ void FoldButton::Click()
     if (onClick) onClick();
 }
 
+AccessInfo FoldButton::Access() const
+{
+    AccessInfo info{Role::Button};
+    info.expanded = open ? 1 : 0;
+    return info;
+}
+
+bool FoldButton::Key(UINT key)
+{
+    if (key != VK_SPACE && key != VK_RETURN) return false;
+    Click();
+    return true;
+}
+
 // ---- Stepper ----
 
 Stepper::Stepper(std::wstring_view englishLabel, int min, int max, int step, int value, std::function<std::wstring(int)> format)
     : label(Lang::T(englishLabel)), min(min), max(max), step(step), value(value), format(std::move(format))
 {
+    focusable = true;
     cursor = Cursor::Hand;
+}
+
+AccessInfo Stepper::Access() const
+{
+    AccessInfo info{Role::Spinner, label, format ? format(value) : L""};
+    info.now = value;
+    info.min = min;
+    info.max = max;
+    info.step = step;
+    return info;
+}
+
+void Stepper::AccessSet(double v)
+{
+    int n = std::clamp(static_cast<int>(std::lround(v)), min, max);
+    if (n == value) return;
+    value = n;
+    Invalidate();
+    if (onChange) onChange(value);
+}
+
+bool Stepper::Key(UINT key)
+{
+    if (key == VK_LEFT || key == VK_DOWN) Bump(-1);
+    else if (key == VK_RIGHT || key == VK_UP) Bump(1);
+    else return false;
+    return true;
 }
 
 void Stepper::SetValue(int v)
@@ -212,7 +265,18 @@ void Stepper::Timer()
 
 // ---- TextBox ----
 
-TextBox::TextBox(int maxLength, bool upperCase) : maxLength(maxLength), upperCase(upperCase) { cursor = Cursor::Arrow; }
+TextBox::TextBox(int maxLength, bool upperCase) : maxLength(maxLength), upperCase(upperCase)
+{
+    focusable = true;
+    cursor = Cursor::Arrow;
+}
+
+void TextBox::FocusChanged()
+{
+    Invalidate();
+    DirectWindow* w = Window();
+    if (edit && w && w->Focused() == this && GetFocus() != edit) ::SetFocus(edit);
+}
 
 TextBox::~TextBox()
 {
@@ -309,6 +373,8 @@ void TextBox::StartTyping()
 LRESULT CALLBACK TextBox::EditProc(HWND hwnd, UINT message, WPARAM w, LPARAM l, UINT_PTR, DWORD_PTR data)
 {
     auto box = reinterpret_cast<TextBox*>(data);
+    if (message == WM_SETFOCUS)
+        if (DirectWindow* window = box->Window()) window->SetFocus(box, false);   // (clicked: Tab goes on from here)
     if (message == WM_KEYDOWN && (w == VK_UP || w == VK_DOWN) && box->onKey) {
         box->onKey(static_cast<UINT>(w));
         return 0;
