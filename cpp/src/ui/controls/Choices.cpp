@@ -64,7 +64,8 @@ void Choice::Pick(int i)
 AccessInfo Choice::Access() const
 {
     AccessInfo info{Role::Choice};
-    if (selected >= 0 && selected < Count()) info.value = ItemName(selected);
+    // (nothing chosen - the screen modes while your values are your own - is said too, not left silent)
+    info.value = selected >= 0 && selected < Count() ? ItemName(selected) : Lang::T(L"None");
     return info;
 }
 

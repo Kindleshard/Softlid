@@ -1,7 +1,0 @@
-# Built files (build.ps1 makes them)
-*.exe
-*.old
-*.pdb
-
-# Colour tables BlinkBuddy writes for DesktopLUT (made again with --write-luts)
-luts/
