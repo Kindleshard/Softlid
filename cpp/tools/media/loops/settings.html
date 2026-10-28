@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- Settings: the same window in language after language, then the Simple view opening into the Advanced one (the
+     real window, shot.ps1 lang-*, view-*). -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../loop.css">
+<script src="../motion.js"></script>
+<style>
+  .window { position: absolute; left: 520px; top: 70px; width: 352px; height: 455px; perspective: 1400px; }
+  .frame { position: absolute; inset: 0; border-radius: 12px; overflow: hidden; background: #202020;
+    transform: rotateY(-14deg) rotateX(3deg); transform-style: preserve-3d;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .08), 0 0 60px rgba(76, 194, 255, .12); }
+  .frame img { position: absolute; left: 0; top: 0; width: 100%; }
+  .chip { position: absolute; left: 470px; top: 92px; z-index: 5; padding: 9px 16px; border-radius: 22px;
+    background: rgba(76, 194, 255, .16); border: 1px solid rgba(76, 194, 255, .55); color: #e8f6ff;
+    font: 600 17px "Segoe UI", "Yu Gothic UI", "Malgun Gothic", "Microsoft YaHei UI", sans-serif;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .4); white-space: nowrap; }
+  .ring { position: absolute; left: 6px; right: 6px; border-radius: 9px; border: 2px solid var(--accent);
+    box-shadow: 0 0 18px rgba(76, 194, 255, .45); z-index: 3; }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="glow" style="background:#2b6cff; left:520px; top:-140px; opacity:.32"></div>
+<div class="glow" style="background:#b096ff; left:-220px; top:330px; opacity:.16"></div>
+<div class="brand"><img src="../icon.png" alt="">BlinkBuddy</div>
+
+<div class="caption">
+  <div class="slot" id="c1">
+    <div class="kicker">21 languages</div>
+    <div class="headline">Speaks your language</div>
+    <div class="body">Picked up from Windows, or chosen in one click. The spoken steps come in every language too.</div>
+  </div>
+  <div class="slot" id="c2">
+    <div class="kicker">Simple or Advanced</div>
+    <div class="headline">Calm by default, every detail when you want it</div>
+    <div class="body">The Simple view keeps to the essentials. Advanced opens up every option, tone engines and app rules.</div>
+  </div>
+</div>
+
+<div class="window"><div class="frame"><img id="a"><img id="b"><div class="ring" id="ring"></div></div></div>
+<div class="chip" id="chip"></div>
+<div class="dots"><i><b id="d1"></b></i><i><b id="d2"></b></i></div>
+
+<script>
+window.LOOP = { width: 960, height: 600, seconds: 11, quality: 70 };
+
+const ui = name => `../../../build/media/ui/${name}.png`;
+// The languages, each shown for a moment (English, the window's own shot, first and last).
+const langs = [['view-simple', 'English'], ['lang-tr', 'Türkçe'], ['lang-de', 'Deutsch'], ['lang-ja', '日本語'],
+    ['lang-fr', 'Français'], ['lang-ko', '한국어'], ['lang-es', 'Español'], ['lang-zh', '简体中文'], ['lang-ru', 'Русский'],
+    ['lang-el', 'Ελληνικά'], ['lang-pt', 'Português'], ['view-simple', 'English']];
+const step = 0.48, langStart = 0.5, fade = 0.12;
+// The window shot is 720 px wide; the Advanced view's extra options ("Fewer options" and what it opens) are at 748..892.
+const scale = 352 / 720;
+const a = document.getElementById('a'), b = document.getElementById('b'), chip = document.getElementById('chip');
+const ring = document.getElementById('ring');
+ring.style.top = `${748 * scale}px`;
+ring.style.height = `${144 * scale}px`;
+
+const c1 = ['#c1 .kicker', '#c1 .headline', '#c1 .body'].map(s => new Words(document.querySelector(s)));
+const c2 = ['#c2 .kicker', '#c2 .headline', '#c2 .body'].map(s => new Words(document.querySelector(s)));
+function caption(lines, t, a0, b0) {
+    lines.forEach((w, i) => w.set(M.span(t, a0 + 0.12 * i, a0 + 0.12 * i + 0.75), M.span(t, b0 - 0.5 + 0.06 * i, b0 + 0.06 * i)));
+}
+
+window.seek = async t => {
+    caption(c1, t, 0.15, 6.0);
+    caption(c2, t, 6.25, 10.75);
+    document.getElementById('d1').style.transform = `scaleX(${M.span(t, 0, 6.1)})`;
+    document.getElementById('d2').style.transform = `scaleX(${M.span(t, 6.1, 11)})`;
+
+    let from, to, k, label = '', chipOn = 0;
+    if (t < 6.1) {
+        // Language after language, each fading in over the one before.
+        const i = M.clamp(Math.floor((t - langStart) / step) + 1, 0, langs.length - 1);
+        const since = t - langStart - (i - 1) * step;
+        from = langs[Math.max(0, i - 1)][0];
+        to = langs[i][0];
+        k = i === 0 ? 1 : M.smooth(M.clamp(since / fade));
+        label = langs[i][1];
+        chipOn = Math.min(M.span(t, 0.4, 0.7), 1 - M.span(t, 5.7, 6.0));
+        chip.style.transform = `translateY(${(1 - M.out(M.clamp(since / 0.18))) * 6}px)`;
+    } else {
+        // Simple, then Advanced (a ring on what it adds), then back to Simple for the start of the loop.
+        const open = M.span(t, 7.4, 7.8), close = M.span(t, 10.2, 10.6);
+        from = open < 1 ? 'view-simple' : 'view-advanced';
+        to = close > 0 ? 'view-simple' : 'view-advanced';
+        k = open < 1 ? M.smooth(open) : M.smooth(close);
+        ring.style.opacity = Math.min(M.span(t, 7.9, 8.3), 1 - M.span(t, 9.8, 10.15));
+    }
+    if (t < 6.1) ring.style.opacity = 0;
+    a.src = ui(from);
+    b.src = ui(to);
+    b.style.opacity = k;
+    chip.textContent = label;
+    chip.style.opacity = chipOn;
+    await Promise.all([a, b].map(img => img.decode().catch(() => { })));
+};
+</script>
+</body>
+</html>

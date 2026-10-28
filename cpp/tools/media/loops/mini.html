@@ -1,0 +1,61 @@
+<!doctype html>
+<!-- Mini mode: the small eye over your work, its quick panel, and the focus timer counting down on it (footage:
+     record.ps1 mini, mini-focus). -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../loop.css">
+<script src="../motion.js"></script>
+</head>
+<body>
+<div class="bg"></div>
+<div class="glow" style="background:#2b6cff; left:520px; top:-140px; opacity:.32"></div>
+<div class="glow" style="background:#40d6c4; left:-220px; top:330px; opacity:.18"></div>
+<div class="brand"><img src="../icon.png" alt="">BlinkBuddy</div>
+
+<div class="caption">
+  <div class="slot" id="c1">
+    <div class="kicker">Mini mode</div>
+    <div class="headline">Out of the way, one glance away</div>
+    <div class="body">A small eye floats over your work. Point at it for brightness, warmth and your next break.</div>
+  </div>
+  <div class="slot" id="c2">
+    <div class="kicker">Focus timer</div>
+    <div class="headline">Your focus, counted on the eye</div>
+    <div class="body">Twenty-five minutes of work on the mini icon, then a short rest together.</div>
+  </div>
+</div>
+
+<div class="stage"><div class="screen"><div class="view" id="view"><div class="sheen"></div></div></div></div>
+<div class="dots"><i><b id="d1"></b></i><i><b id="d2"></b></i></div>
+
+<script>
+window.LOOP = { width: 960, height: 600, seconds: 9.2, quality: 70,
+    footage: [{ name: 'mini', to: 7.2, width: 2560 }, { name: 'mini-focus', to: 5.2, width: 2560 }] };
+
+// Closing in on the eye; the pointer comes and its panel opens; the focus timer on it; back out to the desktop.
+const eye = [0.896, 0.521];
+const shots = [
+    { name: 'mini', from: 0.3, to: 1.7, at: 0, until: 1.4, zoom: [1, 2.6], focus: eye },
+    { name: 'mini', from: 1.7, to: 6.6, at: 1.4, until: 5.2, zoom: 2.6, focus: eye },
+    { name: 'mini-focus', from: 0.9, to: 4.9, at: 5.2, until: 8.4, fade: 0.4, zoom: 2.6, focus: eye },
+    { name: 'mini', from: 0.3, to: 0.3, at: 8.4, until: 9.2, fade: 0.6, zoom: [2.6, 1], focus: eye },
+];
+const footage = new Footage(document.getElementById('view'));
+const c1 = ['#c1 .kicker', '#c1 .headline', '#c1 .body'].map(s => new Words(document.querySelector(s)));
+const c2 = ['#c2 .kicker', '#c2 .headline', '#c2 .body'].map(s => new Words(document.querySelector(s)));
+
+function caption(lines, t, a, b) {
+    lines.forEach((w, i) => w.set(M.span(t, a + 0.12 * i, a + 0.12 * i + 0.75), M.span(t, b - 0.5 + 0.06 * i, b + 0.06 * i)));
+}
+
+window.seek = async t => {
+    caption(c1, t, 0.15, 5.1);
+    caption(c2, t, 5.35, 8.95);
+    document.getElementById('d1').style.transform = `scaleX(${M.span(t, 0, 5.2)})`;
+    document.getElementById('d2').style.transform = `scaleX(${M.span(t, 5.2, 9.2)})`;
+    await footage.show(t, shots);
+};
+</script>
+</body>
+</html>

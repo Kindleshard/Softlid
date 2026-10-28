@@ -1,0 +1,29 @@
+/* The look every loop shares: BlinkBuddy's dark slate and sky blue, a caption on the left, the app on a screen. */
+:root { --accent: #4cc2ff; --teal: #40d6c4; --amber: #ffa340; --ink: #f4f6fb; --dim: #aab3c8; }
+html, body { margin: 0; width: 960px; height: 600px; overflow: hidden; background: #0e1220; }
+body { font-family: "Segoe UI Variable Display", "Segoe UI", sans-serif; color: var(--ink); position: relative; }
+.bg { position: absolute; inset: 0; background: radial-gradient(90% 80% at 20% 0%, #1f2a4a 0%, #121829 55%, #0b0e18 100%); }
+.glow { position: absolute; width: 640px; height: 640px; border-radius: 50%; filter: blur(90px); opacity: .5; }
+.brand { position: absolute; left: 44px; top: 34px; display: flex; align-items: center; gap: 12px; font-weight: 600;
+  font-size: 19px; letter-spacing: .2px; }
+.brand img { width: 34px; height: 34px; }
+.caption { position: absolute; left: 44px; top: 186px; width: 330px; }
+.caption > * { overflow: hidden; }
+.kicker { color: var(--accent); font: 600 13px "Segoe UI", sans-serif; letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 14px; }
+.headline { font-size: 36px; line-height: 1.12; font-weight: 700; margin-bottom: 18px; }
+.body { font: 400 16.5px/1.55 "Segoe UI Variable Text", "Segoe UI", sans-serif; color: var(--dim); }
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; }
+.w > span { display: inline-block; will-change: transform; }
+.caption .slot { position: absolute; left: 0; top: 0; width: 100%; }
+.stage { position: absolute; left: 384px; top: 128px; width: 548px; height: 343px; perspective: 1400px; }
+.screen { position: absolute; inset: 0; border-radius: 14px; background: #05070c; padding: 7px;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .07), 0 0 60px rgba(76, 194, 255, .12);
+  transform-style: preserve-3d; transform: rotateY(-12deg) rotateX(4deg); }
+.screen .view { position: relative; width: 100%; height: 100%; border-radius: 8px; overflow: hidden; background: #000; }
+.footage { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.sheen { position: absolute; inset: 0; border-radius: 8px; pointer-events: none; z-index: 5;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, .045) 48%, transparent 60%); }
+.dots { position: absolute; left: 44px; bottom: 40px; display: flex; gap: 8px; }
+.dots i { width: 26px; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .15); overflow: hidden; position: relative; }
+.dots i b { position: absolute; inset: 0; background: var(--accent); transform-origin: left; }

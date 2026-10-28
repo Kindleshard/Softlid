@@ -1,12 +1,40 @@
-# BlinkBuddy
+<p align="center"><img src="docs/media/icon.png" width="88" alt=""></p>
 
-Eye care that lives in the Windows tray: blink and break reminders, a screen filter, a reading strip, a focus
-timer and more. It is light: about **3 MB** of memory while it waits in the tray.
+<h1 align="center">BlinkBuddy</h1>
 
-- `cpp/`: the current version, in C++ and Direct2D. This is what gets built and shipped.
-- `csharp/`: the original version (C#, .NET Framework 4.8), kept as the reference the rewrite was checked against.
+<p align="center"><b>Gentle eye care that lives in your Windows tray.</b><br>
+Blink reminders, breaks your eyes can follow, a warmer and dimmer screen at night, and a strip to read by.<br>
+Free, in 21 languages, and light: about 3 MB of memory while it waits.</p>
 
-## What it does
+<p align="center"><img src="docs/media/breaks.webp" width="760" alt="A break: the screen dims, a liquid blue eye leads the eyes side to side and round in a circle, then a glowing stick figure reaches both arms up."></p>
+
+## A closer look
+
+**Blink reminders.** A little eye peeks out of the corner and blinks with you, or two soft eyelids sweep over the
+screen once.
+
+<img src="docs/media/blink.webp" width="760" alt="A small eye icon appears in the corner of the screen and blinks; then soft eyelids close over the whole screen and open again.">
+
+**Screen filter.** Warmer light after sunset, brightness below what your display allows, and colour effects.
+
+<img src="docs/media/filter.webp" width="760" alt="A desktop turns warm, then dimmer, then grayscale, sepia, e-ink and red night, beside BlinkBuddy's Screen filter settings.">
+
+**Reading strip.** Everything but the line you're reading dims, and the strip follows you down the page.
+
+<img src="docs/media/strip.webp" width="760" alt="A bright band across a page of text moves down line by line while the rest of the screen is dimmed.">
+
+**Mini mode and the focus timer.** A small eye floats over your work: point at it for the essentials, or let it count
+down your focus time.
+
+<img src="docs/media/mini.webp" width="760" alt="A small eye icon over a picture opens a panel with brightness, blue light and the next break; then it shows a focus timer counting down.">
+
+**Your language, your level of detail.** 21 languages, and a Simple view that grows into an Advanced one.
+
+<img src="docs/media/settings.webp" width="760" alt="BlinkBuddy's settings window switching between languages, then opening extra options in the Advanced view.">
+
+The loops are made from the real app by the scripts in [cpp/tools/media](cpp/tools/media).
+
+## Everything it does
 
 - **Blink reminders**: a small eye that blinks with you, or soft eyelids across the screen.
 - **Breaks**: look-away breaks every 20 minutes and stand-up breaks every hour. A break can be a simple card, guided
@@ -30,14 +58,18 @@ Settings are kept in `%AppData%\BlinkBuddy\settings.ini`.
 Nothing is published yet. To get BlinkBuddy, build it yourself (below).
 
 - **Installer** (`BlinkBuddy-<version>-setup.exe`): installs for your user only, with no administrator rights, into
-  `%LocalAppData%\Programs\BlinkBuddy`. It adds a Start menu entry and can start BlinkBuddy when you sign in.
-  Uninstalling keeps your settings.
+  `%LocalAppData%\Programs\BlinkBuddy`. It asks whether the spoken steps should come in just your language (about
+  2 MB installed in all) or all 21, adds a Start menu entry and can start BlinkBuddy when you sign in. Unattended,
+  `/S /VOICES=all` or `/S /VOICES=tr` chooses. Uninstalling keeps your settings.
 - **Portable** (`BlinkBuddy-<version>-portable.zip`): unzip anywhere and run `BlinkBuddy.exe`. The `voice` folder
   next to it holds the spoken break steps; without it, Windows' own voice reads them.
 
 It needs Windows 10 or 11, 64-bit. There is nothing else to install: the C runtime is built into the exe.
 
 ## Building
+
+- `cpp/`: the current version, in C++ and Direct2D. This is what gets built and shipped.
+- `csharp/`: the original version (C#, .NET Framework 4.8), kept as the reference the rewrite was checked against.
 
 You need Visual Studio 2022 or its Build Tools, with the "Desktop development with C++" workload.
 
@@ -57,8 +89,8 @@ powershell -ExecutionPolicy Bypass -File cpp/release.ps1
 ```
 
 `release.ps1` makes a release in `cpp/dist/`: the exe on its own, the portable zip and, if
-[Inno Setup 6](https://jrsoftware.org/isinfo.php) is installed, the installer from `cpp/installer/BlinkBuddy.iss`.
-Nothing is uploaded.
+[NSIS 3](https://nsis.sourceforge.io) is installed (or unzipped into `C:\Tools\nsis`), the installer from
+`cpp/installer/BlinkBuddy.nsi`. Nothing is uploaded.
 
 The version number lives in `cpp/res/BuildVersion.h`. Two constants in `cpp/src/core/Version.h` turn on the parts
 that need somewhere to point:
@@ -70,9 +102,15 @@ that need somewhere to point:
 
 Diagnostics:
 
-- `--offscreen` opens the settings off the screen, for screenshots.
+- `--offscreen` opens the settings off the screen, for screenshots; with `--no-screen` that copy leaves the screen
+  filter and tone off the screen, and with `--tray` it starts quietly (mini mode shows, if it's on).
 - `--ui-gallery` shows every control (debug builds only: `build.ps1 -Debug`).
-- `--preview-break`, `--preview-exercises`, `--preview-stretch` and `--preview-blink` show those once.
+- `--preview-break`, `--preview-exercises`, `--preview-stretch` and `--preview-blink` show those once; `--settings
+  <file>` gives them settings of their own.
+
+The README's loops are made in `cpp/tools/media` (Chrome and ffmpeg needed): `record.ps1` films BlinkBuddy over a
+staged desktop, `shot.ps1` captures its settings window off the screen, and `node render.mjs <loop>` renders a loop
+from `loops/<loop>.html` into `docs/media/<loop>.webp`.
 
 ## What it connects to
 

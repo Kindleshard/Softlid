@@ -1,0 +1,61 @@
+<!doctype html>
+<!-- Breaks: the guided eye exercises, then the stretch coach (footage: record.ps1 exercises, stretch). -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../loop.css">
+<script src="../motion.js"></script>
+</head>
+<body>
+<div class="bg"></div>
+<div class="glow" style="background:#2b6cff; left:520px; top:-140px; opacity:.32"></div>
+<div class="glow" style="background:#40d6c4; left:-220px; top:330px; opacity:.18"></div>
+<div class="brand"><img src="../icon.png" alt="">BlinkBuddy</div>
+
+<div class="caption">
+  <div class="slot" id="c1">
+    <div class="kicker">Breaks · every 20 minutes</div>
+    <div class="headline">Eye exercises you can follow</div>
+    <div class="body">A liquid eye leads the way: far away, side to side, up and down, round in slow circles.</div>
+  </div>
+  <div class="slot" id="c2">
+    <div class="kicker">Breaks · every hour</div>
+    <div class="headline">A stretch coach to stand up for</div>
+    <div class="body">Reach high, roll your shoulders, march in place. Every step shown, and read aloud if you like.</div>
+  </div>
+</div>
+
+<div class="stage"><div class="screen" id="screen"><div class="view" id="view"><div class="sheen" id="sheen"></div></div></div></div>
+<div class="dots"><i><b id="d1"></b></i><i><b id="d2"></b></i></div>
+
+<script>
+window.LOOP = { width: 960, height: 600, seconds: 12, quality: 70,
+    footage: [{ name: 'exercises', to: 17.5 }, { name: 'stretch', to: 11.5 }] };
+
+// The shots, in loop time: the desktop dims into the break, the eye goes side to side, then round in a circle; the
+// stretch coach reaches up; and back to the desktop, where the loop begins again.
+const shots = [
+    { name: 'exercises', from: 0.3, to: 1.9, at: 0, until: 1.3, zoom: [1, 1.04] },
+    { name: 'exercises', from: 5.0, to: 10.0, at: 1.3, until: 3.7, fade: 0.3, zoom: 1.15 },
+    { name: 'exercises', from: 13.4, to: 16.9, at: 3.7, until: 6.3, fade: 0.35, zoom: [1.12, 1.2] },
+    { name: 'stretch', from: 5.6, to: 10.4, at: 6.3, until: 11.1, fade: 0.4, zoom: [1.35, 1.45], focus: [0.5, 0.46] },
+    { name: 'exercises', from: 0.3, to: 0.3, at: 11.1, until: 12, fade: 0.8 },
+];
+const footage = new Footage(document.getElementById('view'));
+const c1 = ['#c1 .kicker', '#c1 .headline', '#c1 .body'].map(s => new Words(document.querySelector(s)));
+const c2 = ['#c2 .kicker', '#c2 .headline', '#c2 .body'].map(s => new Words(document.querySelector(s)));
+
+function caption(lines, t, a, b) {
+    lines.forEach((w, i) => w.set(M.span(t, a + 0.12 * i, a + 0.12 * i + 0.75), M.span(t, b - 0.5 + 0.06 * i, b + 0.06 * i)));
+}
+
+window.seek = async t => {
+    caption(c1, t, 0.15, 6.2);
+    caption(c2, t, 6.45, 11.75);
+    document.getElementById('d1').style.transform = `scaleX(${M.span(t, 0, 6.3)})`;
+    document.getElementById('d2').style.transform = `scaleX(${M.span(t, 6.3, 12)})`;
+    await footage.show(t, shots);
+};
+</script>
+</body>
+</html>

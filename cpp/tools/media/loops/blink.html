@@ -1,0 +1,62 @@
+<!doctype html>
+<!-- Blink reminders: the little eye in the corner, then the soft eyelids (footage: record.ps1 blink-eye, blink-lids). -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../loop.css">
+<script src="../motion.js"></script>
+</head>
+<body>
+<div class="bg"></div>
+<div class="glow" style="background:#2b6cff; left:520px; top:-140px; opacity:.32"></div>
+<div class="glow" style="background:#b096ff; left:-220px; top:330px; opacity:.16"></div>
+<div class="brand"><img src="../icon.png" alt="">BlinkBuddy</div>
+
+<div class="caption">
+  <div class="slot" id="c1">
+    <div class="kicker">Blink reminders</div>
+    <div class="headline">A little eye that blinks with you</div>
+    <div class="body">Every few minutes it peeks out of the corner, blinks once, and is gone. Blink along.</div>
+  </div>
+  <div class="slot" id="c2">
+    <div class="kicker">Blink reminders</div>
+    <div class="headline">Or soft eyelids, once</div>
+    <div class="body">Two eyelids sweep over the screen for one slow blink, then get out of your way.</div>
+  </div>
+</div>
+
+<div class="stage"><div class="screen"><div class="view" id="view"><div class="sheen"></div></div></div></div>
+<div class="dots"><i><b id="d1"></b></i><i><b id="d2"></b></i></div>
+
+<script>
+window.LOOP = { width: 960, height: 600, seconds: 8.5, quality: 70,
+    footage: [{ name: 'blink-eye', to: 3.2, width: 2560 }, { name: 'blink-lids', to: 2.2 }] };
+
+// The desktop, closing in on the corner as the eye comes and blinks; then the eyelids in slow motion; then back to
+// the desktop, where the loop begins again.
+const eye = [0.958, 0.051];
+const shots = [
+    { name: 'blink-eye', from: 0.2, to: 0.75, at: 0, until: 1.0, zoom: [1, 4.5], focus: eye },
+    { name: 'blink-eye', from: 0.75, to: 2.8, at: 1.0, until: 3.9, zoom: 4.5, focus: eye },
+    { name: 'blink-lids', from: 0.75, to: 1.75, at: 3.9, until: 6.6, fade: 0.3 },
+    { name: 'blink-lids', from: 1.75, to: 1.9, at: 6.6, until: 7.6 },
+    { name: 'blink-eye', from: 0.2, to: 0.2, at: 7.6, until: 8.5, fade: 0.7 },
+];
+const footage = new Footage(document.getElementById('view'));
+const c1 = ['#c1 .kicker', '#c1 .headline', '#c1 .body'].map(s => new Words(document.querySelector(s)));
+const c2 = ['#c2 .kicker', '#c2 .headline', '#c2 .body'].map(s => new Words(document.querySelector(s)));
+
+function caption(lines, t, a, b) {
+    lines.forEach((w, i) => w.set(M.span(t, a + 0.12 * i, a + 0.12 * i + 0.75), M.span(t, b - 0.5 + 0.06 * i, b + 0.06 * i)));
+}
+
+window.seek = async t => {
+    caption(c1, t, 0.15, 3.8);
+    caption(c2, t, 4.05, 8.25);
+    document.getElementById('d1').style.transform = `scaleX(${M.span(t, 0, 3.9)})`;
+    document.getElementById('d2').style.transform = `scaleX(${M.span(t, 3.9, 8.5)})`;
+    await footage.show(t, shots);
+};
+</script>
+</body>
+</html>
