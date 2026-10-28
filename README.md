@@ -1,9 +1,10 @@
-<p align="center"><img src="docs/media/icon.png" width="96" alt=""></p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/banner-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/media/banner-light.png">
+  <img src="docs/media/banner-dark.png" width="100%" alt="BlinkBuddy: gentle eye care that lives in your Windows tray.">
+</picture>
 
-<h1 align="center">BlinkBuddy</h1>
-
-<p align="center"><b>Gentle eye care that lives in your Windows tray.</b><br>
-Blink reminders, breaks your eyes can follow, a warmer screen at night and a strip to read by.</p>
+<p align="center">Blink reminders, breaks your eyes can follow, a warmer screen at night and a strip to read by.</p>
 
 <p align="center">
   <a href="https://github.com/Kindleshard/BlinkBuddy/releases/latest"><img src="https://img.shields.io/github/v/release/Kindleshard/BlinkBuddy?label=version&color=4cc2ff" alt="Latest version"></a>
@@ -65,6 +66,12 @@ Blink reminders, breaks your eyes can follow, a warmer screen at night and a str
   </tr>
 </table>
 
+## Calm, and out of your way
+
+Everything in one quiet window, and the essentials a point away in mini mode.
+
+<p align="center"><img src="docs/media/screenshot.avif" width="100%" alt="A desktop with BlinkBuddy's settings window open on the Screen filter, and the mini icon's quick panel over a picture: brightness 90%, blue light filter 4450 K, blink reminders on."></p>
+
 ## Light by design
 
 - **About 3 MB of memory** while it waits in the tray, and a 1.4 MB program.
@@ -125,7 +132,8 @@ Options > Help and support > **Report a bug** opens a form here with your versio
 
 <a href="https://ko-fi.com/P2Z229LS9G"><img src="https://img.shields.io/badge/Support_on_Ko--fi-29abe0?style=for-the-badge" alt="Support on Ko-fi"></a>
 
-Found a bug or have an idea? [Open an issue](https://github.com/Kindleshard/BlinkBuddy/issues). Building it yourself,
+Found a bug or have an idea? [Open an issue](https://github.com/Kindleshard/BlinkBuddy/issues). What changed in each
+version: [CHANGELOG.md](CHANGELOG.md). Building it yourself,
 or curious how it works: [cpp/docs/BUILDING.md](cpp/docs/BUILDING.md).
 
 ## License

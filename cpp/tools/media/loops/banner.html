@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- The README's header banner, for GitHub's dark theme and (?light) its light one: one still each, rendered with
+     node render.mjs banner --at 0 [--light] and copied to docs\media\banner-dark.png / banner-light.png. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../loop.css">
+<script src="../motion.js"></script>
+<style>
+  html, body { width: 1280px; height: 320px; background: transparent; }
+  .card { position: absolute; inset: 0; border-radius: 22px; overflow: hidden; }
+  .card .bg { border-radius: 22px; }
+  .brand { left: 64px; top: 70px; font-size: 68px; font-weight: 700; gap: 24px; letter-spacing: -0.5px; }
+  .brand img { width: 104px; height: 104px; }
+  .tag { position: absolute; left: 66px; top: 200px; font: 600 26px "Segoe UI Variable Display", "Segoe UI", sans-serif; color: #e9eef9; }
+  .meta { position: absolute; left: 66px; top: 246px; font: 500 18px "Segoe UI", sans-serif; color: var(--dim); }
+  .stage { left: 800px; top: 34px; width: 410px; height: 256px; }
+  /* Light: the same, on a pale sky. */
+  body.light .card .bg { background: radial-gradient(90% 120% at 15% 0%, #ffffff 0%, #eef4fd 50%, #dde9fa 100%); }
+  body.light .glow { opacity: .22 !important; }
+  body.light .brand { color: #141a29; }
+  body.light .tag { color: #1f2a40; }
+  body.light .meta { color: #55607a; }
+  body.light .screen { box-shadow: 0 30px 60px rgba(30, 50, 90, .28), 0 0 0 1px rgba(0, 0, 0, .06); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="bg"></div>
+  <div class="glow" style="background:#2b6cff; left:760px; top:-320px; opacity:.4"></div>
+  <div class="glow" style="background:#40d6c4; left:-300px; top:120px; opacity:.2"></div>
+  <div class="brand"><img src="../icon.png" alt="">BlinkBuddy</div>
+  <div class="tag">Gentle eye care that lives in your Windows tray.</div>
+  <div class="meta">Free and open source · Windows 10 and 11 · 21 languages</div>
+  <div class="stage"><div class="screen"><div class="view" id="view"><div class="sheen"></div></div></div></div>
+</div>
+<script>
+window.LOOP = { width: 1280, height: 320, seconds: 0.1, scale: 2, footage: [{ name: 'exercises', to: 17.5 }] };
+document.addEventListener('DOMContentLoaded', () => {
+    if (new URLSearchParams(location.search).has('light')) document.body.classList.add('light');
+});
+const footage = new Footage(document.getElementById('view'));
+// The liquid eye midway round its circle, its trail behind it.
+window.seek = async () => footage.show(0, [{ name: 'exercises', from: 15.2, to: 15.2, at: 0, until: 1, zoom: 1.12 }]);
+</script>
+</body>
+</html>

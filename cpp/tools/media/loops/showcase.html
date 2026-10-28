@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- A still screenshot for the README, at the screen's own size (2560x1600): the staged desktop from the mini mode
+     recording, the mini icon's panel from mini-showcase (recorded with the settings window's own values; elsewhere
+     that frame caught another BlinkBuddy's icon), and the real settings window over them (shot.ps1 showcase-window
+     -Frame). Rendered with node render.mjs showcase --at 0. -->
+<html>
+<head>
+<meta charset="utf-8">
+<script src="../motion.js"></script>
+<style>
+  html, body { margin: 0; width: 2560px; height: 1600px; overflow: hidden; background: #000; }
+  #desk { position: absolute; inset: 0; }
+  .footage { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .window { position: absolute; left: 230px; top: 170px; z-index: 10; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .5), 0 4px 16px rgba(0, 0, 0, .3); }
+  .window img { display: block; }
+  #panel { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; clip-path: inset(680px 195px 605px 1760px); }
+</style>
+</head>
+<body>
+<div id="desk"></div>
+<img id="panel" alt="">
+<div class="window"><img src="../../../build/media/ui/showcase-window.png" alt=""></div>
+<script>
+window.LOOP = { width: 2560, height: 1600, seconds: 0.1, footage: [{ name: 'mini', to: 7.2, width: 2560 }, { name: 'mini-showcase', to: 7, width: 2560 }] };
+const footage = new Footage(document.getElementById('desk'));
+window.seek = async () => {
+    await footage.show(0, [{ name: 'mini', from: 5.5, to: 5.5, at: 0, until: 1 }]);
+    const panel = document.getElementById('panel');
+    panel.src = Footage.src('mini-showcase', 6.2);
+    await panel.decode();
+    await document.querySelector('.window img').decode();
+};
+</script>
+</body>
+</html>

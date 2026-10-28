@@ -13,6 +13,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const cpp = resolve(here, '..', '..');
 const name = process.argv[2];
 const clean = process.argv.includes('--clean');
+const light = process.argv.includes('--light');   // (for scenes with a light-theme version: the banner)
+const query = [clean && 'clean', light && 'light'].filter(Boolean);
 if (!name) { console.error('node render.mjs <loop name>'); process.exit(2); }
 const fps = 30;
 const ffmpeg = process.env.FFMPEG || 'C:\\Tools\\ffmpeg\\ffmpeg.exe';
@@ -56,10 +58,10 @@ const evaluate = async expression => {
 
 await send('Page.enable');
 const loaded = new Promise(ok => { const old = socket.onmessage; socket.onmessage = e => { old(e); if (JSON.parse(e.data).method === 'Page.loadEventFired') ok(); }; });
-await send('Page.navigate', { url: pathToFileURL(join(here, 'loops', `${name}.html`)).href + (clean ? '?clean' : '') });
+await send('Page.navigate', { url: pathToFileURL(join(here, 'loops', `${name}.html`)).href + (query.length ? '?' + query.join('&') : '') });
 await loaded;
 const loop = await evaluate('document.fonts.ready.then(() => window.LOOP)');
-await send('Emulation.setDeviceMetricsOverride', { width: loop.width, height: loop.height, deviceScaleFactor: clean ? 0.75 : 1, mobile: false });
+await send('Emulation.setDeviceMetricsOverride', { width: loop.width, height: loop.height, deviceScaleFactor: loop.scale ?? (clean ? 0.75 : 1), mobile: false });
 
 // The footage it uses, unpacked once from the recordings into 60 fps frames, 1280 px wide unless the loop asks for
 // more (to zoom in close); the loop picks the frames it needs.
@@ -79,8 +81,9 @@ if (at > 0) {
     for (const t of process.argv[at + 1].split(',').map(Number)) {
         await evaluate(`window.seek(${t})`);
         const shot = await send('Page.captureScreenshot', { format: 'png' });
-        writeFileSync(join(peek, `${name}-${t}.png`), Buffer.from(shot.data, 'base64'));
-        console.log(join(peek, `${name}-${t}.png`));
+        const file = join(peek, `${name}${light ? '-light' : ''}-${t}.png`);
+        writeFileSync(file, Buffer.from(shot.data, 'base64'));
+        console.log(file);
     }
     socket.close();
     browser.kill();

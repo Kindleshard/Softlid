@@ -3,7 +3,7 @@
 #   .\shot.ps1 -Name filter-warm -Set 'FilterEnabled=True', 'BlueFilter=60'
 #   .\shot.ps1 -Name strip -Set 'StripEnabled=True' -Scroll 18      (wheel steps down the page first)
 # Saved as cpp\build\media\ui\<name>.png (the window's inside, at the display's scale).
-param([Parameter(Mandatory)][string]$Name, [string[]]$Set = @(), [int]$Scroll = 0, [switch]$Options)
+param([Parameter(Mandatory)][string]$Name, [string[]]$Set = @(), [int]$Scroll = 0, [switch]$Options, [switch]$Frame)
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 Add-Type @"
@@ -21,6 +21,7 @@ public class MediaShot {
   [DllImport("user32.dll")] public static extern bool PostMessage(IntPtr h, uint m, IntPtr w, IntPtr l);
   [DllImport("user32.dll")] public static extern bool ClientToScreen(IntPtr h, ref PT p);
   [DllImport("user32.dll")] public static extern uint GetDpiForWindow(IntPtr h);
+  [DllImport("dwmapi.dll")] public static extern int DwmGetWindowAttribute(IntPtr h, int a, out RECT r, int size);
   public struct RECT { public int L, T, R, B; } public struct PT { public int X, Y; }
   public static IntPtr SettingsOf(uint id) {
     IntPtr found = IntPtr.Zero;
@@ -48,7 +49,14 @@ function Shot([IntPtr]$h, [string]$out) {
     $bmp = New-Object System.Drawing.Bitmap ($r.R - $r.L), ($r.B - $r.T)
     $g = [System.Drawing.Graphics]::FromImage($bmp); $hdc = $g.GetHdc()
     [MediaShot]::PrintWindow($h, $hdc, 2) | Out-Null; $g.ReleaseHdc($hdc)
-    $client = $bmp.Clone([System.Drawing.Rectangle]::new($o.X - $r.L, $o.Y - $r.T, $c.R, $c.B), $bmp.PixelFormat)
+    # The inside, or with -Frame the window as it looks, title bar and all (its visible frame: without the resize
+    # borders Windows keeps around it, which aren't drawn).
+    $part = [System.Drawing.Rectangle]::new($o.X - $r.L, $o.Y - $r.T, $c.R, $c.B)
+    if ($Frame) {
+        $f = New-Object MediaShot+RECT; [MediaShot]::DwmGetWindowAttribute($h, 9, [ref]$f, 16) | Out-Null   # (DWMWA_EXTENDED_FRAME_BOUNDS)
+        $part = [System.Drawing.Rectangle]::new($f.L - $r.L, $f.T - $r.T, $f.R - $f.L, $f.B - $f.T)
+    }
+    $client = $bmp.Clone($part, $bmp.PixelFormat)
     $client.Save($out); $client.Dispose(); $g.Dispose(); $bmp.Dispose()
 }
 
