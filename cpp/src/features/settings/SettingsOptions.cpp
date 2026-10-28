@@ -299,7 +299,8 @@ void SettingsWindow::BuildUpdates(Stack& st)
     updateProgress->SetBounds(RowText, 5, Edge - RowText, 6);
     ToggleRow(st, L"Check for updates automatically (weekly)", s.UpdateCheck, [this](bool v) { s.UpdateCheck = v; app.Changed(); },
               nullptr, L'\uE787');
-    if (Updater::Available() && app.Update().text.empty()) app.CheckForUpdates();
+    // Opening the page checks too, but only while automatic checks are on: off, nothing goes online until the button.
+    if (Updater::Available() && s.UpdateCheck && app.Update().text.empty()) app.CheckForUpdates();
     shownDownloading = app.Update().downloading;   // (the rows are placed once the page is built)
     RefreshUpdates();
 }

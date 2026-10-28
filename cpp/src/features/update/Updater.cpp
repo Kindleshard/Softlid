@@ -111,6 +111,8 @@ void CheckNow(HWND window, UINT message)
     HRESULT hr = URLDownloadToFileW(nullptr, url.c_str(), json.c_str(), 0, &fetch);
     std::string text = ReadAllBytes(json).value_or("");
     DeleteFileW(json.c_str());
+    // No release at all yet (GitHub answers "not found"): nothing newer than this copy, so not an error.
+    if (hr == INET_E_OBJECT_NOT_FOUND) return Post(window, message, Note(Result::Kind::UpToDate, Lang::T(L"You're up to date.")));
     if (FAILED(hr) || text.empty()) {
         wchar_t code[16];
         swprintf_s(code, L"0x%08X", static_cast<unsigned>(hr));

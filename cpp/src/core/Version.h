@@ -12,7 +12,7 @@ inline constexpr int VersionParts[3] = {BB_VERSION_MAJOR, BB_VERSION_MINOR, BB_V
 
 // Where releases are published, as "owner/name" on GitHub, and where bugs are reported. Empty: no release channel yet
 // (the updater says so, and the bug report row stays hidden).
-inline constexpr wchar_t ReleaseRepo[] = L"";
+inline constexpr wchar_t ReleaseRepo[] = L"Kindleshard/BlinkBuddy";
 
 // A page for supporting BlinkBuddy. Empty: the Support row stays hidden.
 inline constexpr wchar_t DonateUrl[] = L"https://ko-fi.com/P2Z229LS9G";

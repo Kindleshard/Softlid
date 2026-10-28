@@ -13,7 +13,8 @@ anywhere on its own.
 
 Only for these, and only as described:
 
-- **Checking for updates**: once a week (if the option is on) and when you click **Check for updates**, BlinkBuddy asks
+- **Checking for updates**: while automatic checks are on (Options > Updates), once a week and when you open the
+  Options page; and whenever you click **Check for updates**. BlinkBuddy asks
   GitHub for the latest release of BlinkBuddy. If there is a newer one, it downloads the new `BlinkBuddy.exe` from
   GitHub. GitHub sees the request, as it would for any visit (see
   [GitHub's privacy statement](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement)).

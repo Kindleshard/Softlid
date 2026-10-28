@@ -116,8 +116,8 @@ from `loops/<loop>.html` into `docs/media/<loop>.webp`.
 
 ## What it connects to
 
-- GitHub, only for the update check, once a week (if a release repo is set and the option is on), or when you
-  click Check for updates.
+- GitHub, only for the update check: while automatic checks are on, once a week and when you open Options; or
+  when you click Check for updates.
 - GitHub, to download DesktopLUT, only when you choose "Download and set up".
 - Windows location, only for the sunset-to-sunrise schedule, a few times a day.
 

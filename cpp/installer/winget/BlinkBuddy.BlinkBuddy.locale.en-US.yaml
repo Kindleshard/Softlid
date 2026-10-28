@@ -3,13 +3,13 @@ PackageIdentifier: BlinkBuddy.BlinkBuddy
 PackageVersion: 1.0.0
 PackageLocale: en-US
 Publisher: BlinkBuddy
-PublisherUrl: https://github.com/OWNER
-PublisherSupportUrl: https://github.com/OWNER/BlinkBuddy/issues
-PrivacyUrl: https://github.com/OWNER/BlinkBuddy/blob/main/PRIVACY.md
+PublisherUrl: https://github.com/Kindleshard
+PublisherSupportUrl: https://github.com/Kindleshard/BlinkBuddy/issues
+PrivacyUrl: https://github.com/Kindleshard/BlinkBuddy/blob/main/PRIVACY.md
 PackageName: BlinkBuddy
-PackageUrl: https://github.com/OWNER/BlinkBuddy
+PackageUrl: https://github.com/Kindleshard/BlinkBuddy
 License: MIT
-LicenseUrl: https://github.com/OWNER/BlinkBuddy/blob/main/LICENSE
+LicenseUrl: https://github.com/Kindleshard/BlinkBuddy/blob/main/LICENSE
 ShortDescription: Gentle eye care in the Windows tray - blink reminders, guided breaks, a screen filter and a reading strip.
 Description: |-
   BlinkBuddy reminds you to blink and to rest your eyes, with guided eye exercises and a stretch coach you can
