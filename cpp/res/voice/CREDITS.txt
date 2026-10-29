@@ -1,4 +1,4 @@
-BlinkBuddy's spoken steps were made with Chatterbox Multilingual by Resemble AI
+Softlid's spoken steps were made with Chatterbox Multilingual by Resemble AI
 (https://github.com/resemble-ai/chatterbox), an open-source text to speech model under the MIT licence, in its own
 voice. Each folder is one language: da de el en es fi fr it ja ko nl pl pt ru sv tr zh. Chatterbox marks what it
 speaks with an inaudible watermark (Resemble AI's PerTh), which says the clips were made by a machine.

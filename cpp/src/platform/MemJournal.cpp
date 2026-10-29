@@ -42,7 +42,7 @@ void Start(const std::wstring& file)
 {
     out = _wfsopen(file.c_str(), L"a, ccs=UTF-8", _SH_DENYNO);   // (readable while it runs)
     if (!out) return;
-    fwprintf(out, L"---- BlinkBuddy started (pid %lu)%ls", GetCurrentProcessId(), L"\n");
+    fwprintf(out, L"---- Softlid started (pid %lu)%ls", GetCurrentProcessId(), L"\n");
     Note(L"start");
     Check();
 }

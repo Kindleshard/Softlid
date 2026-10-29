@@ -87,7 +87,7 @@ void DirectWindow::Open(float w, float h, const POINT* at, const Options& opts)
         int x = a.left + (a.right - a.left - fw) / 2, y = a.top + std::max(0L, (a.bottom - a.top - fh) / 2);
         bounds = {x, y, x + fw, y + fh};
     }
-    Create(options.popup ? L"BlinkBuddy.DirectPopup" : L"BlinkBuddy.Direct", style, exStyle, bounds, nullptr, options.owner,
+    Create(options.popup ? L"Softlid.DirectPopup" : L"Softlid.Direct", style, exStyle, bounds, nullptr, options.owner,
            options.popup ? CS_DROPSHADOW : 0);
     if (!hwnd) return;
     SetWindowTextW(hwnd, options.title);

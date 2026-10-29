@@ -204,7 +204,7 @@ int RunControlGallery(bool offscreen)
     gallery->onClosed = [] { PostQuitMessage(0); };
     POINT away{-30000, 0};
     DirectWindow::Options options;
-    options.title = L"BlinkBuddy controls";
+    options.title = L"Softlid controls";
     options.resizable = true;
     options.minHeight = 300;
     gallery->Open(W, H, offscreen ? &away : nullptr, options);

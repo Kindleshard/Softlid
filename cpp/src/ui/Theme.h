@@ -4,7 +4,7 @@
 
 namespace bb::Theme {
 
-// BlinkBuddy's dark colours (ARGB), the same as the C# version.
+// Softlid's dark colours (ARGB), the same as the C# version.
 inline constexpr int Bg = Palette::Argb(32, 32, 32);
 inline constexpr int Card = Palette::Argb(40, 40, 42);
 inline constexpr int Line = Palette::Argb(58, 58, 58);

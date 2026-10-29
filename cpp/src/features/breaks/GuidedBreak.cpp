@@ -73,7 +73,7 @@ class GuidedBreak::Layer : public Window {
 public:
     Layer(const RECT& r, HWND owner, bool solidBlack)
     {
-        Create(L"BlinkBuddy.BreakLayer", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, r,
+        Create(L"Softlid.BreakLayer", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, r,
                solidBlack ? static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)) : nullptr, owner);
         if (solidBlack) SetLayeredWindowAttributes(hwnd, 0, 3, LWA_ALPHA);
         ShowWindow(hwnd, SW_SHOWNOACTIVATE);
@@ -142,7 +142,7 @@ GuidedBreak::GuidedBreak(HWND owner, const Settings& s, float warmth)
     hintFont = gfx::Font(10);
 
     // The background: black (or almost nothing when the break plays over the screen; it still takes the keyboard for Esc).
-    Create(L"BlinkBuddy.GuidedBreak", WS_POPUP, WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_LAYERED, bounds,
+    Create(L"Softlid.GuidedBreak", WS_POPUP, WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_LAYERED, bounds,
            static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)));
     SetLayeredWindowAttributes(hwnd, 0, 0, LWA_ALPHA);
     ShowWindow(hwnd, SW_SHOW);

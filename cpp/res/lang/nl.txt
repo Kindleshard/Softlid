@@ -13,7 +13,7 @@ Scherm
 Schema
 Knipperen
 Extra's
-Het tandwiel bevat de opties van BlinkBuddy zelf
+Het tandwiel bevat de opties van Softlid zelf
 Minimodus: dit venster opvouwen tot een klein oog dat altijd bovenop blijft
 Ctrl+Alt+Shift met F: aan/uit · ↑ ↓: helderheid · ← →: warmte
 Helderheid
@@ -37,14 +37,14 @@ Zuiniger; kan bij beweging lichte sporen achterlaten.
 DesktopLUT
 Geen vertraging, kleurecht; vereist DesktopLUT en beheerdersrechten.
 Experimenteel: elk levert iets in
-DesktopLUT is een apart, gratis programma ({0}, ongeveer 1 MB). BlinkBuddy kan de nieuwste versie downloaden en in je gebruikersmap installeren. Het vraagt bij het starten om beheerdersrechten, en BlinkBuddy beveiligt het met een controle van 15 seconden.
+DesktopLUT is een apart, gratis programma ({0}, ongeveer 1 MB). Softlid kan de nieuwste versie downloaden en in je gebruikersmap installeren. Het vraagt bij het starten om beheerdersrechten, en Softlid beveiligt het met een controle van 15 seconden.
 Downloaden en installeren
 Ik heb het al...
 Nu niet
 Er wordt niets gedownload totdat je kiest.
 Kijkt naar de omgeving van elke pixel: grote lichte vlakken worden getemperd, terwijl tekst, randen en kleuren hun contrast houden.
 Het dimmen van het Smart-filter als één laag over het scherm; het tekent alleen opnieuw als er iets verandert.
-Een gratis programma dat een kleurentabel binnen Windows toepast. BlinkBuddy beveiligt het: een controle van 15 seconden, een crashbewaker en de noodtoets Ctrl+Alt+Shift+L zetten het scherm terug.
+Een gratis programma dat een kleurentabel binnen Windows toepast. Softlid beveiligt het: een controle van 15 seconden, een crashbewaker en de noodtoets Ctrl+Alt+Shift+L zetten het scherm terug.
 Sterkte
 Aangepast
 Stel de curve zelf in met drie schuifregelaars (alleen Standaard)
@@ -120,8 +120,8 @@ Gemengd
 Lichter
 Grover
 Geanimeerd (meer stroom)
-BlinkBuddy-opties
-Hoe BlinkBuddy zich zelf gedraagt.
+Softlid-opties
+Hoe Softlid zich zelf gedraagt.
 Taal
 Zoals Windows
 Starten met Windows
@@ -150,7 +150,7 @@ Pauze voorbij. Knipper een paar keer en ga verder.
 Klaar
 Uit
 Uit: het blauwlichtfilter blijft zoals ingesteld op het tabblad Scherm.
-Windows-locatie staat uit en BlinkBuddy kent je tijdzone niet, dus het kan niet weten wanneer de zon ondergaat. Zet locatie voor bureaublad-apps aan in de Windows-instellingen, of gebruik eigen tijden.
+Windows-locatie staat uit en Softlid kent je tijdzone niet, dus het kan niet weten wanneer de zon ondergaat. Zet locatie voor bureaublad-apps aan in de Windows-instellingen, of gebruik eigen tijden.
 De zon gaat vandaag niet onder in {0}, dus het filter rust.
 De zon komt vandaag niet op in {0}, dus het filter blijft aan.
 Aan van {0} tot {1}.
@@ -158,8 +158,8 @@ Rust tot {0}.
 Overgang in: {0:0}% van de weg, volle sterkte om {1}.
 Overgang uit: weer normaal om {0}.
 je locatie (van Windows)
-BlinkBuddy {0} is beschikbaar
-Open de BlinkBuddy-opties om het te installeren.
+Softlid {0} is beschikbaar
+Open de Softlid-opties om het te installeren.
 Zichtbaarheidsbewaking: helderheid op 100% en de curve verzacht zodat donkere details zichtbaar blijven.
 Zichtbaarheidsbewaking: helderheid vastgehouden op {0:0}% (ingesteld op {1}%) zodat het scherm leesbaar blijft.
 Windows accepteert hier geen gammacurve (misschien staat HDR aan), dus alleen het gelijkmatige dimmen werkt.
@@ -185,12 +185,12 @@ Versie {0} is beschikbaar.
 Controleren...
 Hierna: {0}
 Nog {0}:{1:00}  ·  Esc om over te slaan
-Updates zijn nog niet beschikbaar: deze kopie van BlinkBuddy heeft geen releasekanaal.
+Updates zijn nog niet beschikbaar: deze kopie van Softlid heeft geen releasekanaal.
 Kon de versie van de nieuwste release niet lezen.
 Je hebt de nieuwste versie ({0}).
 Versie {0} is beschikbaar (je hebt {1}).
 Kon niet controleren op updates: {0}
-Deze release bevat geen BlinkBuddy.exe om te installeren. Haal het hier: {0}
+Deze release bevat geen Softlid.exe om te installeren. Haal het hier: {0}
 {0} downloaden: {1:0.0} van {2:0.0} MB
 Installeren...
 Kon de update niet installeren: {0}
@@ -237,7 +237,7 @@ Goed gedaan. Neem een slokje water, en weer verder.
 {0} s
 Vraag het me
 Blijven draaien in het systeemvak
-BlinkBuddy afsluiten
+Softlid afsluiten
 Als dit venster wordt gesloten
 Een klein pictogram dat boven andere vensters blijft. Schakel ernaar met de knop naast de titelbalk; beweeg erover voor helderheid, het blauwlichtfilter, de achtergrondverlichting (als die aan is) en knipperherinneringen, en klik om hier terug te komen.
 Pictogram
@@ -256,7 +256,7 @@ Donkere achtergrond tijdens de pauze
 Uit: de oogoefeningen bewegen over je scherm in plaats van over een zwarte achtergrond.
 's Nachts vervangt dit het blauwlichtfilter op het tabblad Scherm, maar alleen als het sterker is; de groene markering op die schuifregelaar laat het zien.
 Blauwlichtfilter 's nachts
-BlinkBuddy sluiten?
+Softlid sluiten?
 In het systeemvak blijft het je herinneren om te knipperen en weg te kijken, en houdt het het schermfilter aan. Afsluiten stopt dat allemaal tot je het weer start.
 Mijn keuze onthouden (te wijzigen in Opties)
 Zonsondergang en -opkomst voor je locatie in Windows
@@ -392,9 +392,9 @@ Schakel ernaar met de knop naast de titelbalk. Beweeg erover voor snelle bedieni
 Dit venster minimaliseren schakelt naar de minimodus
 Dit venster in het pictogram vouwen, zodat je ziet waar het heen gaat
 Gebruik van bronnen
-Wat BlinkBuddy zelf nu gebruikt, zoals Taakbeheer het telt.
+Wat Softlid zelf nu gebruikt, zoals Taakbeheer het telt.
 De laatste minuut: processor (accentkleur) en videokaart (groen)
-Alleen gemeten terwijl deze pagina zichtbaar is, dus het tekenen van dit venster hoort bij wat je hier ziet. Gesloten wacht BlinkBuddy vooral en gebruikt bijna niets.
+Alleen gemeten terwijl deze pagina zichtbaar is, dus het tekenen van dit venster hoort bij wat je hier ziet. Gesloten wacht Softlid vooral en gebruikt bijna niets.
 Processor: {0}% van de hele CPU
 Videokaart: Windows meldt dit hier niet
 Videokaart: {0}% (de drukste engine)
@@ -423,16 +423,16 @@ Nog geen apps
 Apps met een modus: {0}
 Terug naar het paneel
 Functies
-Opties: welke functies aan staan en hoe BlinkBuddy zelf werkt
+Opties: welke functies aan staan en hoe Softlid zelf werkt
 Opties
 Synchroniseren met het Windows-nachtlampje
 Nachtlampje...
 Het nachtlampje staat nu uit.
 Het nachtlampje staat nu aan (met de hand aangezet).
 Het nachtlampje staat nu aan.
-Het heeft geen schema, dus het eigen schema van BlinkBuddy loopt.
-BlinkBuddy volgt de tijden ervan, {0} tot {1}, met sterkte {2}.
-BlinkBuddy volgt het van zonsondergang tot zonsopkomst ({0} tot {1}), met sterkte {2}.
+Het heeft geen schema, dus het eigen schema van Softlid loopt.
+Softlid volgt de tijden ervan, {0} tot {1}, met sterkte {2}.
+Softlid volgt het van zonsondergang tot zonsopkomst ({0} tot {1}), met sterkte {2}.
 Vandaag: het nachtschema in amber en de huidige tijd
 Gepauzeerd terwijl het Windows-nachtlampje het scherm warmer maakt
 Uit: het blauwlichtfilter blijft zoals ingesteld in het schermfilter.
@@ -440,8 +440,8 @@ Waar staat DesktopLUT?
 {0} downloaden: {1} van {2} MB
 de download is mislukt ({0})
 de download is geen Windows-programma
-BlinkBuddy.exe kon niet worden verplaatst (fout {0})
-de nieuwe BlinkBuddy.exe kon niet worden geplaatst (fout {0})
+Softlid.exe kon niet worden verplaatst (fout {0})
+de nieuwe Softlid.exe kon niet worden geplaatst (fout {0})
 Opnieuw starten...
 Windows weigerde de curve op dit scherm (HDR staat misschien aan).
 Ziet je scherm er goed uit?
@@ -449,7 +449,7 @@ Behouden
 Ongedaan maken
 DesktopLUT past nu de kleurentabel toe. Als je niets doet, wordt het over {0} s ongedaan gemaakt.\nNoodtoets op elk moment: Ctrl+Alt+Shift+L.
 Goed gedaan. Je kunt nu weer kijken.
-Het nachtschema volgt zonsondergang en zonsopkomst. BlinkBuddy berekent ze voor deze plek: je locatie in Windows als dat mag, anders de stad van je tijdzone.
+Het nachtschema volgt zonsondergang en zonsopkomst. Softlid berekent ze voor deze plek: je locatie in Windows als dat mag, anders de stad van je tijdzone.
 Sterkte van het nachtschema 's nachts: {0}
 De groene stip: de sterkte van het nachtschema 's nachts
 Dekking als de aanwijzer er niet op staat
@@ -468,17 +468,17 @@ Bij sluiten
 Uiterlijk
 Hoeveel dit venster laat zien, de grootte en de kleur.
 Systeem
-Hoe BlinkBuddy in Windows past.
+Hoe Softlid in Windows past.
 Cirkel van de focustimer
 Updates
 Deze versie, en nieuwere zodra ze uitkomen.
 Opnieuw instellen
 Minimaliseren
 Hulp en ondersteuning
-Vertel ons wat er misging, of help BlinkBuddy draaiende te houden.
+Vertel ons wat er misging, of help Softlid draaiende te houden.
 Werkt er iets niet? Meld het op GitHub.
 Een fout melden...
-BlinkBuddy is gratis. Een koffie houdt het draaiende.
+Softlid is gratis. Een koffie houdt het draaiende.
 Steunen op Ko-fi
 Linksboven
 Rechtsboven
@@ -489,7 +489,7 @@ Stap {0} van {1}
 Voorlezen
 Aan: elke stap wordt voorgelezen
 Uit: er wordt niets voorgelezen
-Welkom bij BlinkBuddy
+Welkom bij Softlid
 Rustige pauzes en een kalmer scherm terwijl je werkt. Dit duurt ongeveer een minuut.
 Elke stap wordt voorgelezen. De knop hierboven zet het geluid uit.
 Rondleiding overslaan
@@ -504,7 +504,7 @@ Een paar rekoefeningen elke {0} min
 Een klein oog knippert met je mee
 Terug
 Volgende
-Waar BlinkBuddy woont
+Waar Softlid woont
 Het wacht in het systeemvak bij de klok. Klik voor de instellingen, rechtsklik voor snelle acties zoals pauzeren.
 Minimodus: een klein pictogram dat bovenop blijft en de volgende pauze toont.
 Klaar
@@ -515,7 +515,7 @@ Je kunt deze rondleiding opnieuw doen via Opties, onder Hulp en ondersteuning.
 Voltooien
 Rondleiding opnieuw tonen
 Rondleiding starten
-Welkom bij BlinkBuddy. Rustige pauzes en een kalmer scherm terwijl je werkt. Dit duurt ongeveer een minuut.
+Welkom bij Softlid. Rustige pauzes en een kalmer scherm terwijl je werkt. Dit duurt ongeveer een minuut.
 Kies wat je helpt. Je kunt alles later nog wijzigen.
-BlinkBuddy wacht in het systeemvak bij de klok. Klik voor de instellingen, rechtsklik voor snelle acties zoals pauzeren.
+Softlid wacht in het systeemvak bij de klok. Klik voor de instellingen, rechtsklik voor snelle acties zoals pauzeren.
 Klaar. Wil je zien hoe een pauze eruitziet? Probeer er nu een, of rond de rondleiding af.

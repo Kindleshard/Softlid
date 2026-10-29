@@ -43,7 +43,7 @@ text fileOverride;   // (diagnostics: --settings)
 
 void Settings::UseFile(const text& path) { fileOverride = path; }
 
-text Settings::FilePath() { return fileOverride.empty() ? RoamingAppData() + L"\\BlinkBuddy\\settings.ini" : fileOverride; }
+text Settings::FilePath() { return fileOverride.empty() ? RoamingAppData() + L"\\Softlid\\settings.ini" : fileOverride; }
 
 Settings Settings::Load()
 {
@@ -76,7 +76,7 @@ Settings Settings::FromText(std::wstring_view file)
     }
     // Before there was an edge choice, the soft edge and the outline could both be on (0 meaning off).
     if (!seen.count(L"StripEdge")) s.StripEdge = s.StripBorder > 0 ? 2 : s.StripFeather > 0 ? 1 : 0;
-    // Settings from before the first-run tour: BlinkBuddy was already in use, so there is nothing to show.
+    // Settings from before the first-run tour: Softlid was already in use, so there is nothing to show.
     if (!seen.count(L"TourDone") && !seen.empty()) s.TourDone = true;
     // MiniSize was against a smaller icon: 130% of it is the new 100%, so a size that was chosen stays as it was (one
     // left at the old 100% takes the new, bigger one).

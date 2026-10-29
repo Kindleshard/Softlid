@@ -121,7 +121,7 @@ bool App::RunAtStartup() const
 {
     wchar_t value[2048];
     DWORD size = sizeof value;
-    if (RegGetValueW(HKEY_CURRENT_USER, RunKey, L"BlinkBuddy", RRF_RT_REG_SZ, nullptr, value, &size) != ERROR_SUCCESS) return false;
+    if (RegGetValueW(HKEY_CURRENT_USER, RunKey, L"Softlid", RRF_RT_REG_SZ, nullptr, value, &size) != ERROR_SUCCESS) return false;
     std::wstring here = L"\"" + ExePath() + L"\"";
     size_t length = wcslen(value);
     return length >= here.size() &&
@@ -134,10 +134,10 @@ void App::SetRunAtStartup(bool on)
     if (RegCreateKeyExW(HKEY_CURRENT_USER, RunKey, 0, nullptr, 0, KEY_SET_VALUE, nullptr, &key, nullptr) != ERROR_SUCCESS) return;
     if (on) {
         std::wstring command = L"\"" + ExePath() + L"\" --tray";
-        RegSetValueExW(key, L"BlinkBuddy", 0, REG_SZ, reinterpret_cast<const BYTE*>(command.c_str()),
+        RegSetValueExW(key, L"Softlid", 0, REG_SZ, reinterpret_cast<const BYTE*>(command.c_str()),
                        static_cast<DWORD>((command.size() + 1) * sizeof(wchar_t)));
     } else {
-        RegDeleteValueW(key, L"BlinkBuddy");
+        RegDeleteValueW(key, L"Softlid");
     }
     RegCloseKey(key);
 }

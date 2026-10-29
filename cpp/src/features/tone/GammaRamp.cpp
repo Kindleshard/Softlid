@@ -12,7 +12,7 @@ namespace {
 constexpr double MaxDeviation = 0.45;   // a little inside Windows' limit of 0.5
 
 // Exists while one of our ramps is on screen, so a crash can be cleaned up on the next start.
-std::wstring Marker() { return RoamingAppData() + L"\\BlinkBuddy\\tone-active"; }
+std::wstring Marker() { return RoamingAppData() + L"\\Softlid\\tone-active"; }
 
 std::vector<std::wstring> Displays()
 {
@@ -132,7 +132,7 @@ bool GammaRamp::TryApply(double d, const std::function<double(double)>& f)
         DeleteDC(dc);
     }
     if (ok) {
-        CreateDirectoryW((RoamingAppData() + L"\\BlinkBuddy").c_str(), nullptr);
+        CreateDirectoryW((RoamingAppData() + L"\\Softlid").c_str(), nullptr);
         HANDLE marker = CreateFileW(Marker().c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
         if (marker != INVALID_HANDLE_VALUE) CloseHandle(marker);
     }

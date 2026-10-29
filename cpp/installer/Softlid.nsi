@@ -1,9 +1,9 @@
-; The BlinkBuddy installer (NSIS 3, chosen over Inno Setup for its size: its own part of the setup and the uninstaller
+; The Softlid installer (NSIS 3, chosen over Inno Setup for its size: its own part of the setup and the uninstaller
 ; are each about 100 KB rather than megabytes). Built by release.ps1, which passes the version, the processor (x64, or
 ; arm64 for the ARM64 build from bin-arm64) and the size of each language's voice:
 ; /DVERSION=1.0.0 /DARCH=x64 /DKB_en=310 /DKB_tr=330 ...
-; Installs for the current user only (no administrator rights), into %LocalAppData%\Programs\BlinkBuddy, which also
-; lets the built-in updater replace the exe in place. Settings in %AppData%\BlinkBuddy are kept on uninstall.
+; Installs for the current user only (no administrator rights), into %LocalAppData%\Programs\Softlid, which also
+; lets the built-in updater replace the exe in place. Settings in %AppData%\Softlid are kept on uninstall.
 ; The voice comes in just one language (the Windows one, unless another is picked) or in all of them; unattended (/S),
 ; /VOICES=all or /VOICES=<code> chooses, and an update keeps what was chosen before.
 
@@ -24,20 +24,21 @@ SetCompressorDictSize 8
 !else
   !define SUFFIX ""
 !endif
-!define UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\BlinkBuddy"
+!define UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\Softlid"
+!define OLD_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\BlinkBuddy"   ; (its name until 1.1.0)
 !define RUN "Software\Microsoft\Windows\CurrentVersion\Run"
 
-Name "BlinkBuddy"
-OutFile "..\dist\BlinkBuddy-${VERSION}${SUFFIX}-setup.exe"
-InstallDir "$LOCALAPPDATA\Programs\BlinkBuddy"
+Name "Softlid"
+OutFile "..\dist\Softlid-${VERSION}${SUFFIX}-setup.exe"
+InstallDir "$LOCALAPPDATA\Programs\Softlid"
 InstallDirRegKey HKCU "${UNINSTALL}" "InstallLocation"
 BrandingText " "
 VIProductVersion "${VERSION}.0"
-VIAddVersionKey "ProductName" "BlinkBuddy"
+VIAddVersionKey "ProductName" "Softlid"
 VIAddVersionKey "ProductVersion" "${VERSION}"
 VIAddVersionKey "FileVersion" "${VERSION}"
-VIAddVersionKey "FileDescription" "BlinkBuddy setup"
-VIAddVersionKey "CompanyName" "BlinkBuddy"
+VIAddVersionKey "FileDescription" "Softlid setup"
+VIAddVersionKey "CompanyName" "Softlid"
 VIAddVersionKey "LegalCopyright" "MIT licence"
 
 !include MUI2.nsh
@@ -47,7 +48,7 @@ VIAddVersionKey "LegalCopyright" "MIT licence"
 !include FileFunc.nsh
 !include WinMessages.nsh
 
-; Each language with a voice: its folder (as BlinkBuddy names it), its name, and Windows' primary language number.
+; Each language with a voice: its folder (as Softlid names it), its name, and Windows' primary language number.
 !macro ForEachLanguage m
   !insertmacro ${m} en "English" 0x09
   !insertmacro ${m} tr "Turkish" 0x1F
@@ -91,34 +92,37 @@ Var AllButton
 Var LanguageList
 Var FullSize      ; the main section's size with every voice, in KB
 
-!define MUI_ICON "..\res\BlinkBuddy.ico"
-!define MUI_UNICON "..\res\BlinkBuddy.ico"
+!define MUI_ICON "..\res\Softlid.ico"
+!define MUI_UNICON "..\res\Softlid.ico"
 !define MUI_ABORTWARNING
 !define MUI_COMPONENTSPAGE_NODESC
 !define MUI_PAGE_CUSTOMFUNCTION_PRE SkipFolderOnUpdate
 !insertmacro MUI_PAGE_DIRECTORY
 Page custom VoiceShow VoiceLeave
 !define MUI_PAGE_HEADER_TEXT "Options"
-!define MUI_PAGE_HEADER_SUBTEXT "Choose how BlinkBuddy starts."
+!define MUI_PAGE_HEADER_SUBTEXT "Choose how Softlid starts."
 !define MUI_COMPONENTSPAGE_TEXT_TOP " "
 !define MUI_COMPONENTSPAGE_TEXT_COMPLIST " "
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
-!define MUI_FINISHPAGE_RUN "$INSTDIR\BlinkBuddy.exe"
-!define MUI_FINISHPAGE_RUN_TEXT "Start BlinkBuddy"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\Softlid.exe"
+!define MUI_FINISHPAGE_RUN_TEXT "Start Softlid"
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_LANGUAGE "English"
 
-; A running BlinkBuddy holds its files: ask for it to be closed first (unattended, give up).
+; A running Softlid holds its files: ask for it to be closed first (unattended, give up).
 !macro CloseFirst un
 Function ${un}CloseFirst
   retry:
-  System::Call 'kernel32::OpenMutexW(i 0x00100000, i 0, w "Local\BlinkBuddy.Instance") p .r0'
+  System::Call 'kernel32::OpenMutexW(i 0x00100000, i 0, w "Local\Softlid.Instance") p .r0'
+  ${If} $0 P= 0
+    System::Call 'kernel32::OpenMutexW(i 0x00100000, i 0, w "Local\BlinkBuddy.Instance") p .r0'   ; (its old name)
+  ${EndIf}
   ${If} $0 P<> 0
     System::Call 'kernel32::CloseHandle(p r0)'
-    MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION "BlinkBuddy is running. Quit it from its tray icon (right-click, Quit), then click Retry." /SD IDCANCEL IDRETRY retry
+    MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION "Softlid (or BlinkBuddy, its old name) is running. Quit it from its tray icon (right-click, Exit), then click Retry." /SD IDCANCEL IDRETRY retry
     Quit
   ${EndIf}
 FunctionEnd
@@ -141,7 +145,7 @@ Function .onInit
   !if "${ARCH}" == "arm64"
     ; (The ARM64 build runs only on ARM64 Windows; the x64 one runs everywhere, ARM64 PCs included.)
     ${IfNot} ${IsNativeARM64}
-      MessageBox MB_OK|MB_ICONSTOP "This is BlinkBuddy for ARM64 PCs. For this PC, use BlinkBuddy-${VERSION}-setup.exe." /SD IDOK
+      MessageBox MB_OK|MB_ICONSTOP "This is Softlid for ARM64 PCs. For this PC, use Softlid-${VERSION}-setup.exe." /SD IDOK
       Quit
     ${EndIf}
   !endif
@@ -154,6 +158,9 @@ Function .onInit
   ${If} ${Errors}
     ReadRegStr $Voices HKCU "${UNINSTALL}" "Voices"
   ${EndIf}
+  ${If} $Voices == ""
+    ReadRegStr $Voices HKCU "${OLD_UNINSTALL}" "Voices"
+  ${EndIf}
   StrCpy $1 0
   !insertmacro ForEachLanguage IsKnown
   ${If} $1 = 0
@@ -165,7 +172,7 @@ Function .onInit
   ${EndIf}
 FunctionEnd
 
-; An update goes where BlinkBuddy already is.
+; An update goes where Softlid already is.
 Function SkipFolderOnUpdate
   ReadRegStr $0 HKCU "${UNINSTALL}" "InstallLocation"
   ${If} $0 != ""
@@ -218,10 +225,10 @@ FunctionEnd
 !macroend
 
 Function VoiceShow
-  !insertmacro MUI_HEADER_TEXT "Voice" "Which languages should BlinkBuddy speak?"
+  !insertmacro MUI_HEADER_TEXT "Voice" "Which languages should Softlid speak?"
   nsDialogs::Create 1018
   Pop $VoicePage
-  ${NSD_CreateLabel} 0 0 100% 24u "BlinkBuddy reads the steps of its breaks and its tour aloud. The voice for just your language keeps it small; all of them let you switch freely."
+  ${NSD_CreateLabel} 0 0 100% 24u "Softlid reads the steps of its breaks and its tour aloud. The voice for just your language keeps it small; all of them let you switch freely."
   Pop $0
   ${NSD_CreateRadioButton} 0 34u 100% 12u "Just one language"
   Pop $OneButton
@@ -257,9 +264,18 @@ FunctionEnd
   ${EndIf}
 !macroend
 
-Section "-BlinkBuddy" SecMain   ; (always, so not listed)
+Section "-Softlid" SecMain   ; (always, so not listed)
+  ; Softlid was called BlinkBuddy until 1.1.0: a copy under the old name goes, by its own uninstaller, which keeps
+  ; the settings (Softlid moves them over when it starts).
+  ReadRegStr $0 HKCU "${OLD_UNINSTALL}" "InstallLocation"
+  ${If} $0 != ""
+  ${AndIf} ${FileExists} "$0\uninstall.exe"
+    ExecWait '"$0\uninstall.exe" /S _?=$0'
+    Delete "$0\uninstall.exe"
+    RMDir "$0"
+  ${EndIf}
   SetOutPath "$INSTDIR"
-  File "..\bin${SUFFIX}\BlinkBuddy.exe"
+  File "..\bin${SUFFIX}\Softlid.exe"
   Delete "$INSTDIR\voice\*.mp3"   ; (clips from before each language had a folder of its own)
   SetOutPath "$INSTDIR\voice"
   File "..\res\voice\CREDITS.txt"
@@ -267,11 +283,11 @@ Section "-BlinkBuddy" SecMain   ; (always, so not listed)
   SetOutPath "$INSTDIR"
 
   WriteUninstaller "$INSTDIR\uninstall.exe"
-  CreateShortcut "$SMPROGRAMS\BlinkBuddy.lnk" "$INSTDIR\BlinkBuddy.exe"
-  WriteRegStr HKCU "${UNINSTALL}" "DisplayName" "BlinkBuddy"
+  CreateShortcut "$SMPROGRAMS\Softlid.lnk" "$INSTDIR\Softlid.exe"
+  WriteRegStr HKCU "${UNINSTALL}" "DisplayName" "Softlid"
   WriteRegStr HKCU "${UNINSTALL}" "DisplayVersion" "${VERSION}"
-  WriteRegStr HKCU "${UNINSTALL}" "Publisher" "BlinkBuddy"
-  WriteRegStr HKCU "${UNINSTALL}" "DisplayIcon" "$INSTDIR\BlinkBuddy.exe"
+  WriteRegStr HKCU "${UNINSTALL}" "Publisher" "Softlid"
+  WriteRegStr HKCU "${UNINSTALL}" "DisplayIcon" "$INSTDIR\Softlid.exe"
   WriteRegStr HKCU "${UNINSTALL}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "${UNINSTALL}" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegStr HKCU "${UNINSTALL}" "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'
@@ -282,13 +298,13 @@ Section "-BlinkBuddy" SecMain   ; (always, so not listed)
   WriteRegDWORD HKCU "${UNINSTALL}" "EstimatedSize" $0
 SectionEnd
 
-; The same entry BlinkBuddy's own "Start with Windows" option writes.
-Section "Start BlinkBuddy when I sign in" SecStartup
-  WriteRegStr HKCU "${RUN}" "BlinkBuddy" '"$INSTDIR\BlinkBuddy.exe" --tray'
+; The same entry Softlid's own "Start with Windows" option writes.
+Section "Start Softlid when I sign in" SecStartup
+  WriteRegStr HKCU "${RUN}" "Softlid" '"$INSTDIR\Softlid.exe" --tray'
 SectionEnd
 
 Section /o "Create a desktop shortcut" SecDesktop
-  CreateShortcut "$DESKTOP\BlinkBuddy.lnk" "$INSTDIR\BlinkBuddy.exe"
+  CreateShortcut "$DESKTOP\Softlid.lnk" "$INSTDIR\Softlid.exe"
 SectionEnd
 
 ; (Down here, after the section it resizes.)
@@ -317,15 +333,15 @@ Function un.onInit
 FunctionEnd
 
 Section "Uninstall"
-  Delete "$INSTDIR\BlinkBuddy.exe"
-  Delete "$INSTDIR\BlinkBuddy.exe.old"   ; (left behind by an update or the build)
-  Delete "$INSTDIR\BlinkBuddy.exe.new"
+  Delete "$INSTDIR\Softlid.exe"
+  Delete "$INSTDIR\Softlid.exe.old"   ; (left behind by an update or the build)
+  Delete "$INSTDIR\Softlid.exe.new"
   RMDir /r "$INSTDIR\voice"
   Delete "$INSTDIR\uninstall.exe"
   RMDir "$INSTDIR"
-  Delete "$SMPROGRAMS\BlinkBuddy.lnk"
-  Delete "$DESKTOP\BlinkBuddy.lnk"
-  ; The start-with-Windows entry goes too, whether this installer or BlinkBuddy's own option made it.
-  DeleteRegValue HKCU "${RUN}" "BlinkBuddy"
+  Delete "$SMPROGRAMS\Softlid.lnk"
+  Delete "$DESKTOP\Softlid.lnk"
+  ; The start-with-Windows entry goes too, whether this installer or Softlid's own option made it.
+  DeleteRegValue HKCU "${RUN}" "Softlid"
   DeleteRegKey HKCU "${UNINSTALL}"
 SectionEnd

@@ -55,7 +55,7 @@ MiniMorph::Picture MiniMorph::Take(HWND window)
 MiniMorph::MiniMorph(Picture shot, RECT target, std::function<void()> done)
     : picture(std::move(shot)), to(target), landed(std::move(done))
 {
-    Create(L"BlinkBuddy.Morph", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, picture.at);
+    Create(L"Softlid.Morph", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, picture.at);
     start = GetTickCount64();
     Frame();
     ShowWindow(hwnd, SW_SHOWNOACTIVATE);

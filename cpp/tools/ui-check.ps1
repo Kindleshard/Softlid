@@ -1,7 +1,7 @@
 # Checks that the settings window looks exactly as it did: the panel and Options, each scrolled through to its end, compared pixel by pixel.
 #   .\tools\ui-check.ps1 -Update   before a change: the screenshots become the baseline (cpp\build\ui-baseline)
 #   .\tools\ui-check.ps1           after it: compare (exit code = number of views that changed)
-# It runs a diagnostic copy of bin\BlinkBuddy.exe (--offscreen: off the screen, beside a running BlinkBuddy, which is
+# It runs a diagnostic copy of bin\Softlid.exe (--offscreen: off the screen, beside a running Softlid, which is
 # left alone) with a settings file of its own (Advanced view, English, filter and reminders off), so your settings
 # are never touched. Screenshots depend on the display's scale and fonts: compare with a baseline made on this PC.
 param([switch]$Update, [int]$Tolerance = 0)
@@ -23,11 +23,11 @@ public class UiCheck {
   [DllImport("user32.dll")] public static extern bool ClientToScreen(IntPtr h, ref PT p);
   [DllImport("user32.dll")] public static extern uint GetDpiForWindow(IntPtr h);
   public struct RECT { public int L, T, R, B; } public struct PT { public int X, Y; }
-  // The settings window of one process (the diagnostic copy, not a BlinkBuddy you have open).
+  // The settings window of one process (the diagnostic copy, not a Softlid you have open).
   public static IntPtr SettingsOf(uint id) {
     IntPtr found = IntPtr.Zero;
     EnumWindows((h, l) => { uint pid; GetWindowThreadProcessId(h, out pid); var s = new StringBuilder(64); GetClassName(h, s, 64);
-      if (pid == id && s.ToString() == "BlinkBuddy.Direct" && IsWindowVisible(h)) { found = h; return false; } return true; }, IntPtr.Zero);
+      if (pid == id && s.ToString() == "Softlid.Direct" && IsWindowVisible(h)) { found = h; return false; } return true; }, IntPtr.Zero);
     return found;
   }
 }
@@ -35,7 +35,7 @@ public class UiCheck {
 [UiCheck]::SetProcessDPIAware() | Out-Null
 
 $cpp = Split-Path $PSScriptRoot -Parent
-$exe = Join-Path $cpp 'bin\BlinkBuddy.exe'
+$exe = Join-Path $cpp 'bin\Softlid.exe'
 $work = Join-Path $cpp 'build\ui-check'
 $baseline = Join-Path $cpp 'build\ui-baseline'
 $shots = if ($Update) { $baseline } else { Join-Path $work 'shots' }

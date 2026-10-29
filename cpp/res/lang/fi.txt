@@ -13,7 +13,7 @@ Näyttö
 Ajastus
 Räpyttely
 Lisät
-Ratas sisältää BlinkBuddyn omat asetukset
+Ratas sisältää Softlidin omat asetukset
 Minitila: taita ikkuna pieneksi silmäksi, joka pysyy aina päällimmäisenä
 Ctrl+Alt+Vaihto ja F: päälle/pois · ↑ ↓: kirkkaus · ← →: lämpö
 Kirkkaus
@@ -37,14 +37,14 @@ Säästeliäämpi; voi jättää liikkeessä heikkoja jälkiä.
 DesktopLUT
 Ei viivettä, sävyuskollinen; vaatii DesktopLUTin ja järjestelmänvalvojan oikeudet.
 Kokeelliset: jokainen tinkii jostakin
-DesktopLUT on erillinen ilmainen ohjelma ({0}, noin 1 Mt). BlinkBuddy voi ladata sen uusimman version ja asentaa sen käyttäjäkansioosi. Se pyytää käynnistyessään järjestelmänvalvojan oikeuksia, ja BlinkBuddy suojaa sitä 15 sekunnin tarkistuksella.
+DesktopLUT on erillinen ilmainen ohjelma ({0}, noin 1 Mt). Softlid voi ladata sen uusimman version ja asentaa sen käyttäjäkansioosi. Se pyytää käynnistyessään järjestelmänvalvojan oikeuksia, ja Softlid suojaa sitä 15 sekunnin tarkistuksella.
 Lataa ja asenna
 Minulla on se jo...
 Ei nyt
 Mitään ei ladata ennen kuin valitset.
 Tarkastelee jokaisen pikselin ympäristöä: suuret kirkkaat alueet rauhoittuvat, kun taas teksti, reunat ja värit säilyttävät kontrastinsa.
 Smart-suodattimen himmennys yhtenä kerroksena näytön päällä; se piirretään uudelleen vain, kun jokin muuttuu.
-Ilmainen ohjelma, joka käyttää väritaulukkoa Windowsin sisällä. BlinkBuddy vahtii sitä: 15 sekunnin tarkistus, kaatumisvahti ja hätänäppäin Ctrl+Alt+Vaihto+L palauttavat näytön.
+Ilmainen ohjelma, joka käyttää väritaulukkoa Windowsin sisällä. Softlid vahtii sitä: 15 sekunnin tarkistus, kaatumisvahti ja hätänäppäin Ctrl+Alt+Vaihto+L palauttavat näytön.
 Voimakkuus
 Mukautettu
 Säädä käyrä itse kolmella liukusäätimellä (vain Vakio)
@@ -120,8 +120,8 @@ Sekoitettu
 Vaaleampi
 Karkeampi
 Animoitu (enemmän virtaa)
-BlinkBuddyn asetukset
-Miten BlinkBuddy itse toimii.
+Softlidin asetukset
+Miten Softlid itse toimii.
 Kieli
 Sama kuin Windowsissa
 Käynnistä Windowsin kanssa
@@ -150,7 +150,7 @@ Tauko on ohi. Räpyttele muutaman kerran ja jatka.
 Valmis
 Pois
 Pois: sinisen valon suodatin pysyy Näyttö-välilehden asetuksen mukaisena.
-Windowsin sijainti on pois päältä, eikä BlinkBuddy tunne aikavyöhykettäsi, joten se ei tiedä, milloin aurinko laskee. Ota sijainti käyttöön työpöytäsovelluksille Windowsin asetuksista tai käytä omia aikoja.
+Windowsin sijainti on pois päältä, eikä Softlid tunne aikavyöhykettäsi, joten se ei tiedä, milloin aurinko laskee. Ota sijainti käyttöön työpöytäsovelluksille Windowsin asetuksista tai käytä omia aikoja.
 Aurinko ei laske tänään kohteessa {0}, joten suodatin lepää.
 Aurinko ei nouse tänään kohteessa {0}, joten suodatin pysyy päällä.
 Päällä klo {0}–{1}.
@@ -158,8 +158,8 @@ Lepää klo {0} asti.
 Voimistuu: {0:0} % matkasta, täysi voimakkuus klo {1}.
 Hiipuu: normaali taas klo {0}.
 sijaintisi (Windowsista)
-BlinkBuddy {0} on saatavilla
-Avaa BlinkBuddyn asetukset asentaaksesi sen.
+Softlid {0} on saatavilla
+Avaa Softlidin asetukset asentaaksesi sen.
 Näkyvyyssuoja: kirkkaus 100 % ja käyrää pehmennetty, jotta tummat yksityiskohdat näkyvät.
 Näkyvyyssuoja: kirkkaus pidetään {0:0} %:ssa (asetettu {1} %), jotta näyttö pysyy luettavana.
 Windows ei hyväksy tässä gammakäyrää (ehkä HDR on päällä), joten vain tasainen himmennys on käytössä.
@@ -185,12 +185,12 @@ Asenna {0}
 Tarkistetaan...
 Seuraavaksi: {0}
 {0}:{1:00} jäljellä  ·  Ohita Esc-näppäimellä
-Päivityksiä ei ole vielä saatavilla: tällä BlinkBuddyn kopiolla ei ole julkaisukanavaa.
+Päivityksiä ei ole vielä saatavilla: tällä Softlidin kopiolla ei ole julkaisukanavaa.
 Uusimman julkaisun versiota ei voitu lukea.
 Sinulla on uusin versio ({0}).
 Versio {0} on saatavilla (sinulla on {1}).
 Päivitysten tarkistus epäonnistui: {0}
-Tässä julkaisussa ei ole asennettavaa BlinkBuddy.exe-tiedostoa. Hae se täältä: {0}
+Tässä julkaisussa ei ole asennettavaa Softlid.exe-tiedostoa. Hae se täältä: {0}
 Ladataan {0}: {1:0.0} / {2:0.0} Mt
 Asennetaan...
 Päivityksen asennus epäonnistui: {0}
@@ -237,7 +237,7 @@ Hienoa työtä. Ota kulaus vettä, ja takaisin töihin.
 {0} s
 Kysy minulta
 Jatka ilmaisinalueella
-Lopeta BlinkBuddy
+Lopeta Softlid
 Kun tämä ikkuna suljetaan
 Pieni kuvake, joka pysyy muiden ikkunoiden päällä. Siirry siihen otsikkopalkin vieressä olevalla painikkeella; vie osoitin sen päälle säätääksesi kirkkautta, sinisen valon suodatinta, taustavaloa (kun se on käytössä) ja räpyttelymuistutuksia, ja napsauta palataksesi tänne.
 Kuvake
@@ -256,7 +256,7 @@ Tumma tausta tauon aikana
 Pois: silmäharjoitukset liikkuvat näyttösi päällä mustan taustan sijaan.
 Yöllä tämä korvaa Näyttö-välilehden sinisen valon suodattimen, mutta vain kun se on voimakkaampi; sen liukusäätimen vihreä merkki näyttää sen.
 Sinisen valon suodatin yöllä
-Suljetaanko BlinkBuddy?
+Suljetaanko Softlid?
 Ilmaisinalueella se muistuttaa yhä räpyttelemään ja katsomaan kauas sekä pitää näyttösuodattimen päällä. Lopettaminen pysäyttää kaiken, kunnes käynnistät sen uudelleen.
 Muista valintani (muutettavissa Asetuksissa)
 Auringonlasku ja -nousu Windowsin sijaintisi mukaan
@@ -392,9 +392,9 @@ Siirry siihen otsikkopalkin vieressä olevalla painikkeella. Vie osoitin sen pä
 Tämän ikkunan pienentäminen siirtää minitilaan
 Taita ikkuna kuvakkeeseen, niin näet minne se meni
 Resurssien käyttö
-Mitä BlinkBuddy itse käyttää juuri nyt, Tehtävienhallinnan laskemana.
+Mitä Softlid itse käyttää juuri nyt, Tehtävienhallinnan laskemana.
 Viimeinen minuutti: suoritin (korostusväri) ja näytönohjain (vihreä)
-Mitataan vain tämän sivun ollessa näkyvissä, joten ikkunan piirtäminen kuuluu siihen, mitä tässä näet. Suljettuna BlinkBuddy enimmäkseen odottaa ja käyttää lähes ei mitään.
+Mitataan vain tämän sivun ollessa näkyvissä, joten ikkunan piirtäminen kuuluu siihen, mitä tässä näet. Suljettuna Softlid enimmäkseen odottaa ja käyttää lähes ei mitään.
 Suoritin: {0} % koko suorittimesta
 Näytönohjain: Windows ei ilmoita sitä tässä
 Näytönohjain: {0} % (kuormitetuin moottori)
@@ -423,16 +423,16 @@ Ei vielä sovelluksia
 Tilan saaneet sovellukset: {0}
 Takaisin paneeliin
 Toiminnot
-Asetukset: mitkä toiminnot ovat päällä ja miten BlinkBuddy itse toimii
+Asetukset: mitkä toiminnot ovat päällä ja miten Softlid itse toimii
 Asetukset
 Synkronoi Windowsin yövalon kanssa
 Yövalo...
 Yövalo on nyt pois päältä.
 Yövalo on nyt päällä (kytketty käsin).
 Yövalo on nyt päällä.
-Sillä ei ole ajastusta, joten BlinkBuddyn oma ajastus on käytössä.
-BlinkBuddy seuraa sen aikoja, {0}–{1}, voimakkuudella {2}.
-BlinkBuddy seuraa sitä auringonlaskusta auringonnousuun ({0}–{1}), voimakkuudella {2}.
+Sillä ei ole ajastusta, joten Softlidin oma ajastus on käytössä.
+Softlid seuraa sen aikoja, {0}–{1}, voimakkuudella {2}.
+Softlid seuraa sitä auringonlaskusta auringonnousuun ({0}–{1}), voimakkuudella {2}.
 Tänään: yöajastus meripihkan värisenä ja kellonaika nyt
 Tauolla, kun Windowsin yövalo lämmittää näyttöä
 Pois: sinisen valon suodatin pysyy näyttösuodattimessa asetetun mukaisena.
@@ -440,8 +440,8 @@ Missä DesktopLUT on?
 Ladataan {0}: {1} / {2} Mt
 lataus epäonnistui ({0})
 ladattu tiedosto ei ole Windows-ohjelma
-BlinkBuddy.exe-tiedostoa ei voitu siirtää (virhe {0})
-uutta BlinkBuddy.exe-tiedostoa ei voitu asettaa paikalleen (virhe {0})
+Softlid.exe-tiedostoa ei voitu siirtää (virhe {0})
+uutta Softlid.exe-tiedostoa ei voitu asettaa paikalleen (virhe {0})
 Käynnistetään uudelleen...
 Windows hylkäsi käyrän tällä näytöllä (HDR saattaa olla päällä).
 Näyttääkö näyttösi oikealta?
@@ -449,7 +449,7 @@ Pidä
 Kumoa
 DesktopLUT ottaa nyt väritaulukon käyttöön. Jos et tee mitään, se perutaan {0} s:n kuluttua.\nHätänäppäin milloin tahansa: Ctrl+Alt+Vaihto+L.
 Hyvin tehty. Voit nyt katsoa takaisin.
-Yöajastus seuraa auringonlaskua ja -nousua. BlinkBuddy laskee ne tälle paikalle: Windowsin sijaintisi, kun se on sallittu, muuten aikavyöhykkeesi kaupunki.
+Yöajastus seuraa auringonlaskua ja -nousua. Softlid laskee ne tälle paikalle: Windowsin sijaintisi, kun se on sallittu, muuten aikavyöhykkeesi kaupunki.
 Yöajastuksen voimakkuus yöllä: {0}
 Vihreä piste: yöajastuksen voimakkuus yöllä
 Peittävyys, kun osoitin ei ole päällä
@@ -468,17 +468,17 @@ Suljettaessa
 Ulkoasu
 Kuinka paljon ikkuna näyttää, sen koko ja väri.
 Järjestelmä
-Miten BlinkBuddy sopii Windowsiin.
+Miten Softlid sopii Windowsiin.
 Keskittymisajastimen ympyrä
 Päivitykset
 Tämä versio ja uudemmat, kun niitä tulee.
 Palauta
 Pienennä
 Ohje ja tuki
-Kerro, mikä meni vikaan, tai auta BlinkBuddya jatkamaan.
+Kerro, mikä meni vikaan, tai auta Softlidia jatkamaan.
 Eikö jokin toimi? Ilmoita siitä GitHubissa.
 Ilmoita viasta...
-BlinkBuddy on ilmainen. Kahvi pitää sen käynnissä.
+Softlid on ilmainen. Kahvi pitää sen käynnissä.
 Tue Ko-fissa
 Vasen yläkulma
 Oikea yläkulma
@@ -489,7 +489,7 @@ Vaihe {0}/{1}
 Lue ääneen
 Päällä: jokainen vaihe luetaan ääneen
 Pois: mitään ei lueta ääneen
-Tervetuloa BlinkBuddyyn
+Tervetuloa Softlidiin
 Lempeitä taukoja ja rauhallisempi näyttö työn lomassa. Tämä vie noin minuutin.
 Jokainen vaihe luetaan ääneen. Yllä oleva painike mykistää sen.
 Ohita esittely
@@ -504,7 +504,7 @@ Muutama venytys {0} min välein
 Pieni silmä räpyttelee kanssasi
 Takaisin
 Seuraava
-Missä BlinkBuddy asuu
+Missä Softlid asuu
 Se odottaa ilmaisinalueella kellon vieressä. Napsauta asetuksia varten, napsauta hiiren kakkospainikkeella pikatoimintoja, kuten taukoa, varten.
 Minitila: pieni kuvake, joka pysyy päällimmäisenä ja näyttää seuraavan tauon.
 Kaikki valmista
@@ -515,7 +515,7 @@ Voit katsoa esittelyn uudelleen Asetuksista kohdasta Ohje ja tuki.
 Valmis
 Näytä esittely uudelleen
 Aloita esittely
-Tervetuloa BlinkBuddyyn. Lempeitä taukoja ja rauhallisempi näyttö työn lomassa. Tämä vie noin minuutin.
+Tervetuloa Softlidiin. Lempeitä taukoja ja rauhallisempi näyttö työn lomassa. Tämä vie noin minuutin.
 Valitse, mikä auttaa sinua. Voit muuttaa kaiken myöhemmin.
-BlinkBuddy odottaa ilmaisinalueella kellon vieressä. Napsauta asetuksia varten, napsauta hiiren kakkospainikkeella pikatoimintoja, kuten taukoa, varten.
+Softlid odottaa ilmaisinalueella kellon vieressä. Napsauta asetuksia varten, napsauta hiiren kakkospainikkeella pikatoimintoja, kuten taukoa, varten.
 Kaikki valmista. Haluatko nähdä, miltä tauko näyttää? Kokeile yhtä nyt tai lopeta esittely.

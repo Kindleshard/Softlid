@@ -4,7 +4,7 @@
 #include "BuildVersion.h"
 
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "app.manifest"
-IDI_APP ICON "BlinkBuddy.ico"
+IDI_APP ICON "Softlid.ico"
 
 // What Explorer shows under Properties > Details.
 VS_VERSION_INFO VERSIONINFO
@@ -17,12 +17,12 @@ BEGIN
     BEGIN
         BLOCK "040904B0"
         BEGIN
-            VALUE "CompanyName", "BlinkBuddy"
-            VALUE "FileDescription", "BlinkBuddy - eye care in the tray"
+            VALUE "CompanyName", "Softlid"
+            VALUE "FileDescription", "Softlid - eye care in the tray"
             VALUE "FileVersion", BB_VERSION_TEXT
-            VALUE "InternalName", "BlinkBuddy"
-            VALUE "OriginalFilename", "BlinkBuddy.exe"
-            VALUE "ProductName", "BlinkBuddy"
+            VALUE "InternalName", "Softlid"
+            VALUE "OriginalFilename", "Softlid.exe"
+            VALUE "ProductName", "Softlid"
             VALUE "ProductVersion", BB_VERSION_TEXT
         END
     END

@@ -87,7 +87,7 @@ void App::LeaveMiniMode()
     PostMessageW(window, LeaveMiniMessage, 0, 0);   // (not from inside the eye's own click: it goes away)
 }
 
-// Minimize (its hover button or its menu): the icon goes and BlinkBuddy carries on in the tray, whose icon opens the
+// Minimize (its hover button or its menu): the icon goes and Softlid carries on in the tray, whose icon opens the
 // settings again.
 void App::HideMini()
 {

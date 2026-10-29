@@ -57,7 +57,7 @@ std::vector<ChoiceRow*> SettingsWindow::BuildToneEngines(Stack& st)
         {L"Smart layer", L"Lighter on power; can leave faint trails when moving.", L"Experimental",
          L"The smart filter's dimming as one layer over the screen; it redraws only when something changed."},
         {L"DesktopLUT", L"No delay, hue-true; needs DesktopLUT and admin rights.", L"Experimental",
-         L"A free program that applies a colour table inside Windows. BlinkBuddy guards it: a 15-second check, "
+         L"A free program that applies a colour table inside Windows. Softlid guards it: a 15-second check, "
          L"a crash watchdog and the panic key Ctrl+Alt+Shift+L all put the screen back."},
     };
     std::vector<ChoiceRow*> rows;
@@ -200,8 +200,8 @@ void SettingsWindow::BuildLutSetup(Stack& st)
     Row& r = st.Add(132, [this] { return lutSetupOpen && !LutInstalled(); });
     std::wstring page = LutFiles::Page;
     Label& text = AddLabel(r, L"", Fonts::Small(), Theme::Dim, 48, 2, Edge - 48, 54);
-    text.SetPlainText(Lang::F(L"DesktopLUT is a separate free program ({0}, about 1 MB). BlinkBuddy can download its latest release and set "
-                              L"it up in your user folder. It asks for administrator permission when it starts, and BlinkBuddy guards it "
+    text.SetPlainText(Lang::F(L"DesktopLUT is a separate free program ({0}, about 1 MB). Softlid can download its latest release and set "
+                              L"it up in your user folder. It asks for administrator permission when it starts, and Softlid guards it "
                               L"with a 15-second check.", {page.substr(8)}));
     text.wrap = text.top = true;
     lutInstall = &AddButton(r, L"Download and set up", 48, 60, 170, 32);

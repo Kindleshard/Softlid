@@ -339,7 +339,7 @@ Settings Screen::Effective() const
 // ---- Windows Night light ----
 
 // The settings with the night schedule as it runs: Windows Night light's hours and strength while it has a schedule
-// and BlinkBuddy follows it (the schedule's own settings stay as set, for when it doesn't).
+// and Softlid follows it (the schedule's own settings stay as set, for when it doesn't).
 Settings Screen::Scheduled() const
 {
     Settings v = s;
@@ -370,7 +370,7 @@ void Screen::NightLightTick()
 // ---- Per-app rules ----
 
 // Is an app with a rule in front? Checked the moment another window comes to the front (and each second, to be
-// sure). A window that only passes through - the taskbar, Start, Alt+Tab, BlinkBuddy itself - leaves the app's mode
+// sure). A window that only passes through - the taskbar, Start, Alt+Tab, Softlid itself - leaves the app's mode
 // on while the app's window is still there to see.
 void Screen::CheckRules()
 {

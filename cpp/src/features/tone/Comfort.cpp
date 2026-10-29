@@ -11,7 +11,7 @@ constexpr double MaxExtraDim = 0.15;
 
 } // namespace
 
-Comfort::Comfort() { Create(L"BlinkBuddy.Comfort", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }   // (hidden: for the timers)
+Comfort::Comfort() { Create(L"Softlid.Comfort", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }   // (hidden: for the timers)
 Comfort::~Comfort() { Destroy(); }
 
 double Comfort::White() const { return ToneCurve::White(level) * adapt; }

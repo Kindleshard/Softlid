@@ -1,6 +1,6 @@
-# Builds BlinkBuddy from this repository on GitHub's own Windows machines, with cpp/release.ps1: x64 and ARM64, the
+# Builds Softlid from this repository on GitHub's own Windows machines, with cpp/release.ps1: x64 and ARM64, the
 # tests, the installers and the portable zips. So anyone can see that the downloads come from this source.
-#   Actions > Release > Run workflow   build only; the files are kept as the run's "BlinkBuddy" download
+#   Actions > Release > Run workflow   build only; the files are kept as the run's "Softlid" download
 #   git push origin v1.0.1             the same, then a draft release with the files, to check and publish by hand
 # Signing (SignPath Foundation) is added here once the project is approved: the files then go to SignPath, each
 # request is approved by hand there, and the signed files are what the release gets.
@@ -32,7 +32,7 @@ jobs:
       - name: Keep the files
         uses: actions/upload-artifact@v4
         with:
-          name: BlinkBuddy
+          name: Softlid
           path: |
             cpp/dist/*.exe
             cpp/dist/*.zip
@@ -46,5 +46,5 @@ jobs:
         run: |
           $files = Get-ChildItem cpp/dist -File | Where-Object { $_.Extension -in '.exe', '.zip' } | ForEach-Object FullName
           $version = $env:GITHUB_REF_NAME.TrimStart('v')
-          gh release create $env:GITHUB_REF_NAME --draft --title "BlinkBuddy $version" @files `
+          gh release create $env:GITHUB_REF_NAME --draft --title "Softlid $version" @files `
               --notes "Built by GitHub Actions from $env:GITHUB_SHA. Add the notes (CHANGELOG.md), check the files, then publish."

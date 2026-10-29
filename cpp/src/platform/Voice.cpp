@@ -12,7 +12,7 @@
 namespace bb {
 namespace {
 
-constexpr wchar_t Alias[] = L"blinkbuddyvoice";
+constexpr wchar_t Alias[] = L"softlidvoice";
 
 int Mci(const std::wstring& command, wchar_t* result = nullptr, UINT length = 0)
 {

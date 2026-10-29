@@ -1,5 +1,5 @@
-# A screenshot of BlinkBuddy's settings window with the given settings, for the loops: a diagnostic copy opens it off
-# the screen (--offscreen --no-screen: nothing is put on your screen, your own BlinkBuddy is left alone).
+# A screenshot of Softlid's settings window with the given settings, for the loops: a diagnostic copy opens it off
+# the screen (--offscreen --no-screen: nothing is put on your screen, your own Softlid is left alone).
 #   .\shot.ps1 -Name filter-warm -Set 'FilterEnabled=True', 'BlueFilter=60'
 #   .\shot.ps1 -Name strip -Set 'StripEnabled=True' -Scroll 18      (wheel steps down the page first)
 # Saved as cpp\build\media\ui\<name>.png (the window's inside, at the display's scale).
@@ -26,7 +26,7 @@ public class MediaShot {
   public static IntPtr SettingsOf(uint id) {
     IntPtr found = IntPtr.Zero;
     EnumWindows((h, l) => { uint pid; GetWindowThreadProcessId(h, out pid); var s = new StringBuilder(64); GetClassName(h, s, 64);
-      if (pid == id && s.ToString() == "BlinkBuddy.Direct" && IsWindowVisible(h)) { found = h; return false; } return true; }, IntPtr.Zero);
+      if (pid == id && s.ToString() == "Softlid.Direct" && IsWindowVisible(h)) { found = h; return false; } return true; }, IntPtr.Zero);
     return found;
   }
 }
@@ -60,7 +60,7 @@ function Shot([IntPtr]$h, [string]$out) {
     $client.Save($out); $client.Dispose(); $g.Dispose(); $bmp.Dispose()
 }
 
-$p = Start-Process (Join-Path $cpp 'bin\BlinkBuddy.exe') -ArgumentList '--offscreen', '--no-screen', '--settings', "`"$ini`"" -PassThru
+$p = Start-Process (Join-Path $cpp 'bin\Softlid.exe') -ArgumentList '--offscreen', '--no-screen', '--settings', "`"$ini`"" -PassThru
 try {
     $h = [IntPtr]::Zero
     for ($i = 0; $i -lt 50 -and $h -eq [IntPtr]::Zero; $i++) { Start-Sleep -Milliseconds 100; $h = [MediaShot]::SettingsOf([uint32]$p.Id) }

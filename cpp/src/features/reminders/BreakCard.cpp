@@ -33,7 +33,7 @@ BreakCard::BreakCard(HWND owner, bool standUp, const Settings& s, int seconds, s
 
     // The dimmed screen goes up first, so the card lands above it.
     if (s.BreakBackdrop) backdrop.Show(0.85f);
-    Create(L"BlinkBuddy.BreakCard", WS_POPUP, PopupExStyle | WS_EX_LAYERED, {at.x, at.y, at.x + w, at.y + h});
+    Create(L"Softlid.BreakCard", WS_POPUP, PopupExStyle | WS_EX_LAYERED, {at.x, at.y, at.x + w, at.y + h});
     Render();
     ShowOnTop(hwnd);
     ui::Access::Announce(hwnd, title + L". " + hint);

@@ -34,7 +34,7 @@ bool RunHidden(std::wstring command)
 
 void InstallNow(HWND window, UINT message)
 {
-    std::wstring json = TempFolder() + L"BlinkBuddy-DesktopLUT.json", zip = TempFolder() + L"BlinkBuddy-DesktopLUT.zip";
+    std::wstring json = TempFolder() + L"Softlid-DesktopLUT.json", zip = TempFolder() + L"Softlid-DesktopLUT.zip";
     auto fail = [&](const std::wstring& why) {
         DeleteFileW(json.c_str());
         DeleteFileW(zip.c_str());
@@ -46,7 +46,7 @@ void InstallNow(HWND window, UINT message)
     std::string text = ReadAllBytes(json).value_or("");
     std::string url = JsonFirst(text, "browser_download_url", [](std::string_view u) { return u.size() > 4 && u.ends_with(".zip"); });
     if (url.empty())
-        return fail(L"The latest release has no download BlinkBuddy recognises. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
+        return fail(L"The latest release has no download Softlid recognises. Get it from " + std::wstring(Page) + L" and pick it with Browse.");
     std::string tag = JsonFirst(text, "tag_name", [](std::string_view t) { return !t.empty(); });
     std::wstring version = tag.empty() ? L"latest" : FromUtf8(tag);
     PostOwned<std::wstring>(window, message, 0, L"Downloading DesktopLUT " + version + L"...");
@@ -77,7 +77,7 @@ void InstallNow(HWND window, UINT message)
 
 } // namespace
 
-std::wstring CubePath() { return RoamingAppData() + L"\\BlinkBuddy\\DesktopLUT.cube"; }
+std::wstring CubePath() { return RoamingAppData() + L"\\Softlid\\DesktopLUT.cube"; }
 
 std::wstring Folder()
 {
@@ -85,7 +85,7 @@ std::wstring Folder()
     std::wstring path;
     if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &local))) path = local;
     CoTaskMemFree(local);
-    return path + L"\\BlinkBuddy\\DesktopLUT";
+    return path + L"\\Softlid\\DesktopLUT";
 }
 
 bool WriteLevel(const std::wstring& path, int level)
@@ -94,8 +94,8 @@ bool WriteLevel(const std::wstring& path, int level)
     std::string out;
     out.reserve(size * size * size * 26 + 256);
     std::string title = level < 0 ? "unchanged" : ToUtf8(ToneCurve::Levels[level]);
-    out += "TITLE \"BlinkBuddy " + title + "\"\n";
-    out += "# Colour-preserving tone map from BlinkBuddy. Input and output are display (sRGB-encoded) values.\n";
+    out += "TITLE \"Softlid " + title + "\"\n";
+    out += "# Colour-preserving tone map from Softlid. Input and output are display (sRGB-encoded) values.\n";
     out += "LUT_3D_SIZE " + std::to_string(size) + "\nDOMAIN_MIN 0.0 0.0 0.0\nDOMAIN_MAX 1.0 1.0 1.0\n";
     char line[64];
     for (int bi = 0; bi < size; bi++)   // blue changes slowest, red fastest (the .cube convention)

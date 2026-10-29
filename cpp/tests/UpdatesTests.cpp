@@ -24,7 +24,7 @@ Updater::Result Result(Kind kind, std::wstring tag = L"")
 {
     Updater::Result r{kind, L"(text)"};
     r.release.tag = tag;
-    r.release.download = L"https://example.invalid/BlinkBuddy.exe";
+    r.release.download = L"https://example.invalid/Softlid.exe";
     return r;
 }
 
@@ -95,7 +95,7 @@ TEST(UpdatesNewerFoundAndInstalled)
     Settings s;
     f.updates.Weekly(s, Day(2026, 10, 26));   // never checked before: due
     Updates::Effects fx = f.updates.Received(Result(Kind::Newer, L"1.1.0"), s, Day(2026, 10, 26));
-    CHECK_EQ(fx.notifyTitle, std::wstring(L"BlinkBuddy 1.1.0 is available"));   // the weekly check says so
+    CHECK_EQ(fx.notifyTitle, std::wstring(L"Softlid 1.1.0 is available"));   // the weekly check says so
     CHECK(f.updates.State().look == Look::Newer);
     CHECK(f.updates.State().release.has_value());
     f.updates.Weekly(s, Day(2026, 11, 30));   // a newer one is known: no more checks

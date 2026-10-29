@@ -141,7 +141,7 @@ void SettingsWindow::SyncFromApp()
     UpdateRows();
 }
 
-// The close button (or Alt+F4): ask, keep BlinkBuddy running in the tray, or exit, as set in Options.
+// The close button (or Alt+F4): ask, keep Softlid running in the tray, or exit, as set in Options.
 void SettingsWindow::CloseClicked()
 {
     int choice = s.CloseAction;
@@ -296,11 +296,11 @@ void SettingsWindow::SetFolded(const std::wstring& key, bool folded)
     app.Changed();
 }
 
-// "More options": a section's less-used settings, folded away until opened (they stay open or folded while BlinkBuddy
+// "More options": a section's less-used settings, folded away until opened (they stay open or folded while Softlid
 // runs). The Simple view has no "More options" at all: just the essentials.
 SettingsWindow::Shown SettingsWindow::More(Stack& st, const std::wstring& key, Shown shown)
 {
-    static std::vector<std::wstring> unfolded;   // (for as long as BlinkBuddy runs)
+    static std::vector<std::wstring> unfolded;   // (for as long as Softlid runs)
     auto isOpen = [this, key] { return unfoldAll || std::find(unfolded.begin(), unfolded.end(), key) != unfolded.end(); };
     Shown visible = [shown] { return !shown || shown(); };
     Row& row = st.Add(36, visible);

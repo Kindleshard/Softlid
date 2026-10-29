@@ -26,7 +26,7 @@ struct Settings {
     // The file's contents ("Name=Value" lines), without the file: what Load and Save read and write.
     static Settings FromText(std::wstring_view file);
     text ToText() const;
-    static text FilePath();   // %AppData%\BlinkBuddy\settings.ini
+    static text FilePath();   // %AppData%\Softlid\settings.ini
     static void UseFile(const text& path);   // diagnostics: another file instead (--settings)
 
 private:

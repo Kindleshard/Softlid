@@ -1,21 +1,21 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/media/banner-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="docs/media/banner-light.png">
-  <img src="docs/media/banner-dark.png" width="100%" alt="BlinkBuddy: gentle eye care that lives in your Windows tray.">
+  <img src="docs/media/banner-dark.png" width="100%" alt="Softlid: gentle eye care that lives in your Windows tray.">
 </picture>
 
 <p align="center">Blink reminders, breaks your eyes can follow, a warmer screen at night and a strip to read by.</p>
 
 <p align="center">
-  <a href="https://github.com/Kindleshard/BlinkBuddy/releases/latest"><img src="https://img.shields.io/github/v/release/Kindleshard/BlinkBuddy?label=version&color=4cc2ff" alt="Latest version"></a>
-  <a href="https://github.com/Kindleshard/BlinkBuddy/releases"><img src="https://img.shields.io/github/downloads/Kindleshard/BlinkBuddy/total?color=40d6c4" alt="Downloads"></a>
+  <a href="https://github.com/Kindleshard/Softlid/releases/latest"><img src="https://img.shields.io/github/v/release/Kindleshard/Softlid?label=version&color=4cc2ff" alt="Latest version"></a>
+  <a href="https://github.com/Kindleshard/Softlid/releases"><img src="https://img.shields.io/github/downloads/Kindleshard/Softlid/total?color=40d6c4" alt="Downloads"></a>
   <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078d4" alt="Windows 10 and 11">
   <img src="https://img.shields.io/badge/languages-21-b096ff" alt="21 languages">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/Kindleshard/BlinkBuddy?color=f0c846" alt="MIT license"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/Kindleshard/Softlid?color=f0c846" alt="MIT license"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Kindleshard/BlinkBuddy/releases/latest"><img src="https://img.shields.io/badge/Download_for_Windows-free-4cc2ff?style=for-the-badge" alt="Download for Windows"></a>
+  <a href="https://github.com/Kindleshard/Softlid/releases/latest"><img src="https://img.shields.io/badge/Download_for_Windows-free-4cc2ff?style=for-the-badge" alt="Download for Windows"></a>
 </p>
 
 <p align="center"><img src="docs/media/breaks.avif" width="820" alt="A break: the screen dims, a liquid blue eye leads the eyes side to side and round in a circle, then a glowing stick figure reaches both arms up."></p>
@@ -30,7 +30,7 @@
       A little eye peeks out of the corner and blinks with you, or two soft eyelids sweep over the screen once.
     </td>
     <td width="50%" valign="top">
-      <img src="docs/media/filter.avif" width="100%" alt="A desktop turns warm, then dimmer, then grayscale, sepia, e-ink and red night, beside BlinkBuddy's Screen filter settings.">
+      <img src="docs/media/filter.avif" width="100%" alt="A desktop turns warm, then dimmer, then grayscale, sepia, e-ink and red night, beside Softlid's Screen filter settings.">
       <h3>Screen filter</h3>
       Warmer light after sunset, wherever you are. Dimmer than your display goes. Grayscale, sepia, e-ink and red night.
     </td>
@@ -49,7 +49,7 @@
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <img src="docs/media/settings.avif" width="100%" alt="BlinkBuddy's settings window switching between languages, then opening extra options in the Advanced view.">
+      <img src="docs/media/settings.avif" width="100%" alt="Softlid's settings window switching between languages, then opening extra options in the Advanced view.">
       <h3>21 languages, Simple or Advanced</h3>
       Picked up from Windows, with every spoken step in your language. Calm by default, every detail when you want it.
     </td>
@@ -70,7 +70,7 @@
 
 Everything in one quiet window, and the essentials a point away in mini mode.
 
-<p align="center"><img src="docs/media/screenshot.avif" width="100%" alt="A desktop with BlinkBuddy's settings window open on the Screen filter, and the mini icon's quick panel over a picture: brightness 90%, blue light filter 4450 K, blink reminders on."></p>
+<p align="center"><img src="docs/media/screenshot.avif" width="100%" alt="A desktop with Softlid's settings window open on the Screen filter, and the mini icon's quick panel over a picture: brightness 90%, blue light filter 4450 K, blink reminders on."></p>
 
 ## Light by design
 
@@ -81,14 +81,14 @@ Everything in one quiet window, and the essentials a point away in mini mode.
 
 ## Install
 
-1. Download **`BlinkBuddy-<version>-setup.exe`** from the [latest release](https://github.com/Kindleshard/BlinkBuddy/releases/latest)
+1. Download **`Softlid-<version>-setup.exe`** from the [latest release](https://github.com/Kindleshard/Softlid/releases/latest)
    (on an Arm PC, the `-arm64-setup.exe`).
 2. Run it, and choose whether the spoken steps come in just your language (about 2 MB installed in all) or all 21.
-3. BlinkBuddy starts in the tray, by the clock, with a short tour the first time.
+3. Softlid starts in the tray, by the clock, with a short tour the first time.
 
-Prefer no installer? The `-portable.zip` runs from any folder. BlinkBuddy needs Windows 10 or 11, 64-bit.
+Prefer no installer? The `-portable.zip` runs from any folder. Softlid needs Windows 10 or 11, 64-bit.
 
-> **"Windows protected your PC"?** BlinkBuddy isn't code-signed yet, so Windows SmartScreen doesn't know it. Click
+> **"Windows protected your PC"?** Softlid isn't code-signed yet, so Windows SmartScreen doesn't know it. Click
 > **More info**, then **Run anyway**. Each release lists the checksums of its files.
 
 ## FAQ
@@ -103,7 +103,7 @@ Yes, and open source under the MIT license. If it helps you, you can
 <details>
 <summary><b>Does it work with Windows Night light?</b></summary>
 
-Yes. BlinkBuddy can follow Night light's schedule (**Sync with Windows Night light**), or keep its own: sunset to
+Yes. Softlid can follow Night light's schedule (**Sync with Windows Night light**), or keep its own: sunset to
 sunrise where you are, or hours you choose.
 </details>
 
@@ -118,21 +118,27 @@ exactly what it uses right now.
 <summary><b>How do I update or uninstall it?</b></summary>
 
 Options > Updates checks for new versions and installs them in place. To uninstall, use Windows Settings > Apps >
-Installed apps > BlinkBuddy. Your settings stay in `%AppData%\BlinkBuddy`, in case you come back.
+Installed apps > Softlid. Your settings stay in `%AppData%\Softlid`, in case you come back.
+</details>
+
+<details>
+<summary><b>Wasn't this called BlinkBuddy?</b></summary>
+
+Yes, until version 1.1.0: another eye care app already had that name. Updating from BlinkBuddy keeps your settings.
 </details>
 
 <details>
 <summary><b>Something isn't working</b></summary>
 
 Options > Help and support > **Report a bug** opens a form here with your version and Windows filled in. Or
-[open an issue](https://github.com/Kindleshard/BlinkBuddy/issues/new/choose) directly.
+[open an issue](https://github.com/Kindleshard/Softlid/issues/new/choose) directly.
 </details>
 
 ## Support
 
 <a href="https://ko-fi.com/P2Z229LS9G"><img src="https://img.shields.io/badge/Support_on_Ko--fi-29abe0?style=for-the-badge" alt="Support on Ko-fi"></a>
 
-Found a bug or have an idea? [Open an issue](https://github.com/Kindleshard/BlinkBuddy/issues). What changed in each
+Found a bug or have an idea? [Open an issue](https://github.com/Kindleshard/Softlid/issues). What changed in each
 version: [CHANGELOG.md](CHANGELOG.md). Building it yourself,
 or curious how it works: [cpp/docs/BUILDING.md](cpp/docs/BUILDING.md).
 
@@ -147,7 +153,7 @@ Free code signing provided by [SignPath.io](https://about.signpath.io), certific
 Signed releases are built from this repository's source by GitHub Actions, and each one is approved by hand before
 it is signed.
 
-Privacy policy: [PRIVACY.md](PRIVACY.md). BlinkBuddy collects no personal data; it goes online only to check for
+Privacy policy: [PRIVACY.md](PRIVACY.md). Softlid collects no personal data; it goes online only to check for
 updates (which can be switched off) and when you ask it to.
 
 ## License

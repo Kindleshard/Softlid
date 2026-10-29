@@ -62,15 +62,15 @@ Strength in Settings maps linearly onto the colour temperature: **K = 6500 − 5
 - Don't rely on `RegNotifyChangeKeyValue`: Windows writes these without notifications firing. Poll them.
 - Sunset and sunrise come from Windows' own location; use them only when the schedule is "Sunset to sunrise".
 
-## How BlinkBuddy uses it
+## How Softlid uses it
 
 Read-only, in `platform/NightLight.cpp`, read again each second. (Windows changes these values without the
 registry's change notifications firing: a watch on the keys, or on the whole store, stayed silent while Night light
 was switched on and off.) With **Sync with Windows Night light** on (Schedule page, on
 by default):
 
-- While Night light is on, BlinkBuddy's blue light filter rests (daytime and night strength both); brightness, tone
+- While Night light is on, Softlid's blue light filter rests (daytime and night strength both); brightness, tone
   and effects carry on. Things drawn to match the screen's warmth (mini mode's icon) use Night light's.
-- While Night light has a schedule, BlinkBuddy's night schedule runs on its hours (Set hours, or Windows' sunset and
-  sunrise) and its strength (as a blue light filter %: (6500 − K) / 46). BlinkBuddy's own schedule settings are kept
+- While Night light has a schedule, Softlid's night schedule runs on its hours (Set hours, or Windows' sunset and
+  sunrise) and its strength (as a blue light filter %: (6500 − K) / 46). Softlid's own schedule settings are kept
   for when it doesn't.

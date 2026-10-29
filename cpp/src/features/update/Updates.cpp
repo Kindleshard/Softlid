@@ -63,8 +63,8 @@ Updates::Effects Updates::Received(const Updater::Result& r, Settings& s, const 
             state.look = Look::Newer;
             state.text = Lang::F(L"Update available: version {0}", {r.release.tag});
             if (quiet) {
-                fx.notifyTitle = Lang::F(L"BlinkBuddy {0} is available", {r.release.tag});
-                fx.notifyText = Lang::T(L"Open BlinkBuddy options to install it.");
+                fx.notifyTitle = Lang::F(L"Softlid {0} is available", {r.release.tag});
+                fx.notifyText = Lang::T(L"Open Softlid options to install it.");
             }
         } else if (!quiet) {
             state.look = r.kind == Kind::UpToDate ? Look::UpToDate : Look::Plain;

@@ -13,7 +13,7 @@ Ecran
 Program
 Clipire
 Extra
-Rotița dințată conține opțiunile BlinkBuddy
+Rotița dințată conține opțiunile Softlid
 Mod mini: strânge fereastra într-un ochi mic, mereu deasupra
 Ctrl+Alt+Shift cu F: pornit/oprit · ↑ ↓: luminozitate · ← →: căldură
 Luminozitate
@@ -37,14 +37,14 @@ Mai econom; poate lăsa urme fine la mișcare.
 DesktopLUT
 Fără întârziere, fidel nuanțelor; necesită DesktopLUT și drepturi de administrator.
 Experimental: fiecare sacrifică ceva
-DesktopLUT este un program gratuit separat ({0}, circa 1 MB). BlinkBuddy poate descărca ultima versiune și o poate instala în folderul tău de utilizator. La pornire cere drepturi de administrator, iar BlinkBuddy îl păzește cu o verificare de 15 secunde.
+DesktopLUT este un program gratuit separat ({0}, circa 1 MB). Softlid poate descărca ultima versiune și o poate instala în folderul tău de utilizator. La pornire cere drepturi de administrator, iar Softlid îl păzește cu o verificare de 15 secunde.
 Descarcă și instalează
 Îl am deja...
 Nu acum
 Nu se descarcă nimic până nu alegi.
 Analizează vecinătatea fiecărui pixel: zonele mari luminoase sunt calmate, iar textul, marginile și culorile își păstrează contrastul.
 Estomparea filtrului Smart ca un singur strat peste ecran; se redesenează doar când se schimbă ceva.
-Un program gratuit care aplică un tabel de culori în Windows. BlinkBuddy îl păzește: o verificare de 15 secunde, un supraveghetor de blocări și tasta de panică Ctrl+Alt+Shift+L readuc ecranul.
+Un program gratuit care aplică un tabel de culori în Windows. Softlid îl păzește: o verificare de 15 secunde, un supraveghetor de blocări și tasta de panică Ctrl+Alt+Shift+L readuc ecranul.
 Intensitate
 Personalizat
 Reglează singur curba cu trei glisoare (doar motorul Standard)
@@ -120,8 +120,8 @@ Mixt
 Mai deschis
 Mai grosier
 Animat (mai multă energie)
-Opțiuni BlinkBuddy
-Cum se comportă BlinkBuddy.
+Opțiuni Softlid
+Cum se comportă Softlid.
 Limbă
 Ca Windows
 Pornește odată cu Windows
@@ -150,7 +150,7 @@ Pauza s-a terminat. Clipește de câteva ori și continuă.
 Gata
 Oprit
 Oprit: filtrul de lumină albastră rămâne cum e setat în fila Ecran.
-Locația Windows e oprită și BlinkBuddy nu cunoaște fusul tău orar, așa că nu poate ști când apune soarele. Pornește locația pentru aplicațiile desktop în Setările Windows sau folosește ore personalizate.
+Locația Windows e oprită și Softlid nu cunoaște fusul tău orar, așa că nu poate ști când apune soarele. Pornește locația pentru aplicațiile desktop în Setările Windows sau folosește ore personalizate.
 Azi soarele nu apune în {0}, așa că filtrul se odihnește.
 Azi soarele nu răsare în {0}, așa că filtrul rămâne pornit.
 Pornit de la {0} la {1}.
@@ -158,8 +158,8 @@ Pornit de la {0} la {1}.
 Intrare treptată: {0:0}% din drum, intensitate maximă la {1}.
 Ieșire treptată: revine la normal la {0}.
 locația ta (din Windows)
-BlinkBuddy {0} este disponibil
-Deschide opțiunile BlinkBuddy ca să-l instalezi.
+Softlid {0} este disponibil
+Deschide opțiunile Softlid ca să-l instalezi.
 Protecție de vizibilitate: luminozitate la 100% și curbă atenuată ca detaliile întunecate să rămână vizibile.
 Protecție de vizibilitate: luminozitate menținută la {0:0}% (setată la {1}%) ca ecranul să rămână lizibil.
 Windows nu acceptă aici o curbă gamma (poate HDR e pornit), așa că funcționează doar estomparea uniformă.
@@ -185,12 +185,12 @@ Instalează {0}
 Se verifică...
 Urmează: {0}
 Mai sunt {0}:{1:00}  ·  Esc pentru a sări
-Actualizările nu sunt încă disponibile: această copie BlinkBuddy nu are un canal de lansări.
+Actualizările nu sunt încă disponibile: această copie Softlid nu are un canal de lansări.
 Nu s-a putut citi versiunea ultimei lansări.
 Ai cea mai nouă versiune ({0}).
 Versiunea {0} este disponibilă (ai {1}).
 Nu s-au putut căuta actualizări: {0}
-Această lansare nu conține un BlinkBuddy.exe de instalat. Ia-l de aici: {0}
+Această lansare nu conține un Softlid.exe de instalat. Ia-l de aici: {0}
 Se descarcă {0}: {1:0.0} din {2:0.0} MB
 Se instalează...
 Actualizarea nu s-a putut instala: {0}
@@ -237,7 +237,7 @@ Bravo. Bea o gură de apă și înapoi la treabă.
 {0} s
 Întreabă-mă
 Rulează în continuare în bara de sistem
-Ieși din BlinkBuddy
+Ieși din Softlid
 Când această fereastră este închisă
 O pictogramă mică ce rămâne deasupra altor ferestre. Treci la ea cu butonul de lângă bara de titlu; treci cu mouse-ul peste ea pentru luminozitate, filtrul de lumină albastră, iluminarea de fundal (când e pornită) și memento-urile de clipire, și dă clic ca să revii aici.
 Pictogramă
@@ -256,7 +256,7 @@ Fundal întunecat în timpul pauzei
 Oprit: exercițiile pentru ochi se mișcă peste ecranul tău în loc de un fundal negru.
 Noaptea, aceasta înlocuiește filtrul de lumină albastră din fila Ecran, dar numai când e mai puternic; semnul verde de pe acel glisor o arată.
 Filtru de lumină albastră noaptea
-Închizi BlinkBuddy?
+Închizi Softlid?
 În bara de sistem continuă să-ți amintească să clipești și să privești în depărtare și ține filtrul de ecran pornit. Ieșirea oprește toate acestea până îl repornești.
 Ține minte alegerea (o poți schimba în Opțiuni)
 Apus și răsărit pentru locația ta din Windows
@@ -392,9 +392,9 @@ Treci la ea cu butonul de lângă bara de titlu. Treci cu mouse-ul peste ea pent
 Minimizarea acestei ferestre trece în modul mini
 Pliază această fereastră în pictogramă, ca să vezi unde a ajuns
 Utilizarea resurselor
-Ce folosește BlinkBuddy acum, așa cum numără Managerul de activități.
+Ce folosește Softlid acum, așa cum numără Managerul de activități.
 Ultimul minut: procesor (culoarea de accent) și placa video (verde)
-Se măsoară doar cât timp se vede această pagină, deci desenarea ferestrei face parte din ce vezi aici. Închis, BlinkBuddy mai mult așteaptă și nu folosește aproape nimic.
+Se măsoară doar cât timp se vede această pagină, deci desenarea ferestrei face parte din ce vezi aici. Închis, Softlid mai mult așteaptă și nu folosește aproape nimic.
 Procesor: {0}% din întregul CPU
 Placa video: Windows nu raportează asta aici
 Placa video: {0}% (motorul cel mai ocupat)
@@ -423,16 +423,16 @@ Urmează Lumina de noapte din Windows
 Aplicații cu un mod: {0}
 Înapoi la panou
 Funcții
-Opțiuni: ce funcții sunt pornite și cum se comportă BlinkBuddy
+Opțiuni: ce funcții sunt pornite și cum se comportă Softlid
 Opțiuni
 Sincronizează cu Lumina de noapte din Windows
 Lumină de noapte...
 Lumina de noapte este oprită acum.
 Lumina de noapte este pornită acum (pornită manual).
 Lumina de noapte este pornită acum.
-Nu are program, așa că rulează programul propriu al BlinkBuddy.
-BlinkBuddy urmează orele ei, {0}–{1}, cu intensitatea {2}.
-BlinkBuddy o urmează de la apus la răsărit ({0}–{1}), cu intensitatea {2}.
+Nu are program, așa că rulează programul propriu al Softlid.
+Softlid urmează orele ei, {0}–{1}, cu intensitatea {2}.
+Softlid o urmează de la apus la răsărit ({0}–{1}), cu intensitatea {2}.
 Azi: programul de noapte în chihlimbariu și ora curentă
 În pauză cât timp Lumina de noapte din Windows încălzește ecranul
 Oprit: filtrul de lumină albastră rămâne cum e setat în filtrul de ecran.
@@ -440,8 +440,8 @@ Unde este DesktopLUT?
 Se descarcă {0}: {1} din {2} MB
 descărcarea a eșuat ({0})
 fișierul descărcat nu este un program Windows
-BlinkBuddy.exe nu a putut fi mutat (eroare {0})
-noul BlinkBuddy.exe nu a putut fi pus la loc (eroare {0})
+Softlid.exe nu a putut fi mutat (eroare {0})
+noul Softlid.exe nu a putut fi pus la loc (eroare {0})
 Se repornește...
 Windows a refuzat curba pe acest ecran (poate HDR este pornit).
 Ecranul arată bine?
@@ -449,7 +449,7 @@ Păstrează
 Anulează
 DesktopLUT aplică acum tabelul de culori. Dacă nu faci nimic, se anulează în {0} s.\nTastă de urgență oricând: Ctrl+Alt+Shift+L.
 Bravo. Acum poți privi din nou.
-Programul de noapte urmează apusul și răsăritul. BlinkBuddy le calculează pentru acest loc: locația ta din Windows, când e permisă, altfel orașul fusului tău orar.
+Programul de noapte urmează apusul și răsăritul. Softlid le calculează pentru acest loc: locația ta din Windows, când e permisă, altfel orașul fusului tău orar.
 Intensitatea programului de noapte, noaptea: {0}
 Punctul verde: intensitatea programului de noapte, noaptea
 Opacitate când indicatorul nu e deasupra
@@ -468,17 +468,17 @@ La închidere
 Aspect
 Cât arată această fereastră, dimensiunea și culoarea ei.
 Sistem
-Cum se potrivește BlinkBuddy cu Windows.
+Cum se potrivește Softlid cu Windows.
 Cercul cronometrului de concentrare
 Actualizări
 Această versiune și cele mai noi când apar.
 Resetare
 Minimizează
 Ajutor și sprijin
-Spune-ne ce n-a mers sau ajută BlinkBuddy să continue.
+Spune-ne ce n-a mers sau ajută Softlid să continue.
 Ceva nu funcționează? Raportează pe GitHub.
 Raportează o eroare...
-BlinkBuddy este gratuit. O cafea îl ține în viață.
+Softlid este gratuit. O cafea îl ține în viață.
 Susține pe Ko-fi
 Stânga sus
 Dreapta sus
@@ -489,7 +489,7 @@ Pasul {0} din {1}
 Citește cu voce tare
 Pornit: fiecare pas este citit cu voce tare
 Oprit: nu se citește nimic
-Bun venit în BlinkBuddy
+Bun venit în Softlid
 Pauze blânde și un ecran mai liniștit cât lucrezi. Durează cam un minut.
 Fiecare pas este citit cu voce tare. Butonul de sus îl oprește.
 Sari peste tur
@@ -504,7 +504,7 @@ Câteva întinderi la fiecare {0} min
 Un ochi mic clipește odată cu tine
 Înapoi
 Înainte
-Unde stă BlinkBuddy
+Unde stă Softlid
 Așteaptă în zona de notificare, lângă ceas. Fă clic pentru setări, clic dreapta pentru acțiuni rapide, cum ar fi pauza.
 Mod mini: o pictogramă mică ce rămâne deasupra și arată următoarea pauză.
 Totul e gata
@@ -515,7 +515,7 @@ Poți relua turul din Opțiuni, la Ajutor și sprijin.
 Gata
 Arată turul din nou
 Pornește turul
-Bun venit în BlinkBuddy. Pauze blânde și un ecran mai liniștit cât lucrezi. Durează cam un minut.
+Bun venit în Softlid. Pauze blânde și un ecran mai liniștit cât lucrezi. Durează cam un minut.
 Alege ce te ajută. Poți schimba totul mai târziu.
-BlinkBuddy așteaptă în zona de notificare, lângă ceas. Fă clic pentru setări, clic dreapta pentru acțiuni rapide, cum ar fi pauza.
+Softlid așteaptă în zona de notificare, lângă ceas. Fă clic pentru setări, clic dreapta pentru acțiuni rapide, cum ar fi pauza.
 Totul e gata. Vrei să vezi cum arată o pauză? Încearcă una acum sau încheie turul.

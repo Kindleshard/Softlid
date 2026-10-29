@@ -210,7 +210,7 @@ std::wstring Status(const Settings& s, const LocalTime& now)
     std::wstring where;
     switch (Window(s, now, start, end, where)) {
     case Sky::Unknown:
-        return Lang::T(L"Windows location is off and your time zone isn't one BlinkBuddy knows, so it can't tell when the sun sets. "
+        return Lang::T(L"Windows location is off and your time zone isn't one Softlid knows, so it can't tell when the sun sets. "
                        L"Turn on location for desktop apps in Windows Settings, or use custom hours.");
     case Sky::NoNight: return Lang::F(L"The sun doesn't set today in {0}, so the filter rests.", {where});
     case Sky::NoDay: return Lang::F(L"The sun doesn't rise today in {0}, so the filter stays on.", {where});

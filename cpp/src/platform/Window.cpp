@@ -24,7 +24,7 @@ bool Window::Create(const wchar_t* className, DWORD style, DWORD exStyle, const 
         wc.lpszClassName = className;
         RegisterClassExW(&wc);
     }
-    hwnd = CreateWindowExW(exStyle, className, L"BlinkBuddy", style, bounds.left, bounds.top,
+    hwnd = CreateWindowExW(exStyle, className, L"Softlid", style, bounds.left, bounds.top,
                            bounds.right - bounds.left, bounds.bottom - bounds.top, owner, nullptr, instance, this);
     if (hwnd && CloakedCopy()) {
         BOOL on = TRUE;
@@ -81,7 +81,7 @@ public:
     static constexpr UINT Message = WM_APP + 1;
     std::vector<std::pair<std::shared_ptr<void>, std::function<void()>>> waiting;
 
-    Reaper() { Create(L"BlinkBuddy.Reaper", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }
+    Reaper() { Create(L"Softlid.Reaper", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }
 
     void Run(bool followUps = true)
     {

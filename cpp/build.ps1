@@ -1,4 +1,4 @@
-# Builds BlinkBuddy.exe into bin\ - finds Visual Studio's C++ tools by itself.
+# Builds Softlid.exe into bin\ - finds Visual Studio's C++ tools by itself.
 #   .\build.ps1                  release build (small and fast)
 #   .\build.ps1 -Debug           debug build, with symbols
 #   .\build.ps1 -Arch arm64      for ARM64 PCs, into bin-arm64\ (needs Visual Studio's ARM64 tools; built on an x64
@@ -31,22 +31,22 @@ if ($LASTEXITCODE -ne 0) { throw "Build failed ($LASTEXITCODE)." }
 
 # The tests run before anything is copied: a failing test stops the build.
 if (-not $cross) {
-    & (Join-Path $build 'BlinkBuddyTests.exe')
+    & (Join-Path $build 'SoftlidTests.exe')
     if ($LASTEXITCODE -ne 0) { throw "Tests failed ($LASTEXITCODE)." }
 }
 
 $bin = Join-Path $PSScriptRoot "bin$suffix"
 New-Item -ItemType Directory -Force -Path $bin | Out-Null
-$exe = Join-Path $bin 'BlinkBuddy.exe'
+$exe = Join-Path $bin 'Softlid.exe'
 # A running copy can't be overwritten, but it can be renamed out of the way.
 if (Test-Path $exe) { Move-Item -Force $exe "$exe.old" -ErrorAction SilentlyContinue }
-Copy-Item (Join-Path $build 'BlinkBuddy.exe') $exe
+Copy-Item (Join-Path $build 'Softlid.exe') $exe
 # The spoken steps of the guided breaks sit next to the exe, a folder per language (without them, a Windows voice for
 # the language reads the steps). Clips from before the folders (voice\*.mp3) are cleared away.
 $voice = Join-Path $bin 'voice'
 New-Item -ItemType Directory -Force -Path $voice | Out-Null
 Get-ChildItem -LiteralPath $voice -File -Filter *.mp3 | Remove-Item -Force
-# Only the clips that changed (a running BlinkBuddy may hold one it played open: an unchanged one is left be).
+# Only the clips that changed (a running Softlid may hold one it played open: an unchanged one is left be).
 robocopy (Join-Path $PSScriptRoot 'res\voice') $voice /E /NJH /NJS /NFL /NDL /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "Copying the voice clips failed ($LASTEXITCODE)." }
 $global:LASTEXITCODE = 0

@@ -16,7 +16,7 @@ class ColorFilter::Overlay : public Window {
 public:
     explicit Overlay(const RECT& monitor)
     {
-        Create(L"BlinkBuddy.Overlay", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, monitor);
+        Create(L"Softlid.Overlay", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, monitor);
     }
     void Set(COLORREF c, float opacity)
     {

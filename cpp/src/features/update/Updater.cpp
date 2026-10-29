@@ -17,9 +17,9 @@ namespace {
 
 // The release's download for this copy: each kind of processor has its own exe.
 #if defined(_M_ARM64)
-constexpr std::string_view Asset = "/BlinkBuddy-arm64.exe";
+constexpr std::string_view Asset = "/Softlid-arm64.exe";
 #else
-constexpr std::string_view Asset = "/BlinkBuddy.exe";
+constexpr std::string_view Asset = "/Softlid.exe";
 #endif
 
 void Post(HWND window, UINT message, Result r) { PostOwned(window, message, 0, std::move(r)); }
@@ -105,7 +105,7 @@ std::wstring Mb(ULONG bytes)
 
 void CheckNow(HWND window, UINT message)
 {
-    std::wstring json = TempFolder() + L"BlinkBuddy-release.json";
+    std::wstring json = TempFolder() + L"Softlid-release.json";
     Fetch fetch;
     std::wstring url = L"https://api.github.com/repos/" + std::wstring(ReleaseRepo) + L"/releases/latest";
     HRESULT hr = URLDownloadToFileW(nullptr, url.c_str(), json.c_str(), 0, &fetch);
@@ -174,11 +174,11 @@ void InstallNow(const Release& r, HWND window, UINT message)
     if (!LooksLikeProgram(fresh)) return fail(Lang::T(L"the download isn't a Windows program"));
     Post(window, message, Note(Result::Kind::Progress, Lang::T(L"Installing...")));
     DeleteFileW(old.c_str());
-    if (!MoveFileW(exe.c_str(), old.c_str())) return fail(Lang::F(L"BlinkBuddy.exe couldn't be moved (error {0})", {std::to_wstring(GetLastError())}));
+    if (!MoveFileW(exe.c_str(), old.c_str())) return fail(Lang::F(L"Softlid.exe couldn't be moved (error {0})", {std::to_wstring(GetLastError())}));
     if (!MoveFileW(fresh.c_str(), exe.c_str())) {
         DWORD error = GetLastError();
         MoveFileW(old.c_str(), exe.c_str());   // put this copy back if the new one can't take its place
-        return fail(Lang::F(L"the new BlinkBuddy.exe couldn't be put in place (error {0})", {std::to_wstring(error)}));
+        return fail(Lang::F(L"the new Softlid.exe couldn't be put in place (error {0})", {std::to_wstring(error)}));
     }
     Post(window, message, Note(Result::Kind::Ready, Lang::T(L"Restarting...")));
 }
@@ -190,7 +190,7 @@ bool Available() { return ReleaseRepo[0] != 0; }
 void Check(HWND window, UINT message)
 {
     if (!Available()) {
-        Post(window, message, Note(Result::Kind::Note, Lang::T(L"Updates aren't available yet: this copy of BlinkBuddy has no release channel.")));
+        Post(window, message, Note(Result::Kind::Note, Lang::T(L"Updates aren't available yet: this copy of Softlid has no release channel.")));
         return;
     }
     std::thread([window, message] {
@@ -203,7 +203,7 @@ void Check(HWND window, UINT message)
 void Install(const Release& r, HWND window, UINT message)
 {
     if (r.download.empty()) {
-        Post(window, message, Note(Result::Kind::Failed, Lang::F(L"This release has no BlinkBuddy.exe to install. Get it from {0}", {r.page})));
+        Post(window, message, Note(Result::Kind::Failed, Lang::F(L"This release has no Softlid.exe to install. Get it from {0}", {r.page})));
         return;
     }
     std::thread([r, window, message] {

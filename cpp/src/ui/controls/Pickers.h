@@ -186,7 +186,7 @@ public:
     void Paint(Canvas& canvas) override;
 };
 
-// BlinkBuddy's eye, looking about (the blink settings' preview).
+// Softlid's eye, looking about (the blink settings' preview).
 class EyeView : public Control {
 public:
     void Set(float lookX, float lookY, float open);

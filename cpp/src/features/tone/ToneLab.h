@@ -10,7 +10,7 @@ namespace bb {
 class ToneLabHost;
 
 // A place to judge every engine at every strength on the same picture, and write down what you see. Each rating is
-// a line in %AppData%\BlinkBuddy\tone-feedback.txt. The lab changes the real settings while it is open (the engines
+// a line in %AppData%\Softlid\tone-feedback.txt. The lab changes the real settings while it is open (the engines
 // work on the whole screen); App puts them back when it closes.
 class ToneLab : public ui::DirectWindow {
 public:

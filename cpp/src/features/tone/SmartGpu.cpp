@@ -127,7 +127,7 @@ bool SmartGpu::FindOutput(const RECT& bounds, std::wstring& deviceName)
 SmartGpu::Ptr<ID3DBlob> SmartGpu::Compile(const char* entry, const char* target, std::wstring& error)
 {
     Ptr<ID3DBlob> code, errors;
-    HRESULT hr = D3DCompile(Hlsl, sizeof Hlsl - 1, "BlinkBuddy", nullptr, nullptr, entry, target, D3DCOMPILE_OPTIMIZATION_LEVEL3, 0, &code, &errors);
+    HRESULT hr = D3DCompile(Hlsl, sizeof Hlsl - 1, "Softlid", nullptr, nullptr, entry, target, D3DCOMPILE_OPTIMIZATION_LEVEL3, 0, &code, &errors);
     if (FAILED(hr)) {
         error = L"Compiling the shader failed";
         return nullptr;

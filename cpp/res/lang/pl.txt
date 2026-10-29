@@ -13,7 +13,7 @@ Ekran
 Harmonogram
 Mruganie
 Dodatki
-Zębatka zawiera opcje samego BlinkBuddy
+Zębatka zawiera opcje samego Softlid
 Tryb mini: zwiń to okno do małego oka, które zawsze jest na wierzchu
 Ctrl+Alt+Shift z F: wł./wył. · ↑ ↓: jasność · ← →: ciepło
 Jasność
@@ -37,14 +37,14 @@ Oszczędniejsza; przy ruchu może zostawiać lekkie smugi.
 DesktopLUT
 Bez opóźnienia, wierny odcieniom; wymaga DesktopLUT i uprawnień administratora.
 Eksperymentalne: każdy coś poświęca
-DesktopLUT to osobny, darmowy program ({0}, około 1 MB). BlinkBuddy może pobrać jego najnowszą wersję i zainstalować ją w Twoim folderze użytkownika. Przy starcie prosi o uprawnienia administratora, a BlinkBuddy chroni go 15-sekundowym sprawdzeniem.
+DesktopLUT to osobny, darmowy program ({0}, około 1 MB). Softlid może pobrać jego najnowszą wersję i zainstalować ją w Twoim folderze użytkownika. Przy starcie prosi o uprawnienia administratora, a Softlid chroni go 15-sekundowym sprawdzeniem.
 Pobierz i zainstaluj
 Mam go już...
 Nie teraz
 Nic nie zostanie pobrane, dopóki nie wybierzesz.
 Patrzy na otoczenie każdego piksela: duże jasne obszary są uspokajane, a tekst, krawędzie i kolory zachowują kontrast.
 Przyciemnianie filtra Smart jako jedna warstwa nad ekranem; przerysowuje się tylko, gdy coś się zmieni.
-Darmowy program, który stosuje tablicę kolorów wewnątrz Windows. BlinkBuddy go pilnuje: 15-sekundowe sprawdzenie, strażnik awarii i klawisz awaryjny Ctrl+Alt+Shift+L przywracają ekran.
+Darmowy program, który stosuje tablicę kolorów wewnątrz Windows. Softlid go pilnuje: 15-sekundowe sprawdzenie, strażnik awarii i klawisz awaryjny Ctrl+Alt+Shift+L przywracają ekran.
 Siła
 Własne
 Ustaw krzywą samodzielnie trzema suwakami (tylko silnik Standardowy)
@@ -120,8 +120,8 @@ Mieszane
 Jaśniejsze
 Grubsze
 Animowane (więcej energii)
-Opcje BlinkBuddy
-Jak zachowuje się sam BlinkBuddy.
+Opcje Softlid
+Jak zachowuje się sam Softlid.
 Język
 Jak w Windows
 Uruchamiaj z Windows
@@ -150,7 +150,7 @@ Przerwa skończona. Mrugnij kilka razy i działaj dalej.
 Gotowe
 Wył.
 Wył.: filtr światła niebieskiego pozostaje jak na karcie Ekran.
-Lokalizacja Windows jest wyłączona, a BlinkBuddy nie zna Twojej strefy czasowej, więc nie wie, kiedy zachodzi słońce. Włącz lokalizację dla aplikacji klasycznych w Ustawieniach Windows lub użyj własnych godzin.
+Lokalizacja Windows jest wyłączona, a Softlid nie zna Twojej strefy czasowej, więc nie wie, kiedy zachodzi słońce. Włącz lokalizację dla aplikacji klasycznych w Ustawieniach Windows lub użyj własnych godzin.
 Słońce nie zachodzi dziś w {0}, więc filtr odpoczywa.
 Słońce nie wschodzi dziś w {0}, więc filtr pozostaje włączony.
 Włączony od {0} do {1}.
@@ -158,8 +158,8 @@ Odpoczywa do {0}.
 Wchodzenie: {0:0}% drogi, pełna siła o {1}.
 Wychodzenie: powrót do normy o {0}.
 Twoja lokalizacja (z Windows)
-BlinkBuddy {0} jest dostępny
-Otwórz opcje BlinkBuddy, aby zainstalować.
+Softlid {0} jest dostępny
+Otwórz opcje Softlid, aby zainstalować.
 Strażnik widoczności: jasność na 100% i złagodzona krzywa, by ciemne szczegóły były widoczne.
 Strażnik widoczności: jasność utrzymana na {0:0}% (ustawiono {1}%), by ekran pozostał czytelny.
 Windows nie akceptuje tu krzywej gamma (może HDR jest włączony), więc działa tylko równomierne przyciemnianie.
@@ -185,12 +185,12 @@ Zainstaluj {0}
 Sprawdzanie...
 Dalej: {0}
 Zostało {0}:{1:00}  ·  Esc, aby pominąć
-Aktualizacje nie są jeszcze dostępne: ta kopia BlinkBuddy nie ma kanału wydań.
+Aktualizacje nie są jeszcze dostępne: ta kopia Softlid nie ma kanału wydań.
 Nie udało się odczytać wersji najnowszego wydania.
 Masz najnowszą wersję ({0}).
 Wersja {0} jest dostępna (masz {1}).
 Nie udało się sprawdzić aktualizacji: {0}
-To wydanie nie zawiera pliku BlinkBuddy.exe do zainstalowania. Pobierz je stąd: {0}
+To wydanie nie zawiera pliku Softlid.exe do zainstalowania. Pobierz je stąd: {0}
 Pobieranie {0}: {1:0.0} z {2:0.0} MB
 Instalowanie...
 Nie udało się zainstalować aktualizacji: {0}
@@ -237,7 +237,7 @@ Lekko ugnij kolana i zwieś się do przodu, by rozciągnąć plecy.
 {0} s
 Pytaj mnie
 Działaj dalej w zasobniku
-Zakończ BlinkBuddy
+Zakończ Softlid
 Po zamknięciu tego okna
 Mała ikona, która zostaje nad innymi oknami. Przełącz się na nią przyciskiem obok paska tytułu; najedź na nią, aby ustawić jasność, filtr światła niebieskiego, podświetlenie (gdy włączone) i przypomnienia o mruganiu, a kliknij, aby tu wrócić.
 Ikona
@@ -256,7 +256,7 @@ Ciemne tło podczas przerwy
 Wył.: ćwiczenia oczu poruszają się po Twoim ekranie zamiast na czarnym tle.
 W nocy zastępuje to filtr światła niebieskiego z karty Ekran, ale tylko gdy jest silniejszy; pokazuje to zielony znacznik na tamtym suwaku.
 Filtr światła niebieskiego w nocy
-Zamknąć BlinkBuddy?
+Zamknąć Softlid?
 W zasobniku nadal przypomina o mruganiu i patrzeniu w dal oraz utrzymuje filtr ekranu. Zakończenie zatrzymuje to wszystko do ponownego uruchomienia.
 Zapamiętaj mój wybór (można zmienić w Opcjach)
 Zachód i wschód słońca dla twojej lokalizacji w Windows
@@ -392,9 +392,9 @@ Przełącz się na nią przyciskiem obok paska tytułu. Najedź na nią, aby mie
 Minimalizowanie tego okna przełącza w tryb mini
 Zwijaj to okno do ikony, żeby było widać, gdzie się podziało
 Zużycie zasobów
-Ile sam BlinkBuddy używa teraz, tak jak liczy to Menedżer zadań.
+Ile sam Softlid używa teraz, tak jak liczy to Menedżer zadań.
 Ostatnia minuta: procesor (kolor akcentu) i karta graficzna (zielony)
-Mierzone tylko wtedy, gdy ta strona jest widoczna, więc rysowanie tego okna wlicza się do tego, co tu widać. Zamknięty BlinkBuddy głównie czeka i prawie nic nie zużywa.
+Mierzone tylko wtedy, gdy ta strona jest widoczna, więc rysowanie tego okna wlicza się do tego, co tu widać. Zamknięty Softlid głównie czeka i prawie nic nie zużywa.
 Procesor: {0}% całego CPU
 Karta graficzna: Windows tego tu nie podaje
 Karta graficzna: {0}% (najbardziej obciążony silnik)
@@ -423,16 +423,16 @@ Brak aplikacji
 Aplikacje z trybem: {0}
 Wróć do panelu
 Funkcje
-Opcje: które funkcje są włączone i jak działa sam BlinkBuddy
+Opcje: które funkcje są włączone i jak działa sam Softlid
 Opcje
 Synchronizuj ze światłem nocnym Windows
 Światło nocne...
 Światło nocne jest teraz wyłączone.
 Światło nocne jest teraz włączone (włączone ręcznie).
 Światło nocne jest teraz włączone.
-Nie ma harmonogramu, więc działa własny harmonogram BlinkBuddy.
-BlinkBuddy podąża za jego godzinami, {0}–{1}, z siłą {2}.
-BlinkBuddy podąża za nim od zachodu do wschodu słońca ({0}–{1}), z siłą {2}.
+Nie ma harmonogramu, więc działa własny harmonogram Softlid.
+Softlid podąża za jego godzinami, {0}–{1}, z siłą {2}.
+Softlid podąża za nim od zachodu do wschodu słońca ({0}–{1}), z siłą {2}.
 Dziś: harmonogram nocny na bursztynowo i aktualna godzina
 Wstrzymano, gdy światło nocne Windows ociepla ekran
 Wyłączone: filtr światła niebieskiego zostaje tak, jak ustawiono w filtrze ekranu.
@@ -440,8 +440,8 @@ Gdzie jest DesktopLUT?
 Pobieranie {0}: {1} z {2} MB
 pobieranie nie powiodło się ({0})
 pobrany plik nie jest programem Windows
-Nie można przenieść BlinkBuddy.exe (błąd {0})
-nie można umieścić nowego BlinkBuddy.exe (błąd {0})
+Nie można przenieść Softlid.exe (błąd {0})
+nie można umieścić nowego Softlid.exe (błąd {0})
 Ponowne uruchamianie...
 Windows odrzucił krzywą na tym ekranie (może być włączony HDR).
 Czy ekran wygląda dobrze?
@@ -449,7 +449,7 @@ Zachowaj
 Cofnij
 DesktopLUT stosuje teraz tabelę kolorów. Jeśli nic nie zrobisz, zostanie cofnięta za {0} s.\nKlawisz awaryjny w każdej chwili: Ctrl+Alt+Shift+L.
 Dobra robota. Możesz już spojrzeć z powrotem.
-Harmonogram nocny podąża za zachodem i wschodem słońca. BlinkBuddy oblicza je dla tego miejsca: twojej lokalizacji w Windows, jeśli jest dozwolona, albo miasta twojej strefy czasowej.
+Harmonogram nocny podąża za zachodem i wschodem słońca. Softlid oblicza je dla tego miejsca: twojej lokalizacji w Windows, jeśli jest dozwolona, albo miasta twojej strefy czasowej.
 Siła harmonogramu nocnego w nocy: {0}
 Zielona kropka: siła harmonogramu nocnego w nocy
 Krycie, gdy kursor nie jest nad ikoną
@@ -468,17 +468,17 @@ Po zamknięciu
 Wygląd
 Ile pokazuje to okno, jego rozmiar i kolor.
 System
-Jak BlinkBuddy współpracuje z Windows.
+Jak Softlid współpracuje z Windows.
 Okrąg minutnika skupienia
 Aktualizacje
 Ta wersja i nowsze, gdy się pojawią.
 Resetuj
 Minimalizuj
 Pomoc i wsparcie
-Napisz, co poszło nie tak, albo pomóż BlinkBuddy działać dalej.
+Napisz, co poszło nie tak, albo pomóż Softlid działać dalej.
 Coś nie działa? Zgłoś to na GitHubie.
 Zgłoś błąd...
-BlinkBuddy jest darmowy. Kawa pomaga mu działać dalej.
+Softlid jest darmowy. Kawa pomaga mu działać dalej.
 Wesprzyj na Ko-fi
 Lewy górny
 Prawy górny
@@ -489,7 +489,7 @@ Krok {0} z {1}
 Czytaj na głos
 Wł.: każdy krok jest czytany na głos
 Wył.: nic nie jest czytane na głos
-Witaj w BlinkBuddy
+Witaj w Softlid
 Łagodne przerwy i spokojniejszy ekran podczas pracy. To zajmie około minuty.
 Każdy krok jest czytany na głos. Przycisk powyżej go wycisza.
 Pomiń przewodnik
@@ -504,7 +504,7 @@ Kilka rozciągnięć co {0} min
 Małe oko mruga razem z tobą
 Wstecz
 Dalej
-Gdzie mieszka BlinkBuddy
+Gdzie mieszka Softlid
 Czeka w zasobniku obok zegara. Kliknij, aby otworzyć ustawienia, kliknij prawym przyciskiem, aby wykonać szybkie akcje, np. wstrzymać.
 Tryb mini: mała ikona, która zostaje na wierzchu i pokazuje następną przerwę.
 Wszystko gotowe
@@ -515,7 +515,7 @@ Ten przewodnik możesz powtórzyć w Opcjach, w sekcji Pomoc i wsparcie.
 Zakończ
 Pokaż przewodnik ponownie
 Uruchom przewodnik
-Witaj w BlinkBuddy. Łagodne przerwy i spokojniejszy ekran podczas pracy. To zajmie około minuty.
+Witaj w Softlid. Łagodne przerwy i spokojniejszy ekran podczas pracy. To zajmie około minuty.
 Wybierz, co ci pomaga. Wszystko możesz później zmienić.
-BlinkBuddy czeka w zasobniku obok zegara. Kliknij, aby otworzyć ustawienia, kliknij prawym przyciskiem, aby wykonać szybkie akcje, np. wstrzymać.
+Softlid czeka w zasobniku obok zegara. Kliknij, aby otworzyć ustawienia, kliknij prawym przyciskiem, aby wykonać szybkie akcje, np. wstrzymać.
 Wszystko gotowe. Chcesz zobaczyć, jak wygląda przerwa? Wypróbuj ją teraz albo zakończ przewodnik.

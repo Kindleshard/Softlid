@@ -1,5 +1,5 @@
 // Every setting, once: its type, name and default. Settings.h turns this list into fields; Settings.cpp into reading
-// and writing %AppData%\BlinkBuddy\settings.ini as "Name=Value" lines, in this order (the same file, and the same
+// and writing %AppData%\Softlid\settings.ini as "Name=Value" lines, in this order (the same file, and the same
 // order, as the C# version). Types: bool, int, text (a string). Colours are ARGB in an int.
 //
 // (No include guard on purpose: it is included once for each thing made from the list.)

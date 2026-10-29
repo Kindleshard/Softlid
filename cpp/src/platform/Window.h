@@ -30,7 +30,7 @@ private:
     static LRESULT CALLBACK Proc(HWND window, UINT message, WPARAM w, LPARAM l);
 };
 
-// The usual styles of BlinkBuddy's pop-ups: on top, no taskbar button, never taking focus from what you type in.
+// The usual styles of Softlid's pop-ups: on top, no taskbar button, never taking focus from what you type in.
 constexpr DWORD PopupExStyle = WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE;
 
 // Shows a window on top without activating it.

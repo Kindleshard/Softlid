@@ -1,6 +1,7 @@
-// BlinkBuddy: eye care that lives in the tray - blink and break reminders, a screen filter, and more.
+// Softlid: eye care that lives in the tray - blink and break reminders, a screen filter, and more.
 // The entry point: one copy at a time, then the app.
 #include "app/App.h"
+#include "app/OldName.h"
 #include "platform/MemJournal.h"
 #include "core/Lang.h"
 #include "features/breaks/FocusRest.h"
@@ -19,7 +20,7 @@
 
 // Diagnostics: "--preview-break" shows a look-away break card with your settings, "--preview-exercises" the guided
 // eye exercises, "--preview-stretch" the stretch coach and "--preview-rest" the focus timer's rest, then exits (no
-// tray, and it runs beside a BlinkBuddy that is already running). "--settings <file>" uses those settings instead.
+// tray, and it runs beside a Softlid that is already running). "--settings <file>" uses those settings instead.
 enum class Preview { Card, Exercises, Stretch, Rest };
 
 // "--settings <file>": the settings to use instead of the real ones (the previews, and the --offscreen copy).
@@ -93,8 +94,8 @@ static int UiGallery(bool offscreen)
 }
 #endif
 
-// The DesktopLUT guard: BlinkBuddy starts this copy as administrator (see features/tone/LutGuard), with
-// --lut-guard "<DesktopLUT.exe>" <trial 0/1> <BlinkBuddy pid> "<colour table>".
+// The DesktopLUT guard: Softlid starts this copy as administrator (see features/tone/LutGuard), with
+// --lut-guard "<DesktopLUT.exe>" <trial 0/1> <Softlid pid> "<colour table>".
 static int LutGuard()
 {
     int count = 0;
@@ -142,11 +143,11 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
         LocalFree(args);
     }
 
-    // One copy at a time: a second start asks the running one to show its settings and leaves. (The same names as
-    // the C# version, so the two never run side by side.)
-    HANDLE single = offscreen ? nullptr : CreateMutexW(nullptr, TRUE, L"Local\\BlinkBuddy.Instance");
+    // One copy at a time: a second start asks the running one to show its settings and leaves. (A copy under the old
+    // name, BlinkBuddy, is asked to quit by OldName::MoveOver below.)
+    HANDLE single = offscreen ? nullptr : CreateMutexW(nullptr, TRUE, L"Local\\Softlid.Instance");
     bool first = offscreen || GetLastError() != ERROR_ALREADY_EXISTS;
-    HANDLE showRequest = CreateEventW(nullptr, FALSE, FALSE, offscreen ? nullptr : L"Local\\BlinkBuddy.Show");
+    HANDLE showRequest = CreateEventW(nullptr, FALSE, FALSE, offscreen ? nullptr : L"Local\\Softlid.Show");
     if (!first) {
         AllowSetForegroundWindow(ASFW_ANY);
         SetEvent(showRequest);
@@ -155,6 +156,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR commandLine, int)
         return 0;
     }
 
+    if (!offscreen) bb::OldName::MoveOver();   // (before the settings are read)
     if (!memlog.empty()) bb::MemJournal::Start(memlog);
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     int code;

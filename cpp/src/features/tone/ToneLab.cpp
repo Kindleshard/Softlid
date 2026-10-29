@@ -200,7 +200,7 @@ private:
 
 } // namespace
 
-std::wstring ToneLab::FeedbackFile() { return RoamingAppData() + L"\\BlinkBuddy\\tone-feedback.txt"; }
+std::wstring ToneLab::FeedbackFile() { return RoamingAppData() + L"\\Softlid\\tone-feedback.txt"; }
 
 ToneLab::ToneLab(ToneLabHost& app) : app(app)
 {
@@ -279,7 +279,7 @@ ToneLab::ToneLab(ToneLabHost& app) : app(app)
 void ToneLab::Start(HICON icon)
 {
     Options opts;
-    opts.title = L"BlinkBuddy tone lab";
+    opts.title = L"Softlid tone lab";
     opts.icon = icon;
     Open(LabW, LabH, nullptr, opts);
     SetTimer(Handle(), ClockTimer, 1000, nullptr);

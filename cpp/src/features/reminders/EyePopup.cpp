@@ -32,7 +32,7 @@ void EyePopup::Play(const Settings& s, bool instant)
     fadeDepth = s.BlinkFadeDepth / 100.0f;
     elapsed = instant ? FadeMs : 0;
 
-    if (!Exists()) Create(L"BlinkBuddy.Eye", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, {0, 0, 1, 1});
+    if (!Exists()) Create(L"Softlid.Eye", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, {0, 0, 1, 1});
     Render();
     ShowOnTop(hwnd);
     SetTimer(hwnd, FrameTimer, FrameMs, nullptr);

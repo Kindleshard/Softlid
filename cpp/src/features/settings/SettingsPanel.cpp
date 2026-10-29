@@ -54,7 +54,7 @@ void SettingsWindow::BuildTopBar()
     cogButton = &Root().Add<Button>();
     cogButton->SetGlyph(static_cast<wchar_t>(0xE713));
     cogButton->SetBounds(Edge - 72, 11, 32, 32);
-    cogButton->tip = Lang::T(L"Options: which features are on, and how BlinkBuddy itself behaves");
+    cogButton->tip = Lang::T(L"Options: which features are on, and how Softlid itself behaves");
     cogButton->onClick = [this] { ShowOptions(!optionsShown); };
     // Mini mode's button (while mini mode is on in Options).
     titleMini = &Root().Add<Button>();

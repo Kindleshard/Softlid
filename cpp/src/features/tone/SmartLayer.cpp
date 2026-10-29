@@ -189,7 +189,7 @@ class SmartLayer::Layer : public Window {
 public:
     explicit Layer(const RECT& bounds)
     {
-        Create(L"BlinkBuddy.SmartLayer", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, bounds);
+        Create(L"Softlid.SmartLayer", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, bounds);
         // Hidden from capture, so measuring the screen never sees the layer's own dimming.
         excluded = SetWindowDisplayAffinity(hwnd, WDA_EXCLUDEFROMCAPTURE) != FALSE;
     }

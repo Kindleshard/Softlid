@@ -1,6 +1,6 @@
-# Building BlinkBuddy
+# Building Softlid
 
-BlinkBuddy is written in C++ and Direct2D, in `cpp/`. (It began in C#, .NET Framework 4.8; that version, which the
+Softlid is written in C++ and Direct2D, in `cpp/`. (It began in C#, .NET Framework 4.8; that version, which the
 rewrite was checked against, is in the history up to commit b301d42.)
 
 ## Build
@@ -11,14 +11,14 @@ You need Visual Studio 2022 or its Build Tools, with the "Desktop development wi
 powershell -ExecutionPolicy Bypass -File cpp/build.ps1
 ```
 
-`build.ps1` puts `BlinkBuddy.exe` and its `voice` folder in `cpp/bin/`. It also builds and runs the tests (`cpp/tests`:
+`build.ps1` puts `Softlid.exe` and its `voice` folder in `cpp/bin/`. It also builds and runs the tests (`cpp/tests`:
 the core logic, the tone pipeline's decisions, settings, shortcuts, the translations and the Night light reader); a
 failing test stops the build. `build.ps1 -Arch arm64` builds for ARM64 PCs into `cpp/bin-arm64/` (with Visual Studio's
 ARM64 tools, "MSVC ARM64 build tools"; on an x64 PC its tests are built but can't run).
 
 To check that a change leaves the settings window looking exactly as before, `cpp/tools/ui-check.ps1 -Update` saves a
 baseline of every view (each tab, scrolled through to its end) and `cpp/tools/ui-check.ps1` compares against it, pixel
-by pixel. It runs a diagnostic copy (`--offscreen --settings <file>`) beside a running BlinkBuddy, with settings of its
+by pixel. It runs a diagnostic copy (`--offscreen --settings <file>`) beside a running Softlid, with settings of its
 own, so nothing of yours is touched.
 
 ## Release
@@ -29,7 +29,7 @@ powershell -ExecutionPolicy Bypass -File cpp/release.ps1
 
 `release.ps1` makes a release in `cpp/dist/`, for x64 and (with the ARM64 tools) ARM64: the exe on its own, the
 portable zip and, if [NSIS 3](https://nsis.sourceforge.io) is installed (or unzipped into `C:\Tools\nsis`), the
-installer from `cpp/installer/BlinkBuddy.nsi`. It prints each installer's SHA-256 for the winget manifest in
+installer from `cpp/installer/Softlid.nsi`. It prints each installer's SHA-256 for the winget manifest in
 `cpp/installer/winget`. Nothing is uploaded.
 
 Official releases are built by GitHub Actions (`.github/workflows/release.yml`) with the same script, so the
@@ -38,14 +38,14 @@ and makes a draft release with the files, to check and publish by hand. Actions 
 without releasing.
 
 The installer installs for the current user only, with no administrator rights, into
-`%LocalAppData%\Programs\BlinkBuddy`. It asks whether the spoken steps should come in just one language or all 21;
+`%LocalAppData%\Programs\Softlid`. It asks whether the spoken steps should come in just one language or all 21;
 unattended, `/S /VOICES=all` or `/S /VOICES=<code>` chooses, and an update keeps what was chosen before.
 
 The version number lives in `cpp/res/BuildVersion.h`. Two constants in `cpp/src/core/Version.h` turn on the parts
 that need somewhere to point:
 
 - `ReleaseRepo` (`owner/name` on GitHub): **Options > Check for updates** and the weekly check look at that repo's
-  latest release. A newer `BlinkBuddy.exe` (`BlinkBuddy-arm64.exe` on ARM64) attached to it is downloaded, swapped in
+  latest release. A newer `Softlid.exe` (`Softlid-arm64.exe` on ARM64) attached to it is downloaded, swapped in
   and restarted. Until it is set, the Options page says there is no release channel, and the bug report row is hidden.
 - `DonateUrl`: shows a **Support** button on the Options page.
 
@@ -59,7 +59,7 @@ that need somewhere to point:
 
 ## The README's media
 
-The loops and the link preview are made in `cpp/tools/media` (Chrome and ffmpeg needed): `record.ps1` films BlinkBuddy
+The loops and the link preview are made in `cpp/tools/media` (Chrome and ffmpeg needed): `record.ps1` films Softlid
 over a staged desktop, `shot.ps1` captures its settings window off the screen, and `node render.mjs <loop>` renders
 `loops/<loop>.html` into `docs/media/<loop>.avif` (`--clean` without its words, for the grid); `--at 0` renders the
 stills (banner, showcase screenshot, link preview). The spoken steps are
@@ -84,8 +84,8 @@ drops back to about 1 MB. Details for every step of the rewrite are in [MEMORY.m
 ## DesktopLUT
 
 The DesktopLUT tone engine uses [DesktopLUT](https://github.com/sup3rflyer/DesktopLUT), a separate free program
-that applies a colour table inside Windows. BlinkBuddy only starts, watches and stops it, with a small helper that
-runs as administrator. Every safeguard stops DesktopLUT and puts BlinkBuddy's own filter back:
+that applies a colour table inside Windows. Softlid only starts, watches and stops it, with a small helper that
+runs as administrator. Every safeguard stops DesktopLUT and puts Softlid's own filter back:
 
 - a 15-second check after switching on (and after each Windows update)
 - a watchdog for crashes

@@ -272,7 +272,7 @@ public:
         }
         case UIA_IsControlElementPropertyId:
         case UIA_IsContentElementPropertyId: *out = Bool(true); break;
-        case UIA_ProviderDescriptionPropertyId: *out = Text(L"BlinkBuddy control"); break;
+        case UIA_ProviderDescriptionPropertyId: *out = Text(L"Softlid control"); break;
         }
         return S_OK;
     }
@@ -542,13 +542,13 @@ void Announce(HWND window, const std::wstring& text)
 {
     BOOL reader = FALSE;
     if (!window || text.empty() || !SystemParametersInfoW(SPI_GETSCREENREADER, 0, &reader, 0) || !reader) return;
-    // (Windows 10 1709 and later; looked up so BlinkBuddy still starts without it.)
+    // (Windows 10 1709 and later; looked up so Softlid still starts without it.)
     using Raise = HRESULT(WINAPI*)(IRawElementProviderSimple*, NotificationKind, NotificationProcessing, BSTR, BSTR);
     static auto raise = reinterpret_cast<Raise>(
         GetProcAddress(LoadLibraryExW(L"uiautomationcore.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32), "UiaRaiseNotificationEvent"));
     IRawElementProviderSimple* host = nullptr;
     if (!raise || FAILED(UiaHostProviderFromHwnd(window, &host)) || !host) return;
-    BSTR words = SysAllocString(text.c_str()), id = SysAllocString(L"BlinkBuddy.Announce");
+    BSTR words = SysAllocString(text.c_str()), id = SysAllocString(L"Softlid.Announce");
     raise(host, NotificationKind_Other, NotificationProcessing_ImportantMostRecent, words, id);
     SysFreeString(words);
     SysFreeString(id);

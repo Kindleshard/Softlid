@@ -1,5 +1,5 @@
 # Speaks the guided breaks' and the tour's lines, once, into small mono MP3s in res\voice: with Chatterbox Multilingual
-# (Resemble AI, MIT) in its own voice, so BlinkBuddy sounds like one person in every language, and with Piper for the
+# (Resemble AI, MIT) in its own voice, so Softlid sounds like one person in every language, and with Piper for the
 # four languages Chatterbox doesn't speak (Czech, Hungarian, Romanian, Ukrainian). It runs on the graphics card, in a
 # Python that has Chatterbox from its GitHub repository and Piper:
 #   uv venv --python 3.11 E:\AI\tts-lab\chatterbox
@@ -36,9 +36,9 @@ LINES = {
     'stretch_calves': "Rise up onto your toes, then lower slowly.",
     'stretch_fold': "Bend your knees a little, and hang forward to stretch your back.",
     'stretch_done': "Great job. Have a sip of water, and back to it.",
-    'tour_welcome': "Welcome to BlinkBuddy. Gentle breaks and a calmer screen while you work. This takes about a minute.",
+    'tour_welcome': "Welcome to Softlid. Gentle breaks and a calmer screen while you work. This takes about a minute.",
     'tour_pick': "Pick what helps you. You can change all of it later.",
-    'tour_tray': "BlinkBuddy waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing.",
+    'tour_tray': "Softlid waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing.",
     'tour_done': "You're all set. Want to see what a break looks like? Try one now, or finish the tour.",
 }
 # The eye break's lines must fit a 20 s break, so they have less quiet around them.

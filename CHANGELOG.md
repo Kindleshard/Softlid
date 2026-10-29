@@ -1,10 +1,15 @@
 # Changelog
 
-What changed in each version of BlinkBuddy. The downloads are on the [releases page](https://github.com/Kindleshard/BlinkBuddy/releases).
+What changed in each version of Softlid. The downloads are on the [releases page](https://github.com/Kindleshard/Softlid/releases).
+
+## 1.1.0
+
+- **BlinkBuddy is now Softlid**, a name of its own: another eye care app already uses the old one. Installing or
+  updating moves everything over: your settings, the start-with-Windows option and the installed copy.
 
 ## 1.0.0 (2026-10-28)
 
-The first release.
+The first release, as BlinkBuddy.
 
 - **Blink reminders**: a little eye that blinks with you, or soft eyelids across the screen.
 - **Breaks**: look away every 20 minutes and stand up every hour, with guided eye exercises (a liquid eye to follow)

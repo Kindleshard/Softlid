@@ -26,7 +26,7 @@ Measured on Windows 11 at 150% scaling. **Private** memory is what the app itsel
 Windows are drawn by Direct2D in software (no graphics-card device, which alone would add tens of MB); most of a
 window's cost is its drawing buffer and the fonts. When the settings window closes, its pages go back to Windows
 (the working set drops to about 1 MB), but some private memory stays: libraries Windows loads for the window - text
-input services once a text box has existed, Direct2D's and DirectWrite's own caches - stay loaded until BlinkBuddy
+input services once a text box has existed, Direct2D's and DirectWrite's own caches - stay loaded until Softlid
 exits. For scale: the C# version measured 42.8 MB private when idle on the same day.
 
 **A correction:** until chunk 5, the C++ app's hidden window failed to be created (a bug from chunk 1), so it had no
@@ -39,7 +39,7 @@ they have answered.
 
 **Voice clips:** with the clips beside the exe (from chunk 9 on), opening the settings first cost 19.4 MB, 9 MB more.
 The Blink page asked Windows' media player for each clip's length, which loads its whole playback stack (and a thread)
-for good. BlinkBuddy now reads the lengths from the files' own headers, so that stack loads only when a clip plays
+for good. Softlid now reads the lengths from the files' own headers, so that stack loads only when a clip plays
 during a break.
 
 The tone engines cost nothing until one is used. Standard is a gamma ramp handed to Windows (no memory, no
@@ -61,7 +61,7 @@ the Options page (own pages in RAM, then set aside in all):
 | ...with the Resource use meter showing | 11.9 / 13.3 MB | 0.6 / 4.1 MB |
 
 Three changes. A probe with a bare Direct2D window and 40 lines of text came to 9 MB set aside, 6.6 MB in RAM: about
-all of what the settings window cost, so the cost was the drawing engine, not BlinkBuddy's own data.
+all of what the settings window cost, so the cost was the drawing engine, not Softlid's own data.
 - Windows are now drawn into their own device context, bound to just the area being repainted, instead of through a
   window target (which keeps a whole-window buffer plus a copy to present from, and touches both on every paint, even
   an empty one: 2.9 MB). A small repaint now touches about 1.5 MB instead of 3.3 MB. Screenshots of every settings

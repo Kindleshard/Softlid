@@ -26,9 +26,9 @@ constexpr int Steps = 4;
 // What each step says aloud (the same words as on the screen, in one breath).
 struct Line { const wchar_t* key; const wchar_t* text; };
 constexpr Line Spoken[Steps] = {
-    {L"tour_welcome", L"Welcome to BlinkBuddy. Gentle breaks and a calmer screen while you work. This takes about a minute."},
+    {L"tour_welcome", L"Welcome to Softlid. Gentle breaks and a calmer screen while you work. This takes about a minute."},
     {L"tour_pick", L"Pick what helps you. You can change all of it later."},
-    {L"tour_tray", L"BlinkBuddy waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing."},
+    {L"tour_tray", L"Softlid waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing."},
     {L"tour_done", L"You're all set. Want to see what a break looks like? Try one now, or finish the tour."},
 };
 
@@ -54,7 +54,7 @@ public:
     AccessInfo Access() const override { return {Role::Text, Lang::F(L"Step {0} of {1}", {std::to_wstring(step + 1), std::to_wstring(Steps)})}; }
 };
 
-// BlinkBuddy's own icon (the one in the tray and the taskbar), `size` units square at the window's scale.
+// Softlid's own icon (the one in the tray and the taskbar), `size` units square at the window's scale.
 IconImage& AppIcon(DirectWindow& window, Container& parent, float size)
 {
     int px = static_cast<int>(std::lround(size * window.Scale()));
@@ -63,7 +63,7 @@ IconImage& AppIcon(DirectWindow& window, Container& parent, float size)
     return parent.Add<IconImage>(icon);
 }
 
-// The tray by the clock (BlinkBuddy's icon itself is laid over it, at TrayIcon), an arrow, and mini mode's round icon
+// The tray by the clock (Softlid's icon itself is laid over it, at TrayIcon), an arrow, and mini mode's round icon
 // as it looks with the pointer over it.
 class TrayPicture : public Control {
 public:
@@ -200,7 +200,7 @@ private:
             if (readAloud) Say();
             else if (voice) voice->Stop();
         };
-        Title(L"Welcome to BlinkBuddy", 74);
+        Title(L"Welcome to Softlid", 74);
         Para(Lang::T(L"Gentle breaks and a calmer screen while you work. This takes about a minute."), 110, 46);
 
         auto& card = Root().Add<Panel>();
@@ -270,7 +270,7 @@ private:
 
     void Where()
     {
-        Title(L"Where BlinkBuddy lives", 22);
+        Title(L"Where Softlid lives", 22);
         Para(Lang::T(L"It waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing."), 56, 66);
         auto& picture = Root().Add<TrayPicture>(app.S().MiniIcon);
         picture.SetBounds(Pad, 132, W - 2 * Pad, 110);
@@ -368,7 +368,7 @@ void Open(SettingsHost& app)
     tour->onClosed = [tour] { DeleteLater(tour); };
     DirectWindow::Options options;
     options.dialog = true;
-    options.title = L"BlinkBuddy";
+    options.title = L"Softlid";
     tour->Open(W, H, nullptr, options);
     tour->Build();
     tour->Show();

@@ -7,7 +7,7 @@ class ScreenShade::Sheet : public Window {
 public:
     explicit Sheet(const RECT& monitor)
     {
-        Create(L"BlinkBuddy.Shade", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, monitor,
+        Create(L"Softlid.Shade", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, monitor,
                static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)));
     }
     void SetDarkness(float d) { SetLayeredWindowAttributes(hwnd, 0, static_cast<BYTE>(std::clamp(d, 0.0f, 1.0f) * 255), LWA_ALPHA); }

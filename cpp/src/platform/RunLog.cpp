@@ -9,7 +9,7 @@ namespace bb::RunLog {
 void Write(std::wstring_view event)
 {
     constexpr size_t Keep = 100;
-    std::wstring path = RoamingAppData() + L"\\BlinkBuddy\\runs.log";
+    std::wstring path = RoamingAppData() + L"\\Softlid\\runs.log";
     std::wstring text = ReadAllText(path);
     SYSTEMTIME t;
     GetLocalTime(&t);

@@ -13,7 +13,7 @@ Ekran
 Zamanlama
 Göz kırpma
 Ekstralar
-Dişli simgesi BlinkBuddy'nin kendi seçeneklerini içerir
+Dişli simgesi Softlid'in kendi seçeneklerini içerir
 Mini mod: bu pencereyi her zaman üstte kalan küçük bir göze dönüştür
 Ctrl+Alt+Shift ile F: aç/kapat · ↑ ↓: parlaklık · ← →: sıcaklık
 Parlaklık
@@ -37,14 +37,14 @@ Daha az güç harcar; hareket ederken hafif izler bırakabilir.
 DesktopLUT
 Gecikme yok, renklere sadık; DesktopLUT ve yönetici izni gerekir.
 Deneysel: her biri bir şeyden ödün verir
-DesktopLUT ayrı ve ücretsiz bir programdır ({0}, yaklaşık 1 MB). BlinkBuddy en son sürümünü indirip kullanıcı klasörünüze kurabilir. Başlarken yönetici izni ister ve BlinkBuddy onu 15 saniyelik bir kontrolle korur.
+DesktopLUT ayrı ve ücretsiz bir programdır ({0}, yaklaşık 1 MB). Softlid en son sürümünü indirip kullanıcı klasörünüze kurabilir. Başlarken yönetici izni ister ve Softlid onu 15 saniyelik bir kontrolle korur.
 İndir ve kur
 Bende var...
 Şimdi değil
 Siz seçene kadar hiçbir şey indirilmez.
 Her pikselin çevresine bakar: büyük parlak alanlar yumuşatılır, yazılar, kenarlar ve renkler kontrastını korur.
 Akıllı filtrenin karartması, ekranın üzerinde tek bir katman olarak; yalnızca bir şey değiştiğinde yeniden çizilir.
-Windows içinde bir renk tablosu uygulayan ücretsiz bir program. BlinkBuddy onu korur: 15 saniyelik kontrol, çökme bekçisi ve Ctrl+Alt+Shift+L panik tuşu ekranı eski hâline getirir.
+Windows içinde bir renk tablosu uygulayan ücretsiz bir program. Softlid onu korur: 15 saniyelik kontrol, çökme bekçisi ve Ctrl+Alt+Shift+L panik tuşu ekranı eski hâline getirir.
 Güç
 Özel
 Eğriyi üç kaydırıcıyla kendiniz ayarlayın (yalnızca Standart motor)
@@ -120,8 +120,8 @@ Karışık
 Daha açık
 Daha kaba
 Hareketli (daha fazla güç)
-BlinkBuddy seçenekleri
-BlinkBuddy'nin kendisinin nasıl davrandığı.
+Softlid seçenekleri
+Softlid'in kendisinin nasıl davrandığı.
 Dil
 Windows ile aynı
 Windows ile başlat
@@ -150,7 +150,7 @@ Mola bitti. Birkaç kez göz kırpın ve devam edin.
 Bitti
 Kapalı
 Kapalı: mavi ışık filtresi Ekran sekmesindeki ayarda kalır.
-Windows konumu kapalı ve saat diliminiz BlinkBuddy'nin bildiği bir yer değil, bu yüzden güneşin ne zaman battığını bilemiyor. Windows Ayarları'nda masaüstü uygulamaları için konumu açın ya da özel saatleri kullanın.
+Windows konumu kapalı ve saat diliminiz Softlid'in bildiği bir yer değil, bu yüzden güneşin ne zaman battığını bilemiyor. Windows Ayarları'nda masaüstü uygulamaları için konumu açın ya da özel saatleri kullanın.
 Bugün {0} için güneş batmıyor, filtre dinleniyor.
 Bugün {0} için güneş doğmuyor, filtre açık kalıyor.
 {0} ile {1} arasında açık.
@@ -158,8 +158,8 @@ Bugün {0} için güneş doğmuyor, filtre açık kalıyor.
 Devreye giriyor: yolun %{0:0} kadarı tamam, {1} itibarıyla tam güçte.
 Azalıyor: {0} itibarıyla normale dönüyor.
 konumunuz (Windows'tan)
-BlinkBuddy {0} çıktı
-Kurmak için BlinkBuddy seçeneklerini açın.
+Softlid {0} çıktı
+Kurmak için Softlid seçeneklerini açın.
 Görünürlük koruması: parlaklık %100 seviyesinde ve koyu ayrıntılar görünsün diye eğri yumuşatıldı.
 Görünürlük koruması: ekran okunabilir kalsın diye parlaklık %{0:0} seviyesinde tutuluyor (ayar: %{1}).
 Windows burada bir gama eğrisini kabul etmiyor (HDR açık olabilir), bu yüzden yalnızca düz karartma etkin.
@@ -185,12 +185,12 @@ Ekranlarınız kontrol ediliyor...
 Denetleniyor...
 Sıradaki: {0}
 {0}:{1:00} kaldı  ·  Geçmek için Esc
-Güncellemeler henüz yok: BlinkBuddy'nin bu kopyasının bir yayın kanalı yok.
+Güncellemeler henüz yok: Softlid'in bu kopyasının bir yayın kanalı yok.
 En son sürümün numarası okunamadı.
 En son sürümü kullanıyorsunuz ({0}).
 {0} sürümü çıktı (sizdeki {1}).
 Güncellemeler denetlenemedi: {0}
-Bu sürümde kurulacak bir BlinkBuddy.exe yok. Şuradan edinin: {0}
+Bu sürümde kurulacak bir Softlid.exe yok. Şuradan edinin: {0}
 {0} indiriliyor: {1:0.0} / {2:0.0} MB
 Kuruluyor...
 Güncelleme kurulamadı: {0}
@@ -237,7 +237,7 @@ Harika. Biraz su için ve işinize dönün.
 {0} sn
 Bana sor
 Sistem tepsisinde çalışmaya devam et
-BlinkBuddy'den çık
+Softlid'den çık
 Bu pencere kapatıldığında
 Diğer pencerelerin üstünde kalan küçük bir simge. Başlık çubuğunun yanındaki düğmeyle ona geçin; parlaklık, mavi ışık filtresi, arka ışık (açıksa) ve göz kırpma hatırlatıcıları için üzerine gelin, buraya dönmek için tıklayın.
 Simge
@@ -256,7 +256,7 @@ Molada koyu arka plan
 Kapalı: göz egzersizleri siyah arka plan yerine ekranınızın üzerinde hareket eder.
 Gece bu, daha güçlüyse Ekran sekmesindeki Mavi ışık filtresinin yerini alır; o kaydırıcıdaki yeşil işaret bunu gösterir.
 Gece mavi ışık filtresi
-BlinkBuddy kapatılsın mı?
+Softlid kapatılsın mı?
 Tepside kalırsa göz kırpmanızı ve uzağa bakmanızı hatırlatmaya ve ekran filtresini açık tutmaya devam eder. Çıkarsanız, yeniden başlatana kadar bunların hepsi durur.
 Seçimimi hatırla (Seçenekler'den değiştirebilirsiniz)
 Windows'taki konumunuza göre gün batımı ve gün doğumu
@@ -392,9 +392,9 @@ Başlık çubuğunun yanındaki düğmeyle ona geçin. Hızlı ayarlar için üz
 Bu pencereyi simge durumuna küçültmek mini moda geçirir
 Pencere simgeye katlanarak küçülsün, böylece nereye gittiğini görürsünüz
 Kaynak kullanımı
-BlinkBuddy'nin şu anda kullandığı kaynaklar, Görev Yöneticisi'nin hesapladığı şekilde.
+Softlid'in şu anda kullandığı kaynaklar, Görev Yöneticisi'nin hesapladığı şekilde.
 Son bir dakika: işlemci (vurgu rengi) ve ekran kartı (yeşil)
-Yalnızca bu sayfa açıkken ölçülür; bu yüzden pencerenin çizilmesi de burada gördüğünüze dahildir. Kapalıyken BlinkBuddy çoğunlukla bekler ve neredeyse hiçbir şey kullanmaz.
+Yalnızca bu sayfa açıkken ölçülür; bu yüzden pencerenin çizilmesi de burada gördüğünüze dahildir. Kapalıyken Softlid çoğunlukla bekler ve neredeyse hiçbir şey kullanmaz.
 İşlemci: tüm CPU'nun %{0}'ı
 Ekran kartı: Windows bunu burada bildirmiyor
 Ekran kartı: %{0} (en yoğun motoru)
@@ -423,16 +423,16 @@ Henüz uygulama yok
 Modu olan uygulamalar: {0}
 Panele dön
 Özellikler
-Seçenekler: hangi özelliklerin açık olduğu ve BlinkBuddy'nin kendisinin nasıl davrandığı
+Seçenekler: hangi özelliklerin açık olduğu ve Softlid'in kendisinin nasıl davrandığı
 Seçenekler
 Windows Gece ışığıyla senkronize et
 Gece ışığı...
 Gece ışığı şu anda kapalı.
 Gece ışığı şu anda açık (elle açıldı).
 Gece ışığı şu anda açık.
-Bir zamanlaması yok, bu yüzden BlinkBuddy'nin kendi zamanlaması çalışır.
-BlinkBuddy onun saatlerini izler, {0} - {1}, güç {2}.
-BlinkBuddy onu gün batımından gün doğumuna kadar izler ({0} - {1}), güç {2}.
+Bir zamanlaması yok, bu yüzden Softlid'in kendi zamanlaması çalışır.
+Softlid onun saatlerini izler, {0} - {1}, güç {2}.
+Softlid onu gün batımından gün doğumuna kadar izler ({0} - {1}), güç {2}.
 Bugün: kehribar renginde gece zamanlaması ve şu anki saat
 Windows Gece ışığı ekranı ısıtırken duraklatıldı
 Kapalı: mavi ışık filtresi ekran filtresinde ayarlandığı gibi kalır.
@@ -440,8 +440,8 @@ DesktopLUT nerede?
 {0} indiriliyor: {1} / {2} MB
 indirme başarısız oldu ({0})
 indirilen dosya bir Windows programı değil
-BlinkBuddy.exe taşınamadı (hata {0})
-yeni BlinkBuddy.exe yerine konamadı (hata {0})
+Softlid.exe taşınamadı (hata {0})
+yeni Softlid.exe yerine konamadı (hata {0})
 Yeniden başlatılıyor...
 Windows bu ekranda eğriyi reddetti (HDR açık olabilir).
 Ekranınız doğru görünüyor mu?
@@ -449,7 +449,7 @@ Koru
 Geri al
 DesktopLUT şimdi renk tablosunu uyguluyor. Hiçbir şey yapmazsanız {0} sn içinde geri alınır.\nAcil durum tuşu her zaman: Ctrl+Alt+Shift+L.
 Çok güzel. Artık ekrana dönebilirsiniz.
-Gece zamanlaması gün batımını ve gün doğumunu izler. BlinkBuddy bunları bu yer için hesaplar: izin verildiğinde Windows'taki konumunuz, aksi halde saat diliminizin şehri.
+Gece zamanlaması gün batımını ve gün doğumunu izler. Softlid bunları bu yer için hesaplar: izin verildiğinde Windows'taki konumunuz, aksi halde saat diliminizin şehri.
 Gece zamanlamasının gece gücü: {0}
 Yeşil nokta: gece zamanlamasının gece gücü
 Üzerine gelinmediğinde opaklık
@@ -468,17 +468,17 @@ Kapatıldığında
 Arayüz
 Bu pencerenin ne kadarını gösterdiği, boyutu ve rengi.
 Sistem
-BlinkBuddy'nin Windows ile nasıl çalıştığı.
+Softlid'in Windows ile nasıl çalıştığı.
 Odak zamanlayıcı halkası
 Güncellemeler
 Bu sürüm ve çıktıklarında daha yenileri.
 Sıfırla
 Küçült
 Yardım ve destek
-Neyin ters gittiğini bize bildirin ya da BlinkBuddy'nin sürmesine destek olun.
+Neyin ters gittiğini bize bildirin ya da Softlid'in sürmesine destek olun.
 Bir şey çalışmıyor mu? GitHub'da bildirin.
 Hata bildir...
-BlinkBuddy ücretsizdir. Bir kahve, sürmesini sağlar.
+Softlid ücretsizdir. Bir kahve, sürmesini sağlar.
 Ko-fi'de destek olun
 Sol üst
 Sağ üst
@@ -489,7 +489,7 @@ Adım {0} / {1}
 Sesli oku
 Açık: her adım sesli okunur
 Kapalı: hiçbir şey sesli okunmaz
-BlinkBuddy'ye hoş geldiniz
+Softlid'e hoş geldiniz
 Çalışırken nazik molalar ve daha sakin bir ekran. Bu yaklaşık bir dakika sürer.
 Her adım sesli okunur. Yukarıdaki düğme sesi kapatır.
 Turu atla
@@ -504,7 +504,7 @@ Ayağa kalkma molaları
 Küçük bir göz sizinle birlikte kırpar
 Geri
 İleri
-BlinkBuddy nerede durur
+Softlid nerede durur
 Saatin yanındaki bildirim alanında bekler. Ayarlar için tıklayın, duraklatma gibi hızlı işlemler için sağ tıklayın.
 Mini mod: her zaman üstte kalan ve sıradaki molayı gösteren küçük bir simge.
 Her şey hazır
@@ -515,7 +515,7 @@ Bu turu Seçenekler'de, Yardım ve destek altında yeniden açabilirsiniz.
 Bitir
 Turu yeniden göster
 Turu başlat
-BlinkBuddy'ye hoş geldiniz. Çalışırken nazik molalar ve daha sakin bir ekran. Bu yaklaşık bir dakika sürer.
+Softlid'e hoş geldiniz. Çalışırken nazik molalar ve daha sakin bir ekran. Bu yaklaşık bir dakika sürer.
 Size yardımcı olanları seçin. Bunların hepsini daha sonra değiştirebilirsiniz.
-BlinkBuddy, saatin yanındaki bildirim alanında bekler. Ayarlar için tıklayın, duraklatma gibi hızlı işlemler için sağ tıklayın.
+Softlid, saatin yanındaki bildirim alanında bekler. Ayarlar için tıklayın, duraklatma gibi hızlı işlemler için sağ tıklayın.
 Her şey hazır. Bir molanın nasıl göründüğünü görmek ister misiniz? Şimdi bir tane deneyin ya da turu bitirin.

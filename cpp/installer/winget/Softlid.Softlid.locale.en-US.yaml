@@ -1,24 +1,24 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.12.0.schema.json
-PackageIdentifier: BlinkBuddy.BlinkBuddy
-PackageVersion: 1.0.0
+PackageIdentifier: Softlid.Softlid
+PackageVersion: 1.1.0
 PackageLocale: en-US
-Publisher: BlinkBuddy
+Publisher: Softlid
 PublisherUrl: https://github.com/Kindleshard
-PublisherSupportUrl: https://github.com/Kindleshard/BlinkBuddy/issues
-PrivacyUrl: https://github.com/Kindleshard/BlinkBuddy/blob/main/PRIVACY.md
-PackageName: BlinkBuddy
-PackageUrl: https://github.com/Kindleshard/BlinkBuddy
+PublisherSupportUrl: https://github.com/Kindleshard/Softlid/issues
+PrivacyUrl: https://github.com/Kindleshard/Softlid/blob/main/PRIVACY.md
+PackageName: Softlid
+PackageUrl: https://github.com/Kindleshard/Softlid
 License: MIT
-LicenseUrl: https://github.com/Kindleshard/BlinkBuddy/blob/main/LICENSE
+LicenseUrl: https://github.com/Kindleshard/Softlid/blob/main/LICENSE
 Author: Kindleshard
-ReleaseNotesUrl: https://github.com/Kindleshard/BlinkBuddy/releases/tag/v1.0.0
+ReleaseNotesUrl: https://github.com/Kindleshard/Softlid/releases/tag/v1.1.0
 ShortDescription: Gentle eye care in the Windows tray - blink reminders, guided breaks, a screen filter and a reading strip.
 Description: |-
-  BlinkBuddy reminds you to blink and to rest your eyes, with guided eye exercises and a stretch coach you can
+  Softlid reminds you to blink and to rest your eyes, with guided eye exercises and a stretch coach you can
   follow, read aloud if you like. Its screen filter warms the screen after sunset, dims below what the display
   allows and has colour effects; a reading strip keeps your place, and mini mode and a focus timer stay out of
   the way. Free, in 21 languages, and light: about 3 MB of memory while it waits in the tray.
-Moniker: blinkbuddy
+Moniker: softlid
 Tags:
   - eye-care
   - blink-reminder

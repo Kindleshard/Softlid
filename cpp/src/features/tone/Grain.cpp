@@ -18,7 +18,7 @@ public:
     Sheet(const RECT& screen, int block, int maxAlpha, int tone, uint32_t seed) : screen(screen)
     {
         int w = screen.right - screen.left + 2 * Spare, h = screen.bottom - screen.top + 2 * Spare;
-        Create(L"BlinkBuddy.Grain", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT,
+        Create(L"Softlid.Grain", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT,
                {screen.left - Spare, screen.top - Spare, screen.left - Spare + w, screen.top - Spare + h});
         {
             PixelSurface noise;   // (freed as soon as the compositor has it)
@@ -65,7 +65,7 @@ private:
     RECT screen;
 };
 
-Grain::Grain() { Create(L"BlinkBuddy.GrainTimers", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }
+Grain::Grain() { Create(L"Softlid.GrainTimers", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }
 
 Grain::~Grain() { Close(); }
 

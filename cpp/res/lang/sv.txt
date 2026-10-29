@@ -13,7 +13,7 @@ Skärm
 Schema
 Blinkning
 Extra
-Kugghjulet innehåller BlinkBuddys egna alternativ
+Kugghjulet innehåller Softlids egna alternativ
 Miniläge: vik ihop fönstret till ett litet öga som alltid ligger överst
 Ctrl+Alt+Skift med F: på/av · ↑ ↓: ljusstyrka · ← →: värme
 Ljusstyrka
@@ -37,14 +37,14 @@ Snålare med ström; kan lämna svaga spår vid rörelse.
 DesktopLUT
 Ingen fördröjning, färgtrogen; kräver DesktopLUT och administratörsrättigheter.
 Experimentella: var och en offrar något
-DesktopLUT är ett separat, gratis program ({0}, cirka 1 MB). BlinkBuddy kan ladda ner den senaste versionen och installera den i din användarmapp. Det ber om administratörsbehörighet när det startar, och BlinkBuddy skyddar det med en kontroll på 15 sekunder.
+DesktopLUT är ett separat, gratis program ({0}, cirka 1 MB). Softlid kan ladda ner den senaste versionen och installera den i din användarmapp. Det ber om administratörsbehörighet när det startar, och Softlid skyddar det med en kontroll på 15 sekunder.
 Ladda ner och installera
 Jag har det...
 Inte nu
 Inget laddas ner förrän du väljer.
 Tittar på omgivningen runt varje pixel: stora ljusa ytor lugnas medan text, kanter och färger behåller sin kontrast.
 Smart-filtrets dämpning som ett lager över skärmen; det ritas om bara när något har ändrats.
-Ett gratis program som tillämpar en färgtabell inuti Windows. BlinkBuddy vaktar det: en kontroll på 15 sekunder, en kraschvakt och paniktangenten Ctrl+Alt+Skift+L återställer skärmen.
+Ett gratis program som tillämpar en färgtabell inuti Windows. Softlid vaktar det: en kontroll på 15 sekunder, en kraschvakt och paniktangenten Ctrl+Alt+Skift+L återställer skärmen.
 Styrka
 Anpassad
 Ställ in kurvan själv med tre reglage (endast Standard)
@@ -120,8 +120,8 @@ Blandad
 Ljusare
 Grövre
 Animerad (mer ström)
-BlinkBuddy-alternativ
-Hur BlinkBuddy själv beter sig.
+Softlid-alternativ
+Hur Softlid själv beter sig.
 Språk
 Samma som Windows
 Starta med Windows
@@ -150,7 +150,7 @@ Pausen är slut. Blinka några gånger och fortsätt.
 Klart
 Av
 Av: blåljusfiltret stannar som det är inställt på fliken Skärm.
-Platstjänsten i Windows är avstängd och BlinkBuddy känner inte till din tidszon, så den vet inte när solen går ner. Slå på plats för skrivbordsappar i Windows-inställningar, eller använd egna tider.
+Platstjänsten i Windows är avstängd och Softlid känner inte till din tidszon, så den vet inte när solen går ner. Slå på plats för skrivbordsappar i Windows-inställningar, eller använd egna tider.
 Solen går inte ner i dag i {0}, så filtret vilar.
 Solen går inte upp i dag i {0}, så filtret är kvar på.
 På från {0} till {1}.
@@ -158,8 +158,8 @@ Vilar till {0}.
 Intoning: {0:0} % av vägen, full styrka kl. {1}.
 Uttoning: normalt igen kl. {0}.
 din plats (från Windows)
-BlinkBuddy {0} är tillgänglig
-Öppna BlinkBuddy-alternativen för att installera den.
+Softlid {0} är tillgänglig
+Öppna Softlid-alternativen för att installera den.
 Synlighetsskydd: ljusstyrka på 100 % och kurvan mildrad så att mörka detaljer syns.
 Synlighetsskydd: ljusstyrkan hålls på {0:0} % (inställd på {1} %) så att skärmen förblir läsbar.
 Windows accepterar ingen gammakurva här (HDR kanske är på), så bara den jämna dämpningen är aktiv.
@@ -185,12 +185,12 @@ Installera {0}
 Söker...
 Härnäst: {0}
 {0}:{1:00} kvar  ·  Esc för att hoppa över
-Uppdateringar finns inte än: den här kopian av BlinkBuddy har ingen utgivningskanal.
+Uppdateringar finns inte än: den här kopian av Softlid har ingen utgivningskanal.
 Kunde inte läsa versionen av den senaste utgåvan.
 Du har den senaste versionen ({0}).
 Version {0} är tillgänglig (du har {1}).
 Kunde inte söka efter uppdateringar: {0}
-Den här utgåvan innehåller ingen BlinkBuddy.exe att installera. Hämta den här: {0}
+Den här utgåvan innehåller ingen Softlid.exe att installera. Hämta den här: {0}
 Laddar ner {0}: {1:0.0} av {2:0.0} MB
 Installerar...
 Kunde inte installera uppdateringen: {0}
@@ -237,7 +237,7 @@ Bra jobbat. Ta en klunk vatten, och sedan tillbaka till jobbet.
 {0} s
 Fråga mig
 Fortsätt köra i aktivitetsfältet
-Avsluta BlinkBuddy
+Avsluta Softlid
 När det här fönstret stängs
 En liten ikon som ligger ovanför andra fönster. Byt till den med knappen bredvid namnlisten; håll pekaren över den för ljusstyrka, blåljusfiltret, bakgrundsbelysningen (när den är på) och blinkpåminnelser, och klicka för att komma tillbaka hit.
 Ikon
@@ -256,7 +256,7 @@ Mörk bakgrund under pausen
 Av: ögonövningarna rör sig över din skärm i stället för mot en svart bakgrund.
 På natten ersätter detta blåljusfiltret på fliken Skärm, men bara när det är starkare; den gröna markeringen på det reglaget visar det.
 Blåljusfilter på natten
-Stänga BlinkBuddy?
+Stänga Softlid?
 I aktivitetsfältet fortsätter den påminna dig om att blinka och titta bort, och håller skärmfiltret på. Avsluta stoppar allt det tills du startar den igen.
 Kom ihåg mitt val (ändra det under Alternativ)
 Solnedgång och soluppgång för din plats i Windows
@@ -392,9 +392,9 @@ Växla till den med knappen bredvid namnlisten. Hovra över den för snabbinstä
 Att minimera det här fönstret växlar till miniläge
 Vik ihop fönstret till ikonen så att du ser vart det tog vägen
 Resursanvändning
-Vad BlinkBuddy själv använder just nu, så som Aktivitetshanteraren räknar det.
+Vad Softlid själv använder just nu, så som Aktivitetshanteraren räknar det.
 Den senaste minuten: processor (accentfärg) och grafikkort (grönt)
-Mäts bara medan den här sidan visas, så att rita fönstret ingår i det du ser här. Stängt väntar BlinkBuddy mest och använder nästan ingenting.
+Mäts bara medan den här sidan visas, så att rita fönstret ingår i det du ser här. Stängt väntar Softlid mest och använder nästan ingenting.
 Processor: {0} % av hela processorn
 Grafikkort: Windows rapporterar det inte här
 Grafikkort: {0} % (dess mest belastade motor)
@@ -423,16 +423,16 @@ Inga appar än
 Appar med ett läge: {0}
 Tillbaka till panelen
 Funktioner
-Alternativ: vilka funktioner som är på och hur BlinkBuddy själv beter sig
+Alternativ: vilka funktioner som är på och hur Softlid själv beter sig
 Alternativ
 Synka med Windows nattlampa
 Nattlampa...
 Nattlampan är av just nu.
 Nattlampan är på just nu (påslagen för hand).
 Nattlampan är på just nu.
-Den har inget schema, så BlinkBuddys eget schema körs.
-BlinkBuddy följer dess tider, {0}–{1}, med styrkan {2}.
-BlinkBuddy följer den från solnedgång till soluppgång ({0}–{1}), med styrkan {2}.
+Den har inget schema, så Softlids eget schema körs.
+Softlid följer dess tider, {0}–{1}, med styrkan {2}.
+Softlid följer den från solnedgång till soluppgång ({0}–{1}), med styrkan {2}.
 I dag: nattschemat i bärnsten och tiden just nu
 Pausad medan Windows nattlampa värmer skärmen
 Av: blåljusfiltret förblir som det är inställt i skärmfiltret.
@@ -440,8 +440,8 @@ Var finns DesktopLUT?
 Laddar ner {0}: {1} av {2} MB
 nedladdningen misslyckades ({0})
 nedladdningen är inte ett Windows-program
-BlinkBuddy.exe kunde inte flyttas (fel {0})
-den nya BlinkBuddy.exe kunde inte läggas på plats (fel {0})
+Softlid.exe kunde inte flyttas (fel {0})
+den nya Softlid.exe kunde inte läggas på plats (fel {0})
 Startar om...
 Windows avvisade kurvan på den här skärmen (HDR kan vara på).
 Ser skärmen rätt ut?
@@ -449,7 +449,7 @@ Behåll
 Ångra
 DesktopLUT tillämpar nu färgtabellen. Om du inte gör något ångras den om {0} s.\nNödtangent när som helst: Ctrl+Alt+Skift+L.
 Bra jobbat. Nu kan du titta tillbaka.
-Nattschemat följer solnedgång och soluppgång. BlinkBuddy räknar ut dem för den här platsen: din plats i Windows när det är tillåtet, annars staden för din tidszon.
+Nattschemat följer solnedgång och soluppgång. Softlid räknar ut dem för den här platsen: din plats i Windows när det är tillåtet, annars staden för din tidszon.
 Nattschemats styrka på natten: {0}
 Den gröna pricken: nattschemats styrka på natten
 Opacitet när pekaren inte är över
@@ -468,17 +468,17 @@ Vid stängning
 Utseende
 Hur mycket fönstret visar, dess storlek och färg.
 System
-Hur BlinkBuddy passar in i Windows.
+Hur Softlid passar in i Windows.
 Fokustimerns cirkel
 Uppdateringar
 Den här versionen, och nyare när de kommer.
 Återställ
 Minimera
 Hjälp och stöd
-Berätta vad som gick fel, eller hjälp BlinkBuddy att fortsätta.
+Berätta vad som gick fel, eller hjälp Softlid att fortsätta.
 Fungerar något inte? Rapportera det på GitHub.
 Rapportera ett fel...
-BlinkBuddy är gratis. En kaffe håller det igång.
+Softlid är gratis. En kaffe håller det igång.
 Stöd på Ko-fi
 Övre vänstra
 Övre högra
@@ -489,7 +489,7 @@ Steg {0} av {1}
 Läs upp
 På: varje steg läses upp
 Av: ingenting läses upp
-Välkommen till BlinkBuddy
+Välkommen till Softlid
 Mjuka pauser och en lugnare skärm medan du arbetar. Det tar ungefär en minut.
 Varje steg läses upp. Knappen ovan stänger av ljudet.
 Hoppa över rundturen
@@ -504,7 +504,7 @@ Några stretchövningar var {0}:e min
 Ett litet öga blinkar med dig
 Tillbaka
 Nästa
-Var BlinkBuddy bor
+Var Softlid bor
 Den väntar i meddelandefältet vid klockan. Klicka för inställningar, högerklicka för snabbval som att pausa.
 Miniläge: en liten ikon som stannar överst och visar nästa paus.
 Allt är klart
@@ -515,7 +515,7 @@ Du kan ta rundturen igen från Alternativ, under Hjälp och stöd.
 Slutför
 Visa rundturen igen
 Starta rundturen
-Välkommen till BlinkBuddy. Mjuka pauser och en lugnare skärm medan du arbetar. Det tar ungefär en minut.
+Välkommen till Softlid. Mjuka pauser och en lugnare skärm medan du arbetar. Det tar ungefär en minut.
 Välj det som hjälper dig. Du kan ändra allt senare.
-BlinkBuddy väntar i meddelandefältet vid klockan. Klicka för inställningar, högerklicka för snabbval som att pausa.
+Softlid väntar i meddelandefältet vid klockan. Klicka för inställningar, högerklicka för snabbval som att pausa.
 Allt är klart. Vill du se hur en paus ser ut? Prova en nu, eller avsluta rundturen.

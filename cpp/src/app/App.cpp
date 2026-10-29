@@ -29,7 +29,7 @@ namespace bb {
 namespace {
 
 constexpr UINT_PTR TickTimer = 1;
-constexpr wchar_t WindowClass[] = L"BlinkBuddy.App";
+constexpr wchar_t WindowClass[] = L"Softlid.App";
 
 // Menu commands.
 enum : UINT {
@@ -53,11 +53,11 @@ App::App(HINSTANCE instance, HANDLE showRequest, bool openSettings, bool offscre
     wc.lpszClassName = WindowClass;
     RegisterClassExW(&wc);
     // A hidden top-level window (not message-only: it must hear Explorer's "TaskbarCreated" broadcast).
-    window = CreateWindowExW(0, WindowClass, L"BlinkBuddy", WS_POPUP, 0, 0, 0, 0, nullptr, nullptr, instance, this);
+    window = CreateWindowExW(0, WindowClass, L"Softlid", WS_POPUP, 0, 0, 0, 0, nullptr, nullptr, instance, this);
 
     LoadIconWithScaleDown(instance, MAKEINTRESOURCEW(IDI_APP), GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), &icon);
     LoadIconWithScaleDown(instance, MAKEINTRESOURCEW(IDI_APP), GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), &bigIcon);
-    if (!offscreen) tray.Add(window, icon, L"BlinkBuddy");   // (a diagnostic copy stays out of the tray)
+    if (!offscreen) tray.Add(window, icon, L"Softlid");   // (a diagnostic copy stays out of the tray)
     taskbarCreated = RegisterWindowMessageW(L"TaskbarCreated");
 
     KeepAwake::Set(settings.KeepAwake);
@@ -211,7 +211,7 @@ LRESULT App::Handle(UINT message, WPARAM w, LPARAM l)
     case WM_INPUT:
         if (strip) strip->MouseMoved();   // the mouse moved: the reading strip follows
         break;                             // (Windows tidies up the input after)
-    case WM_ENDSESSION:   // (BlinkBuddy is simply ended after this)
+    case WM_ENDSESSION:   // (Softlid is simply ended after this)
         if (w && !offscreen) RunLog::Write(L"Windows is signing out, restarting or shutting down");
         return 0;
     case WM_HOTKEY:
@@ -346,9 +346,9 @@ std::wstring App::StandUpStatus() const
 
 void App::UpdateTrayTip()
 {
-    std::wstring tip = L"BlinkBuddy\n" + BreakStatus();
+    std::wstring tip = L"Softlid\n" + BreakStatus();
     if (settings.LongBreakEnabled) tip += L"\n" + StandUpStatus();
-    if (focusTimer.State() != Focus::Off) tip = L"BlinkBuddy\n" + Lang::F(L"Focus timer: {0}", {FocusText()});
+    if (focusTimer.State() != Focus::Off) tip = L"Softlid\n" + Lang::F(L"Focus timer: {0}", {FocusText()});
     tray.SetTip(tip);
 }
 

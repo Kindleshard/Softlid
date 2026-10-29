@@ -1,4 +1,4 @@
-# BlinkBuddy in C++ — the plan
+# Softlid in C++ — the plan
 
 The C# version (in the history up to commit b301d42) was the reference: same features, same look, same settings file. The C++
 version exists to be small and light — a few MB of memory instead of ~15 — while staying easy to read.
@@ -7,10 +7,10 @@ version exists to be small and light — a few MB of memory instead of ~15 — w
 
 - **Light:** idle at ~0% CPU and a few MB of memory. Graphics (Direct2D) are created only while a window that
   needs them is open, and released when it closes.
-- **One file:** a single portable `BlinkBuddy.exe` with the C runtime linked in (nothing to install), plus an
+- **One file:** a single portable `Softlid.exe` with the C runtime linked in (nothing to install), plus an
   optional installer.
 - **Readable:** small files with one job each, names that say what things are, comments that say *why*.
-- **Compatible:** reads and writes the same `%AppData%\BlinkBuddy\settings.ini`, uses the same translations, and
+- **Compatible:** reads and writes the same `%AppData%\Softlid\settings.ini`, uses the same translations, and
   the same single-instance names, so the C# and C++ versions never run side by side.
 
 ## Layout

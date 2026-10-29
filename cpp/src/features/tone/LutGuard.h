@@ -7,11 +7,11 @@
 namespace bb {
 
 // The DesktopLUT engine: DesktopLUT (a separate program) applies the colour table inside Windows' compositor, and
-// BlinkBuddy watches over it from the outside. DesktopLUT runs as administrator, so the watching is done by a small
+// Softlid watches over it from the outside. DesktopLUT runs as administrator, so the watching is done by a small
 // elevated helper (this same exe with --lut-guard) that starts DesktopLUT itself and can always stop it. Stopping
-// DesktopLUT removes the table, so every safeguard ends the same way: stop it, and BlinkBuddy's own filter takes over.
+// DesktopLUT removes the table, so every safeguard ends the same way: stop it, and Softlid's own filter takes over.
 //   - Trial: after switching on, and after any Windows update, the screen must be confirmed within 15 s or it is undone.
-//   - Watchdog: DesktopLUT exiting unexpectedly, the compositor restarting twice within a minute, or BlinkBuddy itself
+//   - Watchdog: DesktopLUT exiting unexpectedly, the compositor restarting twice within a minute, or Softlid itself
 //     closing or crashing stops it.
 //   - Panic key: Ctrl+Alt+Shift+L stops it at any time, even when nothing on screen can be seen.
 class LutGuard {
@@ -45,7 +45,7 @@ private:
     bool failed = false, stopping = false;
 };
 
-// The elevated helper's whole life: BlinkBuddy.exe --lut-guard "<DesktopLUT.exe>" <trial 0/1> <BlinkBuddy pid> "<cube>".
+// The elevated helper's whole life: Softlid.exe --lut-guard "<DesktopLUT.exe>" <trial 0/1> <Softlid pid> "<cube>".
 int RunLutGuardHelper(const std::wstring& lutPath, bool trial, DWORD ownerPid, const std::wstring& cubePath);
 
 } // namespace bb

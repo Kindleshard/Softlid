@@ -13,7 +13,7 @@ Képernyő
 Ütemezés
 Pislogás
 Extrák
-A fogaskerék a BlinkBuddy saját beállításait rejti
+A fogaskerék a Softlid saját beállításait rejti
 Mini mód: ablak összecsukása egy mindig felül lévő kis szemmé
 Ctrl+Alt+Shift és F: be/ki · ↑ ↓: fényerő · ← →: melegség
 Fényerő
@@ -37,14 +37,14 @@ Takarékosabb; mozgáskor halvány nyomokat hagyhat.
 DesktopLUT
 Nincs késleltetés, színhű; DesktopLUT és rendszergazdai jog kell hozzá.
 Kísérleti: mindegyik feláldoz valamit
-A DesktopLUT egy különálló, ingyenes program ({0}, kb. 1 MB). A BlinkBuddy letöltheti a legújabb kiadását és beállíthatja a felhasználói mappájában. Induláskor rendszergazdai engedélyt kér, a BlinkBuddy pedig 15 másodperces ellenőrzéssel védi.
+A DesktopLUT egy különálló, ingyenes program ({0}, kb. 1 MB). A Softlid letöltheti a legújabb kiadását és beállíthatja a felhasználói mappájában. Induláskor rendszergazdai engedélyt kér, a Softlid pedig 15 másodperces ellenőrzéssel védi.
 Letöltés és beállítás
 Már megvan...
 Most nem
 Semmi sem töltődik le, amíg nem választ.
 Minden képpont környezetét nézi: a nagy világos területek lecsendesednek, a szöveg, az élek és a színek megtartják a kontrasztjukat.
 A Smart szűrő halványítása egyetlen rétegként a képernyő fölött; csak akkor rajzol újra, ha valami változott.
-Egy ingyenes program, amely színtáblát alkalmaz a Windowson belül. A BlinkBuddy őrzi: a 15 másodperces ellenőrzés, egy összeomlás-figyelő és a Ctrl+Alt+Shift+L vészgomb visszaállítja a képernyőt.
+Egy ingyenes program, amely színtáblát alkalmaz a Windowson belül. A Softlid őrzi: a 15 másodperces ellenőrzés, egy összeomlás-figyelő és a Ctrl+Alt+Shift+L vészgomb visszaállítja a képernyőt.
 Erősség
 Egyéni
 A görbe beállítása saját kezűleg három csúszkával (csak Normál módszer)
@@ -120,8 +120,8 @@ Vegyes
 Világosabb
 Durvább
 Animált (több energia)
-BlinkBuddy beállításai
-Hogyan viselkedik maga a BlinkBuddy.
+Softlid beállításai
+Hogyan viselkedik maga a Softlid.
 Nyelv
 Mint a Windows
 Indítás a Windowszal
@@ -150,7 +150,7 @@ Vége a szünetnek. Pislogj néhányat, és folytasd.
 Kész
 Ki
 Ki: a kékfényszűrő a Képernyő lapon beállított értéken marad.
-A Windows helymeghatározás ki van kapcsolva, és a BlinkBuddy nem ismeri az időzónádat, így nem tudja, mikor megy le a nap. Kapcsold be a helymeghatározást az asztali alkalmazásokhoz a Windows beállításaiban, vagy használj egyéni időpontokat.
+A Windows helymeghatározás ki van kapcsolva, és a Softlid nem ismeri az időzónádat, így nem tudja, mikor megy le a nap. Kapcsold be a helymeghatározást az asztali alkalmazásokhoz a Windows beállításaiban, vagy használj egyéni időpontokat.
 Ma nem megy le a nap itt: {0}, ezért a szűrő pihen.
 Ma nem kel fel a nap itt: {0}, ezért a szűrő bekapcsolva marad.
 Bekapcsolva {0} és {1} között.
@@ -158,8 +158,8 @@ Pihen {0}-ig.
 Áttűnés: az út {0:0}%-a, teljes erősség {1}-kor.
 Kiúszás: {0}-kor újra normál.
 a helyed (a Windowstól)
-Elérhető a BlinkBuddy {0}
-Nyisd meg a BlinkBuddy beállításait a telepítéshez.
+Elérhető a Softlid {0}
+Nyisd meg a Softlid beállításait a telepítéshez.
 Láthatóság-védelem: fényerő 100%-on, a görbe lágyítva, hogy a sötét részletek láthatók maradjanak.
 Láthatóság-védelem: a fényerő {0:0}%-on tartva (beállítva: {1}%), hogy a képernyő olvasható maradjon.
 A Windows itt nem fogad el gammagörbét (lehet, hogy be van kapcsolva a HDR), így csak az egyenletes halványítás működik.
@@ -185,12 +185,12 @@ A(z) {0} verzió elérhető.
 Ellenőrzés...
 Következik: {0}
 Még {0}:{1:00}  ·  Esc a kihagyáshoz
-A frissítések még nem érhetők el: a BlinkBuddy e példányának nincs kiadási csatornája.
+A frissítések még nem érhetők el: a Softlid e példányának nincs kiadási csatornája.
 Nem sikerült beolvasni a legújabb kiadás verzióját.
 A legújabb verzió van telepítve ({0}).
 A(z) {0} verzió elérhető (neked {1} van).
 Nem sikerült frissítéseket keresni: {0}
-Ez a kiadás nem tartalmaz telepíthető BlinkBuddy.exe fájlt. Innen szerezheted be: {0}
+Ez a kiadás nem tartalmaz telepíthető Softlid.exe fájlt. Innen szerezheted be: {0}
 {0} letöltése: {1:0.0} / {2:0.0} MB
 Telepítés...
 Nem sikerült telepíteni a frissítést: {0}
@@ -237,7 +237,7 @@ Szép munka. Igyál egy korty vizet, és vissza a munkához.
 {0} mp
 Kérdezzen
 Fusson tovább a tálcán
-Kilépés a BlinkBuddyból
+Kilépés a Softlidból
 Ha ezt az ablakot bezárom
 Egy kis ikon, amely a többi ablak fölött marad. A címsor melletti gombbal válthatsz rá; vidd fölé az egeret a fényerőhöz, a kékfényszűrőhöz, a háttérvilágításhoz (ha be van kapcsolva) és a pislogás-emlékeztetőkhöz, és kattints rá, hogy ide visszatérj.
 Ikon
@@ -256,7 +256,7 @@ Sötét háttér a szünet alatt
 Ki: a szemgyakorlatok a képernyőd fölött mozognak fekete háttér helyett.
 Éjszaka ez váltja a Képernyő lap kékfényszűrőjét, de csak ha erősebb; a csúszkán lévő zöld jel mutatja.
 Kékfényszűrő éjszaka
-Bezárod a BlinkBuddyt?
+Bezárod a Softlidot?
 A tálcán tovább emlékeztet a pislogásra és a távolba nézésre, és bekapcsolva tartja a képernyőszűrőt. A kilépés mindezt leállítja, amíg újra el nem indítod.
 Választás megjegyzése (a Beállításokban módosítható)
 Napnyugta és napkelte a Windows-helyadatod alapján
@@ -392,9 +392,9 @@ Válts rá a címsor melletti gombbal. Vidd fölé az egeret a gyors beállítá
 Az ablak kis méretre állítása mini módra vált
 Az ablak összehajtása az ikonba, hogy lásd, hová tűnt
 Erőforrás-használat
-Amit a BlinkBuddy most használ, ahogy a Feladatkezelő számolja.
+Amit a Softlid most használ, ahogy a Feladatkezelő számolja.
 Az utolsó perc: processzor (kiemelőszín) és videokártya (zöld)
-Csak akkor mérjük, amíg ez az oldal látszik, így az ablak kirajzolása is benne van abban, amit itt látsz. Bezárva a BlinkBuddy többnyire csak vár, és szinte semmit sem használ.
+Csak akkor mérjük, amíg ez az oldal látszik, így az ablak kirajzolása is benne van abban, amit itt látsz. Bezárva a Softlid többnyire csak vár, és szinte semmit sem használ.
 Processzor: a teljes CPU {0}%-a
 Videokártya: a Windows itt nem jelenti
 Videokártya: {0}% (a legterheltebb motorja)
@@ -423,16 +423,16 @@ Még nincs alkalmazás
 Móddal rendelkező alkalmazások: {0}
 Vissza a panelre
 Funkciók
-Beállítások: mely funkciók vannak bekapcsolva, és hogyan működik maga a BlinkBuddy
+Beállítások: mely funkciók vannak bekapcsolva, és hogyan működik maga a Softlid
 Beállítások
 Szinkronizálás a Windows éjszakai fényével
 Éjszakai fény...
 Az éjszakai fény most ki van kapcsolva.
 Az éjszakai fény most be van kapcsolva (kézzel kapcsolták be).
 Az éjszakai fény most be van kapcsolva.
-Nincs ütemezése, így a BlinkBuddy saját ütemezése fut.
-A BlinkBuddy az időpontjait követi, {0}–{1}, {2} erősséggel.
-A BlinkBuddy napnyugtától napkeltéig követi ({0}–{1}), {2} erősséggel.
+Nincs ütemezése, így a Softlid saját ütemezése fut.
+A Softlid az időpontjait követi, {0}–{1}, {2} erősséggel.
+A Softlid napnyugtától napkeltéig követi ({0}–{1}), {2} erősséggel.
 Ma: az éjszakai ütemezés borostyánsárgán, és a mostani idő
 Szüneteltetve, amíg a Windows éjszakai fénye melegíti a képernyőt
 Kikapcsolva: a kékfényszűrő úgy marad, ahogy a képernyőszűrőben be van állítva.
@@ -440,8 +440,8 @@ Hol van a DesktopLUT?
 {0} letöltése: {1} / {2} MB
 a letöltés nem sikerült ({0})
 a letöltött fájl nem Windows-program
-A BlinkBuddy.exe nem helyezhető át (hiba: {0})
-az új BlinkBuddy.exe nem tehető a helyére (hiba: {0})
+A Softlid.exe nem helyezhető át (hiba: {0})
+az új Softlid.exe nem tehető a helyére (hiba: {0})
 Újraindítás...
 A Windows elutasította a görbét ezen a kijelzőn (lehet, hogy be van kapcsolva a HDR).
 Rendben van a képernyő?
@@ -449,7 +449,7 @@ Megtartás
 Visszavonás
 A DesktopLUT most alkalmazza a színtáblát. Ha nem teszel semmit, {0} mp múlva visszavonja.\nVészgomb bármikor: Ctrl+Alt+Shift+L.
 Szép munka. Most már visszanézhetsz.
-Az éjszakai ütemezés a napnyugtát és a napkeltét követi. A BlinkBuddy ehhez a helyhez számolja ki őket: a Windows-helyadatodhoz, ha engedélyezett, egyébként az időzónád városához.
+Az éjszakai ütemezés a napnyugtát és a napkeltét követi. A Softlid ehhez a helyhez számolja ki őket: a Windows-helyadatodhoz, ha engedélyezett, egyébként az időzónád városához.
 Az éjszakai ütemezés erőssége éjjel: {0}
 A zöld pont: az éjszakai ütemezés erőssége éjjel
 Átlátszatlanság, amikor nincs fölötte az egér
@@ -468,17 +468,17 @@ Bezáráskor
 Megjelenés
 Mennyit mutat ez az ablak, a mérete és a színe.
 Rendszer
-Hogyan illeszkedik a BlinkBuddy a Windowsba.
+Hogyan illeszkedik a Softlid a Windowsba.
 Fókuszidőzítő köre
 Frissítések
 Ez a verzió, és az újabbak, amikor megjelennek.
 Visszaállítás
 Kis méret
 Súgó és támogatás
-Írd meg, mi romlott el, vagy segíts, hogy a BlinkBuddy folytatódhasson.
+Írd meg, mi romlott el, vagy segíts, hogy a Softlid folytatódhasson.
 Valami nem működik? Jelentsd a GitHubon.
 Hiba jelentése...
-A BlinkBuddy ingyenes. Egy kávé segít, hogy folytatódjon.
+A Softlid ingyenes. Egy kávé segít, hogy folytatódjon.
 Támogatás a Ko-fin
 Bal felső
 Jobb felső
@@ -489,7 +489,7 @@ Közép
 Felolvasás
 Be: minden lépést felolvas
 Ki: semmit nem olvas fel
-Üdv a BlinkBuddyban
+Üdv a Softlidban
 Kíméletes szünetek és nyugodtabb képernyő munka közben. Körülbelül egy percig tart.
 Minden lépést felolvas. A fenti gomb elnémítja.
 Bemutató kihagyása
@@ -504,7 +504,7 @@ Néhány nyújtás {0} percenként
 Egy kis szem pislog veled
 Vissza
 Tovább
-Hol lakik a BlinkBuddy
+Hol lakik a Softlid
 A tálcán, az óra mellett vár. Kattints a beállításokért, jobb kattintás a gyors műveletekért, például a szüneteltetésért.
 Mini mód: kis ikon, amely mindig felül marad, és mutatja a következő szünetet.
 Minden kész
@@ -515,7 +515,7 @@ Ezt a bemutatót a Beállításokban, a Súgó és támogatás alatt újra megn�
 Befejezés
 Bemutató újra
 Bemutató indítása
-Üdv a BlinkBuddyban. Kíméletes szünetek és nyugodtabb képernyő munka közben. Körülbelül egy percig tart.
+Üdv a Softlidban. Kíméletes szünetek és nyugodtabb képernyő munka közben. Körülbelül egy percig tart.
 Válaszd ki, mi segít. Később bármit megváltoztathatsz.
-A BlinkBuddy a tálcán, az óra mellett vár. Kattints a beállításokért, jobb kattintás a gyors műveletekért, például a szüneteltetésért.
+A Softlid a tálcán, az óra mellett vár. Kattints a beállításokért, jobb kattintás a gyors műveletekért, például a szüneteltetésért.
 Minden kész. Megnézed, milyen egy szünet? Próbálj ki egyet most, vagy fejezd be a bemutatót.

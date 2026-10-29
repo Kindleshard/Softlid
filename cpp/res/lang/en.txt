@@ -13,7 +13,7 @@ Screen
 Schedule
 Blink
 Extras
-The cog holds BlinkBuddy's own options
+The cog holds Softlid's own options
 Mini mode: fold this window into a small eye that stays on top
 Ctrl+Alt+Shift with F: on/off · ↑ ↓: brightness · ← →: warmth
 Brightness
@@ -37,14 +37,14 @@ Lighter on power; can leave faint trails when moving.
 DesktopLUT
 No delay, hue-true; needs DesktopLUT and admin rights.
 Experimental: each one trades something
-DesktopLUT is a separate free program ({0}, about 1 MB). BlinkBuddy can download its latest release and set it up in your user folder. It asks for administrator permission when it starts, and BlinkBuddy guards it with a 15-second check.
+DesktopLUT is a separate free program ({0}, about 1 MB). Softlid can download its latest release and set it up in your user folder. It asks for administrator permission when it starts, and Softlid guards it with a 15-second check.
 Download and set up
 I have it...
 Not now
 Nothing is downloaded until you choose.
 Looks at what surrounds every pixel: big bright areas are calmed while text, edges and colours keep their contrast.
 The smart filter's dimming as one layer over the screen; it redraws only when something changed.
-A free program that applies a colour table inside Windows. BlinkBuddy guards it: a 15-second check, a crash watchdog and the panic key Ctrl+Alt+Shift+L all put the screen back.
+A free program that applies a colour table inside Windows. Softlid guards it: a 15-second check, a crash watchdog and the panic key Ctrl+Alt+Shift+L all put the screen back.
 Strength
 Custom
 Set the curve yourself with three sliders (Standard engine only)
@@ -120,8 +120,8 @@ Mixed
 Lighter
 Coarser
 Animated (more power)
-BlinkBuddy options
-How BlinkBuddy itself behaves.
+Softlid options
+How Softlid itself behaves.
 Language
 Same as Windows
 Start with Windows
@@ -150,7 +150,7 @@ Break done. Blink a few times and carry on.
 Done
 Off
 Off: the blue light filter stays as set on the Screen tab.
-Windows location is off and your time zone isn't one BlinkBuddy knows, so it can't tell when the sun sets. Turn on location for desktop apps in Windows Settings, or use custom hours.
+Windows location is off and your time zone isn't one Softlid knows, so it can't tell when the sun sets. Turn on location for desktop apps in Windows Settings, or use custom hours.
 The sun doesn't set today in {0}, so the filter rests.
 The sun doesn't rise today in {0}, so the filter stays on.
 On from {0} to {1}.
@@ -158,8 +158,8 @@ Resting until {0}.
 Easing in: {0:0}% of the way, full at {1}.
 Easing out: back to normal at {0}.
 your location (from Windows)
-BlinkBuddy {0} is available
-Open BlinkBuddy options to install it.
+Softlid {0} is available
+Open Softlid options to install it.
 Visibility guard: brightness at 100% and the curve eased so dark details stay visible.
 Visibility guard: brightness held at {0:0}% (set to {1}%) so the screen stays readable.
 Windows won't accept a gamma curve here (HDR may be on), so only the even dimming is active.
@@ -185,12 +185,12 @@ Install {0}
 Checking...
 Next: {0}
 {0}:{1:00} left  ·  Esc to skip
-Updates aren't available yet: this copy of BlinkBuddy has no release channel.
+Updates aren't available yet: this copy of Softlid has no release channel.
 Couldn't read the latest release's version.
 You have the latest version ({0}).
 Version {0} is available (you have {1}).
 Couldn't check for updates: {0}
-This release has no BlinkBuddy.exe to install. Get it from {0}
+This release has no Softlid.exe to install. Get it from {0}
 Downloading {0}: {1:0.0} of {2:0.0} MB
 Installing...
 Couldn't install the update: {0}
@@ -237,7 +237,7 @@ Great job. Have a sip of water, and back to it.
 {0} s
 Ask me
 Keep running in the tray
-Exit BlinkBuddy
+Exit Softlid
 When this window is closed
 A small icon that stays on top of other windows. Switch to it with the button next to the title bar; hover over it for brightness, the blue light filter, the backlight (when it is on) and blink reminders, and click it to come back here.
 Icon
@@ -256,7 +256,7 @@ Dark background behind the break
 Off: the eye exercises move over your screen instead of a black background.
 At night this takes over from the Blue light filter on the Screen tab, but only when it is stronger; the green mark on that slider shows it.
 Blue light filter at night
-Close BlinkBuddy?
+Close Softlid?
 In the tray it keeps reminding you to blink and look away, and keeps the screen filter on. Exiting stops all of that until you start it again.
 Remember my choice (change it in Options)
 Sunset and sunrise for your location in Windows
@@ -392,9 +392,9 @@ Switch to it with the button next to the title bar. Hover over it for quick cont
 Minimising this window switches to mini mode
 Fold this window into the icon, so you see where it went
 Resource use
-What BlinkBuddy itself uses right now, as Task Manager counts it.
+What Softlid itself uses right now, as Task Manager counts it.
 The last minute: processor (accent color) and graphics card (green)
-Measured only while this page shows, so drawing this window is part of what you see here. Closed, BlinkBuddy mostly waits and uses next to nothing.
+Measured only while this page shows, so drawing this window is part of what you see here. Closed, Softlid mostly waits and uses next to nothing.
 Processor: {0}% of the whole CPU
 Graphics card: Windows doesn't report it here
 Graphics card: {0}% (its busiest engine)
@@ -423,16 +423,16 @@ No apps yet
 Apps with a mode: {0}
 Back to the panel
 Features
-Options: which features are on, and how BlinkBuddy itself behaves
+Options: which features are on, and how Softlid itself behaves
 Options
 Sync with Windows Night light
 Night light...
 Night light is off now.
 Night light is on now (turned on by hand).
 Night light is on now.
-It has no schedule, so BlinkBuddy's own schedule runs.
-BlinkBuddy follows its hours, {0} to {1}, at strength {2}.
-BlinkBuddy follows it from sunset to sunrise ({0} to {1}), at strength {2}.
+It has no schedule, so Softlid's own schedule runs.
+Softlid follows its hours, {0} to {1}, at strength {2}.
+Softlid follows it from sunset to sunrise ({0} to {1}), at strength {2}.
 Today: the night schedule in amber, and the time now
 Paused while Windows Night light warms the screen
 Off: the blue light filter stays as set in the screen filter.
@@ -440,8 +440,8 @@ Where is DesktopLUT?
 Downloading {0}: {1} of {2} MB
 the download failed ({0})
 the download isn't a Windows program
-BlinkBuddy.exe couldn't be moved (error {0})
-the new BlinkBuddy.exe couldn't be put in place (error {0})
+Softlid.exe couldn't be moved (error {0})
+the new Softlid.exe couldn't be put in place (error {0})
 Restarting...
 Windows refused the curve on this display (HDR may be on).
 Does your screen look right?
@@ -449,7 +449,7 @@ Keep
 Undo
 DesktopLUT is now applying the colour table. If you do nothing, it is undone in {0} s.\nPanic key at any time: Ctrl+Alt+Shift+L.
 Well done. You can look back now.
-The night schedule follows sunset and sunrise. BlinkBuddy works them out for this place: your location in Windows when it's allowed, or your time zone's city.
+The night schedule follows sunset and sunrise. Softlid works them out for this place: your location in Windows when it's allowed, or your time zone's city.
 The night schedule's strength at night: {0}
 The green dot: the night schedule's strength at night
 Opacity while not hovered
@@ -468,17 +468,17 @@ When closed
 Appearance
 How much this window shows, its size and its color.
 System
-How BlinkBuddy fits in with Windows.
+How Softlid fits in with Windows.
 Focus timer circle
 Updates
 This version, and newer ones when they come out.
 Reset
 Minimize
 Help and support
-Tell us what went wrong, or keep BlinkBuddy going.
+Tell us what went wrong, or keep Softlid going.
 Something not working? Report it on GitHub.
 Report a bug...
-BlinkBuddy is free. A coffee keeps it going.
+Softlid is free. A coffee keeps it going.
 Support on Ko-fi
 Top left
 Top right
@@ -489,7 +489,7 @@ Step {0} of {1}
 Read aloud
 On: each step is read aloud
 Off: nothing is read aloud
-Welcome to BlinkBuddy
+Welcome to Softlid
 Gentle breaks and a calmer screen while you work. This takes about a minute.
 Each step is read aloud. The button above mutes it.
 Skip tour
@@ -504,7 +504,7 @@ A few stretches every {0} min
 A small eye blinks with you
 Back
 Next
-Where BlinkBuddy lives
+Where Softlid lives
 It waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing.
 Mini mode: a small icon that stays on top and shows the next break.
 You're all set
@@ -515,7 +515,7 @@ You can take this tour again from Options, under Help and support.
 Finish
 Show the tour again
 Start tour
-Welcome to BlinkBuddy. Gentle breaks and a calmer screen while you work. This takes about a minute.
+Welcome to Softlid. Gentle breaks and a calmer screen while you work. This takes about a minute.
 Pick what helps you. You can change all of it later.
-BlinkBuddy waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing.
+Softlid waits in the tray by the clock. Click it for settings, right-click for quick actions like pausing.
 You're all set. Want to see what a break looks like? Try one now, or finish the tour.

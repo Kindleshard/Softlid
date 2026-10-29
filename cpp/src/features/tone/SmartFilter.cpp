@@ -43,7 +43,7 @@ class SmartFilter::Overlay : public Window {
 public:
     explicit Overlay(const RECT& bounds)
     {
-        Create(L"BlinkBuddy.SmartOverlay", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, bounds,
+        Create(L"Softlid.SmartOverlay", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, bounds,
                static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)));
         SetLayeredWindowAttributes(hwnd, 0, 0, LWA_ALPHA);
         excluded = SetWindowDisplayAffinity(hwnd, WDA_EXCLUDEFROMCAPTURE) != FALSE;

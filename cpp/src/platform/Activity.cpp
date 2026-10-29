@@ -19,7 +19,7 @@ bool FullscreenAppRunning()
     QUERY_USER_NOTIFICATION_STATE state{};
     if (SUCCEEDED(SHQueryUserNotificationState(&state)) && (state == QUNS_RUNNING_D3D_FULL_SCREEN || state == QUNS_PRESENTATION_MODE))
         return true;
-    // Windows' "busy" state also counts any always-on-top window covering a screen, BlinkBuddy's own overlays
+    // Windows' "busy" state also counts any always-on-top window covering a screen, Softlid's own overlays
     // included, which would pause the reminders for good. So judge the window in use instead: someone else's window
     // covering its whole screen (a video, a borderless game, F11).
     HWND front = GetForegroundWindow();

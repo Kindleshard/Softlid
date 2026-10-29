@@ -5,15 +5,15 @@
 
 namespace bb::Updater {
 
-// Checking for a newer BlinkBuddy: asks GitHub for the latest release of ReleaseRepo, compares its tag ("v1.2.0")
-// with this copy's version and, if asked, downloads the release's BlinkBuddy.exe and swaps it in. A running program
-// can be renamed but not overwritten, so this copy steps aside as BlinkBuddy.exe.old, the new one takes its name,
+// Checking for a newer Softlid: asks GitHub for the latest release of ReleaseRepo, compares its tag ("v1.2.0")
+// with this copy's version and, if asked, downloads the release's Softlid.exe and swaps it in. A running program
+// can be renamed but not overwritten, so this copy steps aside as Softlid.exe.old, the new one takes its name,
 // starts (waiting for this one to quit first) and tidies the old file away.
 
 bool Available();   // a release channel is set
 
 struct Release {
-    std::wstring tag, download, page;   // download: empty if the release has no BlinkBuddy.exe
+    std::wstring tag, download, page;   // download: empty if the release has no Softlid.exe
 };
 
 // How the update check stands, for the Options page.

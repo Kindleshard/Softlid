@@ -17,7 +17,7 @@ std::wstring ReadAllText(const std::wstring& path);
 bool WriteAllText(const std::wstring& path, std::wstring_view text);
 
 std::wstring RoamingAppData();   // %AppData%
-std::wstring ExePath();          // BlinkBuddy.exe itself
+std::wstring ExePath();          // Softlid.exe itself
 std::wstring ExeFolder();        // the folder it is in
 std::wstring TempFolder();       // %Temp%, ending in a backslash
 

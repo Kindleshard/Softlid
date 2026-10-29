@@ -312,7 +312,7 @@ MiniWindow::MiniWindow(MiniHost& app, bool hidden) : app(app), panel(std::make_u
     size = BaseSize * std::clamp(app.S().MiniScale, 90, 150) / 100.0f;
     px = static_cast<int>(std::lround(size * scale));
     pos = StartingPoint();
-    Create(L"BlinkBuddy.Mini", WS_POPUP, PopupExStyle | WS_EX_LAYERED, {pos.x, pos.y, pos.x + px, pos.y + px});
+    Create(L"Softlid.Mini", WS_POPUP, PopupExStyle | WS_EX_LAYERED, {pos.x, pos.y, pos.x + px, pos.y + px});
     Draw();
     if (!hidden) Reveal();
 }

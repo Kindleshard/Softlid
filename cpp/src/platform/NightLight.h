@@ -30,7 +30,7 @@ struct State {
 State Read();
 State Parse(const std::vector<uint8_t>& settings, const std::vector<uint8_t>& state);   // (Read's decoding, for testing)
 
-// BlinkBuddy's blue light filter (%) for a colour temperature.
+// Softlid's blue light filter (%) for a colour temperature.
 int BlueFor(int kelvin);
 
 } // namespace bb::NightLight

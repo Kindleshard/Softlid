@@ -8,7 +8,7 @@
 namespace bb {
 
 // Reads a guided break's lines aloud in a language ("tr"). Recorded clips (voice\<language>\<key>.mp3 or .wav next to
-// BlinkBuddy.exe) are used when present, played through Windows' media control interface so they can overlap the
+// Softlid.exe) are used when present, played through Windows' media control interface so they can overlap the
 // chime; otherwise a Windows voice for that language speaks the text (and with none, nothing is said: the screen
 // still shows the steps).
 class Voice {

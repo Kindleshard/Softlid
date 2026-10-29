@@ -8,7 +8,7 @@ namespace Palette {
 
 constexpr int Argb(int r, int g, int b) { return static_cast<int>(0xFF000000u | (unsigned(r) << 16) | (unsigned(g) << 8) | unsigned(b)); }
 
-// Accent choices (the first is BlinkBuddy's blue).
+// Accent choices (the first is Softlid's blue).
 inline constexpr int Accents[] = {
     Argb(76, 194, 255), Argb(64, 214, 196), Argb(120, 210, 110), Argb(240, 200, 70),
     Argb(255, 163, 64), Argb(255, 112, 112), Argb(255, 128, 170), Argb(176, 150, 255),

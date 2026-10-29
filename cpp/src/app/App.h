@@ -165,7 +165,7 @@ private:
     void Probed(int supported, int total, int current);
 
     HINSTANCE instance;
-    HANDLE showRequest;   // set by a second copy of BlinkBuddy
+    HANDLE showRequest;   // set by a second copy of Softlid
     HWND window = nullptr;
     HICON icon = nullptr;
     UINT taskbarCreated = 0;

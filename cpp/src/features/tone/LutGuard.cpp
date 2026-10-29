@@ -19,11 +19,11 @@
 namespace bb {
 namespace {
 
-constexpr wchar_t StopEventName[] = L"Local\\BlinkBuddy.LutStop";
-constexpr wchar_t WakeEventName[] = L"Local\\BlinkBuddy.LutWake";
+constexpr wchar_t StopEventName[] = L"Local\\Softlid.LutStop";
+constexpr wchar_t WakeEventName[] = L"Local\\Softlid.LutWake";
 
-std::wstring StatusFile() { return RoamingAppData() + L"\\BlinkBuddy\\lut-guard.status"; }
-std::wstring CommandFile() { return RoamingAppData() + L"\\BlinkBuddy\\lut-guard.command"; }
+std::wstring StatusFile() { return RoamingAppData() + L"\\Softlid\\lut-guard.status"; }
+std::wstring CommandFile() { return RoamingAppData() + L"\\Softlid\\lut-guard.command"; }
 
 // The processes running a program, by its file name without ".exe" (any letter case).
 std::vector<DWORD> ProcessesNamed(const std::wstring& name)
@@ -50,7 +50,7 @@ public:
         RECT all{GetSystemMetrics(SM_XVIRTUALSCREEN), GetSystemMetrics(SM_YVIRTUALSCREEN), 0, 0};
         all.right = all.left + GetSystemMetrics(SM_CXVIRTUALSCREEN);
         all.bottom = all.top + GetSystemMetrics(SM_CYVIRTUALSCREEN);
-        Create(L"BlinkBuddy.Refresh", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, all, static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)));
+        Create(L"Softlid.Refresh", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, all, static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)));
         SetLayeredWindowAttributes(hwnd, 0, 3, LWA_ALPHA);   // darkens by 1% for two frames: invisible, but everything under it is redrawn
     }
 
@@ -123,7 +123,7 @@ public:
     void Start()
     {
         Options opts;
-        opts.title = L"BlinkBuddy: keep DesktopLUT?";
+        opts.title = L"Softlid: keep DesktopLUT?";
         opts.dialog = true;
         Open(420, 170, nullptr, opts);
         SetWindowPos(Handle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
@@ -189,13 +189,13 @@ public:
         if (!stopEvent) stopEvent = CreateEventW(nullptr, TRUE, FALSE, StopEventName);
         wakeEvent = OpenEventW(SYNCHRONIZE | EVENT_MODIFY_STATE, FALSE, WakeEventName);
         if (!wakeEvent) wakeEvent = CreateEventW(nullptr, FALSE, FALSE, WakeEventName);
-        Create(L"BlinkBuddy.LutGuard", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0});
+        Create(L"Softlid.LutGuard", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0});
         RegisterHotKey(hwnd, 1, MOD_CONTROL | MOD_ALT | MOD_SHIFT | MOD_NOREPEAT, 'L');
         dwmPid = DwmPid();
         if (!Launch()) return;
-        Write(L"running", trial ? L"Checking: confirm within 15 seconds that the screen looks right." : L"DesktopLUT is running, watched by BlinkBuddy.");
+        Write(L"running", trial ? L"Checking: confirm within 15 seconds that the screen looks right." : L"DesktopLUT is running, watched by Softlid.");
         SetTimer(hwnd, 1, 1000, nullptr);
-        // Commands from BlinkBuddy ("run": restart DesktopLUT, the only way to make it load a changed table), handled
+        // Commands from Softlid ("run": restart DesktopLUT, the only way to make it load a changed table), handled
         // on this thread the moment they arrive, so the watchdog can't mistake the moment in between for a crash.
         RegisterWaitForSingleObject(&wakeWait, wakeEvent, [](void* self, BOOLEAN) {
             PostMessageW(static_cast<Helper*>(self)->hwnd, WM_APP + 1, 0, 0);
@@ -204,9 +204,9 @@ public:
             dialog = std::make_unique<TrialDialog>();
             dialog->answered = [this](bool kept, bool timedOut) {
                 if (done) return;
-                if (kept) Write(L"confirmed", L"DesktopLUT is running, watched by BlinkBuddy (confirmed on this Windows build).", ProgramInfo::WindowsBuild());
-                else Finish(L"failed", timedOut ? L"No confirmation within 15 seconds, so DesktopLUT was stopped and BlinkBuddy's own filter took over."
-                                                : L"Undone. DesktopLUT was stopped and BlinkBuddy's own filter took over.");
+                if (kept) Write(L"confirmed", L"DesktopLUT is running, watched by Softlid (confirmed on this Windows build).", ProgramInfo::WindowsBuild());
+                else Finish(L"failed", timedOut ? L"No confirmation within 15 seconds, so DesktopLUT was stopped and Softlid's own filter took over."
+                                                : L"Undone. DesktopLUT was stopped and Softlid's own filter took over.");
             };
             dialog->Start();
         }
@@ -222,7 +222,7 @@ public:
     }
 
 private:
-    // (Re)starts DesktopLUT pointed at BlinkBuddy's table. A copy already running is closed first, so it can't save its
+    // (Re)starts DesktopLUT pointed at Softlid's table. A copy already running is closed first, so it can't save its
     // old table over ours on the way out.
     bool Launch()
     {
@@ -287,15 +287,15 @@ private:
         int seq = _wtoi(text.c_str() + space + 1);
         if (seq == lastCommand) return;
         lastCommand = seq;
-        if (text.substr(0, space) == L"run" && Launch()) Write(L"running", L"DesktopLUT is running, watched by BlinkBuddy.");
+        if (text.substr(0, space) == L"run" && Launch()) Write(L"running", L"DesktopLUT is running, watched by Softlid.");
     }
 
     void Check()
     {
         if (done) return;
         if (WaitForSingleObject(stopEvent, 0) == WAIT_OBJECT_0) return Finish(L"stopped", L"DesktopLUT was stopped.");
-        if (!owner || WaitForSingleObject(owner, 0) == WAIT_OBJECT_0) return Finish(L"stopped", L"BlinkBuddy closed, so DesktopLUT was stopped.");
-        if (ProcessesNamed(lutName).empty()) return Finish(L"failed", L"DesktopLUT closed or crashed, so BlinkBuddy's own filter took over.");
+        if (!owner || WaitForSingleObject(owner, 0) == WAIT_OBJECT_0) return Finish(L"stopped", L"Softlid closed, so DesktopLUT was stopped.");
+        if (ProcessesNamed(lutName).empty()) return Finish(L"failed", L"DesktopLUT closed or crashed, so Softlid's own filter took over.");
         // A compositor restart can happen for harmless reasons (a driver update); two within a minute means trouble.
         DWORD pid = DwmPid();
         if (pid && pid != dwmPid) {
@@ -335,7 +335,7 @@ private:
         switch (message) {
         case WM_TIMER: Check(); return 0;
         case WM_APP + 1: OnCommand(); return 0;
-        case WM_HOTKEY: Finish(L"failed", L"Stopped with Ctrl+Alt+Shift+L. BlinkBuddy's own filter took over."); return 0;
+        case WM_HOTKEY: Finish(L"failed", L"Stopped with Ctrl+Alt+Shift+L. Softlid's own filter took over."); return 0;
         }
         return Window::OnMessage(message, w, l);
     }
@@ -429,7 +429,7 @@ void LutGuard::Poll()
                 TerminateProcess(p, 0);
                 CloseHandle(p);
             }
-        if (!failed) Fail(L"The guard closed unexpectedly, so DesktopLUT was stopped and BlinkBuddy's own filter took over.");
+        if (!failed) Fail(L"The guard closed unexpectedly, so DesktopLUT was stopped and Softlid's own filter took over.");
     }
     stopping = false;
     if (changed) changed();

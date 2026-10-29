@@ -13,7 +13,7 @@ Tela
 Agenda
 Piscar
 Extras
-A engrenagem guarda as opções do próprio BlinkBuddy
+A engrenagem guarda as opções do próprio Softlid
 Modo mini: recolher esta janela em um pequeno olho sempre visível
 Ctrl+Alt+Shift com F: liga/desliga · ↑ ↓: brilho · ← →: temperatura
 Brilho
@@ -37,14 +37,14 @@ Gasta menos energia; pode deixar rastros leves em movimento.
 DesktopLUT
 Sem atraso, fiel às cores; requer o DesktopLUT e direitos de administrador.
 Experimental: cada um abre mão de algo
-O DesktopLUT é um programa gratuito à parte ({0}, cerca de 1 MB). O BlinkBuddy pode baixar a versão mais recente e instalá-la na sua pasta de usuário. Ele pede permissão de administrador ao iniciar, e o BlinkBuddy o protege com uma verificação de 15 segundos.
+O DesktopLUT é um programa gratuito à parte ({0}, cerca de 1 MB). O Softlid pode baixar a versão mais recente e instalá-la na sua pasta de usuário. Ele pede permissão de administrador ao iniciar, e o Softlid o protege com uma verificação de 15 segundos.
 Baixar e instalar
 Já tenho...
 Agora não
 Nada é baixado até você escolher.
 Analisa o entorno de cada pixel: grandes áreas claras são suavizadas enquanto texto, bordas e cores mantêm o contraste.
 O escurecimento do filtro Smart como uma camada sobre a tela; só redesenha quando algo muda.
-Um programa gratuito que aplica uma tabela de cores dentro do Windows. O BlinkBuddy o protege: uma verificação de 15 segundos, um vigia de falhas e a tecla de pânico Ctrl+Alt+Shift+L restauram a tela.
+Um programa gratuito que aplica uma tabela de cores dentro do Windows. O Softlid o protege: uma verificação de 15 segundos, um vigia de falhas e a tecla de pânico Ctrl+Alt+Shift+L restauram a tela.
 Intensidade
 Personalizado
 Ajuste a curva você mesmo com três controles (só motor Padrão)
@@ -120,8 +120,8 @@ Misto
 Mais claro
 Mais grossa
 Animada (mais energia)
-Opções do BlinkBuddy
-Como o próprio BlinkBuddy se comporta.
+Opções do Softlid
+Como o próprio Softlid se comporta.
 Idioma
 Igual ao Windows
 Iniciar com o Windows
@@ -150,7 +150,7 @@ Pausa concluída. Pisque algumas vezes e continue.
 Pronto
 Desligado
 Desligado: o filtro de luz azul fica como definido na aba Tela.
-A localização do Windows está desligada e o BlinkBuddy não conhece seu fuso horário, então não sabe quando o sol se põe. Ative a localização para apps da área de trabalho nas Configurações do Windows ou use horários personalizados.
+A localização do Windows está desligada e o Softlid não conhece seu fuso horário, então não sabe quando o sol se põe. Ative a localização para apps da área de trabalho nas Configurações do Windows ou use horários personalizados.
 O sol não se põe hoje em {0}, então o filtro descansa.
 O sol não nasce hoje em {0}, então o filtro fica ligado.
 Ligado das {0} às {1}.
@@ -158,8 +158,8 @@ Descansando até {0}.
 Entrando: {0:0}% do caminho, intensidade total às {1}.
 Saindo: volta ao normal às {0}.
 sua localização (pelo Windows)
-BlinkBuddy {0} está disponível
-Abra as opções do BlinkBuddy para instalar.
+Softlid {0} está disponível
+Abra as opções do Softlid para instalar.
 Proteção de visibilidade: brilho em 100% e curva suavizada para os detalhes escuros continuarem visíveis.
 Proteção de visibilidade: brilho mantido em {0:0}% (definido em {1}%) para a tela continuar legível.
 O Windows não aceita uma curva de gama aqui (o HDR pode estar ligado), então só o escurecimento uniforme está ativo.
@@ -185,12 +185,12 @@ Instalar {0}
 Verificando...
 A seguir: {0}
 Faltam {0}:{1:00}  ·  Esc para pular
-Atualizações ainda não disponíveis: esta cópia do BlinkBuddy não tem canal de lançamentos.
+Atualizações ainda não disponíveis: esta cópia do Softlid não tem canal de lançamentos.
 Não foi possível ler a versão do lançamento mais recente.
 Você tem a versão mais recente ({0}).
 A versão {0} está disponível (você tem a {1}).
 Não foi possível procurar atualizações: {0}
-Este lançamento não tem um BlinkBuddy.exe para instalar. Obtenha aqui: {0}
+Este lançamento não tem um Softlid.exe para instalar. Obtenha aqui: {0}
 Baixando {0}: {1:0.0} de {2:0.0} MB
 Instalando...
 Não foi possível instalar a atualização: {0}
@@ -237,7 +237,7 @@ Muito bem. Tome um gole de água e volte ao trabalho.
 {0} s
 Perguntar
 Continuar na bandeja do sistema
-Sair do BlinkBuddy
+Sair do Softlid
 Ao fechar esta janela
 Um pequeno ícone que fica acima das outras janelas. Mude para ele com o botão ao lado da barra de título; passe o mouse sobre ele para brilho, filtro de luz azul, luz de fundo (quando ligada) e lembretes de piscar, e clique para voltar aqui.
 Ícone
@@ -256,7 +256,7 @@ Fundo escuro durante a pausa
 Desligado: os exercícios oculares se movem sobre a sua tela em vez de um fundo preto.
 À noite isto substitui o filtro de luz azul da aba Tela, mas só quando é mais forte; a marca verde nesse controle mostra isso.
 Filtro de luz azul à noite
-Fechar o BlinkBuddy?
+Fechar o Softlid?
 Na bandeja ele continua lembrando você de piscar e olhar longe, e mantém o filtro de tela ligado. Sair interrompe tudo isso até você abrir de novo.
 Lembrar minha escolha (pode mudar nas Opções)
 Pôr e nascer do sol para sua localização do Windows
@@ -392,9 +392,9 @@ Mude para ele com o botão ao lado da barra de título. Passe o mouse sobre ele 
 Minimizar esta janela muda para o modo mini
 Dobrar esta janela no ícone, para você ver para onde ela foi
 Uso de recursos
-O que o próprio BlinkBuddy usa agora, como o Gerenciador de Tarefas conta.
+O que o próprio Softlid usa agora, como o Gerenciador de Tarefas conta.
 O último minuto: processador (cor de destaque) e placa de vídeo (verde)
-Medido só enquanto esta página aparece, então desenhar esta janela faz parte do que você vê aqui. Fechado, o BlinkBuddy quase só espera e usa quase nada.
+Medido só enquanto esta página aparece, então desenhar esta janela faz parte do que você vê aqui. Fechado, o Softlid quase só espera e usa quase nada.
 Processador: {0}% de toda a CPU
 Placa de vídeo: o Windows não informa isso aqui
 Placa de vídeo: {0}% (o motor mais ocupado)
@@ -423,16 +423,16 @@ Nenhum aplicativo ainda
 Aplicativos com um modo: {0}
 Voltar ao painel
 Recursos
-Opções: quais recursos estão ligados e como o próprio BlinkBuddy se comporta
+Opções: quais recursos estão ligados e como o próprio Softlid se comporta
 Opções
 Sincronizar com a Luz noturna do Windows
 Luz noturna...
 A Luz noturna está desligada agora.
 A Luz noturna está ligada agora (ligada manualmente).
 A Luz noturna está ligada agora.
-Ela não tem agenda, então a agenda do próprio BlinkBuddy é usada.
-O BlinkBuddy segue os horários dela, das {0} às {1}, com intensidade {2}.
-O BlinkBuddy a segue do pôr ao nascer do sol ({0} às {1}), com intensidade {2}.
+Ela não tem agenda, então a agenda do próprio Softlid é usada.
+O Softlid segue os horários dela, das {0} às {1}, com intensidade {2}.
+O Softlid a segue do pôr ao nascer do sol ({0} às {1}), com intensidade {2}.
 Hoje: a agenda noturna em âmbar e a hora atual
 Pausado enquanto a Luz noturna do Windows aquece a tela
 Desligado: o filtro de luz azul fica como está no filtro de tela.
@@ -440,8 +440,8 @@ Onde está o DesktopLUT?
 Baixando {0}: {1} de {2} MB
 o download falhou ({0})
 o arquivo baixado não é um programa do Windows
-Não foi possível mover o BlinkBuddy.exe (erro {0})
-não foi possível colocar o novo BlinkBuddy.exe no lugar (erro {0})
+Não foi possível mover o Softlid.exe (erro {0})
+não foi possível colocar o novo Softlid.exe no lugar (erro {0})
 Reiniciando...
 O Windows recusou a curva nesta tela (o HDR pode estar ligado).
 Sua tela parece certa?
@@ -449,7 +449,7 @@ Manter
 Desfazer
 O DesktopLUT está aplicando a tabela de cores. Se você não fizer nada, isso será desfeito em {0} s.\nTecla de emergência a qualquer momento: Ctrl+Alt+Shift+L.
 Muito bem. Você já pode olhar de volta.
-A agenda noturna segue o pôr e o nascer do sol. O BlinkBuddy os calcula para este lugar: sua localização do Windows, quando permitida, ou a cidade do seu fuso horário.
+A agenda noturna segue o pôr e o nascer do sol. O Softlid os calcula para este lugar: sua localização do Windows, quando permitida, ou a cidade do seu fuso horário.
 Intensidade da agenda noturna à noite: {0}
 O ponto verde: a intensidade da agenda noturna à noite
 Opacidade quando o ponteiro não está em cima
@@ -468,17 +468,17 @@ Ao fechar
 Aparência
 Quanto esta janela mostra, seu tamanho e sua cor.
 Sistema
-Como o BlinkBuddy se integra ao Windows.
+Como o Softlid se integra ao Windows.
 Círculo do timer de foco
 Atualizações
 Esta versão e as mais novas quando saírem.
 Redefinir
 Minimizar
 Ajuda e apoio
-Conte o que deu errado ou ajude o BlinkBuddy a continuar.
+Conte o que deu errado ou ajude o Softlid a continuar.
 Algo não está funcionando? Informe no GitHub.
 Relatar um erro...
-O BlinkBuddy é gratuito. Um café o mantém vivo.
+O Softlid é gratuito. Um café o mantém vivo.
 Apoiar no Ko-fi
 Superior esquerdo
 Superior direito
@@ -489,7 +489,7 @@ Etapa {0} de {1}
 Ler em voz alta
 Ativado: cada etapa é lida em voz alta
 Desativado: nada é lido em voz alta
-Boas-vindas ao BlinkBuddy
+Boas-vindas ao Softlid
 Pausas suaves e uma tela mais tranquila enquanto você trabalha. Isso leva cerca de um minuto.
 Cada etapa é lida em voz alta. O botão acima silencia.
 Pular o tour
@@ -504,7 +504,7 @@ Alguns alongamentos a cada {0} min
 Um olhinho pisca com você
 Voltar
 Avançar
-Onde o BlinkBuddy fica
+Onde o Softlid fica
 Ele espera na bandeja, perto do relógio. Clique para as configurações e clique com o botão direito para ações rápidas como pausar.
 Modo mini: um ícone pequeno que fica sempre por cima e mostra a próxima pausa.
 Tudo pronto
@@ -515,7 +515,7 @@ Você pode refazer este tour em Opções, em Ajuda e apoio.
 Concluir
 Mostrar o tour de novo
 Iniciar o tour
-Boas-vindas ao BlinkBuddy. Pausas suaves e uma tela mais tranquila enquanto você trabalha. Isso leva cerca de um minuto.
+Boas-vindas ao Softlid. Pausas suaves e uma tela mais tranquila enquanto você trabalha. Isso leva cerca de um minuto.
 Escolha o que ajuda você. Você pode mudar tudo depois.
-O BlinkBuddy espera na bandeja, perto do relógio. Clique para as configurações e clique com o botão direito para ações rápidas como pausar.
+O Softlid espera na bandeja, perto do relógio. Clique para as configurações e clique com o botão direito para ações rápidas como pausar.
 Tudo pronto. Quer ver como é uma pausa? Experimente uma agora ou conclua o tour.

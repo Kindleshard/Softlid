@@ -15,7 +15,7 @@ class AccessRoot;
 class DirectWindow : public bb::Window {
 public:
     struct Options {
-        const wchar_t* title = L"BlinkBuddy";
+        const wchar_t* title = L"Softlid";
         bool popup = false;              // no title bar, a thin edge and a shadow (e.g. the colour picker)
         bool resizable = false;          // taller or shorter (the width stays)
         bool closeOnDeactivate = false;  // closes when you click anywhere else

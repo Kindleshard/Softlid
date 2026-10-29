@@ -13,7 +13,7 @@ Skærm
 Tidsplan
 Blink
 Ekstra
-Tandhjulet rummer BlinkBuddys egne indstillinger
+Tandhjulet rummer Softlids egne indstillinger
 Minitilstand: fold vinduet sammen til et lille øje, der altid ligger øverst
 Ctrl+Alt+Skift med F: til/fra · ↑ ↓: lysstyrke · ← →: varme
 Lysstyrke
@@ -37,14 +37,14 @@ Bruger mindre strøm; kan efterlade svage spor ved bevægelse.
 DesktopLUT
 Ingen forsinkelse, farvetro; kræver DesktopLUT og administratorrettigheder.
 Eksperimentelle: hver giver afkald på noget
-DesktopLUT er et separat, gratis program ({0}, cirka 1 MB). BlinkBuddy kan downloade den nyeste version og installere den i din brugermappe. Det beder om administratorrettigheder, når det starter, og BlinkBuddy beskytter det med en kontrol på 15 sekunder.
+DesktopLUT er et separat, gratis program ({0}, cirka 1 MB). Softlid kan downloade den nyeste version og installere den i din brugermappe. Det beder om administratorrettigheder, når det starter, og Softlid beskytter det med en kontrol på 15 sekunder.
 Download og installer
 Jeg har det...
 Ikke nu
 Intet downloades, før du vælger det.
 Ser på omgivelserne omkring hver pixel: store lyse flader dæmpes, mens tekst, kanter og farver bevarer deres kontrast.
 Smart-filtrets dæmpning som ét lag over skærmen; det tegnes kun igen, når noget har ændret sig.
-Et gratis program, der anvender en farvetabel inde i Windows. BlinkBuddy holder øje med det: en kontrol på 15 sekunder, en nedbrudsvagt og paniktasten Ctrl+Alt+Skift+L sætter skærmen tilbage.
+Et gratis program, der anvender en farvetabel inde i Windows. Softlid holder øje med det: en kontrol på 15 sekunder, en nedbrudsvagt og paniktasten Ctrl+Alt+Skift+L sætter skærmen tilbage.
 Styrke
 Brugerdefineret
 Indstil kurven selv med tre skydere (kun Standard)
@@ -120,8 +120,8 @@ Blandet
 Lysere
 Grovere
 Animeret (mere strøm)
-BlinkBuddy-indstillinger
-Hvordan BlinkBuddy selv opfører sig.
+Softlid-indstillinger
+Hvordan Softlid selv opfører sig.
 Sprog
 Som Windows
 Start med Windows
@@ -150,7 +150,7 @@ Pausen er slut. Blink et par gange, og fortsæt.
 Færdig
 Fra
 Fra: blåt lys-filteret forbliver som indstillet på fanen Skærm.
-Placering i Windows er slået fra, og BlinkBuddy kender ikke din tidszone, så den kan ikke vide, hvornår solen går ned. Slå placering til for skrivebordsapps i Windows-indstillinger, eller brug egne tidspunkter.
+Placering i Windows er slået fra, og Softlid kender ikke din tidszone, så den kan ikke vide, hvornår solen går ned. Slå placering til for skrivebordsapps i Windows-indstillinger, eller brug egne tidspunkter.
 Solen går ikke ned i dag i {0}, så filteret hviler.
 Solen står ikke op i dag i {0}, så filteret forbliver tændt.
 Tændt fra {0} til {1}.
@@ -158,8 +158,8 @@ Hviler til {0}.
 Indtoning: {0:0} % af vejen, fuld styrke kl. {1}.
 Udtoning: normal igen kl. {0}.
 din placering (fra Windows)
-BlinkBuddy {0} er tilgængelig
-Åbn BlinkBuddy-indstillingerne for at installere den.
+Softlid {0} er tilgængelig
+Åbn Softlid-indstillingerne for at installere den.
 Synlighedsvagt: lysstyrke på 100 % og kurven blødgjort, så mørke detaljer forbliver synlige.
 Synlighedsvagt: lysstyrken holdes på {0:0} % (indstillet til {1} %), så skærmen forbliver læselig.
 Windows accepterer ikke en gammakurve her (HDR er måske slået til), så kun den jævne dæmpning er aktiv.
@@ -185,12 +185,12 @@ Installer {0}
 Tjekker...
 Næste: {0}
 {0}:{1:00} tilbage  ·  Esc for at springe over
-Opdateringer er ikke tilgængelige endnu: denne kopi af BlinkBuddy har ingen udgivelseskanal.
+Opdateringer er ikke tilgængelige endnu: denne kopi af Softlid har ingen udgivelseskanal.
 Kunne ikke læse versionen af den nyeste udgivelse.
 Du har den nyeste version ({0}).
 Version {0} er tilgængelig (du har {1}).
 Kunne ikke søge efter opdateringer: {0}
-Denne udgivelse indeholder ingen BlinkBuddy.exe at installere. Hent den her: {0}
+Denne udgivelse indeholder ingen Softlid.exe at installere. Hent den her: {0}
 Downloader {0}: {1:0.0} af {2:0.0} MB
 Installerer...
 Kunne ikke installere opdateringen: {0}
@@ -237,7 +237,7 @@ Flot klaret. Tag en tår vand, og tilbage til arbejdet.
 {0} s
 Spørg mig
 Bliv ved med at køre i systembakken
-Afslut BlinkBuddy
+Afslut Softlid
 Når dette vindue lukkes
 Et lille ikon, der ligger over andre vinduer. Skift til det med knappen ved titellinjen; hold musen over det for lysstyrke, blåt lys-filter, baggrundslys (når det er slået til) og blinkpåmindelser, og klik for at komme tilbage hertil.
 Ikon
@@ -256,7 +256,7 @@ Mørk baggrund under pausen
 Fra: øjenøvelserne bevæger sig hen over din skærm i stedet for en sort baggrund.
 Om natten erstatter dette blåt lys-filteret på fanen Skærm, men kun når det er stærkere; det grønne mærke på den skyder viser det.
 Blåt lys-filter om natten
-Luk BlinkBuddy?
+Luk Softlid?
 I systembakken bliver den ved med at minde dig om at blinke og kigge væk og holder skærmfilteret tændt. Afslut stopper alt dette, indtil du starter den igen.
 Husk mit valg (kan ændres under Indstillinger)
 Solnedgang og solopgang for din placering i Windows
@@ -392,9 +392,9 @@ Skift til det med knappen ved siden af titellinjen. Hold musen over det for hurt
 Minimering af dette vindue skifter til minitilstand
 Fold vinduet sammen til ikonet, så du kan se, hvor det blev af
 Ressourceforbrug
-Hvad BlinkBuddy selv bruger lige nu, sådan som Jobliste tæller det.
+Hvad Softlid selv bruger lige nu, sådan som Jobliste tæller det.
 Det seneste minut: processor (accentfarve) og grafikkort (grøn)
-Måles kun, mens denne side vises, så tegningen af vinduet er en del af det, du ser her. Lukket venter BlinkBuddy mest og bruger næsten ingenting.
+Måles kun, mens denne side vises, så tegningen af vinduet er en del af det, du ser her. Lukket venter Softlid mest og bruger næsten ingenting.
 Processor: {0} % af hele CPU'en
 Grafikkort: Windows oplyser det ikke her
 Grafikkort: {0} % (dets travleste motor)
@@ -423,16 +423,16 @@ Ingen apps endnu
 Apps med en tilstand: {0}
 Tilbage til panelet
 Funktioner
-Indstillinger: hvilke funktioner der er slået til, og hvordan BlinkBuddy selv opfører sig
+Indstillinger: hvilke funktioner der er slået til, og hvordan Softlid selv opfører sig
 Indstillinger
 Synkroniser med Windows' natlys
 Natlys...
 Natlys er slået fra lige nu.
 Natlys er slået til lige nu (slået til i hånden).
 Natlys er slået til lige nu.
-Det har ingen tidsplan, så BlinkBuddys egen plan kører.
-BlinkBuddy følger dets tider, {0}–{1}, med styrken {2}.
-BlinkBuddy følger det fra solnedgang til solopgang ({0}–{1}), med styrken {2}.
+Det har ingen tidsplan, så Softlids egen plan kører.
+Softlid følger dets tider, {0}–{1}, med styrken {2}.
+Softlid følger det fra solnedgang til solopgang ({0}–{1}), med styrken {2}.
 I dag: natplanen i ravgult og klokken lige nu
 Sat på pause, mens Windows' natlys gør skærmen varmere
 Fra: blåt lys-filteret bliver, som det er indstillet i skærmfilteret.
@@ -440,8 +440,8 @@ Hvor er DesktopLUT?
 Downloader {0}: {1} af {2} MB
 overførslen mislykkedes ({0})
 overførslen er ikke et Windows-program
-BlinkBuddy.exe kunne ikke flyttes (fejl {0})
-den nye BlinkBuddy.exe kunne ikke sættes på plads (fejl {0})
+Softlid.exe kunne ikke flyttes (fejl {0})
+den nye Softlid.exe kunne ikke sættes på plads (fejl {0})
 Genstarter...
 Windows afviste kurven på denne skærm (HDR er måske slået til).
 Ser din skærm rigtig ud?
@@ -449,7 +449,7 @@ Behold
 Fortryd
 DesktopLUT anvender nu farvetabellen. Hvis du ikke gør noget, fortrydes den om {0} s.\nNødtast når som helst: Ctrl+Alt+Skift+L.
 Godt gået. Nu kan du kigge tilbage.
-Natplanen følger solnedgang og solopgang. BlinkBuddy beregner dem for dette sted: din placering i Windows, når det er tilladt, ellers byen i din tidszone.
+Natplanen følger solnedgang og solopgang. Softlid beregner dem for dette sted: din placering i Windows, når det er tilladt, ellers byen i din tidszone.
 Natplanens styrke om natten: {0}
 Den grønne prik: natplanens styrke om natten
 Uigennemsigtighed, når markøren ikke er over
@@ -468,17 +468,17 @@ Ved lukning
 Udseende
 Hvor meget vinduet viser, dets størrelse og farve.
 System
-Hvordan BlinkBuddy passer ind i Windows.
+Hvordan Softlid passer ind i Windows.
 Fokustimerens cirkel
 Opdateringer
 Denne version, og nyere når de kommer.
 Nulstil
 Minimer
 Hjælp og støtte
-Fortæl os, hvad der gik galt, eller hjælp BlinkBuddy med at fortsætte.
+Fortæl os, hvad der gik galt, eller hjælp Softlid med at fortsætte.
 Virker noget ikke? Rapportér det på GitHub.
 Rapportér en fejl...
-BlinkBuddy er gratis. En kop kaffe holder det i gang.
+Softlid er gratis. En kop kaffe holder det i gang.
 Støt på Ko-fi
 Øverst til venstre
 Øverst til højre
@@ -489,7 +489,7 @@ Trin {0} af {1}
 Læs højt
 Til: hvert trin læses højt
 Fra: intet læses højt
-Velkommen til BlinkBuddy
+Velkommen til Softlid
 Blide pauser og en roligere skærm, mens du arbejder. Det tager cirka et minut.
 Hvert trin læses højt. Knappen ovenfor slår lyden fra.
 Spring rundvisningen over
@@ -504,7 +504,7 @@ Et par strækøvelser hvert {0}. min
 Et lille øje blinker med dig
 Tilbage
 Næste
-Hvor BlinkBuddy bor
+Hvor Softlid bor
 Den venter i meddelelsesområdet ved uret. Klik for indstillinger, højreklik for hurtige handlinger som pause.
 Minitilstand: et lille ikon, der bliver øverst og viser den næste pause.
 Alt er klar
@@ -515,7 +515,7 @@ Du kan tage rundvisningen igen fra Indstillinger under Hjælp og støtte.
 Afslut
 Vis rundvisningen igen
 Start rundvisningen
-Velkommen til BlinkBuddy. Blide pauser og en roligere skærm, mens du arbejder. Det tager cirka et minut.
+Velkommen til Softlid. Blide pauser og en roligere skærm, mens du arbejder. Det tager cirka et minut.
 Vælg det, der hjælper dig. Du kan ændre det hele senere.
-BlinkBuddy venter i meddelelsesområdet ved uret. Klik for indstillinger, højreklik for hurtige handlinger som pause.
+Softlid venter i meddelelsesområdet ved uret. Klik for indstillinger, højreklik for hurtige handlinger som pause.
 Alt er klar. Vil du se, hvordan en pause ser ud? Prøv en nu, eller afslut rundvisningen.

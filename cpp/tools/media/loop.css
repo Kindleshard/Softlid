@@ -1,4 +1,4 @@
-/* The look every loop shares: BlinkBuddy's dark slate and sky blue, a caption on the left, the app on a screen. */
+/* The look every loop shares: Softlid's dark slate and sky blue, a caption on the left, the app on a screen. */
 :root { --accent: #4cc2ff; --teal: #40d6c4; --amber: #ffa340; --ink: #f4f6fb; --dim: #aab3c8; }
 html, body { margin: 0; width: 960px; height: 600px; overflow: hidden; background: #0e1220; }
 body { font-family: "Segoe UI Variable Display", "Segoe UI", sans-serif; color: var(--ink); position: relative; }

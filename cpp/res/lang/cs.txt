@@ -13,7 +13,7 @@ Obrazovka
 Plán
 Mrkání
 Doplňky
-Ozubené kolo skrývá možnosti samotného BlinkBuddy
+Ozubené kolo skrývá možnosti samotného Softlid
 Mini režim: složit toto okno do malého oka, které je vždy navrchu
 Ctrl+Alt+Shift s F: zap/vyp · ↑ ↓: jas · ← →: teplota
 Jas
@@ -37,14 +37,14 @@ Smart vrstva
 DesktopLUT
 Bez zpoždění, věrné odstíny; vyžaduje DesktopLUT a práva správce.
 Experimentální: každá něco obětuje
-DesktopLUT je samostatný bezplatný program ({0}, asi 1 MB). BlinkBuddy může stáhnout jeho nejnovější verzi a nainstalovat ji do vaší uživatelské složky. Při spuštění žádá o práva správce a BlinkBuddy ho jistí 15sekundovou kontrolou.
+DesktopLUT je samostatný bezplatný program ({0}, asi 1 MB). Softlid může stáhnout jeho nejnovější verzi a nainstalovat ji do vaší uživatelské složky. Při spuštění žádá o práva správce a Softlid ho jistí 15sekundovou kontrolou.
 Stáhnout a nainstalovat
 Už ho mám...
 Teď ne
 Nic se nestáhne, dokud to nevyberete.
 Sleduje okolí každého pixelu: velké světlé plochy se zklidní, zatímco text, hrany a barvy si zachovají kontrast.
 Ztlumení filtru Smart jako jedna vrstva přes obrazovku; překresluje se, jen když se něco změní.
-Bezplatný program, který uvnitř Windows použije tabulku barev. BlinkBuddy ho jistí: 15sekundová kontrola, hlídač pádů a nouzová klávesa Ctrl+Alt+Shift+L obrazovku vrátí.
+Bezplatný program, který uvnitř Windows použije tabulku barev. Softlid ho jistí: 15sekundová kontrola, hlídač pádů a nouzová klávesa Ctrl+Alt+Shift+L obrazovku vrátí.
 Síla
 Vlastní
 Nastavte křivku sami třemi posuvníky (jen Standardní metoda)
@@ -120,8 +120,8 @@ Smíšené
 Světlejší
 Hrubší
 Animované (víc energie)
-Možnosti BlinkBuddy
-Jak se chová samotný BlinkBuddy.
+Možnosti Softlid
+Jak se chová samotný Softlid.
 Jazyk
 Podle Windows
 Spouštět s Windows
@@ -150,7 +150,7 @@ Přestávka skončila. Párkrát mrkněte a pokračujte.
 Hotovo
 Vyp.
 Vyp.: filtr modrého světla zůstane podle karty Obrazovka.
-Poloha ve Windows je vypnutá a BlinkBuddy nezná vaše časové pásmo, takže neví, kdy zapadá slunce. Zapněte polohu pro desktopové aplikace v Nastavení Windows, nebo použijte vlastní časy.
+Poloha ve Windows je vypnutá a Softlid nezná vaše časové pásmo, takže neví, kdy zapadá slunce. Zapněte polohu pro desktopové aplikace v Nastavení Windows, nebo použijte vlastní časy.
 Slunce dnes v {0} nezapadá, takže filtr odpočívá.
 Slunce dnes v {0} nevychází, takže filtr zůstává zapnutý.
 Zapnuto od {0} do {1}.
@@ -158,8 +158,8 @@ Odpočívá do {0}.
 Náběh: {0:0} % cesty, plná síla v {1}.
 Doběh: zpět k normálu v {0}.
 vaše poloha (z Windows)
-BlinkBuddy {0} je k dispozici
-Otevřete možnosti BlinkBuddy a nainstalujte ho.
+Softlid {0} je k dispozici
+Otevřete možnosti Softlid a nainstalujte ho.
 Ochrana viditelnosti: jas na 100 % a křivka zjemněná, aby tmavé detaily zůstaly vidět.
 Ochrana viditelnosti: jas držen na {0:0} % (nastaveno {1} %), aby obrazovka zůstala čitelná.
 Windows tu nepřijme gama křivku (možná je zapnuté HDR), takže funguje jen rovnoměrné ztlumení.
@@ -185,12 +185,12 @@ Nainstalovat {0}
 Kontroluje se...
 Další: {0}
 Zbývá {0}:{1:00}  ·  Esc pro přeskočení
-Aktualizace zatím nejsou k dispozici: tato kopie BlinkBuddy nemá kanál vydání.
+Aktualizace zatím nejsou k dispozici: tato kopie Softlid nemá kanál vydání.
 Nepodařilo se přečíst verzi posledního vydání.
 Máte nejnovější verzi ({0}).
 Verze {0} je k dispozici (máte {1}).
 Aktualizace se nepodařilo zkontrolovat: {0}
-Toto vydání neobsahuje BlinkBuddy.exe k instalaci. Stáhněte ho zde: {0}
+Toto vydání neobsahuje Softlid.exe k instalaci. Stáhněte ho zde: {0}
 Stahování {0}: {1:0.0} z {2:0.0} MB
 Instaluje se...
 Aktualizaci se nepodařilo nainstalovat: {0}
@@ -237,7 +237,7 @@ Skvělá práce. Napijte se vody a zpátky do práce.
 {0} s
 Zeptat se
 Běžet dál v oznamovací oblasti
-Ukončit BlinkBuddy
+Ukončit Softlid
 Když se toto okno zavře
 Malá ikona, která zůstává nad ostatními okny. Přepněte na ni tlačítkem vedle záhlaví; najeďte na ni pro jas, filtr modrého světla, podsvícení (pokud je zapnuté) a připomínky mrkání a kliknutím se vraťte sem.
 Ikona
@@ -256,7 +256,7 @@ Tmavé pozadí během přestávky
 Vyp.: cvičení očí se pohybují po vaší obrazovce místo na černém pozadí.
 V noci toto nahrazuje filtr modrého světla na kartě Obrazovka, ale jen když je silnější; ukazuje to zelená značka na tom posuvníku.
 Filtr modrého světla v noci
-Zavřít BlinkBuddy?
+Zavřít Softlid?
 V oznamovací oblasti vám dál připomíná mrkat a dívat se do dálky a nechává zapnutý filtr obrazovky. Ukončení to vše zastaví, dokud ho znovu nespustíte.
 Zapamatovat si volbu (lze změnit v Možnostech)
 Západ a východ slunce pro vaši polohu ve Windows
@@ -392,9 +392,9 @@ Přepněte na ni tlačítkem vedle záhlaví. Najeďte na ni pro rychlé ovlád�
 Minimalizace tohoto okna přepne do mini režimu
 Složit toto okno do ikony, abyste viděli, kam zmizelo
 Využití prostředků
-Co BlinkBuddy právě sám používá, jak to počítá Správce úloh.
+Co Softlid právě sám používá, jak to počítá Správce úloh.
 Poslední minuta: procesor (barva zvýraznění) a grafická karta (zelená)
-Měří se jen při zobrazení této stránky, takže kreslení okna je součástí toho, co tu vidíte. Zavřený BlinkBuddy většinou čeká a nespotřebuje skoro nic.
+Měří se jen při zobrazení této stránky, takže kreslení okna je součástí toho, co tu vidíte. Zavřený Softlid většinou čeká a nespotřebuje skoro nic.
 Procesor: {0} % celého CPU
 Grafická karta: Windows to zde neuvádí
 Grafická karta: {0} % (nejvytíženější jádro)
@@ -423,16 +423,16 @@ Zatím žádné aplikace
 Aplikace s režimem: {0}
 Zpět na panel
 Funkce
-Možnosti: které funkce jsou zapnuté a jak se chová samotný BlinkBuddy
+Možnosti: které funkce jsou zapnuté a jak se chová samotný Softlid
 Možnosti
 Synchronizovat s nočním osvětlením Windows
 Noční osvětlení...
 Noční osvětlení je teď vypnuté.
 Noční osvětlení je teď zapnuté (zapnuto ručně).
 Noční osvětlení je teď zapnuté.
-Nemá plán, takže běží vlastní plán BlinkBuddy.
-BlinkBuddy se řídí jeho časy, {0}–{1}, se silou {2}.
-BlinkBuddy se jím řídí od západu do východu slunce ({0}–{1}), se silou {2}.
+Nemá plán, takže běží vlastní plán Softlid.
+Softlid se řídí jeho časy, {0}–{1}, se silou {2}.
+Softlid se jím řídí od západu do východu slunce ({0}–{1}), se silou {2}.
 Dnes: noční plán jantarově a aktuální čas
 Pozastaveno, dokud noční osvětlení Windows ohřívá obrazovku
 Vypnuto: filtr modrého světla zůstane, jak je nastaven ve filtru obrazovky.
@@ -440,8 +440,8 @@ Kde je DesktopLUT?
 Stahování {0}: {1} z {2} MB
 stahování se nezdařilo ({0})
 stažený soubor není program pro Windows
-BlinkBuddy.exe nelze přesunout (chyba {0})
-nový BlinkBuddy.exe nelze umístit (chyba {0})
+Softlid.exe nelze přesunout (chyba {0})
+nový Softlid.exe nelze umístit (chyba {0})
 Restartování...
 Windows křivku na tomto displeji odmítl (možná je zapnuté HDR).
 Vypadá vaše obrazovka správně?
@@ -449,7 +449,7 @@ Ponechat
 Vrátit
 DesktopLUT nyní používá tabulku barev. Pokud nic neuděláte, za {0} s se vrátí zpět.\nNouzová klávesa kdykoli: Ctrl+Alt+Shift+L.
 Výborně. Teď se můžete zase podívat zpět.
-Noční plán se řídí západem a východem slunce. BlinkBuddy je počítá pro toto místo: vaši polohu ve Windows, pokud je povolená, jinak město vašeho časového pásma.
+Noční plán se řídí západem a východem slunce. Softlid je počítá pro toto místo: vaši polohu ve Windows, pokud je povolená, jinak město vašeho časového pásma.
 Síla nočního plánu v noci: {0}
 Zelená tečka: síla nočního plánu v noci
 Neprůhlednost, když na ní není ukazatel
@@ -468,17 +468,17 @@ Při zavření
 Vzhled
 Kolik toto okno ukazuje, jeho velikost a barva.
 Systém
-Jak BlinkBuddy zapadá do Windows.
+Jak Softlid zapadá do Windows.
 Kruh časovače soustředění
 Aktualizace
 Tato verze a novější, až vyjdou.
 Obnovit
 Minimalizovat
 Nápověda a podpora
-Napište nám, co se pokazilo, nebo pomozte BlinkBuddy v dalším vývoji.
+Napište nám, co se pokazilo, nebo pomozte Softlid v dalším vývoji.
 Něco nefunguje? Nahlaste to na GitHubu.
 Nahlásit chybu...
-BlinkBuddy je zdarma. Káva mu pomáhá pokračovat.
+Softlid je zdarma. Káva mu pomáhá pokračovat.
 Podpořit na Ko-fi
 Vlevo nahoře
 Vpravo nahoře
@@ -489,7 +489,7 @@ Krok {0} z {1}
 Číst nahlas
 Zapnuto: každý krok se čte nahlas
 Vypnuto: nic se nečte nahlas
-Vítejte v BlinkBuddy
+Vítejte v Softlid
 Jemné přestávky a klidnější obrazovka, zatímco pracujete. Zabere to asi minutu.
 Každý krok se čte nahlas. Tlačítko nahoře zvuk vypne.
 Přeskočit prohlídku
@@ -504,7 +504,7 @@ Pár protažení každých {0} min
 Malé oko mrká s vámi
 Zpět
 Další
-Kde BlinkBuddy bydlí
+Kde Softlid bydlí
 Čeká v oznamovací oblasti u hodin. Klepnutím otevřete nastavení, pravým tlačítkem rychlé akce, například pozastavení.
 Mini režim: malá ikona, která zůstává navrchu a ukazuje další přestávku.
 Vše je připraveno
@@ -515,7 +515,7 @@ Tuto prohlídku můžete zopakovat v Možnostech, v části Nápověda a podpora
 Dokončit
 Znovu zobrazit prohlídku
 Spustit prohlídku
-Vítejte v BlinkBuddy. Jemné přestávky a klidnější obrazovka, zatímco pracujete. Zabere to asi minutu.
+Vítejte v Softlid. Jemné přestávky a klidnější obrazovka, zatímco pracujete. Zabere to asi minutu.
 Vyberte, co vám pomáhá. Vše můžete později změnit.
-BlinkBuddy čeká v oznamovací oblasti u hodin. Klepnutím otevřete nastavení, pravým tlačítkem rychlé akce, například pozastavení.
+Softlid čeká v oznamovací oblasti u hodin. Klepnutím otevřete nastavení, pravým tlačítkem rychlé akce, například pozastavení.
 Vše je připraveno. Chcete vidět, jak vypadá přestávka? Vyzkoušejte ji hned, nebo prohlídku dokončete.

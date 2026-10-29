@@ -81,12 +81,12 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
     language.SetBounds(Control, 6, Edge - Control, 34);
     language.SetSelected(chosen);
     language.onChange = [this, codes](int i) { app.SetLanguage(codes[static_cast<size_t>(i)]); };
-    // Closing this window: ask each time, keep BlinkBuddy running in the tray, or exit.
+    // Closing this window: ask each time, keep Softlid running in the tray, or exit.
     Row& closeRow = st.Add(50);
     RowIcon(closeRow, L'\uE8BB', 11);
     AddLabel(closeRow, L"When closed", Fonts::Body(), Theme::Fg, RowText, 10, Control - RowText - 6, 26).tip =
         Lang::T(L"When this window is closed");
-    auto& close = closeRow.Add<DropDown>(std::vector<std::wstring>{L"Ask me", L"Keep running in the tray", L"Exit BlinkBuddy"});
+    auto& close = closeRow.Add<DropDown>(std::vector<std::wstring>{L"Ask me", L"Keep running in the tray", L"Exit Softlid"});
     close.SetBounds(Control, 6, Edge - Control, 34);
     close.SetSelected(s.CloseAction);
     close.onChange = [this](int v) { s.CloseAction = v; app.Changed(); };
@@ -153,7 +153,7 @@ void SettingsWindow::BuildOptionsPage(Stack& st)
 
     // ---- System: starting with Windows, full-screen apps, sleep and shortcuts ----
     Divider(st);
-    CardHead(st, L'\uE770', L"System", L"How BlinkBuddy fits in with Windows.");
+    CardHead(st, L'\uE770', L"System", L"How Softlid fits in with Windows.");
     ToggleRow(st, L"Start with Windows", app.RunAtStartup(), [this](bool v) { app.SetRunAtStartup(v); }, nullptr, L'\uE7E8');
     ToggleRow(st, L"Pause reminders in full-screen apps", s.PauseInFullscreen, [this](bool v) { s.PauseInFullscreen = v; app.Changed(); },
               nullptr, L'\uE740');
@@ -310,7 +310,7 @@ void SettingsWindow::BuildUpdates(Stack& st)
 void SettingsWindow::BuildSupport(Stack& st)
 {
     Divider(st);
-    CardHead(st, L'\uE897', L"Help and support", L"Tell us what went wrong, or keep BlinkBuddy going.");
+    CardHead(st, L'\uE897', L"Help and support", L"Tell us what went wrong, or keep Softlid going.");
     // A row of words and a button: the words take a second line when they need it (never cut short).
     auto row = [this, &st](wchar_t icon, std::wstring_view words, std::wstring_view button, float bw = 176) -> Button& {
         float w = Edge - bw - 12 - RowText;
@@ -333,7 +333,7 @@ void SettingsWindow::BuildSupport(Stack& st)
         // Like Ko-fi's own button: its blue, the cup and white words, as wide as they need.
         constexpr float cup = 20;
         float bw = std::max(176.0f, TextWidth(Lang::T(L"Support on Ko-fi"), Fonts::Get(10, gfx::Weight::Semibold)) + cup + 34 / 4.0f + 36);
-        Button& kofi = row(L'\uEC32', L"BlinkBuddy is free. A coffee keeps it going.", L"Support on Ko-fi", bw);
+        Button& kofi = row(L'\uEC32', L"Softlid is free. A coffee keeps it going.", L"Support on Ko-fi", bw);
         kofi.SetSolid(Palette::KoFi);
         kofi.iconSize = cup;
         kofi.icon = KoFiCup;
@@ -346,7 +346,7 @@ void SettingsWindow::RefreshUpdates()
 {
     using Look = Updater::State::Look;
     const Updater::State& u = app.Update();
-    std::wstring text = !Updater::Available() ? Lang::T(L"Updates aren't available yet: this copy of BlinkBuddy has no release channel.")
+    std::wstring text = !Updater::Available() ? Lang::T(L"Updates aren't available yet: this copy of Softlid has no release channel.")
                         : u.text.empty()      ? Lang::T(L"Not checked yet.")
                                               : u.text;
     updateStatus->SetPlainText(text);
@@ -382,13 +382,13 @@ std::wstring OneDecimal(double v)
 
 } // namespace
 
-// What BlinkBuddy itself uses right now (Advanced view): the processor, the graphics card and memory, with the last
+// What Softlid itself uses right now (Advanced view): the processor, the graphics card and memory, with the last
 // minute of the first two as a graph. Measured only while this page shows - so drawing this window is part of it.
 void SettingsWindow::BuildResourceUse(Stack& st)
 {
     Shown advanced = [this] { return s.AdvancedView; };
     Divider(st, advanced);
-    CardHead(st, L'\uE9D9', L"Resource use", L"What BlinkBuddy itself uses right now, as Task Manager counts it.", advanced);
+    CardHead(st, L'\uE9D9', L"Resource use", L"What Softlid itself uses right now, as Task Manager counts it.", advanced);
     Row& graphRow = st.Add(84, advanced);
     usageGraph = &graphRow.Add<UsageGraph>();
     usageGraph->SetBounds(24, 4, Edge - 24, 72);
@@ -397,7 +397,7 @@ void SettingsWindow::BuildResourceUse(Stack& st)
     usageText = &AddLabel(textRow, L"", Fonts::Small(), Theme::Dim, 24, 2, Edge - 24, 84);
     usageText->wrap = usageText->top = true;
     Note(st, L"Measured only while this page shows, so drawing this window is part of what you see here. Closed, "
-             L"BlinkBuddy mostly waits and uses next to nothing.", 2, advanced);
+             L"Softlid mostly waits and uses next to nothing.", 2, advanced);
     // A diagnostic copy shows dashes, so its screenshots stay the same (unless "--measure" asks it to measure).
     measuring = !unfoldAll || std::wcsstr(GetCommandLineW(), L"--measure");
     RefreshUsage();

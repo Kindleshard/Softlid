@@ -3,7 +3,7 @@
 
 namespace bb::EyeArt {
 
-// BlinkBuddy's almond-shaped eye inside box. open: 1 open, 0 shut (lashes show as it closes). lookX/lookY: -1..1
+// Softlid's almond-shaped eye inside box. open: 1 open, 0 shut (lashes show as it closes). lookX/lookY: -1..1
 // move the iris. stroke: the outline's width. alpha fades all of it. The iris is the accent colour.
 void Draw(ID2D1RenderTarget* target, const D2D1_RECT_F& box, float open, float lookX, float lookY, float stroke, float alpha = 1.0f);
 

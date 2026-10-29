@@ -12,7 +12,7 @@ class Dialog : public DirectWindow {
 public:
     Dialog(HWND owner, std::function<void(int, bool)> answer) : owner(owner), answer(std::move(answer))
     {
-        Root().Add<Label>(L"Close BlinkBuddy?", Fonts::Heading()).SetBounds(20, 16, 380, 28);
+        Root().Add<Label>(L"Close Softlid?", Fonts::Heading()).SetBounds(20, 16, 380, 28);
         auto& text = Root().Add<Label>(L"In the tray it keeps reminding you to blink and look away, and keeps the screen filter on. "
                                        L"Exiting stops all of that until you start it again.", Fonts::Small(), Theme::Dim);
         text.wrap = text.top = true;

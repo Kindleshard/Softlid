@@ -31,7 +31,7 @@ public:
         int sw = screen.right - screen.left, sh = screen.bottom - screen.top;
         half = sh / 2;
         rim = std::max(24, sh / 9);
-        Create(L"BlinkBuddy.Lid", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, {screen.left, Y(0), screen.right, Y(0) + half + rim});
+        Create(L"Softlid.Lid", WS_POPUP, PopupExStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT, {screen.left, Y(0), screen.right, Y(0) + half + rim});
         // Drawn once and handed to Windows, which keeps its own copy: the pixels here go at once.
         PixelSurface art;
         Draw(art, sw);
@@ -81,7 +81,7 @@ private:
     int half, rim;
 };
 
-Eyelids::Eyelids() { Create(L"BlinkBuddy.Eyelids", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }
+Eyelids::Eyelids() { Create(L"Softlid.Eyelids", WS_POPUP, WS_EX_TOOLWINDOW, {0, 0, 0, 0}); }
 
 Eyelids::~Eyelids()
 {

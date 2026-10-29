@@ -1,16 +1,16 @@
 # Makes a release in dist\ - nothing is uploaded or published. For x64 PCs, and for ARM64 ones (when Visual Studio's
 # ARM64 tools are here; each file then has an -arm64 twin):
-#   BlinkBuddy.exe                      the program on its own (what the updater downloads; BlinkBuddy-arm64.exe)
-#   BlinkBuddy-<version>-portable.zip   the program with its voice clips: unzip anywhere and run
-#   BlinkBuddy-<version>-setup.exe      the installer, with the voice in one language or all (only when NSIS 3 is
-#                                       here; see installer\BlinkBuddy.nsi)
+#   Softlid.exe                      the program on its own (what the updater downloads; Softlid-arm64.exe)
+#   Softlid-<version>-portable.zip   the program with its voice clips: unzip anywhere and run
+#   Softlid-<version>-setup.exe      the installer, with the voice in one language or all (only when NSIS 3 is
+#                                       here; see installer\Softlid.nsi)
 # The version comes from res\BuildVersion.h.
 $ErrorActionPreference = 'Stop'
 
 $header = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'res\BuildVersion.h') -Raw
 if ($header -notmatch '#define BB_VERSION_TEXT "([^"]+)"') { throw 'No version in res\BuildVersion.h.' }
 $version = $Matches[1]
-"BlinkBuddy $version"
+"Softlid $version"
 
 $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
 $arches = @('x64')
@@ -30,14 +30,16 @@ foreach ($arch in $arches) {
     $bin = Join-Path $PSScriptRoot "bin$suffix"
 
     # The program on its own.
-    Copy-Item -LiteralPath (Join-Path $bin 'BlinkBuddy.exe') -Destination (Join-Path $dist "BlinkBuddy$suffix.exe")
+    Copy-Item -LiteralPath (Join-Path $bin 'Softlid.exe') -Destination (Join-Path $dist "Softlid$suffix.exe")
+    # And under the old name, which the updater in BlinkBuddy 1.0.0 looks for (Softlid was called that until 1.1.0).
+    Copy-Item -LiteralPath (Join-Path $bin 'Softlid.exe') -Destination (Join-Path $dist "BlinkBuddy$suffix.exe")
 
     # Portable: a folder with the program and its voice clips, zipped.
-    $stage = Join-Path $dist "BlinkBuddy-$version$suffix"
+    $stage = Join-Path $dist "Softlid-$version$suffix"
     New-Item -ItemType Directory -Path $stage | Out-Null
-    Copy-Item -LiteralPath (Join-Path $bin 'BlinkBuddy.exe') -Destination $stage
+    Copy-Item -LiteralPath (Join-Path $bin 'Softlid.exe') -Destination $stage
     Copy-Item -LiteralPath (Join-Path $bin 'voice') -Destination $stage -Recurse
-    $zip = Join-Path $dist "BlinkBuddy-$version$suffix-portable.zip"
+    $zip = Join-Path $dist "Softlid-$version$suffix-portable.zip"
     # Entry by entry, with forward slashes: Windows PowerShell's own zipping writes backslashes some unzip tools mishandle.
     $archive = [IO.Compression.ZipFile]::Open($zip, [IO.Compression.ZipArchiveMode]::Create)
     try {
@@ -54,7 +56,7 @@ foreach ($arch in $arches) {
         $sizes = Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'res\voice') -Directory | ForEach-Object {
             '/DKB_{0}={1}' -f $_.Name, [math]::Ceiling((Get-ChildItem -LiteralPath $_.FullName -File | Measure-Object Length -Sum).Sum / 1KB)
         }
-        & $makensis /V2 "/DVERSION=$version" "/DARCH=$arch" @sizes (Join-Path $PSScriptRoot 'installer\BlinkBuddy.nsi')
+        & $makensis /V2 "/DVERSION=$version" "/DARCH=$arch" @sizes (Join-Path $PSScriptRoot 'installer\Softlid.nsi')
         if ($LASTEXITCODE -ne 0) { throw "NSIS failed ($LASTEXITCODE)." }
     }
 }
@@ -62,5 +64,5 @@ if (-not $makensis) { 'NSIS not found: the installers were skipped (install it f
 
 ''
 Get-ChildItem -LiteralPath $dist | ForEach-Object { '{0,-40} {1,8:0} KB' -f $_.Name, ($_.Length / 1KB) }
-# (The installers' SHA-256 go in installer\winget\BlinkBuddy.BlinkBuddy.installer.yaml.)
+# (The installers' SHA-256 go in installer\winget\Softlid.Softlid.installer.yaml.)
 Get-ChildItem -LiteralPath $dist -Filter '*-setup.exe' | ForEach-Object { 'SHA-256 {0}: {1}' -f $_.Name, (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash }

@@ -114,7 +114,7 @@ void SettingsWindow::BuildEffects(Stack& st)
     int lines = TilePicker::CaptionLines(names, 48 + 13);   // (a longer translation takes two)
     float caption = TilePicker::CaptionHeight(lines);
     // Folded into one line (the effect chosen, and a chevron); a click on it shows the pictures to choose from.
-    static bool effectsOpen = false;   // (for as long as BlinkBuddy runs)
+    static bool effectsOpen = false;   // (for as long as Softlid runs)
     Shown open = [this] { return unfoldAll || effectsOpen; };
     Row& line = st.Add(48);
     line.Add<ui::Divider>().SetBounds(24, 4, Edge - 24, 1);

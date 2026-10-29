@@ -1,7 +1,7 @@
-# The form BlinkBuddy's "Report a bug" opens (Options > Help and support). The app fills in version, windows and
+# The form Softlid's "Report a bug" opens (Options > Help and support). The app fills in version, windows and
 # language through the link (see cpp/src/features/settings/SettingsOptions.cpp); the rest is up to the reporter.
 name: Bug report
-description: Something in BlinkBuddy doesn't work as it should.
+description: Something in Softlid doesn't work as it should.
 labels: [bug]
 body:
   - type: markdown
@@ -27,7 +27,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: BlinkBuddy version
+      label: Softlid version
       description: In Options, under Updates; filled in for you by "Report a bug".
       placeholder: "1.0.0"
     validations:
@@ -40,7 +40,7 @@ body:
   - type: input
     id: language
     attributes:
-      label: BlinkBuddy's language
+      label: Softlid's language
       placeholder: "en"
   - type: textarea
     id: extra

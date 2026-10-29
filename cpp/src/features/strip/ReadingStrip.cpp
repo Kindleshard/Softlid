@@ -44,7 +44,7 @@ double Distance(int shape, double x, double y, int w, int h, int pad)
 // The tinted sheet: one solid colour, see-through by its opacity, with the clear area cut out of its region.
 class ReadingStrip::Sheet : public Window {
 public:
-    Sheet() { Create(L"BlinkBuddy.StripSheet", WS_POPUP, SheetStyle, {0, 0, 1, 1}); }
+    Sheet() { Create(L"Softlid.StripSheet", WS_POPUP, SheetStyle, {0, 0, 1, 1}); }
 
     // Over the monitor, in the colour and opacity given (each change repaints all of it).
     void Set(const RECT& monitor, int argb, BYTE alpha)
@@ -108,7 +108,7 @@ private:
 // The edge round the clear area (soft, or an outline), dimmed around it, as one per-pixel-alpha window.
 class ReadingStrip::Tile : public Window {
 public:
-    Tile() { Create(L"BlinkBuddy.StripTile", WS_POPUP, SheetStyle, {0, 0, 1, 1}); }
+    Tile() { Create(L"Softlid.StripTile", WS_POPUP, SheetStyle, {0, 0, 1, 1}); }
 
     // Draws it at w x h (only when how it looks changed: it is a loop over every pixel).
     void Draw(int w, int h, int shape, int pad, int feather, int alpha, int tint, int border, int cover, int line, POINT where)

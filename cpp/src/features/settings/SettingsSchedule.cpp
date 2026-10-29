@@ -99,7 +99,7 @@ void SettingsWindow::BuildNight(Stack& st)
     syncStatus = &AddLabel(syncRow, L"Finding your location for sunset and sunrise...", Fonts::Small(), Theme::Dim, 46, 2,
                            Edge - 46, syncLines > 1 ? 40.0f : 22.0f);
     syncStatus->wrap = syncStatus->top = syncLines > 1;
-    syncTick->tip = syncStatus->tip = Lang::T(L"The night schedule follows sunset and sunrise. BlinkBuddy works them out for this "
+    syncTick->tip = syncStatus->tip = Lang::T(L"The night schedule follows sunset and sunrise. Softlid works them out for this "
                                               L"place: your location in Windows when it's allowed, or your time zone's city.");
     // Sunset to sunrise, or hours of your own (the Advanced view only: Simple keeps to the sun).
     Shown advanced = And(own, [this] { return s.AdvancedView; }), hours = And(advanced, [this] { return s.ScheduleMode == 1; });
@@ -228,7 +228,7 @@ void SettingsWindow::ChooseCity(const std::wstring& name)
 
 // The green mark on the screen filter's blue light slider: where the night schedule takes it.
 // Windows' own Night light, when it is set up here: a switch to sync with it, and what it is doing. Synced, its
-// schedule (if it has one) runs the night, and while it is on BlinkBuddy's blue light filter rests. Read-only:
+// schedule (if it has one) runs the night, and while it is on Softlid's blue light filter rests. Read-only:
 // Night light itself is changed in Windows Settings.
 void SettingsWindow::BuildNightLight(Stack& st)
 {
@@ -256,10 +256,10 @@ void SettingsWindow::RefreshNightLight()
                        : n.byHand ? Lang::T(L"Night light is on now (turned on by hand).")
                                   : Lang::T(L"Night light is on now.");
     std::wstring strength = std::to_wstring(n.Strength());
-    std::wstring plan = !n.scheduled ? Lang::T(L"It has no schedule, so BlinkBuddy's own schedule runs.")
-                        : n.setHours ? Lang::F(L"BlinkBuddy follows its hours, {0} to {1}, at strength {2}.",
+    std::wstring plan = !n.scheduled ? Lang::T(L"It has no schedule, so Softlid's own schedule runs.")
+                        : n.setHours ? Lang::F(L"Softlid follows its hours, {0} to {1}, at strength {2}.",
                                                {Night::Hm(n.Start()), Night::Hm(n.End()), strength})
-                                     : Lang::F(L"BlinkBuddy follows it from sunset to sunrise ({0} to {1}), at strength {2}.",
+                                     : Lang::F(L"Softlid follows it from sunset to sunrise ({0} to {1}), at strength {2}.",
                                                {Night::Hm(n.Start()), Night::Hm(n.End()), strength});
     nightLightStatus->SetPlainText(now + L"\n" + plan);
 }
