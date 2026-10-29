@@ -142,16 +142,11 @@ Found a bug or have an idea? [Open an issue](https://github.com/Kindleshard/Soft
 version: [CHANGELOG.md](CHANGELOG.md). Building it yourself,
 or curious how it works: [cpp/docs/BUILDING.md](cpp/docs/BUILDING.md).
 
-## Code signing policy
+## Where the downloads come from
 
-Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by
-[SignPath Foundation](https://signpath.org).
-
-- Committers and reviewers: [Kindleshard](https://github.com/Kindleshard)
-- Approvers: [Kindleshard](https://github.com/Kindleshard)
-
-Signed releases are built from this repository's source by GitHub Actions, and each one is approved by hand before
-it is signed.
+Every download is built from this repository's source by
+[GitHub Actions](https://github.com/Kindleshard/Softlid/actions/workflows/release.yml), and each release page shows
+every file's SHA-256 next to it. The releases aren't code-signed yet.
 
 Privacy policy: [PRIVACY.md](PRIVACY.md). Softlid collects no personal data; it goes online only to check for
 updates (which can be switched off) and when you ask it to.

@@ -2,8 +2,8 @@
 # tests, the installers and the portable zips. So anyone can see that the downloads come from this source.
 #   Actions > Release > Run workflow   build only; the files are kept as the run's "Softlid" download
 #   git push origin v1.0.1             the same, then a draft release with the files, to check and publish by hand
-# Signing (SignPath Foundation) is added here once the project is approved: the files then go to SignPath, each
-# request is approved by hand there, and the signed files are what the release gets.
+# The files aren't code-signed yet (SignPath Foundation asked for a better-known project first): signing would go
+# between the build and the draft release.
 name: Release
 
 on:
