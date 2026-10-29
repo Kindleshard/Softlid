@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- The Ko-fi page's cover: the README banner at Ko-fi's 3:1 (1200 x 400), square-cornered, as Ko-fi rounds and crops it
+     itself. One still, rendered with node render.mjs kofi-cover --at 0 and uploaded by hand. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../loop.css">
+<script src="../motion.js"></script>
+<style>
+  html, body { width: 1200px; height: 400px; }
+  .card { position: absolute; inset: 0; overflow: hidden; }
+  .brand { left: 90px; top: 104px; font-size: 68px; font-weight: 700; gap: 24px; letter-spacing: -0.5px; }
+  .brand img { width: 104px; height: 104px; }
+  .tag { position: absolute; left: 92px; top: 236px; font: 600 26px "Segoe UI Variable Display", "Segoe UI", sans-serif; color: #e9eef9; }
+  .meta { position: absolute; left: 92px; top: 282px; font: 500 18px "Segoe UI", sans-serif; color: var(--dim); }
+  .stage { left: 720px; top: 72px; width: 410px; height: 256px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="bg"></div>
+  <div class="glow" style="background:#2b6cff; left:680px; top:-320px; opacity:.4"></div>
+  <div class="glow" style="background:#40d6c4; left:-300px; top:180px; opacity:.2"></div>
+  <div class="brand"><img src="../icon.png" alt="">Softlid</div>
+  <div class="tag">Gentle eye care that lives in your Windows tray.</div>
+  <div class="meta">Free and open source · Windows 10 and 11 · 21 languages</div>
+  <div class="stage"><div class="screen"><div class="view" id="view"><div class="sheen"></div></div></div></div>
+</div>
+<script>
+window.LOOP = { width: 1200, height: 400, seconds: 0.1, scale: 2, footage: [{ name: 'exercises', to: 17.5 }] };
+const footage = new Footage(document.getElementById('view'));
+// The liquid eye midway round its circle, its trail behind it (as in the banner).
+window.seek = async () => footage.show(0, [{ name: 'exercises', from: 15.2, to: 15.2, at: 0, until: 1, zoom: 1.12 }]);
+</script>
+</body>
+</html>
